@@ -5,3 +5,14 @@
 body{
   @apply bg-[#F5F7FB]
 }
+
+.f::after{
+  content: "";
+  width: 24px;
+  height: 24px;
+  background: red;
+  display: block;
+  border-top-left-radius: 100%;
+  position: absolute;
+  right: 0;
+}
