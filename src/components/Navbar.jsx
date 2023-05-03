@@ -21,7 +21,7 @@ export function NavbarClient(props){
                     pages.map((page, index) => {
                         return(
                             <span 
-                                className={`px-6 py-4 text-white rounded-tl-full rounded-bl-full hover:bg-white transition-colors hover:text-black cursor-pointer f ${index == props.page && "bg-white !text-black"}`}
+                                className={`relative px-6 py-4 text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer ${index == props.page && "bg-[#F5F7FB] !text-black f"}`}
                             >
                                 {page}
                             </span>

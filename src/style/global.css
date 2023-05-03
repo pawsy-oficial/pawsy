@@ -6,13 +6,24 @@ body{
   @apply bg-[#F5F7FB]
 }
 
-.f::after{
+.f::after, .f::before{
   content: "";
   width: 24px;
   height: 24px;
-  background: red;
+  background: #22B77E;
   display: block;
-  border-top-left-radius: 100%;
   position: absolute;
   right: 0;
+}
+
+.f::after{
+  border-bottom-right-radius: 24px;
+  top: -24px;
+  box-shadow: 5px 5px 0 5px #F5F7FB;
+}
+
+.f::before{
+  border-top-right-radius: 24px;
+  bottom: -24px;
+  box-shadow: 5px -5px 0 5px #F5F7FB;
 }
