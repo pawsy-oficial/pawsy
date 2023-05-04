@@ -1,7 +1,7 @@
 import { Question, SignOut } from "@phosphor-icons/react"
 import Logo from "../img/logo.png"
 
-export function NavbarClient(props){
+export function NavbarTutor(props){
     const pages = [
         "Inicío",
         "Carteira de vacinação",
@@ -10,7 +10,6 @@ export function NavbarClient(props){
         "Bem-estar",
         "Receitas",
     ]
-
 
     return(
         <section className="bg-[#22B77E] min-h-screen relative px-6 py-10 flex flex-col justify-between">
@@ -22,7 +21,7 @@ export function NavbarClient(props){
                     pages.map((page, index) => {
                         return(
                             <span 
-                                className={`relative px-6 py-4 text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer ${index == props.page && "bg-[#F5F7FB] !text-black f"}`}
+                                className={`nav-link ${index == props.page && "bg-[#F5F7FB] !text-black f after:block before:block"}`}
                             >
                                 {page}
                             </span>
@@ -62,7 +61,7 @@ export function NavbarClinic(props){
                     pages.map((page, index) => {
                         return(
                             <span 
-                                className={`relative px-6 py-4 text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer ${index == props.page && "bg-[#F5F7FB] !text-black f"}`}
+                                className={`nav-link ${index == props.page && "bg-[#F5F7FB] !text-black f after:block before:block"}`}
                             >
                                 {page}
                             </span>
