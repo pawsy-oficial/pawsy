@@ -7,7 +7,8 @@ export function NavbarClient(props){
         "Agendar consulta",
         "Vét. mais próximo",
         "Bem-estar",
-        "Receitas"
+        "Receitas",
+        "test"
     ]
 
 
