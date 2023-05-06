@@ -12,7 +12,7 @@ export function NavbarTutor(props){
     ]
 
     return(
-        <section className="bg-[#22B77E] min-h-screen relative px-6 py-10 flex flex-col justify-between">
+        <section className="bg-primary h-screen sticky top-0 px-6 py-10 flex flex-col justify-between">
             <div className="w-52">
                 <img src={Logo} />
             </div>
@@ -52,7 +52,7 @@ export function NavbarClinic(props){
 
 
     return(
-        <section className="bg-[#22B77E] min-h-screen relative px-6 py-10 flex flex-col justify-between">
+        <section className="bg-primary h-screen sticky top-0 px-6 py-10 flex flex-col justify-between">
             <div className="w-52">
                 <img src={Logo} />
             </div>
