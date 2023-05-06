@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body{
-  @apply bg-gray-white
+  @apply bg-gray-white min-h-screen
 }
 
 .nav-link{
