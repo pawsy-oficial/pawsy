@@ -27,3 +27,12 @@ body{
   box-shadow: 5px -5px 0 5px #F5F7FB;
   @apply rounded-tr-3xl -bottom-6;
 }
+
+input:focus{
+  @apply outline-none
+}
+
+.new-notifify::after{
+  content: "";
+  @apply w-2 h-2 rounded-full bg-blue-600 absolute top-[2px] right-[2px] block
+}

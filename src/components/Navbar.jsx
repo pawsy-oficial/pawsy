@@ -3,7 +3,7 @@ import Logo from "../img/logo.png"
 
 export function NavbarTutor(props){
     const pages = [
-        "Inicío",
+        "Início",
         "Carteira de vacinação",
         "Agendar consulta",
         "Vét. mais próximo",
@@ -12,22 +12,28 @@ export function NavbarTutor(props){
     ]
 
     return(
-        <section className="bg-primary h-screen sticky top-0 px-6 py-10 flex flex-col justify-between">
+        <section className="bg-primary h-full min-h-screen sticky top-0 px-6 py-10 flex flex-col gap-16 justify-between">
             <div className="w-52">
-                <img src={Logo} />
+                <img src={Logo} alt="Logotipo PAWSY"/>
             </div>
+            
             <nav className="flex flex-col w-[calc(100%+24px)] gap-4">
-                {
-                    pages.map((page, index) => {
-                        return(
-                            <span 
-                                className={`nav-link ${index == props.page && "bg-[#F5F7FB] !text-black f after:block before:block"}`}
-                            >
-                                {page}
-                            </span>
-                        )
-                    })
-                }
+                <ul>
+                    {
+                        pages.map((page, index) => {
+                            return(
+                                <li
+                                    key={index}
+                                    className={`nav-link ${index == props.page && "bg-[#F5F7FB] !text-black f after:block before:block"}`}
+                                >
+                                    <a href="#" >
+                                        {page}
+                                    </a>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
             </nav>
             <div className="flex justify-between text-white">
                 <span>
@@ -52,7 +58,7 @@ export function NavbarClinic(props){
 
 
     return(
-        <section className="bg-primary h-screen sticky top-0 px-6 py-10 flex flex-col justify-between">
+        <section className="bg-primary h-full min-h-screen sticky top-0 px-6 py-10 flex flex-col gap-16 justify-between">
             <div className="w-52">
                 <img src={Logo} />
             </div>
@@ -60,11 +66,11 @@ export function NavbarClinic(props){
                 {
                     pages.map((page, index) => {
                         return(
-                            <span 
+                            <li 
                                 className={`nav-link ${index == props.page && "bg-[#F5F7FB] !text-black f after:block before:block"}`}
                             >
                                 {page}
-                            </span>
+                            </li>
                         )
                     })
                 }
