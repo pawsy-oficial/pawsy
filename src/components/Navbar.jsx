@@ -1,15 +1,15 @@
 import { Question, SignOut } from "@phosphor-icons/react";
 import Logo from "../img/logo.png";
 
-export function NavbarTutor() {
+export function NavbarTutor({page}) {
   const pages = [
     {
       name: "Inicío",
-      pathname: "/clinic",
+      pathname: "/tutor",
     },
     {
       name: "Carteira de vacinação",
-      pathname: "/tutor",
+      pathname: "/carteira",
     },
     {
       name: "Agendar consulta",
@@ -51,7 +51,7 @@ export function NavbarTutor() {
                     : ""
                 }`}
               >
-                <a href={page.pathname}>{page.name}</a>
+                <a href={page.pathname} className="w-full block">{page.name}</a>
               </li>
             );
           })}
