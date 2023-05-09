@@ -8,9 +8,9 @@ export default function Tutor() {
       <NavbarTutor />
       <section className="flex-1">
         <Header />
-        <div>
+        <main className="pl-10 pr-16 py-8 flex justify-center gap-5">
           <FormNewPet isFirstAccess={false} />
-        </div>
+        </main>
       </section>
     </main>
   );

@@ -3,31 +3,68 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    width: 28rem;
-    height: 42rem;
-    left: 50.8rem;
-    top: 10rem;
+    width: 30rem;
+    height: 45rem;
     background: #FFFFFF;
     border-radius: 8px;
 }
 
-button[id="male"]{
-    border: 1px solid #8FB5FF;
-    width: 6.2rem;
-    height: 2.3rem;
+#new-pet {
+    margin-right: 330px;
+    font-size: 24px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.pets{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: transparent 1px solid;
+    cursor: pointer;
+}
+.pets img{
+    height: 64px;
+    width: 64px;
+    border-radius: 800px;
+
+}
+
+input[type="radio"]:checked + label{
+    background: rgba(34, 183, 126, 0.2);
+    border: #04AD34 1px solid;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+#animals {
+    margin:20px auto;
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+}    
+
+button[id="male"],button[id="female"]{
+    
     border-radius: 8px;
     cursor: pointer;
-    margin:auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 15px;
 }
 
 button[id="female"]{
-    border: 1px solid #FF8FCB;
-    width: 6.2rem;
-    height: 2.3rem;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 40px;
+    border: 2px solid #FF8FCB;
+}
+button[id="male"]{
+    border: 2px solid #8FB5FF;
 }
 
 input[id="inputs"]{
@@ -44,20 +81,20 @@ input[id="inputs"]::placeholder {
     left: 5px;
 }
 
-input[id="obs"]{
+textarea[id="obs"]{
     justify-content: space-between;
-    padding: 3rem;
+    padding: 1rem;
     border-radius: 8px;
     border: 1px solid #22B77E;
     background: #F5FFFE;
     margin-top: 17px;
     width: 20rem;
+    height: 132px;
+    resize:none
 }
 
-input[id="obs"]::placeholder {
-    position: absolute;
-    top: 0; 
-    left: 5px;
+textarea[id="obs"]::placeholder{
+    margin: auto;
 }
 
 select[id="options"]{
@@ -79,11 +116,7 @@ select[id="coat"]{
 }
 
 div[id="buttons"] {
-    /* display: flex; */
     padding-top: 1rem;
-    /* flex-wrap: wrap; */
-    /* flex-direction: row; */
-    /* align-content: space-between; */
 }
 
 button[id="adicionar"] {
