@@ -34,5 +34,5 @@ input:focus{
 
 .new-notifify::after{
   content: "";
-  @apply w-2 h-2 rounded-full bg-blue-600 absolute top-[2px] right-[2px] block
+  @apply w-2 h-2 rounded-full bg-secundary absolute top-[2px] right-[2px] block
 }
