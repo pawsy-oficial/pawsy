@@ -1,0 +1,117 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 28rem;
+    height: 42rem;
+    left: 50.8rem;
+    top: 10rem;
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+button[id="male"]{
+    border: 1px solid #8FB5FF;
+    width: 6.2rem;
+    height: 2.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin:auto;
+}
+
+button[id="female"]{
+    border: 1px solid #FF8FCB;
+    width: 6.2rem;
+    height: 2.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 40px;
+}
+
+input[id="inputs"]{
+    padding: 0.3rem;
+    width: 20rem;
+    border-radius: 8px;
+    border: 1px solid #22B77E;
+    background: #F5FFFE;
+    margin-top: 17px;
+}
+
+input[id="inputs"]::placeholder {
+    position: absolute; 
+    left: 5px;
+}
+
+input[id="obs"]{
+    justify-content: space-between;
+    padding: 3rem;
+    border-radius: 8px;
+    border: 1px solid #22B77E;
+    background: #F5FFFE;
+    margin-top: 17px;
+    width: 20rem;
+}
+
+input[id="obs"]::placeholder {
+    position: absolute;
+    top: 0; 
+    left: 5px;
+}
+
+select[id="options"]{
+    padding: 0.3rem;
+    border-radius: 8px;
+    border: 1px solid #22B77E;
+    background: #F5FFFE;
+    margin-top: 17px;
+    width: 20rem;
+}
+
+select[id="coat"]{
+    padding: 0.3rem;
+    border-radius: 8px;
+    border: 1px solid #22B77E;
+    background: #F5FFFE;
+    margin-top: 17px;
+    width: 20rem;
+}
+
+div[id="buttons"] {
+    /* display: flex; */
+    padding-top: 1rem;
+    /* flex-wrap: wrap; */
+    /* flex-direction: row; */
+    /* align-content: space-between; */
+}
+
+button[id="adicionar"] {
+    background: #04AD34;
+    color: white;
+    width: 100px;
+    height: 35px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 45px;
+}
+
+button[id="adicionar"]:hover {
+    cursor: pointer;
+    background-color: #12be18;
+  }
+
+button[id="cancelar"] {
+    margin: auto;
+    background: #DC3545;
+    color: white;
+    width: 100px;
+    height: 35px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button[id="cancelar"]:hover {
+    cursor: pointer;
+    background: #c7303f;
+  }

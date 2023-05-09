@@ -5,11 +5,11 @@ export function NavbarTutor() {
   const pages = [
     {
       name: "Inicío",
-      pathname: "/clinic",
+      pathname: "/tutor",
     },
     {
       name: "Carteira de vacinação",
-      pathname: "/tutor",
+      pathname: "/carteira-de-vacinao",
     },
     {
       name: "Agendar consulta",

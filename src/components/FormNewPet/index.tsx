@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react"
-
+import "./index.css"
 interface IFromNewPet {
     isFirstAccess: boolean
 }
@@ -12,9 +12,30 @@ const FormNewPet = (props: IFromNewPet) => {
         "Pitbull",
         "Beagle",
         "Poodle",
-        "Giraffe",
         "Husky",
         "Dachshund",
+        "Pug",
+        "Shih Tzu",
+        "Pastor Alemão",
+        "Rottweiler",
+        "Labrador",
+        "Pinscher",
+        "Golden Retriever",
+        "SRD",
+    ]
+
+    const catsRace = [
+        "Persa",
+        "Siamês",
+        "Maine Coon",
+        "Angorá",
+        "Sphynx",
+        "Ragdoll",
+        "Ashera",
+        "American Shorthair",
+        "Exótico",
+        "SRD",
+
     ]
 
     const coat = [
@@ -37,20 +58,26 @@ const FormNewPet = (props: IFromNewPet) => {
     }
 
     return (
-        <form className="flex-col flex  w-80" onSubmit={handleSubmit}>
-            <label htmlFor="name">Nome</label>
-            <input name="name" type="text" placeholder="Nome" required />
-            <label htmlFor="race">Raça</label>
-            <select required name="race">
-                <option value="" >Selecione uma Opção</option>
+        <form onSubmit={handleSubmit}>
+            {/* <label htmlFor="name">Nome</label> */}
+            
+            <div>
+                <button id="male" type="submit">Macho</button>
+                <button id="female" type="submit">Fêmea</button>
+            </div>
+
+            <input id="inputs" name="name" type="text" placeholder="Nome*" required />
+            {/* <label htmlFor="race">Raça</label> */}
+            <select id="options" required name="race">
+                <option value="">Selecione uma Opção</option>
                 {
                     dogsRace.map(dog => (
                         <option key={dog}>{dog}</option>
                     ))
                 }
             </select>
-            <label htmlFor="coat">Pelagem</label>
-            <select required name="coat">
+            {/* <label htmlFor="coat">Pelagem</label> */}
+            <select id="coat" required name="coat">
                 <option value="" >Selecione uma Opção</option>
                 {
                     coat.map(dog => (
@@ -58,12 +85,19 @@ const FormNewPet = (props: IFromNewPet) => {
                     ))
                 }
             </select>
-            <label htmlFor="birthday">Data de nascimento</label>
-            <input type="date" id="birthday" name="birthday" />
-            <input placeholder="10.00kg" />
+            {/* <label htmlFor="birthday">Data de nascimento</label> */}
+            <input type="date" id="inputs" name="birthday" />
 
-            {!isFirstAccess ? <button >Cancelar</button> : null}
-            <button type="submit">Salvar</button>
+            {/* <label htmlFor="weight">Peso</label> */}
+            <input id="inputs" placeholder="Peso" />
+
+            <input id="obs" placeholder="Observação"/>
+
+            <div id="buttons">
+                {!isFirstAccess ? <button id="cancelar">Cancelar</button> : null}
+                <button id="adicionar" type="submit">Adicionar</button>
+            </div>
+
 
         </form>
     )
