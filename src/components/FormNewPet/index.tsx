@@ -8,8 +8,6 @@ interface IFromNewPet {
 }
 
 const FormNewPet = (props: IFromNewPet) => {
-    const { isFirstAccess } = props
-    // mock data, this should never go to production like this
     const dogsRace = [
         "BullDog",
         "Pitbull",
@@ -27,7 +25,7 @@ const FormNewPet = (props: IFromNewPet) => {
         "Maltes",
         "Chihuahua",
         "SRD",
-    ]
+    ];
 
     const catsRace = [
         "Persa",
@@ -40,14 +38,33 @@ const FormNewPet = (props: IFromNewPet) => {
         "American Shorthair",
         "Exótico",
         "SRD",
+    ];
 
-    ]
+    const { isFirstAccess } = props
+    const [animal, setAnimal] = useState(""); // estado inicial vazio
+
+    const handleAnimalChange = (animalType: "dog" | "cat") => {
+      setAnimal(animalType);
+    };
+
+    const getBreeds = () => {
+        if (animal === "dog") {
+          return dogsRace;
+        } else if (animal === "cat") {
+          return catsRace; // retorna as raças de gato
+        } else {
+          return []; // retorna um array vazio se nenhum animal estiver selecionado
+        }
+      };
+  
+    // mock data, this should never go to production like this
+    
 
     const coat = [
         "Curto",
         "Médio",
         "Grande",
-    ]
+    ];
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
@@ -61,22 +78,21 @@ const FormNewPet = (props: IFromNewPet) => {
         //     birthday: "2023-01-17"
         // }
     }
-
-    return (
+            return (
         <form onSubmit={handleSubmit}>
             {/* <label htmlFor="name">Nome</label> */}
             <h1 id="new-pet">Novo Pet</h1>
             
             <div id="animals">
-                <input type="radio" name="pet" id="dog" />
+                <input type="radio" name="pet" id="dog" checked={animal === "dog"} onChange={() => handleAnimalChange('dog')} radioGroup="animal" />
                 <label htmlFor="dog" className="pets">
                     <img src={dog} alt="" />
-                    <p>cachorro</p>
+                    <p>Cachorro</p>
                 </label>
-                <input type="radio" name="pet" id="cat" />
+                <input type="radio" name="pet" id="cat" checked={animal === "cat"} onChange={() => handleAnimalChange('cat')} radioGroup="animal" />
                 <label htmlFor="cat" className="pets">
                     <img  src={cat} alt="" />
-                    <p>gato</p>
+                    <p>Gato</p>
                 </label>
             </div>
             
@@ -87,17 +103,15 @@ const FormNewPet = (props: IFromNewPet) => {
 
             <input id="inputs" name="name" type="text" placeholder="Nome*" required />
             {/* <label htmlFor="race">Raça</label> */}
-            <select id="options" required name="race">
-                <option value="" disabled selected>Raça</option>
-                {
-                    dogsRace.map(dog => (
-                        <option key={dog}>{dog}</option>
-                    ))
-                }
+            <select id="races" required name="race">
+                <option value="" disabled selected defaultValue="">Raça</option>
+                {getBreeds().map((breed, index) => (
+                    <option key={index}>{breed}</option>
+                ))}
             </select>
             {/* <label htmlFor="coat">Pelagem</label> */}
             <select id="coat" required name="coat">
-                <option value="" disabled selected>Pelo</option>
+                <option value="" disabled selected defaultValue="">Pelo</option>
                 {
                     coat.map(dog => (
                         <option key={dog}>{dog}</option>
@@ -108,7 +122,7 @@ const FormNewPet = (props: IFromNewPet) => {
             <input type="date" id="inputs" name="birthday" placeholder="Data"/>
 
             {/* <label htmlFor="weight">Peso</label> */}
-            <input id="inputs" placeholder="Peso" />
+            <input type="number" id="weight" placeholder="Peso" required/>
 
             <textarea id="obs" placeholder="Observação" maxLength={200}/>
 

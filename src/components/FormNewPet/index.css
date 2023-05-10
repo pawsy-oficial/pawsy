@@ -63,11 +63,29 @@ button[id="male"],button[id="female"]{
 button[id="female"]{
     border: 2px solid #FF8FCB;
 }
+
+button[id="female"]:hover{
+    cursor: pointer;
+    background-color: #fac0de;
+}
+
+button[id="female"]:active{
+    background-color: #fac0de;
+}
+
 button[id="male"]{
     border: 2px solid #8FB5FF;
 }
 
-input[id="inputs"]{
+button[id="male"]:hover{
+    background-color: #bcd2fc;
+}
+
+button[id="male"]:active{
+    background-color: #bcd2fc;
+}
+
+input[id="inputs"], input[id="weight"]{
     padding: 0.3rem;
     width: 20rem;
     border-radius: 8px;
@@ -97,7 +115,7 @@ textarea[id="obs"]::placeholder{
     margin: auto;
 }
 
-select[id="options"]{
+select[id="races"]{
     padding: 0.3rem;
     border-radius: 8px;
     border: 1px solid #22B77E;
