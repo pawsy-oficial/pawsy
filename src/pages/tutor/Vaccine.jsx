@@ -43,63 +43,65 @@ export default function VaccinePage() {
               </Select.Content>
             </Select.Portal>
           </Select.Root>
-          <section className="gap-24 flex flex-1 bg-white px-6 py-8 rounded-2xl">
-            <table>
-              <thead>
-                <tr>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-40">
-                    Vacina
-                  </th>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-40">
-                    Data de aplicação
-                  </th>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-40">
-                    Retorno
-                  </th>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-40">
-                    Veterinário
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-slate-700">Indiana</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-700">Ohio</td>
-                  <td className="border border-slate-700">Columbus</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-700">Michigan</td>
-                  <td className="border border-slate-700">Detroit</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                </tr>
-              </tbody>
-            </table>
-            <table>
-              <thead>
-                <tr>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-24">
-                    Data
-                  </th>
-                  <th className="border border-slate-600 p-2 bg-primary text-white text-sm w-24">
-                    Nome
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-slate-700">Indiana</td>
-                  <td className="border border-slate-700">Indianapolis</td>
-                </tr>
+          <section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
+            <div className="w-full flex justify-between">
+              <table>
+                <thead>
+                  <tr className=" border-b border-black">
+                    <th className=" bg-primary text-white text-sm w-40 p-2">
+                      Vacina
+                    </th>
+                    <th className=" p-2 bg-primary text-white text-sm w-40">
+                      Data de aplicação
+                    </th>
+                    <th className=" p-2 bg-primary text-white text-sm w-40">
+                      Retorno
+                    </th>
+                    <th className=" p-2 bg-primary text-white text-sm w-40">
+                      Veterinário
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="second">
+                  <tr className="border-b border-black">
+                    <td className="">Indiana</td>
+                    <td className="">Indianapolis</td>
+                    <td className="">Indianapolis</td>
+                    <td className="">Indianapolis</td>
+                  </tr>
+                  <tr className="border-b border-black">
+                    <td className="">Ohio</td>
+                    <td className="">Columbus</td>
+                    <td className="">Indianapolis</td>
+                    <td className="">Indianapolis</td>
+                  </tr>
+                  <tr className="border-b border-black">
+                    <td className="">Michigan</td>
+                    <td className="">Detroit</td>
+                    <td className="">Indianapolis</td>
+                    <td className="">Indianapolis</td>
+                  </tr>
                 </tbody>
-            </table>
+              </table>
+              <table>
+                <thead>
+                  <tr className=" border-b border-black">
+                    <th className=" bg-primary text-white text-sm w-40 p-2">
+                      Data
+                    </th>
+                    <th className=" bg-primary text-white text-sm w-40 p-2">
+                      Nome
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="second">
+                  <tr className="border-b border-black">
+                    <td>Indiana</td>
+                    <td>Indianapolis</td>
+                  </tr>
+                  </tbody>
+              </table>
+            </div>
           </section>
         </main>
       </section>
