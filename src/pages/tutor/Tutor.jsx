@@ -1,3 +1,4 @@
+import FormNewPet from "../../components/FormNewPet";
 import { GenderFemale, GenderMale, PlusCircle, WarningCircle } from "@phosphor-icons/react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
