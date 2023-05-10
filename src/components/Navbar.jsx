@@ -1,5 +1,6 @@
 import { Question, SignOut } from "@phosphor-icons/react";
 import Logo from "../img/logo.png";
+import { useNavigate } from "react-router-dom";
 
 export function NavbarTutor() {
   const pages = [
@@ -9,7 +10,7 @@ export function NavbarTutor() {
     },
     {
       name: "Carteira de vacinação",
-      pathname: "/carteira-de-vacinao",
+      pathname: "/carteira",
     },
     {
       name: "Agendar consulta",
@@ -33,6 +34,8 @@ export function NavbarTutor() {
     return window?.location?.pathname === pathname;
   };
 
+  const navigate = useNavigate()
+
   return (
     <section className="bg-primary h-full min-h-screen sticky top-0 px-6 py-10 flex flex-col gap-16 justify-between">
       <div className="w-52">
@@ -45,13 +48,10 @@ export function NavbarTutor() {
             return (
               <li
                 key={index}
-                className={`nav-link ${
-                  isActive(page.pathname)
-                    ? "bg-[#F5F7FB] !text-black f after:block before:block"
-                    : ""
-                }`}
+                className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
+                  }`}
               >
-                <a href={page.pathname}>{page.name}</a>
+                <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
               </li>
             );
           })}
@@ -107,13 +107,10 @@ export function NavbarClinic() {
           return (
             <li
               key={index}
-              className={`nav-link ${
-                isActive(page.pathname)
-                  ? "bg-[#F5F7FB] !text-black f after:block before:block"
-                  : ""
-              }`}
+              className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
+                }`}
             >
-              <a href={page.pathname}>{page.name}</a>
+              <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
             </li>
           );
         })}
