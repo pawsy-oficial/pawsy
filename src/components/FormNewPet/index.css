@@ -48,7 +48,7 @@ input[type="radio"]{
     justify-content: space-between;
 }    
 
-button[id="male"],button[id="female"]{
+#male,#female{
     
     border-radius: 8px;
     cursor: pointer;
@@ -60,30 +60,35 @@ button[id="male"],button[id="female"]{
     padding: 4px 15px;
 }
 
-button[id="female"]{
+#female{
     border: 2px solid #FF8FCB;
 }
 
-button[id="female"]:hover{
+#female:hover{
     cursor: pointer;
     background-color: #fac0de;
 }
 
-button[id="female"]:active{
-    background-color: #fac0de;
-}
-
-button[id="male"]{
+#male{
     border: 2px solid #8FB5FF;
 }
 
-button[id="male"]:hover{
+#male:hover{
     background-color: #bcd2fc;
 }
 
-button[id="male"]:active{
+
+input[type="radio"]#mal:checked + label{
     background-color: #bcd2fc;
 }
+input[type="radio"]#fem:checked + label{
+    background-color: #fac0de;
+}
+
+
+
+
+
 
 input[id="inputs"], input[id="weight"]{
     padding: 0.3rem;

@@ -97,8 +97,11 @@ const FormNewPet = (props: IFromNewPet) => {
             </div>
             
             <div className="flex justify-center w-full" style={{gap: "50px"}}>
-                <button id="male" type="submit">Macho <GenderMale color= "#8FB5FF" size="24px"/></button>
-                <button id="female" type="submit">Fêmea <GenderFemale color= "#FF8FCB" size="24px"/></button>
+                <input type="radio" name="gender" id="mal" className="input-gender"/>
+                <label id="male" htmlFor="mal">Macho <GenderMale color= "#8FB5FF" size="24px"/></label>
+
+                <input type="radio" id="fem" name="gender" className="input-gender"/>
+                <label id="female" htmlFor="fem">Fêmea <GenderFemale color= "#FF8FCB" size="24px"/></label>
             </div>
 
             <input id="inputs" name="name" type="text" placeholder="Nome*" required />
