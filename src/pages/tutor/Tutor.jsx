@@ -2,8 +2,13 @@
 import { GenderFemale, GenderMale, PlusCircle, WarningCircle } from "@phosphor-icons/react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
+import RadioGroupMyPets from "../../components/tutor/RadioGroupMyPets";
+import { useState } from "react";
+import { Alert } from "../../components/tutor/Alert";
 
 export default function Tutor() {
+
+    const [showPet, setShowPet] = useState(0)
 
     const pets =
     [
@@ -34,36 +39,36 @@ export default function Tutor() {
                         <div className="flex gap-6 mb-6">
                             <div className="flex flex-col gap-2 items-center">
                                 <div className="w-40 h-40 rounded-full border-4 border-secundary overflow-hidden">
-                                    <img src={pets[1].image} alt={pets[1].name} className="h-full w-full object-cover" />
+                                    <img src={pets[showPet].image} alt={pets[showPet].name} className="h-full w-full object-cover" />
                                 </div>
                                 <span
                                     className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
                                 >
-                                    #{pets[1].id}
+                                    #{pets[showPet].id}
                                 </span>
                             </div>
                             <div className="flex flex-col gap-4">
                                 <h3 className="text-[32px] font-bold uppercase flex gap-4 items-center">
-                                    {pets[1].name} 
+                                    {pets[showPet].name} 
                                     {
-                                        pets[1].gender == "mas" ? <GenderMale size={24} color="#8FB5FF" weight="bold"/> : <GenderFemale size={24} color="#FF8FCB" weight="bold"/>
+                                        pets[showPet].gender == "mas" ? <GenderMale size={24} color="#8FB5FF" weight="bold"/> : <GenderFemale size={24} color="#FF8FCB" weight="bold"/>
                                     }
                                     {
-                                        pets[1].status && <WarningCircle size={24} className="fill-red-error" weight="bold"/>
+                                        pets[showPet].status && <Alert/>
                                     }
                                 </h3>
                                 <ul className="flex flex-col gap-2">
                                     <li>
                                         <span className="font-bold text-lg">Idade: </span>
-                                        <span>{pets[1].birthday}</span>
+                                        <span>{pets[showPet].birthday}</span>
                                     </li>
                                     <li>
                                         <span className="font-bold text-lg">Raça: </span>
-                                        <span>{pets[1].breed}</span>
+                                        <span>{pets[showPet].breed}</span>
                                     </li>
                                     <li>
                                         <span className="font-bold text-lg">Status: </span>
-                                        <span>{pets[1].status ? "Não saudável" : "Saudável"}</span>
+                                        <span>{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -72,7 +77,7 @@ export default function Tutor() {
                             <section>
                                 <h3 className="text-2xl font-semibold mb-3">Observações</h3>
                                 <p className="text-zinc-800 leading-relaxed text-base">
-                                    {pets[1].observations}
+                                    {pets[showPet].observations}
                                 </p>
                             </section>
                             <section>
@@ -100,6 +105,9 @@ export default function Tutor() {
                                 </div>
                             </section>
                         </div>
+                        {
+                            console.log(showPet)
+                        }
                     </section>
                     <section className="w-64 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
                         <h3 className="text-2xl font-semibold">
@@ -107,25 +115,7 @@ export default function Tutor() {
                         </h3>
 
                         <div className="flex flex-col gap-3">
-                            {
-                                pets.map((pet) => {
-                                    return (
-                                        <div className="flex gap-2 items-center">
-                                            <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
-                                                <img
-                                                    src={pet.image}
-                                                    alt={pet.name}
-                                                    className="object-cover w-full h-full"
-                                                />
-                                            </div>
-                                            <span className="text-lg font-semibold capitalize">{pet.name}</span>
-                                            {
-                                                pet.status && <WarningCircle className="fill-red-error" size={16} weight="bold" />
-                                            }
-                                        </div>
-                                    )
-                                })
-                            }
+                            <RadioGroupMyPets showPet={setShowPet}/>
                         </div>
 
                         <div className="flex gap-4 mx-auto mt-4 cursor-pointer">
