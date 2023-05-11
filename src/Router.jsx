@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Tutor from "./pages/tutor/Tutor"
 import Clinic from "./pages/clinic/Clinic"
 import VetCloser from "./pages/tutor/VetCloser"
-import Revenues from "./pages/tutor/Revenues"
+import Revenues from "./pages/revenues/index"
 
 export default function Router(){
     return(

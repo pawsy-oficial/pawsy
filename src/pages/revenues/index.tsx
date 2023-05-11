@@ -1,6 +1,7 @@
 import React from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
+import "./index.css"
 
 // a abordagem a seguir consiste em um early return reativo á uma query na url, ou seja,
 //quando a url for /tutor o componente exibido deve ser <RevenuesList/>
@@ -15,10 +16,10 @@ const revenueId = query.get("receita");
 const RevenuesList = () => {
   return (
     <div>
-      <h1> Lista de receitas</h1>
-      <a href="/receitas?receita=1">receita 1</a>
-      <a href="/receitas?receita=2">receita 2</a>
-      <a href="/receitas?receita=3">receita 3</a>
+      <a href="/receitas?receita=1">Emissão: 01/03/2023</a>
+      <a href="/receitas?receita=2">Emissão: 02/03/2023</a>
+      <a href="/receitas?receita=3">Emissão: 03/03/2023</a>
+      <a href="/receitas?receita=3">Emissão: 04/03/2023</a>
     </div>
   );
 };
