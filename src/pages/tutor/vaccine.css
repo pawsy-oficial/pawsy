@@ -10,3 +10,12 @@ table {
 .second{
     background-color: #e9fffd;
 }
+
+.titulo-card {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: left;
+    vertical-align: top;
+    color: #000000;
+  }

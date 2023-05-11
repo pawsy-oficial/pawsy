@@ -4,6 +4,7 @@ import "./vaccine.css";
 import * as Select from "@radix-ui/react-select";
 import { useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
+import { CardClinic } from "../../components/vaccine/cardS"
 
 export default function VaccinePage() {
   const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
@@ -23,6 +24,33 @@ export default function VaccinePage() {
   const table = [
     [
       //Caramelo (pets[0])
+      [
+        {
+          vaccineName: "Antirrábica",
+          dateVaccine: "2020-03-24",
+          returnVaccine: "2021-03-24",
+          CRMV: "000-00",
+          vetAplication: "Vanessa Santos",
+        },
+      ],
+      [
+        {
+          vaccineName: "Antirrábica",
+          dateVaccine: "2020-03-24",
+          returnVaccine: "2021-03-24",
+          CRMV: "000-00",
+          vetAplication: "Vanessa Santos",
+        },
+      ],
+      [
+        {
+          vaccineName: "Antirrábica",
+          dateVaccine: "2020-03-24",
+          returnVaccine: "2021-03-24",
+          CRMV: "000-00",
+          vetAplication: "Vanessa Santos",
+        },
+      ],
       [
         {
           vaccineName: "Antirrábica",
@@ -312,7 +340,7 @@ export default function VaccinePage() {
           </div>
           <section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
             <div className="w-full flex justify-between">
-              <table>
+              <table className="block"> 
                 <thead>
                   <tr className=" border-b border-black">
                     <th className=" bg-primary text-white text-sm w-40 p-2">
@@ -353,7 +381,7 @@ export default function VaccinePage() {
                   })}
                 </tbody>
               </table>
-              <table>
+              <table className="block">
                 <thead>
                   <tr className=" border-b border-black">
                     <th className=" bg-primary text-white text-sm w-40 p-2">
@@ -383,6 +411,14 @@ export default function VaccinePage() {
                 </tbody>
               </table>
             </div>
+          </section>
+          <p className="titulo-card pt-2">Campanhas de vacinação próximas de você</p>
+          <section className="flex flex-1 rounded-2xl">
+              <CardClinic/>
+              <CardClinic/>
+              <CardClinic/>
+              <CardClinic/>
+              <CardClinic/>
           </section>
         </main>
       </section>
