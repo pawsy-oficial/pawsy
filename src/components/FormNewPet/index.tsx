@@ -44,21 +44,21 @@ const FormNewPet = (props: IFromNewPet) => {
     const [animal, setAnimal] = useState(""); // estado inicial vazio
 
     const handleAnimalChange = (animalType: "dog" | "cat") => {
-      setAnimal(animalType);
+        setAnimal(animalType);
     };
 
     const getBreeds = () => {
         if (animal === "dog") {
-          return dogsRace;
+            return dogsRace;
         } else if (animal === "cat") {
-          return catsRace; // retorna as raças de gato
+            return catsRace; // retorna as raças de gato
         } else {
-          return []; // retorna um array vazio se nenhum animal estiver selecionado
+            return []; // retorna um array vazio se nenhum animal estiver selecionado
         }
-      };
-  
+    };
+
     // mock data, this should never go to production like this
-    
+
 
     const coat = [
         "Curto",
@@ -78,11 +78,11 @@ const FormNewPet = (props: IFromNewPet) => {
         //     birthday: "2023-01-17"
         // }
     }
-            return (
+    return (
         <form onSubmit={handleSubmit}>
             {/* <label htmlFor="name">Nome</label> */}
             <h1 id="new-pet">Novo Pet</h1>
-            
+
             <div id="animals">
                 <input type="radio" name="pet" id="dog" checked={animal === "dog"} onChange={() => handleAnimalChange('dog')} radioGroup="animal" />
                 <label htmlFor="dog" className="pets">
@@ -91,17 +91,17 @@ const FormNewPet = (props: IFromNewPet) => {
                 </label>
                 <input type="radio" name="pet" id="cat" checked={animal === "cat"} onChange={() => handleAnimalChange('cat')} radioGroup="animal" />
                 <label htmlFor="cat" className="pets">
-                    <img  src={cat} alt="" />
+                    <img src={cat} alt="" />
                     <p>Gato</p>
                 </label>
             </div>
-            
-            <div className="flex justify-center w-full" style={{gap: "50px"}}>
-                <input type="radio" name="gender" id="mal" className="input-gender"/>
-                <label id="male" htmlFor="mal">Macho <GenderMale color= "#8FB5FF" size="24px"/></label>
 
-                <input type="radio" id="fem" name="gender" className="input-gender"/>
-                <label id="female" htmlFor="fem">Fêmea <GenderFemale color= "#FF8FCB" size="24px"/></label>
+            <div className="flex justify-center w-full" style={{ gap: "50px" }}>
+                <input type="radio" name="gender" id="mal" className="input-gender" />
+                <label id="male" htmlFor="mal">Macho <GenderMale color="#8FB5FF" size="24px" /></label>
+
+                <input type="radio" id="fem" name="gender" className="input-gender" />
+                <label id="female" htmlFor="fem">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
             </div>
 
             <input id="inputs" name="name" type="text" placeholder="Nome*" required />
@@ -122,19 +122,19 @@ const FormNewPet = (props: IFromNewPet) => {
                 }
             </select>
             {/* <label htmlFor="birthday">Data de nascimento</label> */}
-            <input type="date" id="inputs" name="birthday" placeholder="Data"/>
+            <input type="date" id="inputs" name="birthday" placeholder="Data" />
 
             {/* <label htmlFor="weight">Peso</label> */}
-            <input type="number" id="weight" placeholder="Peso" required/>
+            <input type="number" id="weight" placeholder="Peso" required />
 
-            <textarea id="obs" placeholder="Observação" maxLength={200}/>
+            <textarea id="obs" placeholder="Observação" maxLength={200} />
 
             <div id="buttons">
-                {!isFirstAccess ? <button id="cancelar">Cancelar</button> : null}
+                {
+                    !isFirstAccess && <button id="cancelar" onClick={()=>{props.addPet(true)}}>Cancelar</button>
+                }
                 <button id="adicionar" type="submit">Adicionar</button>
             </div>
-
-
         </form>
     )
 }
