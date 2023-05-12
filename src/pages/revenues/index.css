@@ -91,6 +91,7 @@
 #return{
     display: flex;
     padding-left: 7rem;
+    align-items: center;
     margin: 2rem auto;
     font-size: 14px;
 }
@@ -150,9 +151,10 @@
 #logo{
     width: 595px;
     height: 32.5px;
-    left: 0px;
-    top: 810px;
     background: #22B77E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #logo-img{

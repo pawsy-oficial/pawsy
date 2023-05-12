@@ -2,6 +2,8 @@ import React from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import "./index.css"
+import { CaretLeft } from "@phosphor-icons/react";
+import CardReceitas from "../../components/Receitas/Receitas";
 
 // a abordagem a seguir consiste em um early return reativo á uma query na url, ou seja,
 //quando a url for /tutor o componente exibido deve ser <RevenuesList/>
@@ -16,47 +18,28 @@ const revenueId = query.get("receita");
 const RevenuesList = () => {
   return (
     <>
-    <div id="header">
-      <h1>Receitas médicas do</h1>
-      <select id="dogs" required name="dogs">
-        <option value="" disabled selected defaultValue="">Caramelo</option>
+      <div id="header">
+        <h1>Receitas médicas do</h1>
+        <select id="dogs" required name="dogs">
+          <option value="" disabled selected defaultValue="">Caramelo</option>
         </select>
-        </div>
-
-    <div id="revenues">
-        <div id="revenue1">
-          <a href="/receitas?receita=1">Emissão: 01/03/2023</a>
-          <p>Validade: 02/04/2023</p>
-          <p>Drª Vanessa Santos</p>
-        </div>
-        
-        <div id="revenue2">
-          <a href="/receitas?receita=2">Emissão: 02/03/2023</a>
-          <p>Validade: 03/04/2023</p>
-          <p>Drº Nelson Chagas</p>
-          </div>
-
-        <div id="revenue3">
-          <a href="/receitas?receita=3">Emissão: 03/03/2023</a>
-          <p>Validade: 04/04/2023</p>
-          <p>Drª Vanessa Santos</p>
-          </div>
-
-        <div id="revenue4">
-          <a href="/receitas?receita=4">Emissão: 04/03/2023</a>
-          <p>Validade: 05/04/2023</p>
-          <p>Drª Vanessa Santos</p>
-          </div>
       </div>
-  </>
+
+      <div id="revenues">
+        <CardReceitas emissao={"01/04/2023"} validade={"02/04/2023"} dr={"Vanessa Santos"} />
+        <CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
+        <CardReceitas emissao={"10/07/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
+        <CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
+      </div>
+    </>
   );
 };
 
-const RevenueDetails = (props: { revenueId: string }) => {
+const RevenueDetails = (props) => {
   const { revenueId } = props;
   return (
     <div>
-      <a href="/receitas" id="return">Voltar</a>
+      <a href="/receitas" id="return"><CaretLeft color="#22B77E" />Voltar</a>
       <div id="prescription">
         <div id="information">
           <table>
@@ -81,12 +64,12 @@ const RevenueDetails = (props: { revenueId: string }) => {
         </div>
         
         <div id="medicines">
-          <div id="posology">  
+          <div id="posology">
           </div>
         </div>
 
         <div id="medicines">
-          <div id="posology">  
+          <div id="posology">
           </div>
         </div>
 
@@ -97,9 +80,9 @@ const RevenueDetails = (props: { revenueId: string }) => {
 
         <div id="signature">
         </div>
-        
+
         <div id="logo">
-        <img src="src/img/logo.png" alt="" id="logo-img"/>
+          <img src="src/img/logo.png" alt="" id="logo-img" />
         </div>
       </div>
     </div>
