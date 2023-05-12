@@ -2,7 +2,6 @@ import React from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import "./index.css"
-import { GenderNeuter } from "@phosphor-icons/react";
 
 // a abordagem a seguir consiste em um early return reativo á uma query na url, ou seja,
 //quando a url for /tutor o componente exibido deve ser <RevenuesList/>
