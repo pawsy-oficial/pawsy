@@ -5,3 +5,110 @@
     background: #FFFFFF;
     border-radius: 8px;
 }
+
+
+#cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    margin:2rem auto;
+}
+
+#vacine{
+    display: flex;
+    width: 256px;
+    height: 155px;
+    background: #FFFFFF;
+    border: 1px solid #22B77E;
+    border-radius: 8px;
+}
+
+#appointment{
+    display: flex;
+    width: 256px;
+    height: 155px;
+    background: #FFFFFF;
+    border: 1px solid #22B77E;
+    border-radius: 8px;
+}
+
+#deworming{
+    display: flex;
+    width: 256px;
+    height: 155px;
+    background: #FFFFFF;
+    border: 1px solid #22B77E;
+    border-radius: 8px;
+}
+
+.centro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400&display=swap');
+
+body{
+  background: #151515;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.container-speed-value{
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column
+}
+.speed-value{
+  text-align: center;
+  font-size: .8rem;
+  width: 100%;
+  color: #808080;
+}
+
+/* .speed-value:nth-child(2){
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: 400;
+  font-family: 'Orbitron', sans-serif
+}
+
+.speedometer_container{
+  overflow: hidden;
+  bottom: 40px;
+  right: 40px;
+  width: 180px;
+  height: 100px;
+/*   background: blue 
+} */
+
+#speedometer2{
+  stroke-dasharray: 100 100 50;
+/*   animation: a 8s linear alternate-reverse infinite; */
+  stroke: #22B77E;
+}
+
+#speedometer1{
+  stroke: #202020;
+  stroke-dasharray: 100 100 100;
+}
+
+#speedometer1, #speedometer2{
+  fill: transparent;
+  stroke-width: 8px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dashoffset: 100;
+  transition: .7s linear all
+}
+
+@keyframes a {
+  to{
+    stroke-dasharray: 100 100 100;
+  }
+}

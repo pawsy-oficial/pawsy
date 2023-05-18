@@ -104,16 +104,16 @@ const FormNewPet = (props: IFromNewPet) => {
                 <label id="female" htmlFor="fem">Fêmea <GenderFemale color= "#FF8FCB" size="24px"/></label>
             </div>
 
-            <input id="inputs" name="name" type="text" placeholder="Nome*" required />
+            <input id="inputs" name="name" type="text" placeholder="Nome*"/>
             {/* <label htmlFor="race">Raça</label> */}
-            <select id="races" required name="race">
+            <select id="races" name="race">
                 <option value="" disabled selected defaultValue="">Raça</option>
                 {getBreeds().map((breed, index) => (
                     <option key={index}>{breed}</option>
                 ))}
             </select>
             {/* <label htmlFor="coat">Pelagem</label> */}
-            <select id="coat" required name="coat">
+            <select id="coat" name="coat">
                 <option value="" disabled selected defaultValue="">Pelo</option>
                 {
                     coat.map(dog => (
@@ -125,7 +125,7 @@ const FormNewPet = (props: IFromNewPet) => {
             <input type="date" id="inputs" name="birthday" placeholder="Data"/>
 
             {/* <label htmlFor="weight">Peso</label> */}
-            <input type="number" id="weight" placeholder="Peso" required/>
+            <input type="number" id="weight" placeholder="Peso"/>
 
             <textarea id="obs" placeholder="Observação" maxLength={200}/>
 
