@@ -4,13 +4,13 @@ import "./vaccine.css";
 import * as Select from "@radix-ui/react-select";
 import { useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
-import { CardClinic } from "../../components/vaccine/cardS"
+import { CardClinic } from "../../components/vaccine/cardS";
+import { CaretDown } from "@phosphor-icons/react";
 
 export default function VaccinePage() {
   const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
-  const [namePet, setNamePet] = useState("Selecione o pet");
+  const [namePet, setNamePet] = useState("");
   const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
-  console.log(positioPet);
 
   /*
   const vaccineName = ["Antirrábica","Viratec 10 CVL", "V8"]; //Viratec 10 CVL é obrigatória
@@ -305,24 +305,28 @@ export default function VaccinePage() {
           <div className="flex gap-6 items-center">
             <Select.Root value={namePet} onValueChange={setNamePet}>
               <Select.Trigger
-                className="w-fit inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-violet11 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-violet9 outline-none"
-                aria-label="Food"
+                className="min-w-[220px] flex items-center justify-between rounded px-6 py-1 text-2xl font-semibold leading-none h-[35px] gap-[5px] bg-white text-violet11 focus:outline-none"
+                aria-label="pet"
               >
                 <Select.Value className="font-sora" aria-label={namePet}>
                   {namePet}
                 </Select.Value>
-                <Select.Icon className="text-violet11">
-                  {/* <ChevronDownIcon /> */}
-                </Select.Icon>
+                <CaretDown weight="fill" />
+                {/* <ChevronDownIcon /> */}
               </Select.Trigger>
               <Select.Portal>
                 <Select.Content className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-                  <Select.Viewport className="p-[5px]">
+                  <Select.Viewport className="px-3 py-8">
                     <Select.Group>
-                      <Select.Label></Select.Label>
+                      <Select.Label className="text-xs text-gray-500 mb-6">
+                        Meus pets
+                      </Select.Label>
                       {pets.map((name, index) => {
                         return (
-                          <Select.Item value={`${name}`}>
+                          <Select.Item
+                            value={`${name}`}
+                            className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-lg"
+                          >
                             <Select.ItemText>{name}</Select.ItemText>
                           </Select.Item>
                         );
@@ -332,93 +336,101 @@ export default function VaccinePage() {
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
-          
-            {
-              positioPet == 1 && <WarningVaccine/>
-            }
 
+            {positioPet == 1 && <WarningVaccine />}
           </div>
           <section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
-            <div className="w-full flex justify-between">
-              <table className="block"> 
-                <thead>
-                  <tr className=" border-b border-black">
-                    <th className=" bg-primary text-white text-sm w-40 p-2">
-                      Vacina
-                    </th>
-                    <th className=" p-2 bg-primary text-white text-sm w-40">
-                      Data de aplicação
-                    </th>
-                    <th className=" p-2 bg-primary text-white text-sm w-40">
-                      Retorno
-                    </th>
-                    <th className=" p-2 bg-primary text-white text-sm w-40">
-                      Veterinário
-                    </th>
-                    <th className=" p-2 bg-primary text-white text-sm w-40">
-                      CRMV
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="second">
-                  {table[positioPet].map((e) => {
-                    return (
-                      <tr className="border-b border-black">
-                        {e.map((f) => {
-                          console.log(f);
-                          return (
-                            <>
-                              <td>{f.vaccineName}</td>
-                              <td>{f.dateVaccine}</td>
-                              <td>{f.returnVaccine}</td>
-                              <td>{f.vetAplication}</td>
-                              <td>{f.CRMV}</td>
-                            </>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <table className="block">
-                <thead>
-                  <tr className=" border-b border-black">
-                    <th className=" bg-primary text-white text-sm w-40 p-2">
-                      Data
-                    </th>
-                    <th className=" bg-primary text-white text-sm w-40 p-2">
-                      Nome
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="second">
-                  {tableVermifugo[positioPet].map((e) => {
-                    return (
-                      <tr className="border-b border-black">
-                        {e.map((f) => {
-                          console.log(f);
-                          return (
-                            <>
-                              <td>{f.dateVermifugo}</td>
-                              <td>{f.nameVermifugo}</td>
-                            </>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="w-full flex justify-between gap-5">
+              <div>
+                <h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vacinas</h3>
+                <table className="block">
+                  <thead>
+                    <tr className=" border-b border-black">
+                      <th className=" bg-primary text-white text-sm w-40 p-2">
+                        Vacina
+                      </th>
+                      <th className=" p-2 bg-primary text-white text-sm w-40">
+                        Data de aplicação
+                      </th>
+                      <th className=" p-2 bg-primary text-white text-sm w-40">
+                        Retorno
+                      </th>
+                      <th className=" p-2 bg-primary text-white text-sm w-40">
+                        Veterinário
+                      </th>
+                      <th className=" p-2 bg-primary text-white text-sm w-40">
+                        CRMV
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="second">
+                    {table[positioPet].map((e) => {
+                      return (
+                        <tr className="border-b border-black">
+                          {e.map((f) => {
+                            console.log(f);
+                            return (
+                              <>
+                                <td>{f.vaccineName}</td>
+                                <td>{f.dateVaccine}</td>
+                                <td>{f.returnVaccine}</td>
+                                <td>{f.vetAplication}</td>
+                                <td>{f.CRMV}</td>
+                              </>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="hidden xl:block">
+                <h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vermífugos</h3>
+                <table className="">
+                  <thead>
+                    <tr className=" border-b border-black">
+                      <th className=" bg-primary text-white text-sm w-40 p-2">
+                        Data
+                      </th>
+                      <th className=" bg-primary text-white text-sm w-40 p-2">
+                        Nome
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="second">
+                    {tableVermifugo[positioPet].map((e) => {
+                      return (
+                        <tr className="border-b border-black">
+                          {e.map((f) => {
+                            console.log(f);
+                            return (
+                              <>
+                                <td>{f.dateVermifugo}</td>
+                                <td>{f.nameVermifugo}</td>
+                              </>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
-          <p className="titulo-card pt-2">Campanhas de vacinação próximas de você</p>
-          <section className="flex flex-1 rounded-2xl">
-              <CardClinic/>
-              <CardClinic/>
-              <CardClinic/>
-              <CardClinic/>
-              <CardClinic/>
+          <p className="titulo-card pt-2">
+            Campanhas de vacinação próximas de você
+          </p>
+          <section className="flex overflow-auto gap-5 w-full max-w-4xl">
+            
+              <CardClinic />
+              <CardClinic />
+              <CardClinic />
+              <CardClinic />
+              <CardClinic />
+
+            
           </section>
         </main>
       </section>

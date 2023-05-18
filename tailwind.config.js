@@ -8,6 +8,10 @@ export default {
         "primary": "#22B77E",
         "red-error": "#DC3545",
         "secundary": "#1BA8C4" 
+      },
+      fontFamily:{
+        lato: 'sans-serif, "lato"',
+        sora: 'sans-serif, "sora"'
       }
     },
   },

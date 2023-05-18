@@ -50,8 +50,9 @@ export function NavbarTutor({page}) {
                 key={index}
                 className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
                   }`}
+                onClick={() => navigate(`${page.pathname}`)}
               >
-                <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
+                <span>{page.name}</span>
               </li>
             );
           })}
