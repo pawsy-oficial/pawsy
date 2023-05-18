@@ -2,7 +2,7 @@ import { Question, SignOut } from "@phosphor-icons/react";
 import Logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 
-export function NavbarTutor() {
+export function NavbarTutor({page}) {
   const pages = [
     {
       name: "Inicío",
