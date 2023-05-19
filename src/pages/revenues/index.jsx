@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
-import "./index.css"
+import "./revenues.css"
 import { CaretLeft } from "@phosphor-icons/react";
 import CardReceitas from "../../components/Receitas/Receitas";
 
