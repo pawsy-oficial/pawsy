@@ -47,3 +47,21 @@ input:focus{
 .radio:checked + div + span{
   @apply font-semibold
 }
+
+
+table {
+  @apply text-center rounded overflow-hidden
+}
+
+th, td{
+  @apply border border-[#5B5B5B]
+}
+
+
+.second{
+  @apply bg-[#e9fffd]
+}
+
+.titulo-card {
+  @apply font-semibold text-2xl leading-relaxed text-black
+}

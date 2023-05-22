@@ -1,6 +1,6 @@
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
-import "./index.css"
+
 
 export default function VetCloser() {
     return (

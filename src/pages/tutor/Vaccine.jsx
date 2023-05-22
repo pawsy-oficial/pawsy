@@ -1,6 +1,5 @@
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
-import "./vaccine.css";
 import * as Select from "@radix-ui/react-select";
 import { useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
@@ -301,7 +300,7 @@ export default function VaccinePage() {
       <NavbarTutor />
       <section className="flex-1">
         <Header />
-        <main className="pl-10 pr-16 py-8 flex flex-col gap-5">
+        <main className="pl-10 pr-16 py-8 flex flex-col gap-5 w-[calc(100vw-256px-12px)]">
           <div className="flex gap-6 items-center">
             <Select.Root value={namePet} onValueChange={setNamePet}>
               <Select.Trigger
@@ -339,11 +338,11 @@ export default function VaccinePage() {
 
             {positioPet == 1 && <WarningVaccine />}
           </div>
-          <section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
+          <section className="flex flex-1 bg-white px-6 py-8 rounded-2xl ">
             <div className="w-full flex justify-between gap-5">
-              <div>
+              <div className="flex-1">
                 <h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vacinas</h3>
-                <table className="block">
+                <table className="w-full">
                   <thead>
                     <tr className=" border-b border-black">
                       <th className=" bg-primary text-white text-sm w-40 p-2">
@@ -422,15 +421,18 @@ export default function VaccinePage() {
           <p className="titulo-card pt-2">
             Campanhas de vacinação próximas de você
           </p>
-          <section className="flex overflow-auto gap-5 w-full max-w-4xl">
-            
-              <CardClinic />
-              <CardClinic />
-              <CardClinic />
-              <CardClinic />
-              <CardClinic />
+          <section className="w-full overflow-auto py-3 px-6">
+            <section className="flex gap-5 w-full">
+              
+                <CardClinic />
+                <CardClinic />
+                <CardClinic />
+                <CardClinic />
+                <CardClinic />
 
-            
+              
+            </section>
+
           </section>
         </main>
       </section>
