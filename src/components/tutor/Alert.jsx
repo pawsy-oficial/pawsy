@@ -29,7 +29,7 @@ export function Alert(){
     )
 }
 
-export function WarningVaccine(){
+export function WarningVaccine({nameVaccine}){
     const navigate = useNavigate()
     return(
         <>
@@ -41,9 +41,9 @@ export function WarningVaccine(){
                     <HoverCard.Content className="HoverCardContent" side='start' sideOffset={32}>
                         <div className='p-4 border-red-error bg-[#FFE8C3] w-[350px] rounded-lg flex flex-col gap-2'>
                             <p><strong>Atenção!</strong></p>
-                            <p>Seu animal de estimação ainda não recebeu a vacina Viratec 10 CVL obrigatória.</p>
+                            <p>Seu animal de estimação ainda não recebeu a vacina {nameVaccine} obrigatória.</p>
                         </div>
-                    <HoverCard.Arrow className="fill-red-error -left-2 rotate-90 absolute"/>
+                    <HoverCard.Arrow className="fill-[#FFE8C3] -left-2 rotate-90 absolute"/>
                     </HoverCard.Content>
                 </HoverCard.Portal>
             </HoverCard.Root>
