@@ -36,7 +36,6 @@ export function VaccinePets() {
 }
 
 export function Avaliation() {
-    
     return(
         <div className="w-64 bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
             <h4 className="p-3 text-lg font-medium">
