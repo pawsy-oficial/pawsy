@@ -2,7 +2,7 @@ import { Question, SignOut } from "@phosphor-icons/react";
 import Logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 
-export function NavbarTutor({page}) {
+export function NavbarTutor({ page }) {
   const pages = [
     {
       name: "Inicío",
@@ -98,23 +98,29 @@ export function NavbarClinic() {
     return window?.location?.pathname === pathname;
   };
 
+  const navigate = useNavigate()
+
   return (
     <section className="bg-primary h-full min-h-screen sticky top-0 px-6 py-10 flex flex-col gap-16 justify-between">
       <div className="w-52">
         <img src={Logo} />
       </div>
       <nav className="flex flex-col w-[calc(100%+24px)] gap-4">
-        {pages.map((page, index) => {
-          return (
-            <li
-              key={index}
-              className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
-                }`}
-            >
-              <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
-            </li>
-          );
-        })}
+        <ul>
+
+          {pages.map((page, index) => {
+            return (
+              <li
+                key={index}
+                className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
+                  }`}
+                onClick={() => navigate(`${page.pathname}`)}
+              >
+                <span>{page.name}</span>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
       <div className="flex justify-between text-white">
         <span>
