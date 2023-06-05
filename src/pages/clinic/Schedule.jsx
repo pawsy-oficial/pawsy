@@ -4,6 +4,10 @@ import ContainerSchedule from "../../components/componentsClinic/containerSchedu
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { useEffect, useState } from "react";
+import * as Select from "@radix-ui/react-select";
+
+const veterinaryNameDataBase = ["Vanessa Santos", "Leonardo Nabio", "Thereza Soares"]
+
 
 export default function Schedule() {
     const [pageContent, setPageContent] = useState(0)
@@ -62,37 +66,119 @@ function HomeSchedule() {
 }
 
 function FormNewSchedule() {
+    const [veterinaryName, setVeterinaryName] = useState([])
+    useEffect(() => {
+        setVeterinaryName(veterinaryNameDataBase)
+    }, [])
+
+    const [valueTextArea, setValueTextArea] = useState("")
+
     return (
         <div className="max-w-2xl">
             <h1 className="font-sora font-bold text-[32px]">Nova agenda</h1>
 
-            <div className="flex flex-col mb-2 mt-8">
-                <h3 className="font-lato font-semibold text-2xl">Período da agenda</h3>
-                <p>Informe o período em que a agenda ficará disponível para agendamento.</p>
-            </div>
+            <TitleSectionForm title={"Período da agenda"} description={"Informe o período em que a agenda ficará disponível para agendamento."} />
 
             <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full">
                 <div className="flex justify-center gap-6">
                     <div className="flex flex-col gap-1">
                         <strong className="text-base font-lato font-normal">Data de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary" placeholder="__/__/____" />
+                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__/__/____" />
                     </div>
                     <div className="flex flex-col gap-1">
                         <strong className="text-base font-lato font-normal">Hora de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary" placeholder="__:__" />
+                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
                     </div>
                 </div>
                 <div className="flex justify-center gap-6">
                     <div className="flex flex-col gap-1">
                         <strong className="text-base font-lato font-normal">Data de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary" placeholder="__/__/____" />
+                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__/__/____" />
                     </div>
                     <div className="flex flex-col gap-1">
                         <strong className="text-base font-lato font-normal">Hora de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary" placeholder="__:__" />
+                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
                     </div>
                 </div>
             </section>
+
+
+            <TitleSectionForm title={"Veterinário"} description={"Adicione o nome do veterinário, sua especialidade e os dias e horários disponíveis para atendimento."} />
+
+            <div className="flex flex-col gap-6">
+
+                <SectionAddVeterinary names={veterinaryName}/>
+
+                <div className="w-full flex justify-center gap-6 text-primary font-lato font-bold">
+                    <span className="cursor-pointer">adicionar mais</span>
+                    <span className="cursor-pointer">remover</span>
+                </div>
+            </div>
+
+            <TitleSectionForm title={"Observação"} description=""/>
+
+            <div className="w-full relative">
+                <textarea 
+                    name="" id="" cols="30" rows="5" 
+                    className="resize-none w-full focus:border-primary focus:outline-primary p-2 rounded min-h-32" 
+                    onInput={(e)=>{
+                        const count = e.target.value.length
+                        count <= 200 && setValueTextArea(e.target.value)
+                    }}
+                    value={valueTextArea}
+                />
+                <span className="absolute right-2 bottom-2 font-lato text-zinc-400">{valueTextArea.length}/200</span>
+            </div>
+
+            <div className="w-full flex justify-center mt-10">
+                <button className="px-6 py-2 bg-primary rounded-lg text-white font-semibold">SALVAR</button>
+            </div>
         </div>
+    )
+}
+
+function TitleSectionForm({ title, description }) {
+    return (
+        <div className="flex flex-col mb-2 mt-8">
+            <h3 className="font-lato font-semibold text-2xl">{title}</h3>
+            <p>{description}</p>
+        </div>
+    )
+}
+
+function SectionAddVeterinary({names}) {
+    return (
+        <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full">
+            <div className="flex justify-center gap-6">
+                <div className="flex flex-col gap-1">
+                    <strong className="text-base font-lato font-normal">Veterinario</strong>
+                    <select name="" id="" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary">
+                        {
+                            names.map(e => {
+                                return (
+                                    <option value={e}>
+                                        {e}
+                                    </option>
+                                )
+                            })
+                        }
+                    </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <strong className="text-base font-lato font-normal">Especialidade</strong>
+                    <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
+                </div>
+            </div>
+            <div className="flex justify-center gap-6">
+                <div className="flex flex-col gap-1">
+                    <strong className="text-base font-lato font-normal">Dias disponives</strong>
+                    <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__/__/____" />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <strong className="text-base font-lato font-normal">Horario disponivel</strong>
+                    <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
+                </div>
+            </div>
+        </section>
     )
 }
