@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { CalendarBlank } from "@phosphor-icons/react"
+import { memo, useState } from "react"
 
 const dataBase = ["2023-06-01", "2023-06-15", "2023-06-15", "2023-06-12", "2019-08-02", "2023-08-24"]
 const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 
-export default function Calendar() {
+function Calendar({page}) {
     const date = new Date()
     const today = date.getDate()
     const currentMonth = date.getMonth()
@@ -12,40 +13,43 @@ export default function Calendar() {
     const [monthSelect, setMonthSelect] = useState(currentMonth)
     const [yearSelect, setYearSelect] = useState(years.indexOf(currentYear))
 
-
-    // function heandleCalendar() {
-    //     const selectedMonth = parseInt(selectMonth.options[selectMonth.selectedIndex].value)
-    //     const selectedYear = parseInt(selectYear.options[selectYear.selectedIndex].value)
-    //     // clearCalendar()
-    //     // const data = {
-    //     //     month: selectedMonth,
-    //     //     year: selectedYear
-    //     // }
-    //     // RenderBoxDay(data)
-    // }
-
     return (
-        <div className="p-4 rounded-2xl bg-white flex flex-col gap-4">
+        <div className="p-6 w-full rounded-2xl bg-white flex flex-col gap-4">
             <header className="flex gap-2 font-extrabold">
-                <select id="selectMonth" onChange={e => setMonthSelect(parseInt(selectMonth.options[selectMonth.selectedIndex].value))}>
-                    {
-                        months.map((month, index) => {
-                            // console.log(month, currentMonth);
-                            return(
-                                <option value={index} selected={months.indexOf(month) == currentMonth && true}>{month}</option>
-                            )
-                        })
-                    }
-                </select>
-                <select id="selectYear" onChange={e=> setYearSelect(parseInt(selectYear.options[selectYear.selectedIndex].value))}>
-                    {
-                        years.map((year, index) => {
-                            return(
-                                <option value={index} selected={year == currentYear && true}>{year}</option>
-                            )
-                        })
-                    }
-                </select>
+                <div className="justify-between items-center w-full">
+                    <select id="selectMonth" onChange={e => setMonthSelect(parseInt(selectMonth.options[selectMonth.selectedIndex].value))}>
+                        {
+                            months.map((month, index) => {
+                                // console.log(month, currentMonth);
+                                return(
+                                    <option value={index} selected={months.indexOf(month) == currentMonth && true}>{month}</option>
+                                )
+                            })
+                        }
+                    </select>
+                    <select id="selectYear" onChange={e=> setYearSelect(parseInt(selectYear.options[selectYear.selectedIndex].value))}>
+                        {
+                            years.map((year, index) => {
+                                return(
+                                    <option value={index} selected={year == currentYear && true}>{year}</option>
+                                )
+                            })
+                        }
+                    </select>
+                </div>
+                <div 
+                    className="relative cursor-pointer"
+                    onClick={()=>{
+                        page(0)
+                    }}
+                >
+                    <CalendarBlank size={32}/>
+                    <span className="absolute text-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] text-secundary">
+                        {
+                            today
+                        }
+                    </span>
+                </div>
             </header>
             <main className="grid grid-cols-7 justify-items-center gap-2">
 
@@ -70,7 +74,7 @@ function RenderBoxDay({month, year, today, currentMonth, currentYear}) {
     let calendar = []
     let control = 0
 
-    console.log(month, year);
+    // console.log(month, year);
     
     for (let i = 1; i <= lastDayOfMonth; i++) {
         let dateFormat = `${years[year]}-${(month+1).toString().padStart(2,0)}-${i.toString().padStart(2,0)}`
@@ -147,3 +151,6 @@ function BoxDay({day, year, month}) {
         </label>
     )
 }
+
+
+export default memo(Calendar)

@@ -17,7 +17,7 @@ function ContainerScheduleInfo({yesterday}){
                 <p>09:30</p>
                 <p>Marcos Texeira</p>
             </div>
-            <p>Dr. Vanessa Santos </p>
+            <p>Dr. Vanessa Santos</p>
         </div>
     )
 }

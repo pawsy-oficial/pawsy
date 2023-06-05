@@ -71,7 +71,11 @@ th, td{
 /* CALENDAR */
 
 .box-calendar{
-  @apply w-8 h-8  border-transparent flex justify-center items-center
+  @apply w-8 h-8  border-transparent flex justify-center items-center text-lg cursor-pointer
+}
+
+.box-calendar input[type="radio"]:disabled + div, .box-calendar.week{
+  @apply cursor-default
 }
 
 .box-calendar > div{
@@ -83,11 +87,11 @@ th, td{
 }
 
 .box-calendar > input[type="radio"]:checked + div{
-  @apply bg-emerald-700 text-white;
+  @apply bg-primary text-white;
 }
 
 .week{
-  @apply text-zinc-600
+  @apply text-zinc-400
 }
 
 .day{
@@ -103,5 +107,5 @@ th, td{
 }
 
 .active{
-  @apply bg-secundary text-white;
+  @apply bg-[#22937E] text-white;
 }
