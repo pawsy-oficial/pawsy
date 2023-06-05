@@ -10,7 +10,6 @@
 
 .cards-vets{
     display: flex;
-    justify-content: center;
     flex-direction: row;
     gap: 1rem;
 }
@@ -20,6 +19,12 @@
     height: 140px;
     background: #FFFFFF;
     border-radius: 8px;
+}
+
+.km-stars {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
 }
 
 .card2{
