@@ -109,3 +109,7 @@ th, td{
 .active{
   @apply bg-[#22937E] text-white;
 }
+
+.container-dropdown-input input:checked + label{
+  @apply bg-primary text-white
+}
