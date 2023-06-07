@@ -68,6 +68,7 @@ function HomeSchedule() {
 
 function FormNewSchedule({alterPage}) {
     const [veterinaryName, setVeterinaryName] = useState([])
+    const [addNewRestriction, setAddNewRestriction] = useState([])
     useEffect(() => {
         setVeterinaryName(veterinaryNameDataBase)
     }, [])
@@ -78,13 +79,16 @@ function FormNewSchedule({alterPage}) {
     function heandleAddSection(){
         setSectionAddVeterinary([...sectionAddVeterinary, ""])
     }
-
+    function heandleAddRestriction(){
+        setAddNewRestriction([...addNewRestriction, ""])
+    }
+    
     function heandleRemoveSection(){
         const remove = [...sectionAddVeterinary]
         remove.pop()
         setSectionAddVeterinary(remove)
     }
-
+    
     return (
         <div className="max-w-2xl">
             <div
@@ -118,6 +122,16 @@ function FormNewSchedule({alterPage}) {
                         <strong className="text-base font-lato font-normal">Hora de abertura</strong>
                         <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
                     </div>
+                </div>
+
+                <div className="flex flex-col items-center justify-center gap-6">
+                    <button onClick={heandleAddRestriction} className="text-zinc-800 underline cursor-pointer" >Possui alguma restrição de horário ou data?</button>
+                    {
+                        addNewRestriction.map((a,i)=>{
+                            // console.log(addNewRestriction, "ok");
+                            return( <AddNewRestriction restrictionControl={setAddNewRestriction} restrictions={addNewRestriction} index={i} value={a}/>)
+                        })
+                    }
                 </div>
             </section>
 
@@ -202,5 +216,52 @@ function SectionAddVeterinary({names}) {
                 </label>
             </div>
         </section>
+    )
+}
+
+
+function AddNewRestriction({restrictionControl, index, restrictions, value}){
+    const [inputValue, setInputValue] = useState(value)
+    
+    useEffect(()=>{
+        setInputValue(value)
+    },[value])
+
+
+    function heandleRemoveRestriction(i){
+        const restriction = [...restrictions]
+        restriction.splice(i, 1)
+        restrictionControl(restriction)
+    }
+    function handleInputRestriction(){
+        let allArr = []
+        allArr.push(...restrictions)
+        allArr.push(inputValue)
+        allArr.splice(index, 1)
+        restrictionControl(allArr)
+    }
+
+    return(
+        <div className="flex justify-center gap-6">
+            <div className="flex flex-col gap-1">
+                <strong className="text-base font-lato font-normal">Data da restrição</strong>
+                <div className="flex">
+                    <input 
+                        type="text" 
+                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" 
+                        placeholder="__/__/____" 
+                        onChange={(e)=>setInputValue(e.target.value)}
+                        onBlur={handleInputRestriction}
+                        value={inputValue}
+                    />
+                    <button
+                        onClick={()=>heandleRemoveRestriction(index)}
+                        className="cursor-pointer flex items-center justify-center bg-primary text-white rounded-tr-lg rounded-br-lg px-4 -translate-x-1"
+                    >
+                        <Trash weight={"bold"} size={20}/>
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }
