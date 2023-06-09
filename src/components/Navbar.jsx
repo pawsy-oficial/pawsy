@@ -1,8 +1,8 @@
 import { Question, SignOut } from "@phosphor-icons/react";
-import Logo from "../img/logo.png";
+import Logo from "../img/logoPawsy.svg";
 import { useNavigate } from "react-router-dom";
 
-export function NavbarTutor() {
+export function NavbarTutor({ page }) {
   const pages = [
     {
       name: "Inicío",
@@ -50,8 +50,9 @@ export function NavbarTutor() {
                 key={index}
                 className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
                   }`}
+                onClick={() => navigate(`${page.pathname}`)}
               >
-                <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
+                <span>{page.name}</span>
               </li>
             );
           })}
@@ -103,17 +104,20 @@ export function NavbarClinic() {
         <img src={Logo} />
       </div>
       <nav className="flex flex-col w-[calc(100%+24px)] gap-4">
-        {pages.map((page, index) => {
-          return (
-            <li
-              key={index}
-              className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
-                }`}
-            >
-              <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
-            </li>
-          );
-        })}
+        <ul>
+
+          {pages.map((page, index) => {
+            return (
+              <li
+                key={index}
+                className={`nav-link ${isActive(page.pathname) && "bg-[#F5F7FB] !text-black f after:block before:block"
+                  }`}
+              >
+                <a onClick={() => navigate(`${page.pathname}`)}>{page.name}</a>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
       <div className="flex justify-between text-white">
         <span>
