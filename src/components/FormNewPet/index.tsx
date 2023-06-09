@@ -79,7 +79,7 @@ const FormNewPet = (props: IFromNewPet) => {
         // }
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="formNewPet">
             {/* <label htmlFor="name">Nome</label> */}
             <h1 id="new-pet">Novo Pet</h1>
 

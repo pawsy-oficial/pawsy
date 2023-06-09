@@ -1,24 +1,28 @@
-import { DiscordLogo, Pencil, PlusCircle } from '@phosphor-icons/react'
+import { Pencil, PlusCircle } from '@phosphor-icons/react'
 import React, { useEffect, useState } from 'react'
 
-export function ContainerSchedule({ date }) {
+export function ContainerSchedule({ date, appointments, alterPage }) {
     return (
-        <div className="flex flex-col gap-6 mt-6">
+        <div 
+            className="flex flex-col gap-6 mt-6"
+            onClick={()=>{alterPage(3)}}
+        >
             <span className="text-2xl">{date}</span>
             <div className="flex gap-4 flex-col">
-                <ContainerScheduleInfo yesterday={false} />
+                {
+                    appointments.map(appointment => {
+                        return(
+                            <div className={`bg-white w-full cursor-pointer hover:bg-secundary/10 transition-all duration-500 flex justify-between px-5 py-4 ${false && "line-through text-zinc-400"}`}>
+                                <div className="flex gap-10">
+                                    <p>{appointment.hours}</p>
+                                    <p>{appointment.tutorName}</p>
+                                </div>
+                                <p>Dr. {appointment.veterinaryName}</p>
+                            </div>
+                        )
+                    })
+                }
             </div>
-        </div>
-    )
-}
-function ContainerScheduleInfo({ yesterday }) {
-    return (
-        <div className={`bg-white w-full flex justify-between px-5 py-4 ${yesterday && "line-through text-zinc-400"}`}>
-            <div className="flex gap-10">
-                <p>09:30</p>
-                <p>Marcos Texeira</p>
-            </div>
-            <p>Dr. Vanessa Santos</p>
         </div>
     )
 }
