@@ -1,6 +1,6 @@
 import { CaretLeft, PlusCircle, Trash } from "@phosphor-icons/react";
 import Calendar from "../../components/componentsClinic/calendar/Calendar";
-import ContainerSchedule from "../../components/componentsClinic/containerSchedule/ContainerSchedule";
+import { ContainerMonthSchedule, ContainerSchedule, TimeLineSchendule } from "../../components/componentsClinic/containerSchedule/ContainerSchedule";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ const veterinaryNameDataBase = ["Vanessa Santos", "Leonardo Nabio", "Thereza Soa
 
 export default function Schedule() {
     const [pageContent, setPageContent] = useState(0)
+    const [allSchendule, setAllSchendule] = useState(false)
+
     function PageSelect({ page }) {
 
         switch (pageContent) {
@@ -18,6 +20,8 @@ export default function Schedule() {
                 return <HomeSchedule />
             case 1:
                 return <FormNewSchedule alterPage={setPageContent}/>
+            case 2:
+                return <AllSchenduleComponent alterPage={setPageContent} activeMenu={setAllSchendule}/>
         }
     }
 
@@ -29,25 +33,36 @@ export default function Schedule() {
                 <Header />
                 <section className="p-8">
                     <div className="flex gap-5">
-                        <section className="flex-1 max-w-5xl">
+                        <section className={`flex-1 ${allSchendule ? "" : "max-w-5xl"}`}>
                             <PageSelect page={pageContent}/>
                         </section>
-                        <article className="w-[348px] flex flex-col items-center gap-6">
-                            <Calendar page={setPageContent} />
+                        {
+                            !allSchendule && (
+                                <article className="w-[348px] flex flex-col items-center gap-6">
+                                    <Calendar page={setPageContent} />
 
-                            <button
-                                className="bg-[#04AD34] w-full rounded-lg px-6 py-2 gap-4 flex items-center cursor-pointer disabled:cursor-default disabled:opacity-25"
-                                onClick={() => {
-                                    setPageContent(1)
-                                }}
-                                disabled={pageContent != 0 && true}
-                            >
-                                <PlusCircle color="#fff" size={24} weight="bold" />
-                                <p className="text-white">Criar nova agenda</p>
-                            </button>
+                                    <button
+                                        className="bg-[#04AD34] w-full rounded-lg px-6 py-2 gap-4 flex items-center cursor-pointer disabled:cursor-default disabled:opacity-25"
+                                        onClick={() => {
+                                            setPageContent(1)
+                                        }}
+                                        disabled={pageContent != 0 && true}
+                                    >
+                                        <PlusCircle color="#fff" size={24} weight="bold" />
+                                        <p className="text-white">Criar nova agenda</p>
+                                    </button>
 
-                            <div className="text-base self-start" onClick={() => setPageContent(0)}>Ver todas agendas</div>
-                        </article>
+                                    <div 
+                                        className="text-base self-start cursor-pointer" 
+                                        onClick={() => {
+                                            setAllSchendule(true)
+                                            setPageContent(2)
+                                        }}>
+                                            Ver todas agendas
+                                        </div>
+                                </article>
+                            )
+                        }
                     </div>
                 </section>
             </section>
@@ -109,20 +124,11 @@ function FormNewSchedule({alterPage}) {
                         <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__/__/____" />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <strong className="text-base font-lato font-normal">Hora de abertura</strong>
+                        <strong className="text-base font-lato font-normal">Data de fechamento</strong>
                         <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
                     </div>
                 </div>
-                <div className="flex justify-center gap-6">
-                    <div className="flex flex-col gap-1">
-                        <strong className="text-base font-lato font-normal">Data de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__/__/____" />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <strong className="text-base font-lato font-normal">Hora de abertura</strong>
-                        <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
-                    </div>
-                </div>
+                
 
                 <div className="flex flex-col items-center justify-center gap-6">
                     <button onClick={heandleAddRestriction} className="text-zinc-800 underline cursor-pointer" >Possui alguma restrição de horário ou data?</button>
@@ -263,5 +269,45 @@ function AddNewRestriction({restrictionControl, index, restrictions, value}){
                 </div>
             </div>
         </div>
+    )
+}
+
+
+function AllSchenduleComponent({alterPage, activeMenu}){
+    const years = [2020, 2021, 2022, 2023]
+
+    return(
+        <section className="w-full flex flex-col gap-10 items-start">
+            <button 
+                onClick={()=>{
+                    alterPage(0)
+                    activeMenu(false)
+                }}
+                className="flex gap-2 items-center"
+            >
+                <CaretLeft size={16} weight="bold"/>
+                Voltar
+            </button>
+
+            <div className="flex gap-4">
+                {
+                    years.map((year, index) => {
+                        return(
+                            <div key={index}>
+                                <TimeLineSchendule year={year} index={index}/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 w-full">
+                <ContainerMonthSchedule month={"Janeiro"}/>       
+                <ContainerMonthSchedule month={"Fevereiro"}/>       
+                <ContainerMonthSchedule month={"Abril"}/>       
+                <ContainerMonthSchedule month={"Junho"}/>       
+                <ContainerMonthSchedule month={"Julho"}/>       
+            </div>
+        </section>
     )
 }

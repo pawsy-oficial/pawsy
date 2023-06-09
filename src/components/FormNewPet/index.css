@@ -32,12 +32,12 @@ form {
 
 }
 
-input[type="radio"]:checked + label{
+#animals input[type="radio"]:checked + label{
     background: rgba(34, 183, 126, 0.2);
     border: #04AD34 1px solid;
 }
 
-input[type="radio"]{
+#animals input[type="radio"]{
     display: none;
 }
 

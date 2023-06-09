@@ -48,6 +48,9 @@ input:focus{
   @apply font-semibold
 }
 
+.radio:checked + label span{
+  @apply text-emerald-500 font-bold
+}
 
 table {
   @apply text-center rounded overflow-hidden
