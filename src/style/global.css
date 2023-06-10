@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+::selection{
+  @apply bg-[#d2f8ff]
+}
+
 body{
   @apply bg-gray-white min-h-screen
 }
@@ -34,5 +38,30 @@ input:focus{
 
 .new-notifify::after{
   content: "";
-  @apply w-2 h-2 rounded-full bg-blue-600 absolute top-[2px] right-[2px] block
+  @apply w-2 h-2 rounded-full bg-secundary absolute top-[2px] right-[2px] block
+}
+
+.radio:checked + div{
+  @apply border-secundary border-[3px]
+}
+.radio:checked + div + span{
+  @apply font-semibold
+}
+
+
+table {
+  @apply text-center rounded overflow-hidden
+}
+
+th, td{
+  @apply border border-[#5B5B5B]
+}
+
+
+.second{
+  @apply bg-[#e9fffd]
+}
+
+.titulo-card {
+  @apply font-semibold text-2xl leading-relaxed text-black
 }

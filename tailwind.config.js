@@ -5,7 +5,13 @@ export default {
     extend: {
       colors:{
         "gray-white": "#F5F7FB",
-        "primary": "#22B77E"
+        "primary": "#22B77E",
+        "red-error": "#DC3545",
+        "secundary": "#1BA8C4" 
+      },
+      fontFamily:{
+        lato: 'sans-serif, "lato"',
+        sora: 'sans-serif, "sora"'
       }
     },
   },
