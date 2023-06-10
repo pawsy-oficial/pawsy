@@ -1,0 +1,14 @@
+.container {
+  display: inline-block;
+  position: relative;
+}
+
+.backopacity{
+  position: absolute;
+  top: 120px;
+  background: #000;
+  opacity: 0.5;
+  width: 327px !important;
+  height: 48px;
+  align-items: center;
+}

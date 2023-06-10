@@ -1,6 +1,9 @@
 import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardPerfil/CardPerfil";
+import Post1 from "../../components/CardPosts/Posts";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
+import pessoa from '../../img/person1.png';
+
 
 export default function Perfil() {
     const clinica = [
@@ -68,8 +71,54 @@ export default function Perfil() {
                                     Posts
                                 </h2>
                             </section>
+                                <div className="pl-3 pb-5 flex">
+                                    <Post1/>
+                                    <Post1/>
+                                    <Post1/>
+                                </div>
+                                <div className="pl-3 flex">
+                                    <Post1/>
+                                    <Post1/>
+                                    <Post1/>
+                                </div>
+                               <div className="pt-6 justify-center flex w-full gap-2">
+                                        <a href="" className=" border-2 border-primary bg-primary w-6 h-6 rounded-full"></a>
+                                        <a href="" className=" border-2 border-primary w-6 h-6 rounded-full"></a>
+                                        <a href="" className="border-2 border-primary  w-6 h-6 rounded-full"></a>
+                               </div>
                     </section>
                     <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
+                        <h1 className="font-bold text-lg">Médicos veterinários</h1>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                        <img
+                                            src={pessoa}
+                                            alt={pessoa}
+                                            className="object-cover w-full h-full"
+                                        />
+                            </div>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                        <img
+                                            src={pessoa}
+                                            alt={pessoa}
+                                            className="object-cover w-full h-full"
+                                        />
+                            </div>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                        <img
+                                            src={pessoa}
+                                            alt={pessoa}
+                                            className="object-cover w-full h-full"
+                                        />
+                            </div>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
                     </section>  
                 </main>
             </section>
