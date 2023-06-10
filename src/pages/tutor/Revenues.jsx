@@ -1,7 +1,6 @@
 import React from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
-import "./revenues.css"
 import { CaretLeft } from "@phosphor-icons/react";
 import CardReceitas from "../../components/Receitas/Receitas";
 
@@ -18,14 +17,14 @@ const revenueId = query.get("receita");
 const RevenuesList = () => {
   return (
     <>
-      <div id="header">
+      <div className="flex my-8 mx-auto pl-72 text-lg items-center">
         <h1>Receitas médicas do</h1>
-        <select id="dogs" required name="dogs">
+        <select className="bg-[#F5FFFE] ml-3 w-44 font-bold h-8 border border-primary rounded-lg" required name="dogs">
           <option value="" disabled selected defaultValue="">Caramelo</option>
         </select>
       </div>
 
-      <div id="revenues">
+      <div className="m-8">
         <CardReceitas emissao={"01/04/2023"} validade={"02/04/2023"} dr={"Vanessa Santos"} />
         <CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
         <CardReceitas emissao={"10/07/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
@@ -39,9 +38,9 @@ const RevenueDetails = (props) => {
   const { revenueId } = props;
   return (
     <div>
-      <a href="/receitas" id="return"><CaretLeft color="#22B77E" />Voltar</a>
-      <div id="prescription">
-        <div id="information">
+      <a href="/receitas" className="flex pl-28 items-center my-8 mx-auto text-sm"><CaretLeft color="#22B77E" />Voltar</a>
+      <div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary">
+        <div className="flex py-4 px-3 w-[593px] h-[132px] bg-[#F5FFFE] text-xs font-bold">
           <table>
             <tr>
               <th>Receituário comum</th>
@@ -63,26 +62,26 @@ const RevenueDetails = (props) => {
           </table>
         </div>
         
-        <div id="medicines">
-          <div id="posology">
+        <div className="flex flex-col my-8 mx-auto py-8 px-6 gap-3 w-[531px] h-[156px] left-8 top-36 border border-[#1BA8C4] rounded-lg">
+          <div className="flex flex-col my-16 mx-auto py-5 px-4 gap-2 w-[485px] h-14 bg-[#F5FFFE] border border-primary rounded">
           </div>
         </div>
 
-        <div id="medicines">
-          <div id="posology">
+        <div className="flex flex-col my-8 mx-auto py-8 px-6 gap-3 w-[531px] h-[156px] left-8 top-36 border border-[#1BA8C4] rounded-lg">
+          <div className="flex flex-col my-16 mx-auto py-5 px-4 gap-2 w-[485px] h-14 bg-[#F5FFFE] border border-primary rounded">
           </div>
         </div>
 
-        <div id="medicines">
-          <div id="posology">
+        <div className="flex flex-col my-8 mx-auto py-8 px-6 gap-3 w-[531px] h-[156px] left-8 top-36 border border-[#1BA8C4] rounded-lg">
+          <div className="flex flex-col my-16 mx-auto py-5 px-4 gap-2 w-[485px] h-14 bg-[#F5FFFE] border border-primary rounded">
           </div>
         </div>
 
-        <div id="signature">
+        <div className="w-44 h-[1px] my-20 mx-auto bg-black">
         </div>
 
-        <div id="logo">
-          <img src="src/img/logo.png" alt="" id="logo-img" />
+        <div className="w-[595px] h-8 bg-primary flex justify-center items-center">
+          <img src="src/img/logo.png" alt="" className="w-16" />
         </div>
       </div>
     </div>

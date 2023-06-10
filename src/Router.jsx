@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom"
 import Tutor from "./pages/tutor/Tutor"
 import Clinic from "./pages/clinic/Clinic"
-import VetCloser from "./pages/vet-closer/index"
-import Revenues from "./pages/revenues/index"
-import WellBeing from "./pages/well-being/index"
+import VetCloser from "./pages/tutor/VetCloser"
+import Revenues from "./pages/tutor/Revenues"
+import WellBeing from "./pages/tutor/WellCloser"
 
 export default function Router(){
     return(

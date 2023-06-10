@@ -2,7 +2,7 @@ import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import { Star } from '@phosphor-icons/react'
 import CardsVetCloser from "../../components/VetCloser/VetCloser";
-import "./vet-closer.css"
+import "../../style/vet-closer.css"
 
 export default function VetCloser() {
     return (
@@ -19,25 +19,25 @@ export default function VetCloser() {
             <div className="cards-vets pb-6">
                 <div className="card1">
                     <h1 className="text-2xl">ZN Vet</h1>
-                    <p className="text-[12px] text-[#409E44]">Aberto</p>
-                    <p className="text-[12px] text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
+                    <p className="text-xs text-[#409E44]">Aberto</p>
+                    <p className="text-xs text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
                     <p className="km-stars">1.5 km <Star size={18} /> <Star size={18} /> <Star size={18} /> <Star size={18} /></p>
                 </div>
                 <div className="card2">
                 <h1 className="text-2xl">ZN Vet</h1>
-                    <p className="text-[12px] text-[#409E44]">Aberto</p>
-                    <p className="text-[12px] text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
+                    <p className="text-xs text-[#409E44]">Aberto</p>
+                    <p className="text-xs text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
                     <p className="km-stars">1.5 km <Star size={18} /> <Star size={18} /> <Star size={18} /> <Star size={18} /></p>
                 </div>
                 <div className="card3">
                 <h1 className="text-2xl">ZN Vet</h1>
-                    <p className="text-[12px] text-[#409E44]">Aberto</p>
-                    <p className="text-[12px] text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
+                    <p className="text-xs text-[#409E44]">Aberto</p>
+                    <p className="text-xs text-[#909090]">Av. Brg. Faria Lima, 320 - Radio Clube </p>
                     <p className="km-stars">1.5 km <Star size={18} /> <Star size={18} /> <Star size={18} /> <Star size={18} /></p>
                 </div>
             </div>
             <h2 className="">Ver mais</h2>
-            <p className="text-[#909090] text-[12px]">Encontre mais clínicas veterinárias fora da sua área</p>
+            <p className="text-[#909090] text-xs">Encontre mais clínicas veterinárias fora da sua área</p>
           </main>
         </section>
       </main>
