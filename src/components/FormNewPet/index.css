@@ -25,12 +25,12 @@
     border: transparent 1px solid;
     cursor: pointer;
 }
-.pets img{
+/* .pets img{
     height: 64px;
     width: 64px;
     border-radius: 800px;
 
-}
+} */
 
 #animals input[type="radio"]:checked + label{
     background: rgba(34, 183, 126, 0.2);

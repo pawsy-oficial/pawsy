@@ -1,5 +1,6 @@
 import * as Popover from '@radix-ui/react-popover';
 import { CaretDown, Gear, Lock, UserCircle } from '@phosphor-icons/react';
+import profilePerson from "../../img/profilePerson.jpeg"
 
 export default function ProfileModal() {
     return (
@@ -9,7 +10,7 @@ export default function ProfileModal() {
                     <div className="rounded-full w-10 h-10 overflow-hidden border-2 border-primary">
                         <img
                             className="object-cover h-full w-full"
-                            src="https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            src={profilePerson}
                             alt="imagem de perfil @user"
                         />
                     </div>

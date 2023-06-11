@@ -70,7 +70,7 @@ const FormNewPet = (props: IFromNewPet) => {
         e.preventDefault()
 
         const data = new FormData(e.target);
-        console.log(Object.fromEntries(data))
+        // console.log(Object.fromEntries(data))
         // {
         //     name: "Luna",
         //     race: "Beagle",
@@ -84,23 +84,27 @@ const FormNewPet = (props: IFromNewPet) => {
             <h1 id="new-pet">Novo Pet</h1>
 
             <div id="animals">
-                <input type="radio" name="pet" id="dog" checked={animal === "dog"} onChange={() => handleAnimalChange('dog')} radioGroup="animal" />
+                <input type="radio" name="pet" id="dog" className="hidden" checked={animal === "dog"} onChange={() => handleAnimalChange('dog')} radioGroup="animal" />
                 <label htmlFor="dog" className="pets">
-                    <img src={dog} alt="" />
+                    <div className="w-16 h-16 rounded-full bg-primary overflow-hidden">
+                        <img src={dog} alt="" className="w-full h-full object-cover"/>
+                    </div>
                     <p>Cachorro</p>
                 </label>
-                <input type="radio" name="pet" id="cat" checked={animal === "cat"} onChange={() => handleAnimalChange('cat')} radioGroup="animal" />
+                <input type="radio" name="pet" id="cat" className="hidden" checked={animal === "cat"} onChange={() => handleAnimalChange('cat')} radioGroup="animal" />
                 <label htmlFor="cat" className="pets">
-                    <img src={cat} alt="" />
+                    <div className="w-16 h-16 rounded-full bg-primary overflow-hidden">
+                        <img src={cat} alt="" className="w-full h-full object-cover"/>
+                    </div>
                     <p>Gato</p>
                 </label>
             </div>
 
             <div className="flex justify-center w-full" style={{ gap: "50px" }}>
-                <input type="radio" name="gender" id="mal" className="input-gender" />
+                <input type="radio" name="gender" id="mal" className="hidden" />
                 <label id="male" htmlFor="mal">Macho <GenderMale color="#8FB5FF" size="24px" /></label>
 
-                <input type="radio" id="fem" name="gender" className="input-gender" />
+                <input type="radio" id="fem" name="gender" className="hidden" />
                 <label id="female" htmlFor="fem">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
             </div>
 

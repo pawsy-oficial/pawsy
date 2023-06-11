@@ -367,7 +367,7 @@ export default function VaccinePage() {
 											return (
 												<tr className="border-b border-black">
 													{e.map((f) => {
-														console.log(f);
+														
 														return (
 															<>
 																<td>{f.vaccineName}</td>
@@ -402,7 +402,7 @@ export default function VaccinePage() {
 											return (
 												<tr className="border-b border-black">
 													{e.map((f) => {
-														console.log(f);
+														
 														return (
 															<>
 																<td>{f.dateVermifugo}</td>

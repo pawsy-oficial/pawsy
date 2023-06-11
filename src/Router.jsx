@@ -9,6 +9,9 @@ import ScheduleTutor from "./pages/tutor/ScheduleTutor"
 import Clinic from "./pages/clinic/Clinic"
 import Perfil from "./pages/clinic/Perfil"
 import Schedule from "./pages/clinic/Schedule"
+import Marketing from "./pages/clinic/Marketing"
+import Patient from "./pages/clinic/Patients"
+import Home from "./pages"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);
@@ -42,6 +45,10 @@ export default function Router(){
             />
             <Route path="/perfil" element={<Perfil/>} />
             <Route path="/agenda" element={<Schedule/>}/>
+            <Route path="/marketing" element={<Marketing/>}/>
+            <Route path="/pacientes" element={<Patient/>}/>
+
+            <Route path="*" element={<Home/>}/>
 
         </Routes>
     )

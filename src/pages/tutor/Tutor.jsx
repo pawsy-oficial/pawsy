@@ -5,6 +5,7 @@ import RadioGroupMyPets from "../../components/tutor/RadioGroupMyPets";
 import { useState } from "react";
 import { Alert } from "../../components/tutor/Alert";
 import FormNewPet from "../../components/FormNewPet"; 
+import { PlusCircle, GenderMale, GenderFemale } from "@phosphor-icons/react";
 
 export default function Tutor() {
 
@@ -54,14 +55,18 @@ export default function Tutor() {
     )
 }
 
+import caramelo from '../../img/caramelo.webp'
+import oreo from '../../img/oreo.jpg'
+import flor from '../../img/flor.jpg'
+import pantera from '../../img/pantera.jpg'
 
 function ProfileTutor({showPet}) {
     const pets =
         [
-            { name: "caramelo", image: "https://s2.glbimg.com/_jO2JQsq1bqQiXiz41sQ4M4_BUA=/0x0:1280x853/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2021/N/C/OyE6CpTeKr0eTjTxKBWA/c8df570c-b7b6-4d50-a045-b623a4feca57.jpg", status: false, id: "0001", birthday: "2022-05-05", breed: "Sem raça definida", gender: "mas", observations: "Meu Caramelo é territorial e protetor, mas carinhoso e brincalhão. Avista com latidos e rosnados, mas uma carícia ou brincadeira o acalma. Adora correr atrás de brinquedos e é muito inteligente. Cuido com amor e atenção, recebendo amor e alegria em troca." },
-            { name: "oreo", image: "https://uploads-ssl.webflow.com/60cd7ae35efaf14623f555c5/6373ed8f20fe1152e7f3861e_husky-service-dog-everything-you-need-to-know.jpg", status: true, id: "0002", birthday: "2022-05-03", breed: "Husky siberiano", gender: "mas", observations: "Oreo é um verdadeiro artista do uivo! Seus vocais noturnos podem até incomodar os vizinhos, mas não há como negar que ele sabe como expressar sua paixão pela música... ops, quer dizer, pela vida selvagem!" },
-            { name: "flor", image: "https://www.maria.pt/wp-content/uploads/2019/05/realgrumpycat_46527753_209715023270158_6705809054494225971_n.jpg", status: false, id: "0003", birthday: "2022-05-06", breed: "persa", gender: "fem", observations: "Não possui observações" },
-            { name: "pantera", image: "https://www.petz.com.br/blog/wp-content/uploads/2020/07/gata-gravida-felino.jpg", status: false, id: "0004", birthday: "2022-05-06", breed: "mau egípcio", gender: "fem", observations: "Não possui observações" }
+            { name: "caramelo", image: caramelo, status: false, id: "0001", birthday: "2022-05-05", breed: "Sem raça definida", gender: "mas", observations: "Meu Caramelo é territorial e protetor, mas carinhoso e brincalhão. Avista com latidos e rosnados, mas uma carícia ou brincadeira o acalma. Adora correr atrás de brinquedos e é muito inteligente. Cuido com amor e atenção, recebendo amor e alegria em troca." },
+            { name: "oreo", image: oreo, status: true, id: "0002", birthday: "2022-05-03", breed: "Husky siberiano", gender: "mas", observations: "Oreo é um verdadeiro artista do uivo! Seus vocais noturnos podem até incomodar os vizinhos, mas não há como negar que ele sabe como expressar sua paixão pela música... ops, quer dizer, pela vida selvagem!" },
+            { name: "flor", image: flor, status: false, id: "0003", birthday: "2022-05-06", breed: "persa", gender: "fem", observations: "Não possui observações" },
+            { name: "pantera", image: pantera, status: false, id: "0004", birthday: "2022-05-06", breed: "mau egípcio", gender: "fem", observations: "Não possui observações" }
         ]
 
     const historys =

@@ -8,8 +8,8 @@ export default function Tutor(){
 
             <section className="flex-1">
                 <Header/>
-                <main className="p-8">
-                    <h1>dsa</h1>
+                <main className="pl-10 pr-16 py-8 flex gap-5 justify-center items-center">
+                    <h2>🚧 Em desenvolvimento 🚧</h2>
                 </main>
             </section>
         </main>
