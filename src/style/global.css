@@ -48,6 +48,9 @@ input:focus{
   @apply font-semibold
 }
 
+.radio:checked + label span{
+  @apply text-emerald-500 font-bold
+}
 
 table {
   @apply text-center rounded overflow-hidden
@@ -64,4 +67,56 @@ th, td{
 
 .titulo-card {
   @apply font-semibold text-2xl leading-relaxed text-black
+}
+
+
+/* =x=x=x=x=x==x=x=x=x==x=x=x=x==x=x=x=x=x=x */
+/* CALENDAR */
+
+.box-calendar{
+  @apply w-8 h-8  border-transparent flex justify-center items-center text-lg cursor-pointer
+}
+
+.box-calendar input[type="radio"]:disabled + div, .box-calendar.week{
+  @apply cursor-default
+}
+
+.box-calendar > div{
+  @apply p-1 rounded-lg w-full h-full flex items-center justify-center
+}
+
+.box-calendar > input[type="radio"]{
+  @apply hidden;
+}
+
+.box-calendar > input[type="radio"]:checked + div{
+  @apply bg-primary text-white;
+}
+
+.week{
+  @apply text-zinc-400
+}
+
+.day{
+  @apply bg-slate-200
+}
+
+.last-month{
+  @apply text-zinc-500
+}
+
+.today{
+  @apply border-secundary bg-transparent border-4;
+}
+
+.active{
+  @apply bg-[#22937E] text-white;
+}
+
+.container-dropdown-input input:checked + label{
+  @apply bg-primary text-white
+}
+
+.mnegative{
+  margin-top: 32px;
 }
