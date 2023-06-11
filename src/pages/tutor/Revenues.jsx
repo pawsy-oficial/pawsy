@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import { CaretLeft } from "@phosphor-icons/react";
 import {CardReceitas, ContainerRevenues} from "../../components/Receitas/Receitas";
 import LogoWaterMark from "../../img/waterMark.svg"
+import { useNavigate } from "react-router-dom";
 
 // a abordagem a seguir consiste em um early return reativo á uma query na url, ou seja,
 //quando a url for /tutor o componente exibido deve ser <RevenuesList/>
 // quando a url for /tutor?receita={id da receita} o componente exibido deve ser <RevenueDetails/>
 
-const searchParams = window?.location?.search;
+// const searchParams = window?.location?.search;
 
-const query = new URLSearchParams(searchParams);
+// const query = new URLSearchParams(searchParams);
 
-const revenueId = query.get("receita");
+// const revenueId = query.get("receita");
 
-const RevenuesList = () => {
+const RevenuesList = ({state}) => {
 	return (
 		<>
 			<div className="flex my-8 text-lg items-center">
@@ -29,20 +30,19 @@ const RevenuesList = () => {
 			</div>
 
 			<div className="">
-				<CardReceitas emissao={"01/04/2023"} validade={"02/04/2023"} dr={"Vanessa Santos"} />
-				<CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
-				<CardReceitas emissao={"10/07/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
-				<CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} />
+				<CardReceitas emissao={"01/04/2023"} validade={"02/04/2023"} dr={"Vanessa Santos"} state={state}/>
+				<CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} state={state}/>
+				<CardReceitas emissao={"10/07/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} state={state}/>
+				<CardReceitas emissao={"02/05/2023"} validade={"02/10/2023"} dr={"Vanessa Santos"} state={state}/>
 			</div>
 		</>
 	);
 };
 
-const RevenueDetails = (props) => {
-	const { revenueId } = props;
+const RevenueDetails = ({revenueId}) => {
 	return (
 		<div>
-			<a href="/receitas" className="flex pl-28 items-center my-8 mx-auto text-sm"><CaretLeft color="#22B77E" />Voltar</a>
+			<a onClick={()=>{revenueId(false)}} className="flex pl-28 items-center my-8 mx-auto text-sm"><CaretLeft color="#22B77E" />Voltar</a>
 			
 			<div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative">
 				<img 
@@ -113,6 +113,7 @@ const RevenueDetails = (props) => {
 };
 
 export default function Revenues() {
+	const [state, setState] = useState(false)
 	return (
 		<main className="flex min-h-screen">
 			<NavbarTutor />
@@ -120,12 +121,12 @@ export default function Revenues() {
 				<Header />
 				<main className="max-w-5xl mx-auto">
 					{
-						revenueId 
+						state 
 						? (
-							<RevenueDetails revenueId={revenueId} />
+							<RevenueDetails revenueId={setState} />
 						) 
 						: (
-							<RevenuesList />
+							<RevenuesList state={setState}/>
 						)
 					}
 				</main>

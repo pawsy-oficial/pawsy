@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import Tutor from "./pages/tutor/Tutor"
 import VaccinePage from "./pages/tutor/Vaccine"
 import VetCloser from "./pages/tutor/VetCloser"
-import Revenues from "./pages/tutor/Revenues"
+import Revenues, { RevenueDetails } from "./pages/tutor/Revenues"
 import WellBeing from "./pages/tutor/WellCloser"
 import ScheduleTutor from "./pages/tutor/ScheduleTutor"
 
