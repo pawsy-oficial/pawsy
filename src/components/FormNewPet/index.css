@@ -77,18 +77,12 @@ input[type="radio"]{
     background-color: #bcd2fc;
 }
 
-
 input[type="radio"]#mal:checked + label{
     background-color: #bcd2fc;
 }
 input[type="radio"]#fem:checked + label{
     background-color: #fac0de;
 }
-
-
-
-
-
 
 input[id="inputs"], input[id="weight"]{
     padding: 0.3rem;
