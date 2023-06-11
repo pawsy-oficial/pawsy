@@ -4,6 +4,7 @@ import VaccinePage from "./pages/tutor/Vaccine"
 import VetCloser from "./pages/tutor/VetCloser"
 import Revenues from "./pages/tutor/Revenues"
 import WellBeing from "./pages/tutor/WellCloser"
+import ScheduleTutor from "./pages/tutor/ScheduleTutor"
 
 import Clinic from "./pages/clinic/Clinic"
 
@@ -15,8 +16,10 @@ export default function Router(){
             <Route path="/vets" element={<VetCloser/>} />
             <Route path="/receitas" element={<Revenues/>} />
             <Route path="/bem-estar" element={<WellBeing/>} />
+            <Route path="/consulta" element={<ScheduleTutor/>} />
             
             <Route path="/clinica" element={<Clinic/>} />
+           
         </Routes>
     )
 }
