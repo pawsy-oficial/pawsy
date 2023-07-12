@@ -3,11 +3,12 @@ import Post1 from "../../components/CardPosts/Posts";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 
-import pessoa from '../../img/person1.png';
 import frajola from '../../img/frajola.jpg'
 import dog from '../../img/post1.svg'
 import gato from '../../img/gato.jpg'
 import caramelo from '../../img/caramelo.jpg'
+import { PlusCircle } from "@phosphor-icons/react";
+import MedicForClinic from "../../components/ClinicPerfilComponents/MedicForClinic";
 
 
 export default function Perfil() {
@@ -97,35 +98,14 @@ export default function Perfil() {
 
                     <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
                         <h1 className="font-bold text-lg">Médicos veterinários</h1>
-                        <div className="flex items-center">
-                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
-                                <img
-                                    src={pessoa}
-                                    alt={pessoa}
-                                    className="object-cover w-full h-full"
-                                />
-                            </div>
-                            <p className="pl-2 text-base">Carlos Santana</p>
+                        <div>
+                            <MedicForClinic/>
                         </div>
-                        <div className="flex items-center">
-                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
-                                <img
-                                    src={pessoa}
-                                    alt={pessoa}
-                                    className="object-cover w-full h-full"
-                                />
-                            </div>
-                            <p className="pl-2 text-base">Carlos Santana</p>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
-                                <img
-                                    src={pessoa}
-                                    alt={pessoa}
-                                    className="object-cover w-full h-full"
-                                />
-                            </div>
-                            <p className="pl-2 text-base">Carlos Santana</p>
+                        <div className="flex w-full justify-center">
+                            <button type="" className="flex gap-2">
+                                <PlusCircle size={24} color="#22B77E"/>
+                                <p className="text-primary font-bold">Adicionar</p>
+                            </button>
                         </div>
                     </section>
                 </main>
