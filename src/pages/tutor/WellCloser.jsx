@@ -4,13 +4,14 @@ import { NavbarTutor } from "../../components/Navbar";
 import "../../style/wellbeing.css"
 import { Info, Ruler, Scales } from "@phosphor-icons/react";
 
-const dataBaseParms = 75 // provisorio - 0 - 100
+const dataBaseParms = 25 // provisorio - 0 - 100
 
 export default function WellBeing() {
 	const [statusValue, setStatusValue] = useState({
 		angle: 0,
 		valueStatus: "Ruim"
 	})
+	
 	useEffect(() => {
 		switch (dataBaseParms) {
 			case 0:

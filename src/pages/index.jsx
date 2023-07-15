@@ -12,7 +12,7 @@ export default function Home() {
             <div className="flex gap-9 justify-center">
                 <button 
                     className="border border-white rounded-lg px-6 py-1 text-white text-xl hover:bg-secundary/30"
-                    onClick={()=>navigate("/clinica")}
+                    // onClick={()=>navigate("/clinica")}
                 >
                     Clínica
                 </button>

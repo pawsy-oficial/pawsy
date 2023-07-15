@@ -12,7 +12,6 @@ export default function Tutor() {
     const [showPet, setShowPet] = useState(0)
     const [addPet, setAddPet] = useState(true)
 
-
     return (
         <main className="flex min-h-screen">
             <NavbarTutor page={0} />
@@ -82,7 +81,7 @@ function ProfileTutor({showPet}) {
         <section className="flex-1 bg-white px-6 py-8 rounded-2xl">
             <div className="flex gap-6 mb-6">
                 <div className="flex flex-col gap-2 items-center">
-                    <div className="w-40 h-40 rounded-full border-4 border-secundary overflow-hidden">
+                    <div className="w-40 h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20">
                         <img src={pets[showPet].image} alt={pets[showPet].name} className="h-full w-full object-cover" />
                     </div>
                     <span
@@ -128,9 +127,12 @@ function ProfileTutor({showPet}) {
                     <h3 className="text-2xl font-semibold mb-3">Histórico</h3>
                     <div className="flex flex-col gap-4">
                         {
-                            historys.map((history) => {
+                            historys.map((history, index) => {
                                 return (
-                                    <div className="w-full bg-[#F5FFFE] rounded py-3 px-6 flex justify-between items-center">
+                                    <div 
+                                        className="w-full bg-[#F5FFFE] rounded py-3 px-6 flex justify-between items-center"
+                                        key={index}
+                                    >
                                         <div className="flex-1">
                                             <strong className="font-bold text-base">{history.nameClinic}</strong>
                                             <p className="text-xs mt-2">

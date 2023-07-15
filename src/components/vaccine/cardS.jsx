@@ -1,7 +1,7 @@
-import "./cardS.css";
 import znvet from "../../img/znvet.jpg";
+import { memo } from "react";
 
-export function CardClinic() {
+function CardClinic() {
     return (
         <div className="bg-white p-3 rounded-lg min-w-[256px] flex flex-col gap-4">
             <div className="flex gap-3 items-center">
@@ -18,3 +18,6 @@ export function CardClinic() {
         </div>
     );
 }
+
+const memoCardClinic = memo(CardClinic)
+export { memoCardClinic }

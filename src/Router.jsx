@@ -1,17 +1,34 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import Tutor from "./pages/tutor/Tutor"
-import VaccinePage from "./pages/tutor/Vaccine"
-import VetCloser from "./pages/tutor/VetCloser"
-import Revenues from "./pages/tutor/Revenues"
-import WellBeing from "./pages/tutor/WellCloser"
-import ScheduleTutor from "./pages/tutor/ScheduleTutor"
+import { lazy, Suspense } from "react"
 
-import Clinic from "./pages/clinic/Clinic"
-import Perfil from "./pages/clinic/Perfil"
-import Schedule from "./pages/clinic/Schedule"
-import Marketing from "./pages/clinic/Marketing"
-import Patient from "./pages/clinic/Patients"
+// import Tutor from "./pages/tutor/Tutor"
+// import VaccinePage from "./pages/tutor/Vaccine"
+// import VetCloser from "./pages/tutor/VetCloser"
+// import Revenues from "./pages/tutor/Revenues"
+// import WellBeing from "./pages/tutor/WellCloser"
+// import ScheduleTutor from "./pages/tutor/ScheduleTutor"
+const Tutor = lazy(()=> import("./pages/tutor/Tutor"))
+const VaccinePage = lazy(()=> import ("./pages/tutor/Vaccine"))
+const VetCloser = lazy(()=> import ("./pages/tutor/VetCloser"))
+const Revenues = lazy(()=> import ("./pages/tutor/Revenues"))
+const WellBeing = lazy(()=> import ("./pages/tutor/WellCloser"))
+const ScheduleTutor = lazy(()=> import ("./pages/tutor/ScheduleTutor"))
+
+
+const Clinic = lazy(()=> import("./pages/clinic/Clinic"))
+const Perfil = lazy(()=> import("./pages/clinic/Perfil"))
+const Schedule = lazy(()=> import("./pages/clinic/Schedule"))
+const Marketing = lazy(()=> import("./pages/clinic/Marketing"))
+const Patient = lazy(()=> import("./pages/clinic/Patients"))
+
+// import Clinic from "./pages/clinic/Clinic"
+// import Perfil from "./pages/clinic/Perfil"
+// import Schedule from "./pages/clinic/Schedule"
+// import Marketing from "./pages/clinic/Marketing"
+// import Patient from "./pages/clinic/Patients"
+
 import Home from "./pages"
+import { LoadingPagesPlaceholder } from "./components/loading/Loading"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);
@@ -24,12 +41,54 @@ const PrivateRouter = ({user, children}) => {
 export default function Router(){
     return(
         <Routes>
-            <Route path="/tutor" element={<Tutor/>} />
-            <Route path="/carteira" element={<VaccinePage/>} />
-            <Route path="/vets" element={<VetCloser/>} />
-            <Route path="/receitas" element={<Revenues/>} />
-            <Route path="/bem-estar" element={<WellBeing/>} />
-            <Route path="/consulta" element={<ScheduleTutor/>} />
+            <Route 
+                path="/tutor" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Tutor/>    
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/carteira" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <VaccinePage/>
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/vets" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}> 
+                        <VetCloser/>
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/receitas" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Revenues/> 
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/bem-estar" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <WellBeing/> 
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/consulta" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <ScheduleTutor/> 
+                    </Suspense>
+                } 
+            />
                        
             {/* <Route path="/vets" element={<VetCloser/>} /> */}
             {/* <Route path="/receitas" element={<Revenues/>} /> */}
@@ -43,10 +102,11 @@ export default function Router(){
                     </PrivateRouter>
                 } 
             />
+            {/*
             <Route path="/perfil" element={<Perfil/>} />
             <Route path="/agenda" element={<Schedule/>}/>
             <Route path="/marketing" element={<Marketing/>}/>
-            <Route path="/pacientes" element={<Patient/>}/>
+            <Route path="/pacientes" element={<Patient/>}/> */}
 
             <Route path="*" element={<Home/>}/>
 

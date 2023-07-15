@@ -3,7 +3,7 @@ import { Header } from "../../components/header/Header";
 import * as Select from "@radix-ui/react-select";
 import { useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
-import { CardClinic } from "../../components/vaccine/cardS";
+import { memoCardClinic as CardClinic } from "../../components/vaccine/Cards";
 import { CaretDown } from "@phosphor-icons/react";
 
 export default function VaccinePage() {
@@ -363,24 +363,28 @@ export default function VaccinePage() {
 										</tr>
 									</thead>
 									<tbody className="second">
-										{table[positioPet].map((e) => {
-											return (
-												<tr className="border-b border-black">
-													{e.map((f) => {
-														
-														return (
-															<>
-																<td>{f.vaccineName}</td>
-																<td>{f.dateVaccine}</td>
-																<td>{f.returnVaccine}</td>
-																<td>{f.vetAplication}</td>
-																<td>{f.CRMV}</td>
-															</>
-														);
-													})}
-												</tr>
-											);
-										})}
+										{
+											table[positioPet].map((e, index) => {
+												return (
+													<tr key={index} className="border-b border-black">
+														{
+															e.map((f) => {
+															
+																return (
+																	<>
+																		<td>{f.vaccineName}</td>
+																		<td>{f.dateVaccine}</td>
+																		<td>{f.returnVaccine}</td>
+																		<td>{f.vetAplication}</td>
+																		<td>{f.CRMV}</td>
+																	</>
+																);
+															})
+														}
+													</tr>
+												);
+											})
+										}
 									</tbody>
 								</table>
 							</div>
@@ -418,8 +422,8 @@ export default function VaccinePage() {
 							</div>
 						</div>
 					</section>
-					<section className="w-full">
-						<p className="titulo-card mb-6">
+					<section className="w-full mt-4">
+						<p className="titulo-card">
 							Campanhas de vacinação próximas de você
 						</p>
 						<section className="flex gap-5 w-full overflow-auto py-3">
