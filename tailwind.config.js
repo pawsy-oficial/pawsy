@@ -12,7 +12,7 @@ export default {
       fontFamily:{
         lato: 'sans-serif, "lato"',
         sora: 'sans-serif, "sora"'
-      }
+      },
     },
   },
   plugins: [],

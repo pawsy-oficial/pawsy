@@ -15,7 +15,7 @@ function RadioGroupMyPets({ showPet }) {
                 pets.map((pet, index) => {
                     return (
                         <label
-                            className="flex gap-2 items-center cursor-pointer hover:bg-primary/5 transition-all duration-700 p-1 rounded"
+                            className="label_select flex gap-2 items-center cursor-pointer hover:bg-primary/5 transition-all duration-700 p-1 rounded"
                             onClick={() => { showPet(index) }}
                             key={index}
                         >

@@ -1,31 +1,137 @@
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { List, MagnifyingGlass, X } from "@phosphor-icons/react";
 import ProfileModal from "./ProfileModal";
 import Notification from "./Notification";
+import { useEffect, useState } from "react";
 
-export function Header() {
+import Logo from "../../img/logoPawsyGreen.svg"
+import { NavBar } from "../Navbar";
+
+export function Header({ userType }) {
+
+  const pages = [
+    {
+      name: "Inicío",
+      pathname: "/tutor",
+    },
+    {
+      name: "Carteira de vacinação",
+      pathname: "/carteira",
+    },
+    {
+      name: "Agendar consulta",
+      pathname: "/consulta",
+    },
+    {
+      name: "Vét. mais próximo",
+      pathname: "/vets",
+    },
+    {
+      name: "Bem-estar",
+      pathname: "/bem-estar",
+    },
+    {
+      name: "Receitas",
+      pathname: "/receitas",
+    },
+  ];
+
+
+  const [windowScreen, setWindowScreen] = useState({ width: null })
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowScreen({ width: window.innerWidth })
+    }
+    window.addEventListener("resize", handleResize)
+    handleResize()
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const [navState, setNavState] = useState(false)
+  const [searchState, setSearchState] = useState(false)
+
+  useEffect(()=>{
+    if(windowScreen.width > 1020){
+      setNavState(false)
+      setSearchState(false)
+    }
+  },[windowScreen])
+
   return (
-    <header className="w-full bg-[#F9FFFD] py-3 px-20 flex justify-end items-center">
-      <div className="flex mx-auto h-6">
-        <input
-          type="text"
-          placeholder="Pesquisar"
-          className="py-1 px-3 w-80 border-b-2 text-xs border-primary"
-        />
+    <header className="w-full bg-[#F9FFFD] py-3 px-6 md:px-20 ">
+      <div className="flex justify-between xl:justify-end items-center">
         <button
-          className="rounded-r-md bg-primary py-1 w-14 flex justify-center items-center"
-          title="pesquisa"
+          className="block lg:hidden"
+          onClick={() => setNavState(!navState)}
         >
-          <MagnifyingGlass size={16} color="#fff" weight="bold" />
+          {
+            navState
+              ? <X size={24} />
+              : <List size={24} />
+          }
         </button>
-      </div>
-      <div className="flex gap-4 items-center">
-        <div>
-          <Notification />
+        <img src={Logo} className="block lg:hidden translate-x-[20%]" />
+        
+      {
+        userType == "tutor" && (
+          <div className="lg:flex mx-auto h-6 hidden">
+            <input
+              type="search"
+              placeholder="Pesquisar"
+              className="hidden md:block py-1 px-3 w-80 border-b-2 text-xs border-primary"
+            />
+            <button
+              className="rounded-r-md md:bg-primary py-1 w-14 flex justify-center items-center"
+              title="pesquisa"
+            >
+              <MagnifyingGlass size={16} className="fill-black md:fill-white" weight="bold" />
+            </button>
+          </div>
+        )
+      }
+
+        <div className="flex gap-4 items-center">
+          <div>
+
+            {
+              windowScreen.width < 1020
+                ? (
+                  <button onClick={()=>setSearchState(!searchState)}>
+                    <MagnifyingGlass size={24} />
+                  </button>
+                )
+                : <Notification />
+            }
+
+          </div>
+          <div className="">
+            <ProfileModal />
+          </div>
         </div>
-        <div className="">
-          <ProfileModal />
-        </div>
+
+
       </div>
+      {
+        navState && (
+          <div className="w-full">
+            <ul>
+
+              {
+                pages.map((page, index) => { return <NavBar page={page} key={index} /> })
+              }
+
+            </ul>
+          </div>
+        )
+      }
+      {
+        searchState && (
+          <div className="w-full mt-2">
+            <input type="search" className="w-full h-full py-1 px-3 border focus:border-primary"/>
+          </div>
+        )
+      }
     </header>
   );
 }

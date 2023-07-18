@@ -311,7 +311,6 @@ export default function VaccinePage() {
 									{namePet}
 								</Select.Value>
 								<CaretDown weight="fill" />
-								{/* <ChevronDownIcon /> */}
 							</Select.Trigger>
 							<Select.Portal>
 								<Select.Content className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">

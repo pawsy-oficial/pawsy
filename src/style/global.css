@@ -11,7 +11,7 @@ body{
 }
 
 .nav-link{
-  @apply relative px-6 py-4 text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer
+  @apply relative px-6 py-4 lg:text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer
 }
 
 .layout-main{
@@ -119,4 +119,24 @@ th, td{
 
 .mnegative{
   margin-top: 32px;
+}
+
+.nav_bar{
+  @apply bg-primary h-full min-h-screen sticky top-0 px-6 py-10 hidden lg:flex flex-col gap-16 justify-between
+}
+
+
+@layer utilities{
+  .animate-delay-30{
+    animation-delay: .2s;
+  }
+  .animate-delay-60{
+    animation-delay: .4s;
+  }
+  .animate-delay-90{
+    animation-delay: .6s;
+  }
+  .animate-delay-1200{
+    animation-delay: .8s;
+  }
 }
