@@ -93,8 +93,9 @@ function ProfileTutor({ showPet }) {
     return (
         <section className="flex-1 bg-white px-6 py-8 rounded-2xl">
             <div className="flex gap-6 mb-6 items-center">
+
                 <div className="flex flex-col gap-2 items-center">
-                    <div className="w-[90px] h-[90px]  lg:w-40 lg:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20">
+                    <div className="w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20">
                         <img src={pets[showPet].image} alt={pets[showPet].name} className="h-full w-full object-cover" />
                     </div>
                     <span
@@ -103,7 +104,7 @@ function ProfileTutor({ showPet }) {
                         #{pets[showPet].id}
                     </span>
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 self-start">
                     <div className="flex gap-x-4 items-center w-full flex-wrap">
                         <h3 className="lg:text-[32px] text-2xl font-bold uppercase">
                             {pets[showPet].name}
@@ -117,26 +118,48 @@ function ProfileTutor({ showPet }) {
                     </div>
                     <ul className="flex flex-col gap-2">
                         <li>
-                            <span className="font-bold text-xs lg:text-lg">Idade: </span>
-                            <span className="text-sm lg:text-base">{pets[showPet].birthday}</span>
+                            <span className="font-bold text-xs sm:text-lg">Idade: </span>
+                            <span className="text-sm sm:text-base">{pets[showPet].birthday}</span>
                         </li>
                         <li>
-                            <span className="font-bold text-xs lg:text-lg">Raça: </span>
-                            <span className="text-sm lg:text-base">{pets[showPet].breed}</span>
+                            <span className="font-bold text-xs sm:text-lg">Raça: </span>
+                            <span className="text-sm sm:text-base">{pets[showPet].breed}</span>
                         </li>
                         <li>
-                            <span className="font-bold text-xs lg:text-lg">Status: </span>
-                            <span className="text-sm lg:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
+                            <span className="font-bold text-xs sm:text-lg">Status: </span>
+                            <span className="text-sm sm:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
                         </li>
                     </ul>
                 </div>
+                
+                <section className="max-w-[360px] ml-6 self-start hidden lg:inline-block">
+                    <h3 className="text-2xl font-semibold mb-3">Descrição</h3>
+                    <p className="text-zinc-800 leading-relaxed text-xs">
+                        {pets[showPet].observations}
+                    </p>
+                </section>
             </div>
             <div className="flex flex-col gap-6">
                 <section>
                     <h3 className="text-2xl font-semibold mb-3">Observações</h3>
-                    <p className="text-zinc-800 leading-relaxed text-base">
-                        {pets[showPet].observations}
-                    </p>
+                    <ul>
+                        <li>
+                            <span className="font-semibold mr-2">Alergia a medicamentos:</span>
+                            <span>Não</span>
+                        </li>
+                        <li>
+                            <span className="font-semibold mr-2">Castrado(a):</span>
+                            <span>Não</span>
+                        </li>
+                        <li>
+                            <span className="font-semibold mr-2">Comportamento:</span>
+                            <span>Manso</span>
+                        </li>
+                        <li>
+                            <span className="font-semibold mr-2">Tratamento:</span>
+                            <span>Não</span>
+                        </li>
+                    </ul>
                 </section>
                 <section>
                     <h3 className="text-2xl font-semibold mb-3">Histórico</h3>

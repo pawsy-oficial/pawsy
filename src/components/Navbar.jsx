@@ -12,7 +12,7 @@ export function NavBar({page}, index) {
 
     <li
       key={index}
-      className={`nav-link ${isActive(page.pathname) && "mt-6 md:mt-0 lg:bg-[#F5F7FB] !text-black lg:f after:block before:block"}`}
+      className={`nav-link ${isActive(page.pathname) && "mt-6 md:mt-0 lg:bg-[#F5F7FB] !text-black f after:block before:block"}`}
       onClick={() => navigate(`${page.pathname}`)}
     >
       <span>{page.name}</span>

@@ -19,7 +19,7 @@ body{
 }
 
 .f::after, .f::before{
-  @apply w-6 h-6 bg-primary absolute right-0
+  @apply w-6 h-6 bg-primary absolute right-0 !hidden lg:!block
 }
 
 .f::after{
