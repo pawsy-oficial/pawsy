@@ -113,6 +113,10 @@ th, td{
   @apply bg-[#22937E] text-white;
 }
 
+
+/* FIM CALENDAR */
+/* =x=x=x=x=x==x=x=x=x==x=x=x=x==x=x=x=x=x=x */
+
 .container-dropdown-input input:checked + label{
   @apply bg-primary text-white
 }
@@ -139,4 +143,8 @@ th, td{
   .animate-delay-1200{
     animation-delay: .8s;
   }
+}
+
+#vacina:checked + label, #vermifugo:checked + label{
+  @apply border-primary
 }
