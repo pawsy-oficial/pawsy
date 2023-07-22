@@ -480,7 +480,7 @@ export default function VaccinePage() {
 											<th className=" p-2 bg-primary text-white text-sm w-40">
 												Veterinário
 											</th>
-											<th className="hidden p-2 bg-primary text-white text-sm w-40">
+											<th className=" p-2 bg-primary text-white text-sm w-40">
 												CRMV
 											</th>
 										</tr>
@@ -499,7 +499,7 @@ export default function VaccinePage() {
 																		<td>{f.dateVaccine}</td>
 																		<td>{f.returnVaccine}</td>
 																		<td>{f.vetAplication}</td>
-																		<td className="hidden">{f.CRMV}</td>
+																		<td>{f.CRMV}</td>
 																	</>
 																);
 															})

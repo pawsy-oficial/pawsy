@@ -32,10 +32,10 @@ function RevenuesList({ state }) {
 
 	return (
 		<>
-			<div className="flex my-8 text-lg items-center">
-				<h1>Receitas médicas do</h1>
+			<div className="flex my-8 text-lg items-center gap-3 px-6">
+				<h1 className="hidden md:block">Receitas médicas do</h1>
 				<select
-					className="bg-[#F5FFFE] ml-3 w-44 font-bold h-8 border border-primary rounded-lg px-3 outline-none focus:border-primary"
+					className="bg-[#F5FFFE] md:w-44 w-full  font-bold h-8 border border-primary rounded-lg px-3 outline-none focus:border-primary"
 					name="dogs"
 					onChange={(e) => setOption(e.target.value)}
 				>
@@ -49,15 +49,13 @@ function RevenuesList({ state }) {
 				</select>
 			</div>
 
-			<div className="">
+			<div className="px-6">
 				{
 					dataBase[option].schedule.map(({validade, emissao, dr})=>{
 						return(
 							<CardReceitas emissao={emissao} validade={validade} dr={dr} state={state} />
 						)
 					})
-						
-					
 				}
 			</div>
 		</>
@@ -143,7 +141,7 @@ export default function Revenues() {
 		<main className="flex min-h-screen">
 			<NavbarTutor />
 			<section className="flex-1">
-				<Header />
+				<Header  userType={"tutor"}/>
 				<main className="max-w-5xl mx-auto">
 					{
 						state

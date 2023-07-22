@@ -59,79 +59,81 @@ export function Header({ userType }) {
   },[windowScreen])
 
   return (
-    <header className="w-full bg-[#F9FFFD] py-3 px-6 md:px-20 ">
-      <div className="flex justify-between xl:justify-end items-center">
-        <button
-          className="block lg:hidden"
-          onClick={() => setNavState(!navState)}
-        >
-          {
-            navState
-              ? <X size={24} />
-              : <List size={24} />
-          }
-        </button>
-        <img src={Logo} className="block lg:hidden translate-x-[20%]" />
-        
-      {
-        userType == "tutor" && (
-          <div className="lg:flex mx-auto h-6 hidden">
-            <input
-              type="search"
-              placeholder="Pesquisar"
-              className="hidden md:block py-1 px-3 w-80 border-b-2 text-xs border-primary"
-            />
-            <button
-              className="rounded-r-md md:bg-primary py-1 w-14 flex justify-center items-center"
-              title="pesquisa"
-            >
-              <MagnifyingGlass size={16} className="fill-black md:fill-white" weight="bold" />
-            </button>
-          </div>
-        )
-      }
-
-        <div className="flex gap-4 items-center">
-          <div>
-
+    <>
+      <header className="w-full bg-[#F9FFFD] py-3 px-6 md:px-20 sticky top-0 z-50">
+        <div className="flex justify-between xl:justify-end items-center">
+          <button
+            className="block lg:hidden"
+            onClick={() => setNavState(!navState)}
+          >
             {
-              windowScreen.width < 1020
-                ? (
-                  <button onClick={()=>setSearchState(!searchState)}>
-                    <MagnifyingGlass size={24} />
-                  </button>
-                )
-                : <Notification />
+              navState
+                ? <X size={24} />
+                : <List size={24} />
             }
+          </button>
+          <img src={Logo} className="block lg:hidden translate-x-[20%]" />
+          
+        {
+          userType == "tutor" && (
+            <div className="lg:flex mx-auto h-6 hidden">
+              <input
+                type="search"
+                placeholder="Pesquisar"
+                className="hidden md:block py-1 px-3 w-80 border-b-2 text-xs border-primary"
+              />
+              <button
+                className="rounded-r-md md:bg-primary py-1 w-14 flex justify-center items-center"
+                title="pesquisa"
+              >
+                <MagnifyingGlass size={16} className="fill-black md:fill-white" weight="bold" />
+              </button>
+            </div>
+          )
+        }
 
-          </div>
-          <div className="">
-            <ProfileModal />
-          </div>
-        </div>
-
-
-      </div>
-      {
-        navState && (
-          <div className="w-full">
-            <ul>
+          <div className="flex gap-4 items-center">
+            <div>
 
               {
-                pages.map((page, index) => { return <NavBar page={page} key={index} /> })
+                windowScreen.width < 1020
+                  ? (
+                    <button onClick={()=>setSearchState(!searchState)}>
+                      <MagnifyingGlass size={24} />
+                    </button>
+                  )
+                  : <Notification />
               }
 
-            </ul>
+            </div>
+            <div className="">
+              <ProfileModal />
+            </div>
           </div>
-        )
-      }
-      {
-        searchState && (
-          <div className="w-full mt-2">
-            <input type="search" className="w-full h-full py-1 px-3 border focus:border-primary"/>
-          </div>
-        )
-      }
-    </header>
+
+
+        </div>
+        {
+          searchState && (
+            <div className="w-full mt-2">
+              <input type="search" className="w-full h-full py-1 px-3 border focus:border-primary"/>
+            </div>
+          )
+        }
+        {
+          navState && (
+            <div className=" bg-[#F9FFFD] absolute left-0 right-0 top-full border-b-2 border-primary rounded-b-xl">
+              <ul>
+
+                {
+                  pages.map((page, index) => { return <NavBar page={page} key={index} /> })
+                }
+
+              </ul>
+            </div>
+          )
+        }
+      </header>
+    </>
   );
 }

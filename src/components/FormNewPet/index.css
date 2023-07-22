@@ -1,4 +1,4 @@
-/* .pets{
+.pets{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@
     border-radius: 8px;
     border: transparent 1px solid;
     cursor: pointer;
-} */
+}
 
 #animals #cat:checked + div > label, #animals #dog:checked + div > label{
     background: rgba(34, 183, 126, 0.2);
