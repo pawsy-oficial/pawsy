@@ -1,31 +1,24 @@
-import { NavbarClinic } from "../../components/Navbar";
-import { Header } from "../../components/header/Header";
-import { ModalSeeMedic } from "../../components/ClinicPerfilComponents/ModalSeeMedic";
-import { CommentsForClinic } from "../../components/ClinicPerfilComponents/CommentsForClinic";
-import { ModalAddMedic } from "../../components/ClinicPerfilComponents/ModalAddMedic";
 import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardPerfil/CardPerfil";
-import MedicForClinic from "../../components/ClinicPerfilComponents/MedicForClinic";
 import Post1 from "../../components/CardPosts/Posts";
+import { Header } from "../../components/header/Header";
+import { NavbarClinic } from "../../components/Navbar";
 
+import pessoa from '../../img/person1.png';
 import frajola from '../../img/frajola.jpg'
 import dog from '../../img/post1.svg'
 import gato from '../../img/gato.jpg'
 import caramelo from '../../img/caramelo.jpg'
 
-import { PlusCircle } from "@phosphor-icons/react";
-import { useState } from "react";
-
 
 export default function Perfil() {
-    const [open, setOpen] = useState(false)
-    const [see, setSee] = useState(false)
-
     const clinica = [
         { nameClinic: "Petz", imageClinic: "https://pbs.twimg.com/profile_images/1489579803846090758/PI8ujLgX_400x400.jpg" }
     ]
     const infos = [
         { endereco: "Rua José Lobo Viana, 173", telefone: "(13)3203-3766", email: "petzco@petz.com", funcionamento: "Das 7:00 ás 21:00" }
     ]
+
+
     return (
         <main className="flex min-h-screen">
             <NavbarClinic page={3} />
@@ -96,32 +89,45 @@ export default function Perfil() {
                                     <input type="radio" name="anchorPost" className="border-2 border-primary  w-6 h-6 rounded-full"/>
                                 </div>
                             </div>
+
                         </section>
                     </section>
-                    <aside className="flex flex-col gap-10">
-                        <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
-                            <h1 className="font-bold text-lg">Médicos veterinários</h1>
-                            <div>
-                                <button onClick={() => setSee(!see)} type="">
-                                    <MedicForClinic/>
-                                </button>
-                                <ModalSeeMedic isSee={see} setSee={setSee}/>
+
+
+
+                    <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
+                        <h1 className="font-bold text-lg">Médicos veterinários</h1>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                <img
+                                    src={pessoa}
+                                    alt={pessoa}
+                                    className="object-cover w-full h-full"
+                                />
                             </div>
-                            <div className="flex w-full justify-center">
-                                <button onClick={() => setOpen(!open)} type="" className="flex gap-2">
-                                    <PlusCircle size={24} color="#22B77E"/>
-                                    <p className="text-primary font-bold">Adicionar</p>
-                                </button>
-                            <ModalAddMedic isOpen={open} setOpen={setOpen}/>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                <img
+                                    src={pessoa}
+                                    alt={pessoa}
+                                    className="object-cover w-full h-full"
+                                />
                             </div>
-                        </section>
-                        <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
-                            <h1 className="font-bold text-lg">Comentários</h1>
-                            <CommentsForClinic />
-                            <CommentsForClinic />
-                            <CommentsForClinic />
-                        </section>
-                    </aside>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 flex rounded-full border-2 border-primary overflow-hidden">
+                                <img
+                                    src={pessoa}
+                                    alt={pessoa}
+                                    className="object-cover w-full h-full"
+                                />
+                            </div>
+                            <p className="pl-2 text-base">Carlos Santana</p>
+                        </div>
+                    </section>
                 </main>
             </section>
         </main>
