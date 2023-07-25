@@ -1,4 +1,3 @@
-import stars from "../../img/stars.svg"
 import iconClinic from "../../img/iconClinic.svg"
 import { Star } from "@phosphor-icons/react"
 

@@ -9,6 +9,8 @@ import { Alert } from "../../components/tutor/Alert";
 import FormNewPet from "../../components/FormNewPet";
 import { PlusCircle, GenderMale, GenderFemale, CaretDown } from "@phosphor-icons/react";
 
+import useTopToScreen from "../../hook/useTopToScreen";
+
 const RadioGroupMyPets = lazy(() => import("../../components/tutor/RadioGroupMyPets"))
 
 
@@ -16,6 +18,8 @@ export default function Tutor() {
 
     const [showPet, setShowPet] = useState(0)
     const [addPet, setAddPet] = useState(true)
+
+    useTopToScreen()
 
     return (
         <main className="flex min-h-screen">
