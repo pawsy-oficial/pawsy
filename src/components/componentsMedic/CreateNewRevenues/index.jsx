@@ -15,9 +15,14 @@ export function CreateNewRevenues() {
           <select
             name=""
             id=""
-            className="w-[96px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
+            className="w-[153px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
           >
-            <option value="">comum</option>
+            <option value="">Simples</option>
+            <option value="">Controle especial</option>
+            <option value="">Azul</option>
+            <option value="">Amarela</option>
+            <option value="">Branca de talidomida</option>
+            <option value="">Branca para retinóides</option>
           </select>
         </div>
 
