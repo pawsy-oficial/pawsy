@@ -24,7 +24,13 @@ export function CreateNewMedicines() {
               id=""
               className="w-28 h-5 border border-primary bg-[#F5FFFE] rounded"
             >
-              <option value=""></option>
+              <option value="">Via oral</option>
+              <option value="">Retal</option>
+              <option value="">Sublingual</option>
+              <option value="">Intravenoso</option>
+              <option value="">Dermatológica</option>
+              <option value="">Nasal </option>
+              <option value="">Oftálmica </option>
             </select>
           </strong>
           <strong className="font-bold">
