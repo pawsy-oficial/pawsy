@@ -2,7 +2,7 @@ import * as Popover from '@radix-ui/react-popover';
 import { CaretDown, Gear, Lock, UserCircle } from '@phosphor-icons/react';
 import profilePerson from "../../img/profilePerson.jpeg"
 
-export default function ProfileModal() {
+export default function ProfileModal({ userType }) {
     return (
         <Popover.Root>
             <Popover.Trigger className='group' aria-label="Informações do perfil">
