@@ -1,12 +1,3 @@
-.pets{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 8px;
-    border: transparent 1px solid;
-    cursor: pointer;
-}
 
 #animals #cat:checked + div > label, #animals #dog:checked + div > label{
     background: rgba(34, 183, 126, 0.2);
@@ -21,37 +12,3 @@ input[type="radio"]#fem:checked + label{
     background-color: #fac0de;
     border: solid 2px #f495c6
 }
-
-div[id="buttons"] {
-    padding-top: 1rem;
-}
-
-button[id="adicionar"] {
-    background: #04AD34;
-    color: white;
-    width: 100px;
-    height: 35px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 45px;
-}
-
-button[id="adicionar"]:hover {
-    cursor: pointer;
-    background-color: #12be18;
-  }
-
-button[id="cancelar"] {
-    margin: auto;
-    background: #DC3545;
-    color: white;
-    width: 100px;
-    height: 35px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-button[id="cancelar"]:hover {
-    cursor: pointer;
-    background: #c7303f;
-  }

@@ -1,5 +1,5 @@
-import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardPerfil/CardPerfil";
-import Post1 from "../../components/CardPosts/Posts";
+import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardsAndBoxes/cardClinicProfile";
+import PostBox from "../../components/cardsAndBoxes/postBox";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 
@@ -78,10 +78,10 @@ export default function Perfil() {
                             </h2>
                             <div className="flex flex-col gap-4">
                                 <div className="grid grid-cols-3 grid-rows-2 gap-4">
-                                    <Post1 img={frajola} name={"Frajola"}/>
-                                    <Post1 img={dog} name={"Tob"}/>
-                                    <Post1 img={caramelo} name={"Caramelo"}/>
-                                    <Post1 img={gato} name={"Gato"}/>
+                                    <PostBox img={frajola} name={"Frajola"}/>
+                                    <PostBox img={dog} name={"Tob"}/>
+                                    <PostBox img={caramelo} name={"Caramelo"}/>
+                                    <PostBox img={gato} name={"Gato"}/>
                                 </div>
                                 <div className="justify-center flex w-full gap-2">
                                     <input type="radio" name="anchorPost" defaultChecked={true} className=" border-2 border-primary bg-primary w-6 h-6 rounded-full"/>

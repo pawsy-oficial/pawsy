@@ -5,11 +5,13 @@ import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
 import { useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
+import CardSchedule from "../../components/cardsAndBoxes/cardSchedule";
+
 
 const SCHEDULES =
     [
         {
-            date: "2023-07-01",
+            date: "2023-08-09",
             schedules: [
                 {
                     clinicName: "ZNVet",
@@ -42,14 +44,14 @@ const SCHEDULES =
                 {
                     clinicName: "ZNVet",
                     clinicLogo: "https://placehold.co/600x400",
-                    type: "exame",
+                    type: "internação",
                     veterinaryName: "Aleh Silva 5",
                     hour: "00:00"
                 }
             ]
         },
         {
-            date: "2023-07-02",
+            date: "2023-08-24",
             schedules: [
                 {
                     clinicName: "ZNVet",
@@ -156,8 +158,11 @@ function MySchedules({ alterNewSchedulePage }) {
 
 
 function NewSchedule() {
+    // console.table(SCHEDULES[0].schedules)
+    console.log("ok")
+
     const date = new Date()
-    const dayCurrent = date.getDate()
+    const dayCurrent = date.getDate().toString().padStart(2, 0)
     const monthCurrent = (date.getMonth() + 1).toString().padStart(2, 0)
     const yearCurrent = date.getFullYear()
 
@@ -202,6 +207,7 @@ function NewSchedule() {
                         <input
                             type="date"
                             id="dateSchedule"
+                            min={dateCurrent}
                             disabled={handleSwitch}
                             onChange={(e) => { setDateCurrent(e.target.value) }}
                             value={dateCurrent}
@@ -216,7 +222,7 @@ function NewSchedule() {
                             onChange={(e) => setTypeSchedule(e.target.value)}
                         >
                             <option value="consulta">Consulta</option>
-                            <option value="internacao">Internação</option>
+                            <option value="internação">Internação</option>
                             <option value="ultrassom">Ultrassom</option>
                             <option value="eletrocardiograma">Eletrocardiograma</option>
                             <option value="cirurgia">Cirurgia</option>
@@ -254,7 +260,6 @@ function NewSchedule() {
                             : (
                                 handleFilterSchedule()
                             )
-
                     }
                 </div>
             </section>
@@ -264,7 +269,23 @@ function NewSchedule() {
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
-function CreateNewScheduleModal({ clinicName,logoVet, scheduleDate, scheduleHour, scheduleType, vetName }) {
+function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHour, scheduleType, vetName }) {
+
+    const [ namePet, setNamePet ] = useState("caramelo") // nome do pet
+
+    function handleSubmit(){
+        const dataSchedule = {
+            clinicName, 
+            scheduleDate, 
+            scheduleHour, 
+            scheduleType, 
+            vetName,
+            namePet
+        }
+
+        console.log(dataSchedule)
+    }
+
     return (
         <AlertDialog.Root>
             <AlertDialog.Trigger>
@@ -273,20 +294,33 @@ function CreateNewScheduleModal({ clinicName,logoVet, scheduleDate, scheduleHour
             <AlertDialog.Portal>
                 <AlertDialog.Overlay className="bg-primary/50 z-[60] flex justify-center items-center fixed inset-0" />
                 <AlertDialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-white py-4 px-16 rounded-lg">
-                    <AlertDialog.Description className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
-                        <section className="flex flex-col gap-2 items-center mb-2">
-                            <figure className="w-20 h-20">
-                                <img src={logoVet} alt={`Logo ${clinicName}`} className="object-cover h-full w-full"/>
-                            </figure>
-                            <span className="font-bold text-lg">{ clinicName }</span>
-                            <small className="text-zinc-500">R. xxxxxxx, 550</small>
-                        </section>
-                        <hr />
-                        <section className="mt-4 flex flex-col gap-6 items-center">
-                            <span className="underline text-primary text-base">{ vetName }</span>
-                            <span>{ scheduleDate } { scheduleHour }</span>
-                            <strong className="font-bold text-2xl uppercase">caramelo</strong>
-                        </section>
+                    <AlertDialog.Description asChild className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
+                        <main>
+                            <section className="flex flex-col gap-2 items-center mb-2">
+                                <figure className="w-20 h-20">
+                                    <img src={logoVet} alt={`Logo ${clinicName}`} className="object-cover h-full w-full" />
+                                </figure>
+                                <span className="font-bold text-lg">{clinicName}</span>
+                                <small className="text-zinc-500">R. xxxxxxx, 550</small>
+                            </section>
+                            <hr />
+                            <section className="mt-4 flex flex-col gap-6 items-center">
+                                <span className="underline text-primary text-base">{vetName}</span>
+                                <span>{scheduleDate} {scheduleHour}</span>
+
+                                <select 
+                                    className="uppercase text-2xl font-bold cursor-pointer hover:border-primary active:border-primary border-2 pl-3 focus:outline-none rounded transition-colors focus:none"
+                                    onChange={(e)=>setNamePet(e.target.value)}    
+                                >
+                                    <option value="caramelo" className="text-base capitalize text-start" defaultChecked>caramelo</option>
+                                    <option value="oreo" className="text-base capitalize text-start">oreo</option>
+                                    <option value="flor" className="text-base capitalize text-start">flor</option>
+                                    <option value="pantera" className="text-base capitalize text-start">pantera</option>
+                                </select>
+
+                            </section>
+
+                        </main>
                     </AlertDialog.Description>
                     <div className="flex justify-end gap-6 mt-6">
                         <AlertDialog.Cancel asChild>
@@ -295,7 +329,7 @@ function CreateNewScheduleModal({ clinicName,logoVet, scheduleDate, scheduleHour
                             </button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className="bg-green-600 rounded py-1 px-4 text-white">
+                            <button className="bg-green-600 rounded py-1 px-4 text-white" onClick={handleSubmit}>
                                 Agendar
                             </button>
                         </AlertDialog.Action>
@@ -306,33 +340,5 @@ function CreateNewScheduleModal({ clinicName,logoVet, scheduleDate, scheduleHour
     )
 }
 
-function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName }) {
-    return (
-        <div className={`flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full ${!deleteButton && "cursor-pointer"} bg-[#f8fffc]`}>
-            {
-                deleteButton && (
-                    <button className="absolute right-2 top-2">
-                        <DotsThreeVertical size={24} weight="bold" color="#000" />
-                    </button>
-                )
-            }
-            <div className="w-16 h-16 rounded-full overflow-hidden">
-                <img src={logoVet} alt={`Logo ${clinicName}`} className="object-cover w-full h-full" />
-            </div>
 
-            <div className="flex flex-col gap-3">
-                <strong className="text-base text-start">{clinicName}</strong>
-                <div className="flex flex-col gap-2 items-start">
-                    <div className="flex gap-3 text-sm">
-                        <span>{scheduleDate}</span>
-                        <span className="font-bold">{scheduleHour}</span>
-                    </div>
-                    <span className="font-bold text-sm capitalize">{scheduleType}</span>
-
-                    <p className="text-sm text-primary underline capitalize">{vetName}</p>
-                </div>
-            </div>
-        </div>
-    )
-}
 

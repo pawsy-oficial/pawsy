@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react"
+import { useState } from "react"
 import "./index.css"
 import dog from "../../img/dog.jpg"
 import cat from "../../img/cat.jpg"
@@ -82,25 +82,27 @@ const FormNewPet = (props: IFromNewPet) => {
 
     return (
         <form onSubmit={handleSubmit} className="p-8 flex flex-col justify-center items-center gap-8 w-[30rem] mx-auto bg-white rounded-lg">
-            {/* <label htmlFor="name">Nome</label> */}
             <h1 className=" text-2xl pt-3 font-bold self-start">Novo Pet</h1>
 
-            <section className="flex flex-col gap-6">
-                <div className="w-32 bg-green-400 mx-auto" style={{width: "164px"}}>
+            <section className="flex flex-col gap-6 w-full">
+                <div className="w-32 mx-auto" style={{width: "164px"}}>
                     <input type="file" name="imagePet" id="imagePet" className="hidden" />
+                    
                     <label htmlFor="imagePet" className="flex flex-col gap-2 items-center">
-                        <div className="w-28 h-28 rounded-full border-2 border-primary flex justify-center items-center bg-primary/20">
+                        <div className="w-28 h-28 rounded-full bg-green-400 border-2 border-primary  flex justify-center items-center bg-primary/20">
                             <Camera size={40} color="#22B77E" weight="bold"/>
                         </div>
 
                         <small className="text-[8px] text-zinc-500 text-center">Formato 1:1, com tamanho máximo de 5MB e nos formatos .png e .jpg</small>
                     </label>
+
                 </div>
+
                 <div id="animals" className="my-5 mx-auto flex gap-16 justify-between">
                     
                     <input type="radio" name="pet" id="dog" className="hidden" checked={animal === "dog"} onChange={() => handleAnimalChange('dog')} radioGroup="animal" />
                     <div className="flex flex-col gap-4">
-                        <label htmlFor="dog" className="pets">
+                        <label htmlFor="dog" className="flex flex-col items-center py-1 px-2 rounded-lg cursor-pointer border border-transparent">
                             <div className="w-16 h-16 rounded-full bg-primary overflow-hidden">
                                 <img src={dog} alt="" className="w-full h-full object-cover" />
                             </div>
@@ -116,7 +118,7 @@ const FormNewPet = (props: IFromNewPet) => {
                     
                     <input type="radio" name="pet" id="cat" className="hidden" checked={animal === "cat"} onChange={() => handleAnimalChange('cat')} radioGroup="animal" />
                     <div className="flex flex-col gap-4">
-                        <label htmlFor="cat" className="pets">
+                        <label htmlFor="cat" className="flex flex-col items-center py-1 px-2 rounded-lg cursor-pointer border border-transparent">
                             <div className="w-16 h-16 rounded-full bg-primary overflow-hidden">
                                 <img src={cat} alt="" className="w-full h-full object-cover" />
                             </div>
@@ -139,7 +141,7 @@ const FormNewPet = (props: IFromNewPet) => {
                         <option key={index}>{breed}</option>
                     ))}
                 </select>
-                {/* <label htmlFor="coat">Pelagem</label> */}
+
                 <select className="p-2 rounded-lg border border-primary bg-[#F5FFFE]  w-full" name="coat">
                     <option value="" disabled selected defaultValue="">Pelo</option>
                     {
@@ -148,22 +150,38 @@ const FormNewPet = (props: IFromNewPet) => {
                         ))
                     }
                 </select>
-                {/* <label htmlFor="birthday">Data de nascimento</label> */}
 
-                <input type="date" className="p-2 w-full rounded-lg border border-primary bg-[#F5FFFE] " name="birthday" placeholder="Data" />
+                <input 
+                    type="date"
+                    className="p-2 w-full rounded-lg border border-primary bg-[#F5FFFE] " 
+                    name="birthday" 
+                    placeholder="Data"
+                    max={"2023-08-03"}
+                    required
+                />
 
-                {/* <label htmlFor="weight">Peso</label> */}
                 <input type="number" className="p-2 w-full rounded-lg border border-primary bg-[#F5FFFE] " placeholder="Peso" />
 
                 <textarea id="obs" className="p-4 justify-between rounded-lg border border-primary bg-[#F5FFFE] mt-4 w-full h-36 resize-none" placeholder="Observação" maxLength={200} />
 
             </section>
 
-            <div id="buttons">
+            <div className="w-full flex justify-around">
                 {
-                    !isFirstAccess && <button id="cancelar" onClick={() => { props.addPet(true) }}>Cancelar</button>
+                    !isFirstAccess && 
+                        <button  
+                            className="bg-red-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-red-600" 
+                            onClick={() => { props.addPet(true) }}
+                        >
+                            Cancelar
+                        </button>
                 }
-                <button id="adicionar" type="submit">Adicionar</button>
+                <button 
+                    className="bg-green-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-green-600" 
+                    type="submit"
+                >
+                    Adicionar
+                </button>
             </div>
         </form>
     )

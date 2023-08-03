@@ -97,13 +97,41 @@ export default function Router(){
 
             <Route path="/clinica" 
                 element={
-                    <PrivateRouter user={true}>
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
                         <Clinic/>
-                    </PrivateRouter>
+                    </Suspense>
                 } 
             />
-            {/*
-            <Route path="/perfil" element={<Perfil/>} />
+            <Route path="/perfil" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Perfil/>
+                    </Suspense>
+                } 
+            />
+            <Route path="/agenda" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Schedule/>
+                    </Suspense>
+                } 
+            />
+            <Route path="/marketing" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Marketing/>
+                    </Suspense>
+                } 
+            />
+            <Route path="/pacientes" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Patient/>
+                    </Suspense>
+                } 
+            />
+            
+            {/* <Route path="/perfil" element={<Perfil/>} />
             <Route path="/agenda" element={<Schedule/>}/>
             <Route path="/marketing" element={<Marketing/>}/>
             <Route path="/pacientes" element={<Patient/>}/> */}
