@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './style/global.css'
 
 import { Suspense, lazy } from 'react'
-import { LoadingPrimary } from './components/loading/Loading'
+import { LoadingPrimary } from './components/loadings/Loading'
 
 // const App = lazy(()=> import("./App.jsx"))
 

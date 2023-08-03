@@ -20,4 +20,4 @@ function CardClinic() {
 }
 
 const memoCardClinic = memo(CardClinic)
-export { memoCardClinic }
+export { memoCardClinic as CardClinic }

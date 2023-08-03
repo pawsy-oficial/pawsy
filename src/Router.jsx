@@ -28,7 +28,7 @@ const Patient = lazy(()=> import("./pages/clinic/Patients"))
 // import Patient from "./pages/clinic/Patients"
 
 import Home from "./pages"
-import { LoadingPagesPlaceholder } from "./components/loading/Loading"
+import { LoadingPagesPlaceholder } from "./components/loadings/Loading"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);

@@ -3,8 +3,8 @@ import { Header } from "../../components/header/Header";
 import * as Select from "@radix-ui/react-select";
 import { useEffect, useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
-import { memoCardClinic as CardClinic } from "../../components/vaccine/Cards";
 import { CaretDown } from "@phosphor-icons/react";
+import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
