@@ -1,3 +1,6 @@
+import { DotsThreeVertical } from "@phosphor-icons/react"
+
+
 export default function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName }) {
     return (
         <div className={`flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full ${!deleteButton && "cursor-pointer"} bg-[#f8fffc]`}>

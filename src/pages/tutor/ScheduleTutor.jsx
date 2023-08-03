@@ -1,12 +1,12 @@
 import useTopToScreen from "../../hook/useTopToScreen";
 import { Switch } from "../../components/inputsComponents";
-import { CaretLeft, DotsThreeVertical, PlusCircle } from "@phosphor-icons/react";
+import { CaretLeft, PlusCircle } from "@phosphor-icons/react";
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
 import { useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
 import CardSchedule from "../../components/cardsAndBoxes/cardSchedule";
-
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 const SCHEDULES =
     [
@@ -133,7 +133,15 @@ function MySchedules({ alterNewSchedulePage }) {
         <>
             <strong className="text-2xl font-lato font-semibold">Minhas agendas</strong>
 
-            <section className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 mt-4 mb-10">
+            <button
+                className="flex gap-3 items-center text-primary hover:bg-primary/20 p-1 rounded-lg mt-2"
+                onClick={() => { alterNewSchedulePage(true) }}
+            >
+                <PlusCircle size={24} weight="bold" className="fill-primary" />
+                <span className="font-bold">agendar uma nova consulta</span>
+            </button>
+
+            <section className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 my-10">
                 <CardSchedule deleteButton={true} clinicName={"fulano PET"} scheduleDate={"2023-07-28"} scheduleHour={"13:00"} vetName={"Yuri Bernadi"} scheduleType={"consulta"} logoVet={"https://placehold.co/600x400"} />
                 <CardSchedule deleteButton={true} clinicName={"fulano PET"} scheduleDate={"2023-07-28"} scheduleHour={"13:00"} vetName={"Yuri Bernadi"} scheduleType={"consulta"} logoVet={"https://placehold.co/600x400"} />
                 <CardSchedule deleteButton={true} clinicName={"fulano PET"} scheduleDate={"2023-07-28"} scheduleHour={"13:00"} vetName={"Yuri Bernadi"} scheduleType={"consulta"} logoVet={"https://placehold.co/600x400"} />
@@ -143,19 +151,9 @@ function MySchedules({ alterNewSchedulePage }) {
                 <CardSchedule deleteButton={true} clinicName={"fulano PET"} scheduleDate={"2023-07-28"} scheduleHour={"13:00"} vetName={"Yuri Bernadi"} scheduleType={"consulta"} logoVet={"https://placehold.co/600x400"} />
             </section>
 
-            <button
-                className="flex gap-3 items-center text-primary hover:bg-primary/20 p-1 rounded-lg"
-                onClick={() => { alterNewSchedulePage(true) }}
-            >
-                <PlusCircle size={24} weight="bold" className="fill-primary" />
-                <span className="font-bold">agendar uma nova consulta</span>
-            </button>
         </>
     )
 }
-
-
-
 
 function NewSchedule() {
     // console.table(SCHEDULES[0].schedules)
@@ -207,7 +205,7 @@ function NewSchedule() {
                         <input
                             type="date"
                             id="dateSchedule"
-                            min={dateCurrent}
+                            min={`${yearCurrent}-${monthCurrent}-${dayCurrent}`}
                             disabled={handleSwitch}
                             onChange={(e) => { setDateCurrent(e.target.value) }}
                             value={dateCurrent}
@@ -266,8 +264,6 @@ function NewSchedule() {
         </>
     )
 }
-
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHour, scheduleType, vetName }) {
 

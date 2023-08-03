@@ -10,6 +10,7 @@ import FormNewPet from "../../components/FormNewPet";
 import { PlusCircle, GenderMale, GenderFemale, CaretDown } from "@phosphor-icons/react";
 
 import useTopToScreen from "../../hook/useTopToScreen";
+import { LoadingPaw } from "../../components/loadings/Loading";
 
 const RadioGroupMyPets = lazy(() => import("../../components/tutor/RadioGroupMyPets"))
 
@@ -73,7 +74,7 @@ import caramelo from '../../img/caramelo.webp'
 import oreo from '../../img/oreo.jpg'
 import flor from '../../img/flor.jpg'
 import pantera from '../../img/pantera.jpg'
-import { LoadingPaw } from "../../components/loading/Loading";
+
 
 
 function ProfileTutor({ showPet }) {

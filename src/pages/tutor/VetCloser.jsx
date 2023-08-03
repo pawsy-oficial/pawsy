@@ -1,7 +1,6 @@
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import CardsVetCloser from "../../components/cardsAndBoxes/cardClinicCloser";
-import "../../style/vet-closer.css"
 
 export default function VetCloser() {
     return (
