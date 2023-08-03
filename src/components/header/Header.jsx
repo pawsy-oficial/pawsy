@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import Logo from "../../img/logoPawsyGreen.svg"
 import { NavBar } from "../Navbar";
+import SearcInput from "./SearchInput";
 
 export function Header({ userType }) {
 
@@ -76,19 +77,7 @@ export function Header({ userType }) {
           
         {
           userType == "tutor" && (
-            <div className="lg:flex mx-auto h-6 hidden">
-              <input
-                type="search"
-                placeholder="Pesquisar"
-                className="hidden md:block py-1 px-3 w-80 border-b-2 text-xs border-primary"
-              />
-              <button
-                className="rounded-r-md md:bg-primary py-1 w-14 flex justify-center items-center"
-                title="pesquisa"
-              >
-                <MagnifyingGlass size={16} className="fill-black md:fill-white" weight="bold" />
-              </button>
-            </div>
+            <SearcInput/>
           )
         }
 
