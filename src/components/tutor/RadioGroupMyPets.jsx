@@ -25,6 +25,7 @@ function RadioGroupMyPets({ showPet }) {
                                     src={pet.image}
                                     alt={pet.name}
                                     className="object-cover w-full h-full"
+                                    draggable={false}
                                 />
                             </div>
                             <span className="text-lg  capitalize">{pet.name}</span>

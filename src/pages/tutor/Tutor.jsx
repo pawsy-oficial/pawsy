@@ -101,7 +101,12 @@ function ProfileTutor({ showPet }) {
 
                 <div className="flex flex-col gap-2 items-center">
                     <div className="w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20">
-                        <img src={pets[showPet].image} alt={pets[showPet].name} className="h-full w-full object-cover" />
+                        <img 
+                            src={pets[showPet].image}
+                            alt={pets[showPet].name} 
+                            className="h-full w-full object-cover" 
+                            draggable={false}
+                        />
                     </div>
                     <span
                         className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
