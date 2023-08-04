@@ -48,7 +48,7 @@ export function NavbarTutor({ page }) {
     },
   ];
 
-  
+  const navigate = useNavigate()
 
   return (
     <section className="nav_bar">
@@ -66,9 +66,11 @@ export function NavbarTutor({ page }) {
         </ul>
       </nav>
       <div className="flex justify-between text-white">
-        <span>
+        <button
+          onClick={()=>navigate("/")}
+        >
           <SignOut size={24} color="#fff" />
-        </span>
+        </button>
         <span>
           <Question size={24} color="#fff" />
         </span>
@@ -123,9 +125,11 @@ export function NavbarClinic() {
         </ul>
       </nav>
       <div className="flex justify-between text-white">
-        <span>
+        <button 
+          onClick={()=>navigate("/")}
+        >
           <SignOut size={24} color="#fff" />
-        </span>
+        </button>
         <span>
           <Question size={24} color="#fff" />
         </span>
