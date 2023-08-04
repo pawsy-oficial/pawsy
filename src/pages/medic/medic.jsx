@@ -13,15 +13,30 @@ export default function medic() {
   
   const [openOrClose, setOpenOrClose] = useState(false);
 
-  useEffect(()=>{
-    if(dateHour >= horarios[0] || dateHour <= horarios[1] && dateHour >= horarios[2] || dateHour >= horarios[3])
-    {
-      setOpenOrClose(true)
-    }
-    else {
-      setOpenOrClose(false)
-    }
-  },[])
+  useEffect(() => {
+    const checkOpeningHours = () => {
+      const currentHour = new Date().getHours();
+      if ((currentHour >= horarios[0] && currentHour < horarios[1]) || (currentHour >= horarios[2] && currentHour < horarios[3])) {
+        setOpenOrClose(true);
+      } else {
+        setOpenOrClose(false);
+      }
+    };
+
+    checkOpeningHours();
+    const intervalId = setInterval(checkOpeningHours, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const ClinicasInfo = [
+    {randomClinic}, "PetMax",
+    {ZnVet}, "ZnVet",
+    {randomClinic}, "MonoPet"
+  ]
+
   return(
       <>
         <header>
@@ -35,10 +50,9 @@ export default function medic() {
             Clínicas onde você trabalha:
           </h3>
           <nav className="flex flex-wrap gap-3">
-            <CardClinics img={ZnVet} nameClinic="ZnVet" openOrClose={openOrClose}/>
-            <CardClinics img={ZnVet} nameClinic="ZnVet1" openOrClose={openOrClose}/>
-            <CardClinics img={ZnVet} nameClinic="ZnVet" openOrClose={openOrClose}/>
-            <CardClinics img={ZnVet} nameClinic="ZnVet" openOrClose={openOrClose}/>
+            <CardClinics img={ZnVet} nameClinic={ClinicasInfo[3]} openOrClose={openOrClose}/>
+            <CardClinics img={randomClinic} nameClinic={ClinicasInfo[1]} openOrClose={openOrClose}/>
+            <CardClinics img={randomClinic} nameClinic={ClinicasInfo[5]} openOrClose={openOrClose}/>
           </nav>
         </section>
       </>

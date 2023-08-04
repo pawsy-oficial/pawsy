@@ -14,6 +14,7 @@ import Patient from "./pages/clinic/Patients"
 import Home from "./pages"
 import Medic from "./pages/medic/medic"
 import PatientsForMedic from "./pages/medic/Patients"
+import ViewPatient from "./pages/medic/ViewPatient"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);
@@ -63,6 +64,9 @@ export default function Router(){
             />
             <Route path="/pacientes-clinica" 
                 element={<PatientsForMedic/>} 
+            />
+            <Route path="/paciente" 
+                element={<ViewPatient/>} 
             />
 
         </Routes>
