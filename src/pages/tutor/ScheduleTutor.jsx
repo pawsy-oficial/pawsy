@@ -179,7 +179,7 @@ function NewSchedule() {
                     ? <ScheduleNotFound mesage={"Infelizmente, não há agendas para esse tipo nessa data escolhida, escolha outra data."} />
                     : filterTypeSchedule.map(e => {
                         return (
-                            <CardSchedule
+                            <CreateNewScheduleModal
                                 clinicName={e.clinicName}
                                 logoVet={e.clinicLogo}
                                 scheduleDate={scheduleFilter.date}
@@ -247,8 +247,14 @@ function NewSchedule() {
                                         }).map(e => {
                                             return (
                                                 <>
-                                                    {/* <CardSchedule /> */}
-                                                    <CreateNewScheduleModal clinicName={e.clinicName} logoVet={e.clinicLogo} scheduleDate={schedule.date} scheduleHour={e.hour} scheduleType={e.type} vetName={e.veterinaryName} />
+                                                    <CreateNewScheduleModal 
+                                                        clinicName={e.clinicName} 
+                                                        logoVet={e.clinicLogo} 
+                                                        scheduleDate={schedule.date} 
+                                                        scheduleHour={e.hour} 
+                                                        scheduleType={e.type} 
+                                                        vetName={e.veterinaryName} 
+                                                    />
                                                 </>
                                             )
                                         })
@@ -335,6 +341,3 @@ function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHou
         </AlertDialog.Root>
     )
 }
-
-
-
