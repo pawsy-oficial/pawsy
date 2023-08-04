@@ -48,6 +48,7 @@ export default function Router(){
                 element={
                     <Suspense fallback={<LoadingPagesPlaceholder/>}>
                         <SearchResult/>    
+                        {/* <LoadingPagesPlaceholder/> */}
                     </Suspense>
                 } 
             />

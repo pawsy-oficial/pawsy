@@ -1,4 +1,5 @@
 import Logo from "../../img/logoPawsy.svg"
+import { NavbarTutor } from "../Navbar"
 
 export function LoadingPrimary() {
     return (
@@ -25,23 +26,7 @@ export function LoadingPaw() {
 export function LoadingPagesPlaceholder() {
     return (
         <main className="flex min-h-screen">
-            <section className="bg-primary h-full min-h-screen sticky top-0 px-6 py-10 flex flex-col gap-16 justify-between">
-                <div className="w-52 h-10 bg-white/30 animate-pulse" />
-
-                <nav className="flex flex-col w-[calc(100%+24px)] gap-4">
-                    <ul className="flex flex-col gap-4">
-                        <li className={`nav-link h-7 bg-[#F5F7FB]/10 animate-bounce`} />
-                        <li className={`nav-link h-7 bg-[#F5F7FB]/10 animate-bounce`} />
-                        <li className={`nav-link h-7 bg-[#F5F7FB]/10 animate-bounce`} />
-                        <li className={`nav-link h-7 bg-[#F5F7FB]/10 animate-bounce`} />
-                        <li className={`nav-link h-7 bg-[#F5F7FB]/10 animate-bounce`} />
-                    </ul>
-                </nav>
-                <div className="flex justify-between text-white">
-                    <span className="w-6 h-6 bg-white/50" />
-                    <span className="w-6 h-6 bg-white/50" />
-                </div>
-            </section>
+            <NavbarTutor/>
 
             <section className="flex-1">
                 <header className="w-full bg-[#F9FFFD] py-3 px-20 flex justify-end items-center">
@@ -52,7 +37,10 @@ export function LoadingPagesPlaceholder() {
                     </div>
                 </header>
 
-                <main className={`pl-10 pr-16 py-8 flex gap-5 justify-center`}>
+                <main className={`mt-16 p-6 mx-10  flex flex-col gap-4 rounded-lg`}>
+                    <div className="w-full h-24 bg-primary/30 animate-pulse animate-delay-90"></div>
+                    <div className="w-full h-24 bg-primary/30 animate-pulse animate-delay-60"></div>
+                    <div className="w-full h-24 bg-primary/30 animate-pulse animate-delay-30"></div>
                 </main>
             </section>
         </main>

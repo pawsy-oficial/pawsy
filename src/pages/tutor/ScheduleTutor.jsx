@@ -114,7 +114,7 @@ export default function ScheduleTutor() {
                     )
                 }
 
-                <main className={`mx-6 lg:ml-10 px-3 py-5 md:p-10 rounded-lg bg-white mb-16 shadow-md lg:max-w-6xl ${!handlePage && "mt-10"}`}>
+                <main className={`mx-6 lg:ml-10 px-3 py-5 md:p-10 rounded-lg bg-white mb-16 shadow-md lg:max-w-6xl xl:max-w-7xl ${!handlePage && "mt-10"}`}>
 
                     {
                         handlePage
