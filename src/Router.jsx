@@ -12,6 +12,9 @@ import Schedule from "./pages/clinic/Schedule"
 import Marketing from "./pages/clinic/Marketing"
 import Patient from "./pages/clinic/Patients"
 import Home from "./pages"
+import Medic from "./pages/medic/medic"
+import PatientsForMedic from "./pages/medic/Patients"
+import ViewPatient from "./pages/medic/ViewPatient"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);
@@ -49,6 +52,22 @@ export default function Router(){
             <Route path="/pacientes" element={<Patient/>}/>
 
             <Route path="*" element={<Home/>}/>
+
+            {/* ==x==x==x==x==x==x== */}
+
+            <Route path="/medic" 
+                element={
+                    <PrivateRouter user={true}>
+                        <Medic/>
+                    </PrivateRouter>
+                } 
+            />
+            <Route path="/pacientes-clinica" 
+                element={<PatientsForMedic/>} 
+            />
+            <Route path="/paciente" 
+                element={<ViewPatient/>} 
+            />
 
         </Routes>
     )
