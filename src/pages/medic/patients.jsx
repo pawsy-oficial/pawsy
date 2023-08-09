@@ -11,7 +11,21 @@ export default function PatientsForMedic(){
     const petsInfo = [
         "Julinho", "Rodrigo Goes",
         "Balestrin", "Renato Cariani",
-        "Tom", "Thomas Shelby"
+        "Tom", "Thomas Shelby",
+        514, 884, 654
+    ]
+
+    const health = [
+    /*0 1 2*/    "3 anos", "4 anos", "5 anos",
+    /*3 4 5*/     "Spitz Alemão", "Sem raça definida", "Dobberman",
+    /*6 7 8*/     "Excelente", "Médio", "Ruim",
+    /*9 10 11*/   4, 10, 20,
+    /*12 13 14*/  0.4, 0.6, 0.8,
+    /*15 16 18*/  "Não", "Não", "Não",
+    /*19 20 21*/  "Sim", "Não", "Não",
+    /*22 23 24*/  "Manso", "Manso", "Não-Manso",
+    /*25 26 27*/  "Não", "Sim", "Sim"
+
     ]
 
     return(
@@ -36,9 +50,9 @@ export default function PatientsForMedic(){
                         <label id="female" htmlFor="fem">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
                     </div>
                     <div className="flex flex-col">
-                        <CardPatients img={gato} namePet={petsInfo[0]} nameDono={petsInfo[1]}/>
-                        <CardPatients img={gato} namePet={petsInfo[2]} nameDono={petsInfo[3]}/>
-                        <CardPatients img={gato} namePet={petsInfo[4]} nameDono={petsInfo[5]}/>
+                        <CardPatients img={gato} namePet={petsInfo[0]} nameDono={petsInfo[1]} idPet={petsInfo[6]} idade={health[0]} raca={health[3]} bemestar={health[6]} peso={health[9]} altura={health[12]} alergia={health[15]} castrado={health[19]} comportamento={health[22]} tratamento={health[25]} />
+                        <CardPatients img={gato} namePet={petsInfo[2]} nameDono={petsInfo[3]} idPet={petsInfo[7]} idade={health[1]} raca={health[4]} bemestar={health[7]} peso={health[10]} altura={health[13]} alergia={health[16]} castrado={health[20]} comportamento={health[23]} tratamento={health[26]} />
+                        <CardPatients img={gato} namePet={petsInfo[4]} nameDono={petsInfo[5]} idPet={petsInfo[8]} idade={health[2]} raca={health[5]} bemestar={health[8]} peso={health[11]} altura={health[14]} alergia={health[18]} castrado={health[21]} comportamento={health[24]} tratamento={health[27]} />
                     </div>
                 </div>
             </section>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function CardPatients(props){
     const navigate = useNavigate()
-    const pet = {img: props.img, namePet: props.namePet, nameDono: props.nameDono}
+    const pet = {img: props.img, namePet: props.namePet, nameDono: props.nameDono, idPet: props.idPet, idade: props.idade, raca: props.raca, bemestar: props.bemestar, peso: props.peso, altura: props.altura, alergia: props.alergia, castrado: props.castrado, comportamento: props.comportamento, tratamento: props.tratamento}
 
     return(
         <button onClick={() => navigate("/paciente", {state: { pet }})}>
@@ -14,6 +14,7 @@ export default function CardPatients(props){
                 <p className="text-base font-medium">
                    {props.nameDono}
                 </p>
+                <p className="hidden">{props.idPet}</p>
             </div>
         </button>
     )
