@@ -1,10 +1,11 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { HeaderMedic } from "../../components/HeaderMedic"
-import { GenderFemale, GenderMale } from "@phosphor-icons/react";
+import { ArrowUUpLeft, GenderFemale, GenderMale } from "@phosphor-icons/react";
 import CardPatients from "../../components/componentsMedic/CardPatients/CardPatients";
 import gato from "../../img/gato.jpg"
 
 export default function PatientsForMedic(){
+    const navigate = useNavigate()
     const location = useLocation()
     const { informacoes } = location.state
 
@@ -33,6 +34,9 @@ export default function PatientsForMedic(){
             <header>
                 <HeaderMedic/>
             </header>
+            <div className="flex">
+                <button onClick={() => navigate("/medic")} className="px-96 flex items-center gap-2 -mb-10 mt-5"><ArrowUUpLeft color="#22B77E"/>Voltar</button>
+            </div>
             <section className="mt-16 flex justify-center items-center bg-[#F5F7FB]">
                 <div className="p-6 bg-white rounded-lg flex flex-col">
                     <div className="flex justify-center">
