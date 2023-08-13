@@ -2,8 +2,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import dono from "../../img/profilePerson.jpeg"
 import { ArrowUUpLeft, GenderMale } from "@phosphor-icons/react";
+import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
+import { useState } from "react";
+
 
 export default function ViewPatient(){
+    const [open, setOpen] = useState(false)
+
     const navigate = useNavigate()
     const location = useLocation()
     const { pet } = location.state
@@ -30,9 +35,10 @@ export default function ViewPatient(){
                                 <h3 className="font-semibold text-base">Castrado(a): {pet.castrado}</h3>
                                 <h4 className="font-semibold text-base">Comportamento: {pet.comportamento}</h4>
                                 <h5 className="font-semibold text-base">Tratamento: {pet.tratamento}</h5>
-                                <button className="mt-4 rounded-md text-white bg-[#22937E] p-1">
+                                <button onClick={() => setOpen(!open)} className="mt-4 rounded-md text-white bg-[#22937E] p-1">
                                     Editar
                                 </button>
+                                <ModalEditObs isOpen={open} setOpen={setOpen}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
