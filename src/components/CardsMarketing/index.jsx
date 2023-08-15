@@ -30,7 +30,7 @@ export default function Post({ content, onDeletePost }) {
           <p>15 dias</p>
         </div>
 
-        <div className="py-52 flex gap-6">
+        <div className="items-end flex gap-6">
           <button
             title="Deletar Post"
             onClick={handleDeletePost}

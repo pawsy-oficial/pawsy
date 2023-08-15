@@ -38,7 +38,7 @@ export default function Marketing() {
               <p className="text-[18px]">Título</p>
               <div className="w-full relative">
                 <input
-                  className="bg-gray-white border border-primary focus:outline-primary rounded w-[27.5rem] h-[2rem] p-2"
+                  className="bg-gray-white border focus:border-primary rounded w-[27.5rem] h-[2rem] p-2"
                   onInput={(e) => {
                     const count = e.target.value.length;
                     count <= 64 && setValueInput(e.target.value);
@@ -58,7 +58,7 @@ export default function Marketing() {
                   id=""
                   cols="30"
                   rows="6"
-                  className="bg-gray-white border border-primary focus:border-primary focus:outline-primary rounded resize-none w-[27.5rem] h-[10.375rem] p-2"
+                  className="bg-gray-white border focus:border-primary focus-visible:outline-none rounded resize-none w-[27.5rem] h-[10.375rem] p-2"
                   onInput={(e) => {
                     const count = e.target.value.length;
                     count <= 300 && setValueTextArea(e.target.value);
