@@ -10,7 +10,8 @@ export default function Patient() {
   const [namePet, setNamePet] = useState("");
   const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
 
-  const [open, setOpen] = useState(false);
+  const [openVermifuge, setOpenVermifuge] = useState(false);
+  const [openVaccine, setOpenVaccine] = useState(false);
 
   const table = [
     [
@@ -321,12 +322,12 @@ export default function Patient() {
                 </table>
                 <div className="flex justify-center">
                   <button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpenVaccine(!openVaccine)}
                     className="flex flex-row pt-3 items-center text-primary text-lg font-semibold gap-4"
                   >
                     <PlusCircle size={24} /> adicionar
                   </button>
-                  <ModalVaccine isOpen={open} setOpen={setOpen} />
+                  <ModalVaccine isOpenVaccine={openVaccine} setOpenVaccine={setOpenVaccine} />
                 </div>
               </div>
               <div className="hidden xl:block">
@@ -363,12 +364,12 @@ export default function Patient() {
                 </table>
                 <div className="flex justify-center">
                   <button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpenVermifuge(!openVermifuge)}
                     className="flex flex-row pt-3 items-center text-primary text-lg font-semibold gap-4"
                   >
                     <PlusCircle size={24} /> adicionar
                   </button>
-                  <ModalVermifuge isOpen={open} setOpen={setOpen} />
+                  <ModalVermifuge isOpenVermifuge={openVermifuge} setOpenVermifuge={setOpenVermifuge} />
                 </div>
               </div>
             </div>
