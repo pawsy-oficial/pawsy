@@ -1,11 +1,13 @@
+import * as dayjs from "dayjs" 
+
 export function CardReceitas({ emissao, validade, dr, state }) {
 	return (
 		<button
 			className="cursor-pointer flex flex-col gap-3 md:flex-row md:items-center my-6 md:mx-auto justify-between py-3 px-4 md:px-24 w-full min-h-[40px] bg-[#F5FFFE] border border-primary rounded-lg hover:bg-[#d2eee4]"
 			onClick={()=>{state(true)}}
 		>
-			<p><strong>Emissão:</strong> {emissao}</p>
-			<p><strong>Validade:</strong> {validade}</p>
+			<p><strong>Emissão:</strong> {dayjs(emissao).format("DD/MM/YYYY")}</p>
+			<p><strong>Validade:</strong> {dayjs(validade).format("DD/MM/YYYY")}</p>
 			<p><strong>Dr(a):</strong> {dr}</p>
 		</button>
 	)

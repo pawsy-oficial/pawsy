@@ -6,6 +6,8 @@ import { WarningVaccine } from "../../components/tutor/Alert";
 import { CaretDown } from "@phosphor-icons/react";
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
+import * as dayjs from 'dayjs'
+
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
 	const [namePet, setNamePet] = useState("");
@@ -414,7 +416,7 @@ export default function VaccinePage() {
 																						return (
 																							<>
 																								<td>{f.vaccineName}</td>
-																								<td>{f.dateVaccine}</td>
+																								<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
 																								<td>{f.returnVaccine}</td>
 																								<td>{f.vetAplication}</td>
 																								<td className="hidden">{f.CRMV}</td>
@@ -449,7 +451,7 @@ export default function VaccinePage() {
 
 																				return (
 																					<>
-																						<td>{f.dateVermifugo}</td>
+																						<td>{dayjs(f.dateVermifugo).format('DD/MM/YYYY')}</td>
 																						<td>{f.nameVermifugo}</td>
 																					</>
 																				);
@@ -496,8 +498,8 @@ export default function VaccinePage() {
 																return (
 																	<>
 																		<td>{f.vaccineName}</td>
-																		<td>{f.dateVaccine}</td>
-																		<td>{f.returnVaccine}</td>
+																		<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																		<td>{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
 																		<td>{f.vetAplication}</td>
 																		<td>{f.CRMV}</td>
 																	</>
@@ -532,7 +534,7 @@ export default function VaccinePage() {
 
 														return (
 															<>
-																<td>{f.dateVermifugo}</td>
+																<td>{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
 																<td>{f.nameVermifugo}</td>
 															</>
 														);

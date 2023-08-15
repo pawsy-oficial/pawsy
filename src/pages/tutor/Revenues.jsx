@@ -22,10 +22,10 @@ import { useNavigate } from "react-router-dom";
 function RevenuesList({ state }) {
 	const dataBase =
 		[
-			{ name: "caramelo", schedule: [ {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
-			{ name: "oreo", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
-			{ name: "flor", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
-			{ name: "pantera", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] }
+			{ name: "caramelo", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
+			{ name: "oreo", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
+			{ name: "flor", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023*04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] },
+			{ name: "pantera", schedule: [ {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"}, {emissao: "2023-04-01", validade: "2023-04-02", dr: "Vanessa Santos"} ] }
 		]
 	const [option, setOption] = useState(0)
 

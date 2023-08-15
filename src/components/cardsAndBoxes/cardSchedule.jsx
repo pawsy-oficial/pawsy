@@ -1,6 +1,6 @@
 import { DotsThreeVertical } from "@phosphor-icons/react"
 import * as Popover from '@radix-ui/react-popover';
-
+import * as dayjs from "dayjs"
 
 export default function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName }) {
     return (
@@ -36,7 +36,7 @@ export default function CardSchedule({ deleteButton, logoVet, clinicName, schedu
                 <strong className="text-base text-start">{clinicName}</strong>
                 <div className="flex flex-col gap-2 items-start">
                     <div className="flex gap-3 text-sm">
-                        <span>{scheduleDate}</span>
+                        <span>{dayjs(scheduleDate).format("DD/MM/YYYY")}</span>
                         <span className="font-bold">{scheduleHour}</span>
                     </div>
                     <span className="font-bold text-sm capitalize">{scheduleType}</span>
