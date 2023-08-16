@@ -1,10 +1,12 @@
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
 import * as Select from "@radix-ui/react-select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
-import { CardClinic } from "../../components/vaccine/cardS";
 import { CaretDown } from "@phosphor-icons/react";
+import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
+
+import * as dayjs from 'dayjs'
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
@@ -295,23 +297,36 @@ export default function VaccinePage() {
 		],
 	];
 
+	const [windowScreen, setWindowScreen] = useState({ width: null })
+
+	useEffect(() => {
+		function handleResize() {
+			setWindowScreen({ width: window.innerWidth })
+		}
+		window.addEventListener("resize", handleResize)
+		handleResize()
+
+		return () => window.removeEventListener("resize", handleResize)
+	}, [])
+
+	const [alterTable, setAlterTable] = useState(true)
+
 	return (
 		<main className="flex min-h-screen">
 			<NavbarTutor />
 			<section className="flex-1">
-				<Header />
-				<main className="pl-10 pr-16 py-8 flex flex-col gap-5 w-[calc(100vw-256px-24px)] mx-auto">
+				<Header userType="tutor" />
+				<main className="px-8 lg:pl-10 lg:pr-16 py-8 flex flex-col gap-5 w-screen md:w-[calc(100vw-256px-24px)] mx-auto">
 					<div className="flex gap-6 items-center">
 						<Select.Root value={namePet} onValueChange={setNamePet}>
 							<Select.Trigger
-								className="min-w-[220px] flex items-center justify-between rounded px-6 py-1 text-2xl font-semibold leading-none h-[35px] gap-[5px] bg-white text-violet11 focus:outline-none"
+								className="lg:min-w-[220px] w-80 flex items-center justify-between rounded px-6 py-2 text-2xl font-semibold leading-none h-8 gap-1 bg-white focus:outline-none"
 								aria-label="pet"
 							>
 								<Select.Value className="font-sora" aria-label={namePet}>
 									{namePet}
 								</Select.Value>
 								<CaretDown weight="fill" />
-								{/* <ChevronDownIcon /> */}
 							</Select.Trigger>
 							<Select.Portal>
 								<Select.Content className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
@@ -324,7 +339,7 @@ export default function VaccinePage() {
 												return (
 													<Select.Item
 														value={`${name}`}
-														className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-lg"
+														className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl"
 													>
 														<Select.ItemText>{name}</Select.ItemText>
 													</Select.Item>
@@ -338,11 +353,121 @@ export default function VaccinePage() {
 
 						{positioPet == 1 && <WarningVaccine nameVaccine={"Viratec 10"} />}
 					</div>
-					<section className="flex flex-1 bg-white px-6 py-8 rounded-2xl ">
+
+					<section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
 						<div className="w-full flex justify-between gap-10">
-							<div className="flex-1">
-								<h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vacinas</h3>
-								<table className="w-full cursor-default">
+							<div className="md:flex-1 w-full">
+								<h3 className="font-semibold text-2xl mb-3 text-center font-lato hidden md:block">Vacinas</h3>
+
+								{
+									windowScreen.width < 1024
+									&& (
+										<section className="w-full flex flex-col items-center">
+											<div className="w-full flex justify-between gap-6 mb-4">
+												<input type="radio" className="hidden" name="typeTable" id="vacina" defaultChecked/>
+												<label
+													className="w-full border-b-2 text-center border-transparent font-lato text-lg font-semibold"
+													htmlFor="vacina"
+													onClick={() => setAlterTable(true)}
+												>
+													VACINA
+												</label>
+
+												<input type="radio" className="hidden" name="typeTable" id="vermifugo" />
+												<label
+													className="w-full border-b-2 border-transparent text-center font-lato text-lg font-semibold"
+													htmlFor="vermifugo"
+													onClick={() => setAlterTable(false)}
+												>
+													VERMÍFUGO
+												</label>
+											</div>
+											{
+												alterTable ?
+													(
+														<table className="w-full cursor-default">
+															<thead>
+																<tr className=" border-b border-black">
+																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																		Vacina
+																	</th>
+																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																		Data de aplicação
+																	</th>
+																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																		Retorno
+																	</th>
+																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																		Veterinário
+																	</th>
+																	<th className="hidden p-2 bg-primary text-white text-sm w-40">
+																		CRMV
+																	</th>
+																</tr>
+															</thead>
+															<tbody className="second">
+																{
+																	table[positioPet].map((e, index) => {
+																		return (
+																			<tr key={index} className="border-b border-black">
+																				{
+																					e.map((f) => {
+
+																						return (
+																							<>
+																								<td>{f.vaccineName}</td>
+																								<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																								<td>{f.returnVaccine}</td>
+																								<td>{f.vetAplication}</td>
+																								<td className="hidden">{f.CRMV}</td>
+																							</>
+																						);
+																					})
+																				}
+																			</tr>
+																		);
+																	})
+																}
+															</tbody>
+														</table>
+													)
+													: (
+														<table className="cursor-default">
+															<thead>
+																<tr className=" border-b border-black">
+																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																		Data
+																	</th>
+																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																		Nome
+																	</th>
+																</tr>
+															</thead>
+															<tbody className="second">
+																{tableVermifugo[positioPet].map((e) => {
+																	return (
+																		<tr className="border-b border-black">
+																			{e.map((f) => {
+
+																				return (
+																					<>
+																						<td>{dayjs(f.dateVermifugo).format('DD/MM/YYYY')}</td>
+																						<td>{f.nameVermifugo}</td>
+																					</>
+																				);
+																			})}
+																		</tr>
+																	);
+																})}
+															</tbody>
+														</table>
+													)
+											}
+										</section>
+									)
+								}
+
+								<table className="w-full cursor-default hidden lg:block">
 									<thead>
 										<tr className=" border-b border-black">
 											<th className=" bg-primary text-white text-sm w-40 p-2">
@@ -363,24 +488,28 @@ export default function VaccinePage() {
 										</tr>
 									</thead>
 									<tbody className="second">
-										{table[positioPet].map((e) => {
-											return (
-												<tr className="border-b border-black">
-													{e.map((f) => {
-														
-														return (
-															<>
-																<td>{f.vaccineName}</td>
-																<td>{f.dateVaccine}</td>
-																<td>{f.returnVaccine}</td>
-																<td>{f.vetAplication}</td>
-																<td>{f.CRMV}</td>
-															</>
-														);
-													})}
-												</tr>
-											);
-										})}
+										{
+											table[positioPet].map((e, index) => {
+												return (
+													<tr key={index} className="border-b border-black">
+														{
+															e.map((f) => {
+
+																return (
+																	<>
+																		<td>{f.vaccineName}</td>
+																		<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																		<td>{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
+																		<td>{f.vetAplication}</td>
+																		<td>{f.CRMV}</td>
+																	</>
+																);
+															})
+														}
+													</tr>
+												);
+											})
+										}
 									</tbody>
 								</table>
 							</div>
@@ -402,10 +531,10 @@ export default function VaccinePage() {
 											return (
 												<tr className="border-b border-black">
 													{e.map((f) => {
-														
+
 														return (
 															<>
-																<td>{f.dateVermifugo}</td>
+																<td>{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
 																<td>{f.nameVermifugo}</td>
 															</>
 														);
@@ -418,11 +547,12 @@ export default function VaccinePage() {
 							</div>
 						</div>
 					</section>
-					<section className="w-full">
-						<p className="titulo-card mb-6">
+
+					<section className="w-full mt-4">
+						<p className="titulo-card">
 							Campanhas de vacinação próximas de você
 						</p>
-						<section className="flex gap-5 w-full overflow-auto py-3">
+						<section className="lg:flex gap-5 w-full lg:overflow-auto py-3 grid grid-cols-2">
 
 							<CardClinic />
 							<CardClinic />

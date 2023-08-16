@@ -12,9 +12,10 @@ export default function ProfileModal() {
                             className="object-cover h-full w-full"
                             src={profilePerson}
                             alt="imagem de perfil @user"
+                            draggable={false}
                         />
                     </div>
-                    <CaretDown size={16} className='group-data-[state=open]:-rotate-180 transition-all'/>
+                    <CaretDown size={16} className='hidden md:block group-data-[state=open]:-rotate-180 transition-all'/>
                 </div>
             </Popover.Trigger>
             <Popover.Portal>

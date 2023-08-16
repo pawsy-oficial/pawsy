@@ -4,13 +4,14 @@ import { NavbarTutor } from "../../components/Navbar";
 import "../../style/wellbeing.css"
 import { Info, Ruler, Scales } from "@phosphor-icons/react";
 
-const dataBaseParms = 75 // provisorio - 0 - 100
+const dataBaseParms = 100 // provisorio - 0 - 100
 
 export default function WellBeing() {
 	const [statusValue, setStatusValue] = useState({
 		angle: 0,
 		valueStatus: "Ruim"
 	})
+	
 	useEffect(() => {
 		switch (dataBaseParms) {
 			case 0:
@@ -50,9 +51,9 @@ export default function WellBeing() {
 		<main className="flex min-h-screen">
 			<NavbarTutor />
 			<section className="flex-1">
-				<Header />
+				<Header userType={"tutor"} />
 				<main>
-					<div className="max-w-5xl w-full my-8 mx-auto bg-white rounded-lg shadow-md p-6">
+					<div className="w-[calc(100%-32px)] lg:max-w-5xl lg:w-full my-8 mx-auto bg-white rounded-lg shadow-md p-6">
 
 						<div className="flex justify-center items-center pb-8">
 							<div className="inline-block">
@@ -71,7 +72,7 @@ export default function WellBeing() {
 							</div>
 						</div>
 
-						<div className="flex justify-center gap-28">
+						<div className="flex justify-between md:justify-center gap-6 sm:gap-28">
 							<div className="rounded py-1 px-2 border border-primary flex gap-4 items-center">
 								<Scales size={32} weight="bold"/>
 								<span>20,3 kg</span>
@@ -82,7 +83,7 @@ export default function WellBeing() {
 							</div>
 						</div>
 
-						<div className="flex justify-center gap-5 my-8 mx-auto">
+						<div className="flex flex-col md:flex-row justify-center gap-5 my-8 mx-auto">
 							<Container title={"Vacina"} last={"antirrábica - 12/12/2022"} next={"V10 - 06/2023"} alert={false} />
 							<Container title={"Consulta"} last={"12/12/2022"} next={"não agendada"} alert={true} />
 							<Container title={"Vermifugação"} last={"08/01/2023"} next={"Vermifugação em atraso"} alert={true} />

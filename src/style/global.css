@@ -11,7 +11,7 @@ body{
 }
 
 .nav-link{
-  @apply relative px-6 py-4 text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer
+  @apply relative px-6 py-4 lg:text-white rounded-tl-full rounded-bl-full transition-colors cursor-pointer
 }
 
 .layout-main{
@@ -19,7 +19,7 @@ body{
 }
 
 .f::after, .f::before{
-  @apply w-6 h-6 bg-primary absolute right-0
+  @apply w-6 h-6 bg-primary absolute right-0 !hidden lg:!block
 }
 
 .f::after{
@@ -113,10 +113,38 @@ th, td{
   @apply bg-[#22937E] text-white;
 }
 
+
+/* FIM CALENDAR */
+/* =x=x=x=x=x==x=x=x=x==x=x=x=x==x=x=x=x=x=x */
+
 .container-dropdown-input input:checked + label{
   @apply bg-primary text-white
 }
 
 .mnegative{
   margin-top: 32px;
+}
+
+.nav_bar{
+  @apply bg-primary h-full min-h-screen sticky top-0 px-6 py-10 hidden lg:flex flex-col gap-16 justify-between
+}
+
+
+@layer utilities{
+  .animate-delay-30{
+    animation-delay: .2s;
+  }
+  .animate-delay-60{
+    animation-delay: .4s;
+  }
+  .animate-delay-90{
+    animation-delay: .6s;
+  }
+  .animate-delay-1200{
+    animation-delay: .8s;
+  }
+}
+
+#vacina:checked + label, #vermifugo:checked + label{
+  @apply border-primary
 }
