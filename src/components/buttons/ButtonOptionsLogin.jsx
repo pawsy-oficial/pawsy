@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom"
 
 
-export default function ButtonOptionsLogin({ title, description, imageName }) {
+export default function ButtonOptionsLogin({ title, description, imageName, slug }) {
 
-    const tutor = {
+    const navigate = useNavigate()
+
+    const type = {
         title,
         description,
         imageName
@@ -11,6 +14,7 @@ export default function ButtonOptionsLogin({ title, description, imageName }) {
     return (
         <button
             className="px-6 py-4 rounded-lg flex gap-6 justify-between items-center bg-white hover:bg-sky-50 transition-colors"
+            onClick={()=>navigate("/login", { state: { slug } })}
         >
             <div
                 className="flex flex-col items-start gap-3"
@@ -19,16 +23,16 @@ export default function ButtonOptionsLogin({ title, description, imageName }) {
                 <strong
                     className="font-lato font-bold text-[2em] "
                 >
-                    {tutor.title}
+                    {type.title}
                 </strong>
                 <span
                     className="text-sm font-lato text-zinc-400"
                 >
-                    {tutor.description}
+                    {type.description}
                 </span>
             </div>
 
-            <img src={tutor.imageName} alt="" />
+            <img src={type.imageName} alt="" />
 
         </button>
     )

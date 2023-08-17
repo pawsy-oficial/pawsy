@@ -23,6 +23,7 @@ const Patient = lazy(()=> import("./pages/clinic/Patients"))
 
 const SearchResult = lazy(() => import("./pages/tutor/searchResult"))
 
+const Access = lazy(()=> import("./pages/landing/access"))
 const Login = lazy(()=> import("./pages/landing/login"))
 
 // import Clinic from "./pages/clinic/Clinic"
@@ -45,6 +46,15 @@ const PrivateRouter = ({user, children}) => {
 export default function Router(){
     return(
         <Routes>
+            <Route 
+                path="/acesso" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Access/>    
+                        {/* <LoadingPagesPlaceholder/> */}
+                    </Suspense>
+                } 
+            />
             <Route 
                 path="/login" 
                 element={

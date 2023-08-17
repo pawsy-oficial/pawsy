@@ -129,10 +129,11 @@ export function Header({ userType }) {
 }
 
 
-export function HeaderLogin() {
+export function HeaderLogin({style}) {
 	return (
 		<header
-			className="flex justify-between items-center w-full sticky top-0 gap-16 px-16 py-8"
+			className={`flex justify-between items-center w-full sticky top-0 gap-16 px-16 py-8`}
+			style={style}
 		>
 			<img src={LogoWhite} alt="Logo pawsy" />
 
