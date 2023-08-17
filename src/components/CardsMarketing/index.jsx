@@ -1,6 +1,11 @@
 import photoMarketing from "../../img/photoMarketing.png";
+import ModalDeletePost from "../componentsClinic/modalDeletePost";
+import { useState } from "react";
 
-export default function Post({ content, onDeletePost }) {
+export default function Post({ content, onDeletePost}) {
+  
+  const [open, setOpen] = useState(false);
+
   function handleDeletePost() {
     onDeletePost(content);
   }
@@ -29,16 +34,16 @@ export default function Post({ content, onDeletePost }) {
           <p>Campanha de vacinação</p>
           <p>15 dias</p>
         </div>
-
         <div className="items-end flex gap-6">
           <button
             title="Deletar Post"
-            onClick={handleDeletePost}
+            onClick={() => setOpen(!open)}
             type="submit"
             className="bg-[#DC3545] hover:bg-[#c7303f] w-[7.438rem] h-[2.188rem] rounded-lg text-white"
           >
             Apagar
           </button>
+          <ModalDeletePost isOpen={open} setOpen={setOpen}/>
           <button
             title="Editar Post"
             onClick={handleDeleteComment}
