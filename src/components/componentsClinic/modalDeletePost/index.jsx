@@ -1,6 +1,6 @@
 import style from "./ModalDeletePost.module.css";
 
-export default function ModalDeletePost({isOpen, setOpen}) {
+export default function ModalDeletePost({isOpen, setOpen}) { 
     if (isOpen) {
         return (
           <div className={style.background}>
@@ -9,9 +9,9 @@ export default function ModalDeletePost({isOpen, setOpen}) {
               <div className="flex pt-6 flex-col gap-1">
                 <p className="text-sm">Antes de excluir o anúncio, certifique-se de que não precisa mais dele. Uma vez excluído, o item não poderá ser recuperado.</p>
               </div>
-              <div className="flex flex-row justify-end pt-6 gap-6">
+              <div className="flex flex-row justify-end pt-6 gap-4">
                 <button
-                  onClick={() => setOpen(!isOpen)}
+                  onClick={() => setOpen(!isOpen) }
                   className="flex items-center bg-[#04AD34] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
                 >
                   confirmar

@@ -171,20 +171,20 @@ export default function Marketing() {
                       Publicar <PaperPlaneTilt />
                     </button>
                   </div>
-                  <input
-                    className="invisible"
-                    type="file"
-                    name=""
-                    onChange={previewImage}
-                    accept="image/*"
-                    id="inputFile"
-                  />
-                  <img
-                    id="imagePreview"
-                    src="#"
-                    alt="Preview da imagem"
-                    className="hidden w-full rounded-lg object-contain absolute "
-                  ></img>
+                    <input
+                      className="invisible"
+                      type="file"
+                      name=""
+                      onChange={previewImage}
+                      accept="image/*"
+                      id="inputFile"
+                    />
+                    <img
+                      id="imagePreview"
+                      src="#"
+                      alt="Preview da imagem"
+                      className="hidden w-full rounded-lg object-contain absolute "
+                    ></img>
                 </div>
                 <p className="text-[#909090] text-xs ">800 x 800</p>
               </form>

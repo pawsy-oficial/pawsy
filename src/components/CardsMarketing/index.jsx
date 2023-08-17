@@ -1,9 +1,24 @@
 import photoMarketing from "../../img/photoMarketing.png";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
 import { useState } from "react";
+import { toast } from "react-toastify"; 
+import { ToastContainer } from "react-toastify";
 
 export default function Post({ content, onDeletePost}) {
   
+  const notify = (message) => {
+    toast.success('Ação realizada com sucesso', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+    };
+
   const [open, setOpen] = useState(false);
 
   function handleDeletePost() {
@@ -44,6 +59,18 @@ export default function Post({ content, onDeletePost}) {
             Apagar
           </button>
           <ModalDeletePost isOpen={open} setOpen={setOpen}/>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
           <button
             title="Editar Post"
             onClick={handleDeleteComment}
