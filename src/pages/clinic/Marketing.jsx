@@ -3,10 +3,16 @@ import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { PaperPlaneTilt, Camera } from "@phosphor-icons/react";
 import { useState } from "react";
+import "../../style/marketing.css";
 
 export default function Marketing() {
   const [valueTextArea, setValueTextArea] = useState("");
   const [valueInput, setValueInput] = useState("");
+
+  const [selectedOption, setSelectedOption] = useState("");
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   function previewImage() {
     const fileInput = document.getElementById("inputFile");
@@ -77,10 +83,14 @@ export default function Marketing() {
 
                 <div className="flex items-center gap-2">
                   <input
-                    className="w-4 h-[0.85rem] bg-white border border-primary rounded-full"
+                    className="w-4 h-[0.85rem] bg-primary border border-primary rounded-full"
                     type="radio"
+                    name="options"
+                    value="option1"
+                    checked={selectedOption === "option1"}
+                    onChange={handleOptionChange}
                   />
-                  <label className="text-xs" htmlFor="">
+                  <label className="text-xs" htmlFor="option1">
                     Campanha de vacinação
                   </label>
                 </div>
@@ -89,8 +99,12 @@ export default function Marketing() {
                   <input
                     className="w-4 h-[0.85rem] bg-white border border-primary rounded-full"
                     type="radio"
+                    name="options"
+                    value="option2"
+                    checked={selectedOption === "option2"}
+                    onChange={handleOptionChange}
                   />
-                  <label className="text-xs" htmlFor="">
+                  <label className="text-xs" htmlFor="option2">
                     Campanha de castração
                   </label>
                 </div>
@@ -99,8 +113,12 @@ export default function Marketing() {
                   <input
                     className="w-4 h-[0.85rem] bg-white border border-primary rounded-full"
                     type="radio"
+                    name="options"
+                    value="option3"
+                    checked={selectedOption === "option3"}
+                    onChange={handleOptionChange}
                   />
-                  <label className="text-xs" htmlFor="">
+                  <label className="text-xs" htmlFor="option3">
                     Doação
                   </label>
                 </div>
@@ -109,8 +127,12 @@ export default function Marketing() {
                   <input
                     className="w-4 h-[0.85rem] bg-white border border-primary rounded-full"
                     type="radio"
+                    name="options"
+                    value="option4"
+                    checked={selectedOption === "option4"}
+                    onChange={handleOptionChange}
                   />
-                  <label className="text-xs" htmlFor="">
+                  <label className="text-xs" htmlFor="option4">
                     Promoção
                   </label>
                 </div>
@@ -119,13 +141,18 @@ export default function Marketing() {
                   <input
                     className="w-4 h-[0.85rem] bg-white border border-primary rounded-full"
                     type="radio"
+                    name="options"
+                    value="option5"
+                    checked={selectedOption === "option5"}
+                    onChange={handleOptionChange}
                   />
-                  <label className="text-xs" htmlFor="">
+                  <label className="text-xs" htmlFor="option5">
                     Outro
                   </label>
                   <input
-                    className="bg-gray-white border-b-2 border-primary"
+                    className="bg-gray-white border-b-2 border-primary pl-1"
                     type="text"
+                    disabled={selectedOption !== "option5"}
                   />
                 </div>
 
@@ -171,20 +198,20 @@ export default function Marketing() {
                       Publicar <PaperPlaneTilt />
                     </button>
                   </div>
-                    <input
-                      className="invisible"
-                      type="file"
-                      name=""
-                      onChange={previewImage}
-                      accept="image/*"
-                      id="inputFile"
-                    />
-                    <img
-                      id="imagePreview"
-                      src="#"
-                      alt="Preview da imagem"
-                      className="hidden w-full rounded-lg object-contain absolute "
-                    ></img>
+                  <input
+                    className="invisible"
+                    type="file"
+                    name=""
+                    onChange={previewImage}
+                    accept="image/*"
+                    id="inputFile"
+                  />
+                  <img
+                    id="imagePreview"
+                    src="#"
+                    alt="Preview da imagem"
+                    className="hidden w-full rounded-lg object-contain absolute "
+                  ></img>
                 </div>
                 <p className="text-[#909090] text-xs ">800 x 800</p>
               </form>

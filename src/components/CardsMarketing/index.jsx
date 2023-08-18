@@ -1,13 +1,12 @@
 import photoMarketing from "../../img/photoMarketing.png";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
 import { useState } from "react";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
-export default function Post({ content, onDeletePost}) {
-  
+export default function Post({ content, onDeletePost }) {
   const notify = (message) => {
-    toast.success('Ação realizada com sucesso', {
+    toast.success("Ação realizada com sucesso", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -16,8 +15,8 @@ export default function Post({ content, onDeletePost}) {
       draggable: true,
       progress: undefined,
       theme: "colored",
-      });
-    };
+    });
+  };
 
   const [open, setOpen] = useState(false);
 
@@ -58,7 +57,7 @@ export default function Post({ content, onDeletePost}) {
           >
             Apagar
           </button>
-          <ModalDeletePost isOpen={open} setOpen={setOpen}/>
+          <ModalDeletePost isOpen={open} setOpen={setOpen} />
           <ToastContainer
             position="top-center"
             autoClose={5000}
