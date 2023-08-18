@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { HeaderLogin } from "../../components/header/Header"
 import GoBack from "../../components/buttons/GoBack"
 
@@ -8,10 +8,11 @@ export default function Login() {
     
     const location = useLocation()
     const { slug } = location.state
-
+    
+    
+    
     useEffect(() => {
         document.body.classList.add("bg-primary")
-
         return () => { // função de limpeza, é executada quando o componente é desmontado
             document.body.classList.remove("bg-primary")
         }
@@ -30,7 +31,7 @@ export default function Login() {
                 >
 
                     <GoBack/>
-
+                    { slug }
                     <form
                         className="bg-white px-5 py-8 rounded-lg w-1/2 flex flex-col max-w-md"
                     >

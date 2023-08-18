@@ -4,7 +4,7 @@ import Router from "./Router";
 function App() {
   return (
     <BrowserRouter>
-      <Router/>
+        <Router/>
     </BrowserRouter>
   )
 }

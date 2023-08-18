@@ -1,7 +1,7 @@
 import { List, MagnifyingGlass, X } from "@phosphor-icons/react";
 import ProfileModal from "./ProfileModal";
 import Notification from "./Notification";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import LogoGreen from "../../img/logoPawsyGreen.svg"
 import LogoWhite from "../../img/logoPawsy.svg"
@@ -129,13 +129,16 @@ export function Header({ userType }) {
 }
 
 
-export function HeaderLogin({style}) {
+function HeaderLogin({style}) {
 	return (
 		<header
 			className={`flex justify-between items-center w-full sticky top-0 gap-16 px-16 py-8`}
 			style={style}
 		>
-			<img src={LogoWhite} alt="Logo pawsy" />
+			<img 
+				src={LogoWhite} alt="Logo pawsy" height={64} width={200}
+				loading="lazy"
+			/>
 
 			<nav
 				className="flex gap-10 font-lato text-lg text-white"
@@ -147,3 +150,6 @@ export function HeaderLogin({style}) {
 		</header>
 	)
 }
+
+const memoHeaderLogin = memo(HeaderLogin)
+export {memoHeaderLogin as HeaderLogin} 
