@@ -17,6 +17,7 @@ export default function ModalDeletePost({isOpen, setOpen}) {
                   confirmar
                 </button>
                 <button
+                  onClick={() => setOpen(!isOpen) }
                   className="flex items-center bg-[#DC3545] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
                 >
                   cancelar

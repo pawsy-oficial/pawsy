@@ -48,6 +48,9 @@ export default function Post({ content, onDeletePost }) {
           <p>Campanha de vacinação</p>
           <p>15 dias</p>
         </div>
+        {
+          console.log('ddddd')
+        }
         <div className="items-end flex gap-6">
           <button
             title="Deletar Post"
