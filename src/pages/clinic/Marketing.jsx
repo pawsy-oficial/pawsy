@@ -70,7 +70,7 @@ export default function Marketing() {
 
 								<div className="flex items-center gap-2">
 									<input
-										className="w-4 h-[0.85rem] accent-green-600"
+										className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 										type="radio"
 										name="options"
 										value="option1"
@@ -78,14 +78,14 @@ export default function Marketing() {
 										checked={selectedOption === "option1"}
 										onChange={handleOptionChange}
 									/>
-									<label className="text-xs" htmlFor="option1">
+									<label className="text-xs cursor-pointer" htmlFor="option1">
 										Campanha de vacinação
 									</label>
 								</div>
 
 								<div className="flex items-center gap-2">
 									<input
-										className="w-4 h-[0.85rem] accent-green-600"
+										className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 										type="radio"
 										name="options"
 										value="option2"
@@ -93,14 +93,14 @@ export default function Marketing() {
 										checked={selectedOption === "option2"}
 										onChange={handleOptionChange}
 									/>
-									<label className="text-xs" htmlFor="option2">
+									<label className="text-xs cursor-pointer" htmlFor="option2">
 										Campanha de castração
 									</label>
 								</div>
 
 								<div className="flex items-center gap-2">
 									<input
-										className="w-4 h-[0.85rem] accent-green-600"
+										className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 										type="radio"
 										name="options"
 										value="option3"
@@ -108,14 +108,14 @@ export default function Marketing() {
 										checked={selectedOption === "option3"}
 										onChange={handleOptionChange}
 									/>
-									<label className="text-xs" htmlFor="option3">
+									<label className="text-xs cursor-pointer" htmlFor="option3">
 										Doação
 									</label>
 								</div>
 
 								<div className="flex items-center gap-2">
 									<input
-										className="w-4 h-[0.85rem] accent-green-600"
+										className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 										type="radio"
 										name="options"
 										value="option4"
@@ -123,14 +123,14 @@ export default function Marketing() {
 										checked={selectedOption === "option4"}
 										onChange={handleOptionChange}
 									/>
-									<label className="text-xs" htmlFor="option4">
+									<label className="text-xs cursor-pointer" htmlFor="option4">
 										Promoção
 									</label>
 								</div>
 
 								<div className="flex items-center gap-2">
 									<input
-										className="w-4 h-[0.85rem] accent-green-600"
+										className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 										type="radio"
 										name="options"
 										value="option5"
@@ -138,7 +138,7 @@ export default function Marketing() {
 										checked={selectedOption === "option5"}
 										onChange={handleOptionChange}
 									/>
-									<label className="text-xs" htmlFor="option5">
+									<label className="text-xs cursor-pointer" htmlFor="option5">
 										Outro
 									</label>
 									<input
