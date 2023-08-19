@@ -23,8 +23,9 @@ const Patient = lazy(()=> import("./pages/clinic/Patients"))
 
 const SearchResult = lazy(() => import("./pages/tutor/searchResult"))
 
-const Access = lazy(()=> import("./pages/landing/access"))
-const Login = lazy(()=> import("./pages/landing/login"))
+const Access = lazy(()=> import("./pages/registers/access"))
+const Login = lazy(()=> import("./pages/registers/login"))
+const Register = lazy(()=> import("./pages/registers/register"))
 
 // import Clinic from "./pages/clinic/Clinic"
 // import Perfil from "./pages/clinic/Perfil"
@@ -51,6 +52,15 @@ export default function Router(){
                 element={
                     <Suspense fallback={<LoadingPagesPlaceholder/>}>
                         <Access/>    
+                        {/* <LoadingPagesPlaceholder/> */}
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/cadastro" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <Register/>    
                         {/* <LoadingPagesPlaceholder/> */}
                     </Suspense>
                 } 
