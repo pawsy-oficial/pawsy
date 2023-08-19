@@ -27,7 +27,7 @@ export default function Register() {
     }, [])
 
     const style = {
-        position: "absolute"
+        position: "relative"
     }
 
     return (
@@ -35,14 +35,14 @@ export default function Register() {
             <main className="h-screen">
                 <HeaderLogin style={style} />
                 <div
-                    className="max-w-7xl mx-auto h-full flex flex-col justify-center"
+                    className="max-w-7xl mx-auto flex flex-col justify-center "
                 >
 
                     <GoBack />
                     <RegisterForm userType={typeUser} />
                 </div>
             </main>
-            <div className="h-screen w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
+            <div className="h-screen w-1/2 bg-banner bg-cover fixed right-0 top-0 -z-10">
                 <div className="bg-secundary/50 w-1/2 p-6 rounded-lg text-white absolute bottom-20 left-1/2 -translate-x-1/2">
                     <span>Pawsy, a plataforma ideal para o bem-estar dos seus pet</span>
                 </div>

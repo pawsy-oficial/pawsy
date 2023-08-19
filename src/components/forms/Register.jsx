@@ -1,57 +1,11 @@
 import { Camera } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import { useState } from "react";
+import ProgressPass from "../progress/progressPass";
 
 export default function RegisterForm({ userType }) {
 
-    const [ valueInput, setValueInput ] = useState('')
-    const [ eight, setEight ] = useState(false)
-    const [ symbol, setSymbol ] = useState(false)
-    const [ number, setNumber ] = useState(false)
-    const [ levelPass, setLevelPass ] = useState(0)
-
-
-    useEffect(()=>{
-        handleLevelPass()
-        if(valueInput.length >= 8){
-            setEight(true)
-        }
-        else{
-            setEight(false)
-        }
-
-        if(/[0-9]/.test(valueInput) && /[a-zA-Z]/.test(valueInput)){
-            setNumber(true)
-        }
-        else{
-            setNumber(false)
-        }
-
-        if(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(valueInput)){
-            setSymbol(true)
-        }
-        else{
-            setSymbol(false)
-        }
-
-    },[valueInput])
-    
-    
-
-    function handleLevelPass(){
-        if((eight && !number && !symbol) || (!eight && number && !symbol) || (!eight && !number && symbol)){
-            setLevelPass(1)
-        }
-        else if((eight && number && !symbol) || (eight && !number && symbol) || (!eight && number && symbol) ){
-            setLevelPass(2)
-        }
-        else if(eight && number && symbol){
-            setLevelPass(3)
-        }
-        else{
-            setLevelPass(0)
-        }
-    }
+    const [valueInput, setValueInput] = useState('')
 
     return (
         <section
@@ -65,7 +19,7 @@ export default function RegisterForm({ userType }) {
 
             <form action="">
                 <section
-                    className="flex  flex-col items-center gap-2"
+                    className="flex flex-col items-center gap-2"
                 >
                     <label
                         className="w-28 h-28 border border-primary bg-primary/20 rounded-full flex flex-col items-center justify-center cursor-pointer"
@@ -82,10 +36,12 @@ export default function RegisterForm({ userType }) {
                     </small>
                 </section>
 
-                <section>
+                <section
+                    className="mt-4"
+                >
                     <legend>Dados pessoais</legend>
 
-                    <div 
+                    <div
                         className="grid grid-cols-2 gap-8 mt-6"
                     >
 
@@ -121,55 +77,95 @@ export default function RegisterForm({ userType }) {
                         />
                         <div>
                             <input
-                                type="text"
+                                type="password"
                                 placeholder={"Senha"}
-                                className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                                className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
                                 onChange={e => {
                                     setValueInput(e.target.value)
-                                    handleLevelPass()
                                 }}
                                 value={valueInput}
                             />
-                            <div
-                                className="w-full h-1 bg-zinc-200 mt-1"
-                            >
-                                <div
-                                    className={`
-                                        h-full bg-red-400
-                                        ${
-                                            levelPass == 1 && "w-1/4"
-                                        }
-                                    `}
-                                />    
-                            </div>
-
-                            <ul 
-                                className="text-xs mt-2"
-                            >
-                                <li
-                                    className={`${eight && "text-sky-400"} font-semibold`}
-                                >
-                                    Mínimo 8 caracteres
-                                </li>
-                                <li
-                                    className={`${symbol && "text-sky-400"} font-semibold`}
-                                >
-                                    Mínimo 1 símbolo
-                                </li>
-                                <li
-                                    className={`${number && "text-sky-400"} font-semibold`}
-                                >
-                                    Deve haver letras e números
-                                </li>
-                            </ul>
+                            <ProgressPass password={valueInput} />
                         </div>
                         <input
                             type="text"
                             placeholder={"Confirmar senha"}
-                            className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
                         />
                     </div>
                 </section>
+
+                <section
+                    className="mt-4"
+                >
+                    <legend>
+                        Endereço
+                    </legend>
+
+                    <div
+                        className="flex gap-8 mt-6"
+                    >
+                        <input
+                            type="text"
+                            placeholder={"CEP"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                        <input
+                            type="text"
+                            placeholder={"Cidade"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                        <input
+                            type="text"
+                            placeholder={"Estado"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                    </div>
+                    <div
+                        className="flex gap-8 mt-6"
+                    >
+                        <input
+                            type="text"
+                            placeholder={"Endereço"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                        <input
+                            type="text"
+                            placeholder={"nº"}
+                            className="h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                    </div>
+                    <div
+                        className="flex gap-8 mt-6"
+                    >
+                        <input
+                            type="text"
+                            placeholder={"Complemento"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                        <input
+                            type="text"
+                            placeholder={"Bairro"}
+                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        />
+                    </div>
+                </section>
+
+                <section
+                    className="w-full flex justify-center mt-6"
+                >
+                    <label
+                        className="flex items-center gap-3"
+                    >
+                        <input type="checkbox" className="accent-primary w-4 h-4" />
+                        <strong
+                            className="text-base font-normal"
+                        >
+                            Para prosseguir, é necessário concordar com todos os <a href="#" className="text-primary"> termos de privacidade</a>.
+                        </strong>
+                    </label>
+                </section>
+                
             </form>
 
         </section>
