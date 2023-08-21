@@ -1,11 +1,35 @@
 import { Camera } from "@phosphor-icons/react";
-import { useEffect } from "react";
 import { useState } from "react";
 import ProgressPass from "../progress/progressPass";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup"
+
+const schema = Yup.object({
+    name: Yup.string().required().min(2, "O nome deve ser maior que 2 caracteres"),
+    lastName: Yup.string().required(),
+    email: Yup.string().required().email(),
+    cpf: Yup.string().length(11),
+    cell: Yup.number().required(),
+
+}) 
 
 export default function RegisterForm({ userType }) {
 
     const [valueInput, setValueInput] = useState('')
+
+
+    const {register, handleSubmit, formState} = useForm({
+        resolver: yupResolver(schema),
+        mode: "onSubmit"
+    })
+    const onSubmit = (data)=>{
+        console.log(data);
+    }
+
+    const { errors } = formState
+
+    console.log(errors);
 
     return (
         <section
@@ -17,7 +41,7 @@ export default function RegisterForm({ userType }) {
                 Criar nova conta
             </h2>
 
-            <form action="">
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <section
                     className="flex flex-col items-center gap-2"
                 >
@@ -27,7 +51,11 @@ export default function RegisterForm({ userType }) {
                     >
                         <Camera size={48} color="#22937E" />
 
-                        <input type="file" multiple={false} className="hidden" />
+                        <input 
+                            type="file" 
+                            multiple={false} 
+                            className="hidden"
+                        />
                     </label>
                     <small
                         className="w-28 text-center text-xs text-zinc-400"
@@ -44,36 +72,48 @@ export default function RegisterForm({ userType }) {
                     <div
                         className="grid grid-cols-2 gap-8 mt-6"
                     >
-
-                        <input
-                            type="text"
-                            placeholder={"Nome"}
-                            className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                        />
+                        <div>
+                            <input
+                                type="text"
+                                placeholder={"Nome"}
+                                className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.name && "border-red-500 focus:border-red-500"}`}
+                                {...register("name")}
+                            />
+                            <span>
+                                {
+                                    errors.name?.message
+                                }
+                            </span>
+                        </div>
                         <input
                             type="text"
                             placeholder={"Sobrenome"}
                             className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("lastName")}
                         />
                         <input
                             type="text"
                             placeholder={"CPF"}
                             className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("cpf")}
                         />
                         <input
                             type="text"
                             placeholder={"Data de nascimento"}
                             className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("date")}
                         />
                         <input
                             type="text"
                             placeholder={"Email"}
                             className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("email")}
                         />
                         <input
                             type="text"
                             placeholder={"Celular"}
                             className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("cell")}
                         />
                         <div>
                             <input
@@ -84,13 +124,15 @@ export default function RegisterForm({ userType }) {
                                     setValueInput(e.target.value)
                                 }}
                                 value={valueInput}
+                                // {...register("pass")}
                             />
                             <ProgressPass password={valueInput} />
                         </div>
                         <input
-                            type="text"
+                            type="password"
                             placeholder={"Confirmar senha"}
                             className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("configPass")}
                         />
                     </div>
                 </section>
@@ -166,6 +208,8 @@ export default function RegisterForm({ userType }) {
                     </label>
                 </section>
                 
+                <button type="submit">Enviar</button>
+
             </form>
 
         </section>
