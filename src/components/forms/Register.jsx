@@ -10,13 +10,18 @@ import axios from "axios";
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 16))
 
 const schema = Yup.object({
-    name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ser maior que 2 caracteres"),
-    lastName: Yup.string().required("Campo obrigatório").min(2, "O sobrenome deve ser maior que 2 caracteres"),
-    email: Yup.string().required().email(),
-    cpf: Yup.string().required().length(14),
-    cell: Yup.string().required().matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular invalido"),
-    date: Yup.date().max(birthdate, "A conta só pode ser criada +16 anos"),
-    cep: Yup.string().required().length(8, "CEP possui 8 digitos")
+    name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
+    lastName: Yup.string().required("Campo obrigatório").min(2, "O sobrenome deve ter mais de 2 caracteres"),
+    email: Yup.string().required("Campo obrigatório").email("Digite um endereço de e-mail válido"),
+    cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos"),
+    cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
+    date: Yup.date().max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
+    cep: Yup.string().required("Campo obrigatório").length(8, "CEP deve possuir 8 dígitos"),
+    city: Yup.string().required("Campo obrigatório"),
+    street: Yup.string().required("Campo obrigatório"),
+    number: Yup.number().positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
+    complement: Yup.string(),
+    neighborhood: Yup.string().required("Campo obrigatório")
 })
 
 export default function RegisterForm({ userType }) {
@@ -34,9 +39,12 @@ export default function RegisterForm({ userType }) {
     const [street, setStreet] = useState('')
 
     useEffect(() => {
+        setLoadingCep(true)
+
         axios.get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
             .then(
                 response => {
+                    setLoadingCep(false)
                     const { data } = response
 
                     setCity(data.city)
@@ -46,6 +54,7 @@ export default function RegisterForm({ userType }) {
                 }
             )
             .catch(err => {
+                setLoadingCep(false)
                 console.error(err);
 
                 setCity('')
@@ -53,13 +62,17 @@ export default function RegisterForm({ userType }) {
                 setState('')
                 setStreet('')
 
-                if (err.response.status === 404) {
-                    setErrorCep(true)
-                }
+                // if (err.response.status === 404) {
+                //     setErrorCep(true)
+                // }
             })
-            .finally(
+            .finally(() => {
+                setLoadingCep(false)
                 setErrorCep(false)
+            }
             )
+
+
     }, [cep])
 
     const { register, handleSubmit, formState } = useForm({
@@ -286,7 +299,8 @@ export default function RegisterForm({ userType }) {
                             <input
                                 type="text"
                                 placeholder={"CEP"}
-                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                disabled={loadingCep}
                                 // onBlur é sobrescrito pelo onBlur da Lib 
                                 {...register('cep', {
                                     onBlur: // onBlur da lib React-hook-form
@@ -307,52 +321,151 @@ export default function RegisterForm({ userType }) {
                                 </small>
                             }
                         </div>
-                        <input
-                            type="text"
-                            placeholder={"Cidade"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
 
-                            value={city}
-                        />
-                        <input
-                            type="text"
-                            placeholder={"Estado"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        <div className="w-full">
+                            <input
+                                type="text"
+                                placeholder={"Cidade"}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.city && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                disabled={loadingCep}
+                                value={city}
+                                {...register('city', {
+                                    onChange: event => setCity(event.target.value)
+                                })}
+                            />
+                            {
+                                errors.city &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.city?.message
+                                    }
+                                </small>
+                            }
+                        </div>
 
-                            value={state}
-                        />
+                        <div className="w-full">
+
+                            <input
+                                type="text"
+                                placeholder={"Estado"}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                disabled={loadingCep}
+                                value={state}
+                            />
+                            {
+                                errors.state &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.state?.message
+                                    }
+                                </small>
+                            }
+                        </div>
+                    </div>
+                    <div
+                        className="flex gap-8 mt-6 w-full"
+                    >
+                        <div className="w-full">
+                            <input
+                                type="text"
+                                placeholder={"Endereço"}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.street && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                disabled={loadingCep}
+                                value={street}
+                                {...register('street', {
+                                    onChange: event => setStreet(event.target.value)
+                                })}
+                            />
+
+
+                            {
+                                errors.street &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.street?.message
+                                    }
+                                </small>
+                            }
+                        </div>
+
+                        <div>
+
+                            <input
+                                type="text"
+                                placeholder={"nº"}
+                                className={`h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.number && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                {...register('number')}
+                            />
+                            {
+                                errors.number &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.number?.message
+                                    }
+                                </small>
+                            }
+                        </div>
                     </div>
                     <div
                         className="flex gap-8 mt-6"
                     >
-                        <input
-                            type="text"
-                            placeholder={"Endereço"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                        <div className="w-full">
 
-                            value={street}
-                        />
-                        <input
-                            type="text"
-                            placeholder={"nº"}
-                            className="h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                        />
-                    </div>
-                    <div
-                        className="flex gap-8 mt-6"
-                    >
-                        <input
-                            type="text"
-                            placeholder={"Complemento"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                        />
-                        <input
-                            type="text"
-                            placeholder={"Bairro"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            <input
+                                type="text"
+                                placeholder={"Complemento"}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.complement && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                {...register('complement')}
+                            />
+                            {
+                                errors.complement &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.complement?.message
+                                    }
+                                </small>
+                            }
+                        </div>
 
-                            value={neighborhood}
-                        />
+                        <div className="w-full">
+
+                            <input
+                                type="text"
+                                placeholder={"Bairro"}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.neighborhood && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                disabled={loadingCep}
+                                value={neighborhood}
+                                {...register('neighborhood', {
+                                    onChange: event => setNeighborhood(event.target.value)
+                                })}
+                            />
+                            {
+                                errors.neighborhood &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.neighborhood?.message
+                                    }
+                                </small>
+                            }
+                        </div>
                     </div>
                 </section>
 
