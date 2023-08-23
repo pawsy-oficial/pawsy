@@ -37,7 +37,6 @@ export default function Register() {
                 <div
                     className="max-w-7xl mx-auto flex flex-col justify-center "
                 >
-
                     <GoBack />
                     <RegisterForm userType={typeUser} />
                 </div>
