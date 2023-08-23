@@ -78,11 +78,31 @@ function InputFormRegister({ value, onChange, register, mask, type = "text", pla
         />
     )
 }
+// ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}
 
+function InputFormRegisterCEP({ value, onChange, loading, register }){
+    return(
+        <InputMask
+            mask={"99999-999"} 
+            maskChar={null}
+            placeholder={"CEP"}
+            className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed `}
+            disabled={loading}
+
+            {...register('cep')}
+
+            value={value}
+            onChange={onChange}
+        />
+    )
+}
+
+const memoInputFormRegisterCEP = memo(InputFormRegisterCEP)
 const memoInputFormRegister = memo(InputFormRegister)
 const memoInputDropDown = memo(InputDropDown)
 const memoSwitch = memo(Switch)
 
+export { memoInputFormRegisterCEP as InputFormRegisterCEP } 
 export { memoInputDropDown as InputDropDown }
 export { memoSwitch as Switch }
 export { memoInputFormRegister as InputFormRegister }

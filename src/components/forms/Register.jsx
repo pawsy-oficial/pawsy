@@ -4,7 +4,7 @@ import ProgressPass from "../progress/progressPass";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
-import { InputFormRegister } from "../inputsComponents";
+import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
 import axios from "axios";
 
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 16))
@@ -16,7 +16,7 @@ const schema = Yup.object({
     cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos"),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
     date: Yup.date().max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
-    cep: Yup.string().required("Campo obrigatório").length(8, "CEP deve possuir 8 dígitos"),
+    cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
     number: Yup.number().positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
@@ -38,47 +38,72 @@ export default function RegisterForm({ userType }) {
     const [state, setState] = useState('')
     const [street, setStreet] = useState('')
 
-    useEffect(() => {
-        setLoadingCep(true)
-
-        axios.get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
-            .then(
-                response => {
-                    setLoadingCep(false)
-                    const { data } = response
-
-                    setCity(data.city)
-                    setNeighborhood(data.neighborhood)
-                    setState(data.state)
-                    setStreet(data.street)
-                }
-            )
-            .catch(err => {
-                setLoadingCep(false)
-                console.error(err);
-
-                setCity('')
-                setNeighborhood('')
-                setState('')
-                setStreet('')
-
-                // if (err.response.status === 404) {
-                //     setErrorCep(true)
-                // }
-            })
-            .finally(() => {
-                setLoadingCep(false)
-                setErrorCep(false)
-            }
-            )
-
-
-    }, [cep])
-
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, setValue, setError } = useForm({
         resolver: yupResolver(schema),
         mode: "onSubmit"
     })
+
+    useEffect(() => {
+
+        if(cep.length == 9){
+            setLoadingCep(true)
+            axios.get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
+                .then(
+                    response => {
+                        setLoadingCep(false)
+                        const { data } = response
+    
+                        setCity(data.city)
+                        setNeighborhood(data.neighborhood)
+                        setState(data.state)
+                        setStreet(data.street)
+
+                        setValue("cep", cep, { shouldValidate: true })
+                        if(data.street){
+                            setValue("street", data.street)
+                        }
+                        if(data.city){
+                            setValue("city", data.city)
+                        }
+                        if(data.state){
+                            setValue("state", data.state)
+                        }
+                        if(data.neighborhood){
+                            setValue("neighborhood", data.neighborhood)
+                        }
+                    }
+                )
+                .catch(err => {
+                    setLoadingCep(false)
+    
+                    setCity('')
+                    setNeighborhood('')
+                    setState('')
+                    setStreet('')
+                    
+                    setError("cep", { message: "CEP não encontrado" })
+                    setValue("street", "")
+                    setValue("city", "")
+                    setValue("state", "")
+                    setValue("neighborhood", "")
+
+                })
+                .finally(() => {
+                    setLoadingCep(false)
+                    setErrorCep(false)
+                }
+            )
+        }
+    }, [cep])
+
+    useEffect(()=>{
+        console.log(street);
+    },[street])
+
+    
+
+    
+
     const onSubmit = (data) => {
         console.log(data);
     }
@@ -296,7 +321,7 @@ export default function RegisterForm({ userType }) {
                         className="flex gap-8 mt-6"
                     >
                         <div className="w-full">
-                            <input
+                            {/* <input
                                 type="text"
                                 placeholder={"CEP"}
                                 className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
@@ -308,7 +333,15 @@ export default function RegisterForm({ userType }) {
                                             setCep(event.target.value)
                                         }
                                 })}
+                            /> */}
+
+                            <InputFormRegisterCEP 
+                                velue={cep}
+                                onChange={e => setCep(e.target.value)}
+                                loading = {loadingCep}
+                                register = { register }
                             />
+
                             {
                                 (errors.cep || errorCep) &&
                                 <small
