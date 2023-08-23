@@ -21,7 +21,9 @@ const schema = Yup.object({
     street: Yup.string().required("Campo obrigatório"),
     number: Yup.number().positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
     complement: Yup.string(),
-    neighborhood: Yup.string().required("Campo obrigatório")
+    neighborhood: Yup.string().required("Campo obrigatório"),
+    password: Yup.string().required(),
+    confirm_password: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
 export default function RegisterForm({ userType }) {
@@ -45,42 +47,42 @@ export default function RegisterForm({ userType }) {
 
     useEffect(() => {
 
-        if(cep.length == 9){
+        if (cep.length == 9) {
             setLoadingCep(true)
             axios.get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
                 .then(
                     response => {
                         setLoadingCep(false)
                         const { data } = response
-    
+
                         setCity(data.city)
                         setNeighborhood(data.neighborhood)
                         setState(data.state)
                         setStreet(data.street)
 
                         setValue("cep", cep, { shouldValidate: true })
-                        if(data.street){
+                        if (data.street) {
                             setValue("street", data.street)
                         }
-                        if(data.city){
+                        if (data.city) {
                             setValue("city", data.city)
                         }
-                        if(data.state){
+                        if (data.state) {
                             setValue("state", data.state)
                         }
-                        if(data.neighborhood){
+                        if (data.neighborhood) {
                             setValue("neighborhood", data.neighborhood)
                         }
                     }
                 )
                 .catch(err => {
                     setLoadingCep(false)
-    
+
                     setCity('')
                     setNeighborhood('')
                     setState('')
                     setStreet('')
-                    
+
                     setError("cep", { message: "CEP não encontrado" })
                     setValue("street", "")
                     setValue("city", "")
@@ -92,20 +94,19 @@ export default function RegisterForm({ userType }) {
                     setLoadingCep(false)
                     setErrorCep(false)
                 }
-            )
+                )
         }
     }, [cep])
 
-    useEffect(()=>{
-        console.log(street);
-    },[street])
 
-    
-
-    
 
     const onSubmit = (data) => {
         console.log(data);
+        handleValidationCPF(data.cpf)
+    }
+
+    function handleValidationCPF({ cpf }){
+        
     }
 
     const { errors } = formState
@@ -113,7 +114,7 @@ export default function RegisterForm({ userType }) {
 
     return (
         <section
-            className="bg-white rounded-lg py-8 px-5 flex flex-col gap-8 max-w-2xl"
+            className="bg-white rounded-lg py-8 px-5 flex flex-col gap-8 max-w-2xl mb-28"
         >
             <h2
                 className="font-sora text-[2rem] font-semibold"
@@ -121,7 +122,9 @@ export default function RegisterForm({ userType }) {
                 Criar nova conta
             </h2>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <section
                     className="flex flex-col items-center gap-2"
                 >
@@ -292,21 +295,35 @@ export default function RegisterForm({ userType }) {
                                 type="password"
                                 placeholder={"Senha"}
                                 className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                                onChange={e => {
-                                    setValueInput(e.target.value)
-                                }}
+
                                 value={valueInput}
-                            // {...register("pass")}
+                                {...register("password", {
+                                    onChange: e => {
+                                        setValueInput(e.target.value)
+                                    }
+                                })}
                             />
                             <ProgressPass password={valueInput} />
                         </div>
-
-                        <input
-                            type="password"
-                            placeholder={"Confirmar senha"}
-                            className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                            {...register("configPass")}
-                        />
+                        <div>
+                            <input
+                                type="password"
+                                placeholder={"Confirmar senha"}
+                                className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                                {...register("confirm_password")}
+                            />
+                            {
+                                errors.confirm_password &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.confirm_password?.message
+                                    }
+                                </small>
+                            }
+                        </div>
                     </div>
                 </section>
 
@@ -335,11 +352,11 @@ export default function RegisterForm({ userType }) {
                                 })}
                             /> */}
 
-                            <InputFormRegisterCEP 
+                            <InputFormRegisterCEP
                                 velue={cep}
                                 onChange={e => setCep(e.target.value)}
-                                loading = {loadingCep}
-                                register = { register }
+                                loading={loadingCep}
+                                register={register}
                             />
 
                             {
@@ -517,7 +534,12 @@ export default function RegisterForm({ userType }) {
                     </label>
                 </section>
 
-                <button type="submit">Enviar</button>
+                <button
+                    type="submit"
+                    className="bg-[#304C52] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8"
+                >
+                    Enviar
+                </button>
 
             </form>
 
