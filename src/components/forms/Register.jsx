@@ -15,7 +15,7 @@ const schema = Yup.object({
     email: Yup.string().required("Campo obrigatório").email("Digite um endereço de e-mail válido"),
     cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos"),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
-    date: Yup.date().max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
+    date: Yup.date().required("Campo obrigatório").max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
@@ -23,7 +23,7 @@ const schema = Yup.object({
     complement: Yup.string(),
     neighborhood: Yup.string().required("Campo obrigatório"),
     password: Yup.string().required(),
-    confirm_password: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+    confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
 export default function RegisterForm({ userType }) {
@@ -91,9 +91,9 @@ export default function RegisterForm({ userType }) {
 
                 })
                 .finally(() => {
-                    setLoadingCep(false)
-                    setErrorCep(false)
-                }
+                        setLoadingCep(false)
+                        setErrorCep(false)
+                    }
                 )
         }
     }, [cep])
@@ -102,11 +102,51 @@ export default function RegisterForm({ userType }) {
 
     const onSubmit = (data) => {
         console.log(data);
-        handleValidationCPF(data.cpf)
     }
 
-    function handleValidationCPF({ cpf }){
+    useEffect(()=>{
+        if(cpf.length == 14){
+            handleValidationCPF(cpf)
+        }
+    },[cpf])
+    function handleValidationCPF(cpf){
+        let format = cpf.replace(".","").replace(".","").split("")
+        let firstDigit = format[10]
+        let secondDigit = format[11]
         
+        const firstDigitCalculate = calculateDigits(format, 10, 8)
+
+        format.splice(9,0,firstDigitCalculate)
+
+        const secondDigitCalculate = calculateDigits(format, 11, 9)
+        
+
+        if(firstDigit == firstDigitCalculate && secondDigit == secondDigitCalculate){
+            console.log("autentico")
+        } else { 
+            console.log("Invalido")
+            setError("cpf", { message: "invalido" })
+        }
+    }
+
+    function calculateDigits(digits, count, repeat){
+        let countMultiple = count
+        let sumDigits = 0
+
+        for(let i = 0; i <= repeat; i++){
+            const calc = parseInt(digits[i]) * countMultiple
+            sumDigits += calc
+            countMultiple--
+        }
+
+        let resultDigit = sumDigits % 11
+
+        if(resultDigit == 0 || resultDigit == 1){
+            return 0
+        }
+        else {
+            return 11 - resultDigit
+        }
     }
 
     const { errors } = formState
