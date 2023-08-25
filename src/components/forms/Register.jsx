@@ -13,7 +13,7 @@ const schema = Yup.object({
     name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
     lastName: Yup.string().required("Campo obrigatório").min(2, "O sobrenome deve ter mais de 2 caracteres"),
     email: Yup.string().required("Campo obrigatório").email("Digite um endereço de e-mail válido"),
-    cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos"),
+    cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos").test("cpf-valido", "CPF inválido", (cpf) => handleValidationCPF(cpf)),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
     date: Yup.date().required("Campo obrigatório").max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
@@ -25,6 +25,39 @@ const schema = Yup.object({
     password: Yup.string().required(),
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
+
+function handleValidationCPF(cpf){
+    let format = cpf.replace(".", "").replace(".", "").split("");
+    let firstDigit = format[10];
+    let secondDigit = format[11];
+
+    const firstDigitCalculate = calculateDigits(format, 10, 8);
+
+    format.splice(9, 0, firstDigitCalculate);
+
+    const secondDigitCalculate = calculateDigits(format, 11, 9);
+
+    return (firstDigit == firstDigitCalculate) && (secondDigit == secondDigitCalculate)
+}
+
+function calculateDigits(digits, count, repeat) {
+    let countMultiple = count;
+    let sumDigits = 0;
+
+    for (let i = 0; i <= repeat; i++) {
+        const calc = parseInt(digits[i]) * countMultiple;
+        sumDigits += calc;
+        countMultiple--;
+    }
+
+    let resultDigit = sumDigits % 11;
+
+    if (resultDigit == 0 || resultDigit == 1) {
+        return 0;
+    } else {
+        return 11 - resultDigit;
+    }
+}
 
 export default function RegisterForm({ userType }) {
 
@@ -91,9 +124,9 @@ export default function RegisterForm({ userType }) {
 
                 })
                 .finally(() => {
-                        setLoadingCep(false)
-                        setErrorCep(false)
-                    }
+                    setLoadingCep(false)
+                    setErrorCep(false)
+                }
                 )
         }
     }, [cep])
@@ -104,50 +137,15 @@ export default function RegisterForm({ userType }) {
         console.log(data);
     }
 
-    useEffect(()=>{
-        if(cpf.length == 14){
-            handleValidationCPF(cpf)
-        }
-    },[cpf])
-    function handleValidationCPF(cpf){
-        let format = cpf.replace(".","").replace(".","").split("")
-        let firstDigit = format[10]
-        let secondDigit = format[11]
-        
-        const firstDigitCalculate = calculateDigits(format, 10, 8)
+    // useEffect(()=>{
+    //     if(cpf.length == 14){
+    //         handleValidationCPF(cpf)
+    //     }
+    // },[cpf])
 
-        format.splice(9,0,firstDigitCalculate)
 
-        const secondDigitCalculate = calculateDigits(format, 11, 9)
-        
 
-        if(firstDigit == firstDigitCalculate && secondDigit == secondDigitCalculate){
-            console.log("autentico")
-        } else { 
-            console.log("Invalido")
-            setError("cpf", { message: "invalido" })
-        }
-    }
 
-    function calculateDigits(digits, count, repeat){
-        let countMultiple = count
-        let sumDigits = 0
-
-        for(let i = 0; i <= repeat; i++){
-            const calc = parseInt(digits[i]) * countMultiple
-            sumDigits += calc
-            countMultiple--
-        }
-
-        let resultDigit = sumDigits % 11
-
-        if(resultDigit == 0 || resultDigit == 1){
-            return 0
-        }
-        else {
-            return 11 - resultDigit
-        }
-    }
 
     const { errors } = formState
 
@@ -245,6 +243,7 @@ export default function RegisterForm({ userType }) {
                                 mask={"999.999.999-99"}
                                 placeholder={"CPF"}
                                 nameRegister={"cpf"}
+                                ariaInvalid={errors.cpf ? "true" : "false"}
                             />
                             {
                                 errors.cpf &&
