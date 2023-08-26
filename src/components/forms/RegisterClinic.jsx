@@ -162,6 +162,20 @@ export default function RegisterFormClinic({ userType }) {
 
     const { errors } = formState
 
+    const [ selectImage, setSelectImage ] = useState(null)
+    const [ urlImage, setUrlImage ] = useState(null)
+
+    useEffect(()=>{
+        if(selectImage){
+            console.log(selectImage);
+            if(selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg" ){
+                console.log("A imagem não atende os requisitos ");
+            }
+            else{
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    },[selectImage])
 
     return (
         <section
@@ -180,15 +194,19 @@ export default function RegisterFormClinic({ userType }) {
                     className="flex flex-col items-center gap-2"
                 >
                     <label
-                        className="w-28 h-28 border border-primary bg-primary/20 rounded-full flex flex-col items-center justify-center cursor-pointer"
+                        className="w-28 h-28 overflow-hidden border border-primary bg-primary/20 rounded-full flex flex-col items-center justify-center cursor-pointer"
                         title="Imagem de perfil"
                     >
-                        <Camera size={48} color="#22937E" />
+                        {
+                            urlImage ? <img  className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
+                        }
 
                         <input
                             type="file"
                             multiple={false}
                             className="hidden"
+                            onChange={ (event) => setSelectImage(event.target.files[0]) }
+                            accept="image/png, image/jpg, image/jpeg"
                         />
                     </label>
                     <small

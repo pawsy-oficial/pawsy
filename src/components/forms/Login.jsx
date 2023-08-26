@@ -133,6 +133,7 @@ export default function LoginForm({ userType }) {
                     />
                     <a
                         className="text-primary underline text-xs cursor-pointer font-semibold"
+                        onClick={()=>navigate("/recuperar-senha", { state: { auth: "a" } })}
                     >
                         Esqueci a senha
                     </a>

@@ -26,6 +26,7 @@ const SearchResult = lazy(() => import("./pages/tutor/searchResult"))
 const Access = lazy(()=> import("./pages/registers/access"))
 const Login = lazy(()=> import("./pages/registers/login"))
 const Register = lazy(()=> import("./pages/registers/register"))
+const ForgotPass = lazy(()=> import("./pages/registers/forgotPassword"))
 
 // import Clinic from "./pages/clinic/Clinic"
 // import Perfil from "./pages/clinic/Perfil"
@@ -52,6 +53,15 @@ export default function Router(){
                 element={
                     <Suspense fallback={<LoadingPagesPlaceholder/>}>
                         <Access/>    
+                        {/* <LoadingPagesPlaceholder/> */}
+                    </Suspense>
+                } 
+            />
+            <Route 
+                path="/recuperar-senha" 
+                element={
+                    <Suspense fallback={<LoadingPagesPlaceholder/>}>
+                        <ForgotPass/>    
                         {/* <LoadingPagesPlaceholder/> */}
                     </Suspense>
                 } 
