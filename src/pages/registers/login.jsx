@@ -4,6 +4,7 @@ import { HeaderLogin } from "../../components/header/Header"
 import GoBack from "../../components/buttons/GoBack"
 import { useState } from "react"
 import LoginForm from "../../components/forms/Login"
+import { CardNotificationRegisters } from "../../components/cardsAndBoxes/cardNotificationRegister"
 
 export default function Login() {
 
@@ -45,9 +46,7 @@ export default function Login() {
                 </div>
             </main>
             <div className="h-screen w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
-                <div className="bg-secundary/50 w-1/2 p-6 rounded-lg text-white absolute bottom-20 left-1/2 -translate-x-1/2">
-                    <span>Pawsy, a plataforma ideal para o bem-estar dos seus pet</span>
-                </div>
+                <CardNotificationRegisters/>
             </div>
         </>
     )
