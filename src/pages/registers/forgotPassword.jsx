@@ -47,12 +47,12 @@ export default function forgotPassword() {
             <main className="h-screen">
                 <HeaderLogin style={style} />
                 <div
-                    className="max-w-7xl mx-auto h-full flex flex-col justify-center"
+                    className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex flex-col justify-center"
                 >
 
                     <GoBack />
                     <form
-                        className="bg-white px-5 py-8 rounded-lg w-1/2 flex flex-col max-w-md"
+                        className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md"
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <h2
@@ -95,7 +95,7 @@ export default function forgotPassword() {
                     </form>
                 </div>
             </main>
-            <div className="h-screen w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
+            <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
                 <CardNotificationRegisters />
             </div>
         </>

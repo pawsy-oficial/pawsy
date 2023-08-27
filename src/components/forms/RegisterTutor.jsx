@@ -167,7 +167,7 @@ export default function RegisterFormTutor({ userType }) {
 
     return (
         <section
-            className="bg-white rounded-lg py-8 px-5 flex flex-col gap-8 max-w-2xl mb-28"
+            className="bg-white rounded-lg py-8 px-5 flex flex-col gap-8  w-full md:max-w-2xl md:mb-28"
         >
             <h2
                 className="font-sora text-[2rem] font-semibold"

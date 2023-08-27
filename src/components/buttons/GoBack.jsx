@@ -6,7 +6,7 @@ export default function GoBack() {
     const navigation = useNavigate()
     return (
         <a
-            className="flex items-center text-lg text-white cursor-pointer my-5 group w-fit"
+            className="select-none flex items-center text-lg text-white cursor-pointer my-5 group w-fit"
             onClick={() => navigation(-1)}
         >
             <CaretLeft className="group-hover:text-white" />

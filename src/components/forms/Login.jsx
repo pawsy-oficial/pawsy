@@ -82,7 +82,7 @@ export default function LoginForm({ userType }) {
 
     return (
         <form
-            className="bg-white px-5 py-8 rounded-lg w-1/2 flex flex-col max-w-md"
+            className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md"
             onSubmit={handleSubmit(onSubmit)}
         >
             <h2

@@ -46,7 +46,7 @@ export default function ButtonOptionsLogin({ title, description, imageName, slug
                     {type.title}
                 </strong>
                 <span
-                    className="text-sm font-lato text-zinc-400"
+                    className="text-sm text-start font-lato text-zinc-400"
                 >
                     {type.description}
                 </span>

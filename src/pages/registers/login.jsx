@@ -38,14 +38,14 @@ export default function Login() {
             <main className="h-screen">
                 <HeaderLogin style={style} />
                 <div
-                    className="max-w-7xl mx-auto h-full flex flex-col justify-center"
+                    className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex flex-col justify-center"
                 >
 
                     <GoBack />
                     <LoginForm  userType={typeUser} />
                 </div>
             </main>
-            <div className="h-screen w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
+            <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
                 <CardNotificationRegisters/>
             </div>
         </>

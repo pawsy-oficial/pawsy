@@ -25,7 +25,7 @@ function CardNotificationRegisters() {
 
     return (
         <div
-            className={`bg-secundary/50 max-w-[384px] w-fit p-6 rounded-lg text-white absolute bottom-20 transition -translate-x-1/4 left-1/2`}
+            className={`bg-secundary/50 wmd:max-w-[384px] md:w-fit w-full p-6 rounded-lg text-white absolute bottom-20 transition md:-translate-x-1/4 -translate-x-1/2 left-1/2`}
 
         >
             <span>

@@ -29,12 +29,12 @@ export default function Access() {
             <main className={`h-screen`}>
                 <HeaderLogin style={style}/>
                 <div
-                    className="max-w-7xl mx-auto h-full flex items-center"
+                    className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex items-center"
                 >
                     <ButtonOptions />
                 </div>
             </main>
-            <div className="h-screen w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10" />
+            <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10" />
         </>
     )
 }
@@ -46,7 +46,7 @@ function ButtonOptions({  }) {
 
     return (
         <section
-            className={`min-w-[250px] w-1/2 flex flex-col gap-8  ${animate && "animate-section"}`}
+            className={`min-w-[250px] w-full md:w-1/2 flex flex-col gap-8  ${animate && "animate-section"}`}
         >
             <p
                 className="text-white text-2xl"

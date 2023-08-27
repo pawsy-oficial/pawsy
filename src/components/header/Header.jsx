@@ -141,7 +141,7 @@ function HeaderLogin({style}) {
 			/>
 
 			<nav
-				className="flex gap-10 font-lato text-lg text-white"
+				className="gap-10 font-lato text-lg text-white hidden md:flex"
 			>
 				<a href="/">página inicial</a>
 				<a href="#">sobre nós</a>
