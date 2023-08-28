@@ -1,9 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import dono from "../../img/profilePerson.jpeg"
-import { ArrowUUpLeft, GenderMale } from "@phosphor-icons/react";
+import { ArrowUUpLeft, GenderMale, X } from "@phosphor-icons/react";
 import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
 import { useState } from "react";
+import ViewRevenues from "../../components/componentsMedic/viewPatientsComponents/viewRevenues";
+import ViewVaccines from "../../components/componentsMedic/viewPatientsComponents/viewVaccines";
 
 
 export default function ViewPatient(){
@@ -12,6 +14,8 @@ export default function ViewPatient(){
     const navigate = useNavigate()
     const location = useLocation()
     const { pet } = location.state
+
+    const [viewType, setViewType] = useState('none');
 
     return(
         <>
@@ -51,10 +55,10 @@ export default function ViewPatient(){
                         </div>
                     </div>
                     <div className="flex flex-col items-end gap-4 h-full justify-center">
-                        <button className="rounded-md px-6 text-center text-white bg-[#22937E] p-1">
+                        <button onClick={() => setViewType('revenues')} className="rounded-md px-6 text-center text-white bg-[#22937E] p-1">
                             Receitas médicas
                         </button>
-                        <button className="rounded-md px-6 text-center text-white bg-[#22937E] p-1">
+                        <button onClick={() => setViewType('vaccine')} className="rounded-md px-6 text-center text-white bg-[#22937E] p-1">
                             Vacinas e vermifugação
                         </button>
                     </div>
@@ -74,6 +78,16 @@ export default function ViewPatient(){
                     </div>
                 </section>
             </main>
+            <div className="flex justify-center w-full mt-10">
+                <section>
+                    {
+                        viewType === 'revenues' && <ViewRevenues setViewType={setViewType}/>
+                    }
+                    {
+                        viewType === 'vaccine' && <ViewVaccines setViewType={setViewType}/>
+                    }
+                </section> 
+            </div>
         </>
     )
 }
