@@ -6,7 +6,6 @@ import VetCloser from "./pages/tutor/VetCloser"
 import Revenues from "./pages/tutor/Revenues"
 import WellBeing from "./pages/tutor/WellCloser"
 import ScheduleTutor from "./pages/tutor/ScheduleTutor"
-
 import Clinic from "./pages/clinic/Clinic"
 import Perfil from "./pages/clinic/Perfil"
 import Schedule from "./pages/clinic/Schedule"
@@ -17,6 +16,9 @@ import Medic from "./pages/medic/medic"
 import PatientsForMedic from "./pages/medic/patients"
 import ViewPatient from "./pages/medic/viewPatient"
 import SearchResult from "./pages/tutor/searchResult"
+import Vaccine from "./pages/medic/vaccine"
+import MarketingRevenue from "./pages/medic/revenues"
+import NewRevenues from "./pages/medic/newRevenues"
 
 const PrivateRouter = ({ user, children }) => {
   // console.log(user);
@@ -70,6 +72,15 @@ export default function Router(){
             />
             <Route path="/paciente" 
                 element={<ViewPatient/>} 
+            />
+            <Route path="/receitas-medicas" 
+                element={<MarketingRevenue/>} 
+            />
+            <Route path="/vacinas-e-vermifugacao" 
+                element={<Vaccine/>} 
+            />
+            <Route path="/nova-receita" 
+                element={<NewRevenues/>} 
             />
 
         </Routes>

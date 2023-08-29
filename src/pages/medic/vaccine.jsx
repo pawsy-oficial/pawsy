@@ -282,7 +282,7 @@ export default function Vaccine() {
         <div className="flex flex-col gap-7">
           <a
             className="flex items-center  text-sm cursor-pointer"
-            onClick={() => navigate("/medic")}
+            onClick={() => navigate("/medico")}
           >
             <CaretLeft color="#22B77E" />
             Voltar

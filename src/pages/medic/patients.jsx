@@ -35,7 +35,7 @@ export default function PatientsForMedic(){
                 <HeaderMedic/>
             </header>
             <div className="flex">
-                <button onClick={() => navigate("/medic")} className="px-96 flex items-center gap-2 -mb-10 mt-5"><ArrowUUpLeft color="#22B77E"/>Voltar</button>
+                <button onClick={() => navigate("/medico")} className="px-96 flex items-center gap-2 -mb-10 mt-5"><ArrowUUpLeft color="#22B77E"/>Voltar</button>
             </div>
             <section className="mt-16 flex justify-center items-center bg-[#F5F7FB]">
                 <div className="p-6 bg-white rounded-lg flex flex-col">

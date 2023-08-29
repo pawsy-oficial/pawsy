@@ -23,7 +23,7 @@ export default function ViewPatient() {
       </header>
       <div className="flex">
         <button
-          onClick={() => navigate("/medic")}
+          onClick={() => navigate("/medico")}
           className="px-80 flex items-center gap-2 -mb-5 mt-5"
         >
           <ArrowUUpLeft color="#22B77E" />
@@ -85,7 +85,7 @@ export default function ViewPatient() {
               Receitas médicas
             </button>
             <button
-              onClick={() => navigate("/vacinas-e-vermifugação")}
+              onClick={() => navigate("/vacinas-e-vermifugacao")}
               className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
             >
               Vacinas e vermifugação

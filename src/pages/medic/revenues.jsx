@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Header } from "../../components/header/Header";
-import { NavbarClinic } from "../../components/Navbar";
 import { CaretLeft } from "@phosphor-icons/react";
 import { CardRevenues } from "../../components/componentsMedic/CardRevenues";
 import { Revenues } from "../../components/componentsMedic/Revenues";
-import { CreateNewRevenues } from "../../components/componentsMedic/CreateNewRevenues";
+import { HeaderMedic } from "../../components/HeaderMedic";
+import { useNavigate } from "react-router-dom";
 
 const RevenuesList = ({ state }) => {
+    const navigate = useNavigate();
     return (
         <>
             <div className="flex flex-col gap-7">
-                <a className="flex items-center mt-10 text-sm">
+                <a href="/medico" className="flex items-center mt-10 text-sm">
                     <CaretLeft color="#22B77E" />
                     Voltar
                 </a>
-                <button className="rounded-lg bg-[#22937E] text-white w-52 h-8 mb-3">
+                <button onClick={() => navigate("/nova-receita")} className="rounded-lg bg-[#22937E] text-white w-52 h-8 mb-3">
                     Prescrever nova receita
                 </button>
             </div>
@@ -67,23 +67,20 @@ const RevenueDetails = ({ revenueId }) => {
     );
 };
 
-export default function Marketing() {
+export default function MarketingRevenue() {
     const [state, setState] = useState(false);
     return (
-        <main className="flex min-h-screen">
-            <NavbarClinic page={0} />
-
+        <>
             <section className="flex-1">
-                <Header />
+                <HeaderMedic/>
                 <main className="max-w-5xl mx-auto">
                     {state ? (
                         <RevenueDetails revenueId={setState} />
                     ) : (
                         <RevenuesList state={setState} />
                     )}
-                    <CreateNewRevenues />
                 </main>
             </section>
-        </main>
+        </>
     );
 }
