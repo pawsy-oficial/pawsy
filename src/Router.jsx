@@ -12,9 +12,9 @@ import Schedule from "./pages/clinic/Schedule"
 import Marketing from "./pages/clinic/Marketing"
 import Patient from "./pages/clinic/Patients"
 import Home from "./pages"
-import Medic from "./pages/medic/medic"
-import PatientsForMedic from "./pages/medic/patients"
-import ViewPatient from "./pages/medic/viewPatient"
+import Medic from "./pages/medic/Medic"
+import PatientsForMedic from "./pages/medic/Patients"
+import ViewPatient from "./pages/medic/ViewPatient"
 
 const PrivateRouter = ({user, children}) => {
     // console.log(user);
