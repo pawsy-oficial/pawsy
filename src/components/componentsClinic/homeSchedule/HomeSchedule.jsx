@@ -1,5 +1,5 @@
 import { ContainerSchedule } from "../containerSchedule/ContainerSchedule"
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 
 const dataBaseJuny =
     [

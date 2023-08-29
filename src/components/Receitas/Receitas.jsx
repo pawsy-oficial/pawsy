@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs" 
+import dayjs from "dayjs" 
 
 export function CardReceitas({ emissao, validade, dr, state }) {
 	return (

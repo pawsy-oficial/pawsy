@@ -1,6 +1,6 @@
 import { DotsThreeVertical } from "@phosphor-icons/react"
 import * as Popover from '@radix-ui/react-popover';
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 
 export default function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName }) {
     return (

@@ -12,7 +12,7 @@ import { PlusCircle, GenderMale, GenderFemale, CaretDown } from "@phosphor-icons
 import useTopToScreen from "../../hook/useTopToScreen";
 import { LoadingPaw } from "../../components/loadings/Loading";
 
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 
 const RadioGroupMyPets = lazy(() => import("../../components/tutor/RadioGroupMyPets"))
 
