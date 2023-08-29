@@ -4,7 +4,7 @@ import ZnVet from "../../img/znvet.jpg"
 import randomClinic from "../../img/colors=purple.png"
 import { useEffect, useState } from "react";
 
-export default function medic() {
+export default function Medic() {
   const date = new Date()
   const dateHour = date.getHours()
 
