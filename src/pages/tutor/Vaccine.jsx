@@ -6,7 +6,7 @@ import { WarningVaccine } from "../../components/tutor/Alert";
 import { CaretDown } from "@phosphor-icons/react";
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
