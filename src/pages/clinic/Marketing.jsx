@@ -4,7 +4,9 @@ import { NavbarClinic } from "../../components/Navbar";
 import { CaretLeft } from "@phosphor-icons/react";
 import { CardRevenues } from "../../components/componentsMedic/CardRevenues";
 import { Revenues } from "../../components/componentsMedic/Revenues";
-import { CreateNewRevenues } from "../../components/componentsMedic/CreateNewRevenues";
+// import { CreateNewRevenues } from "../../components/componentsMedic/CreateNewRevenues";
+import { useState } from "react";
+import InputFile from "../../components/inputFile/inputFile";
 
 const RevenuesList = ({ state }) => {
   return (

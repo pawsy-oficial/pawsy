@@ -4,9 +4,9 @@ import { NavbarClinic } from "../../components/Navbar";
 import { ModalSeeMedic } from "../../components/ClinicPerfilComponents/ModalSeeMedic";
 import { CommentsForClinic } from "../../components/ClinicPerfilComponents/CommentsForClinic";
 import { ModalAddMedic } from "../../components/ClinicPerfilComponents/ModalAddMedic";
-import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardPerfil/CardPerfil";
+import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardsAndBoxes/cardClinicProfile";
 import MedicForClinic from "../../components/ClinicPerfilComponents/MedicForClinic";
-import Post1 from "../../components/CardPosts/Posts";
+// import Post1 from "../../components/CardPosts/Posts";
 
 import frajola from '../../img/frajola.jpg'
 import dog from '../../img/post1.svg'

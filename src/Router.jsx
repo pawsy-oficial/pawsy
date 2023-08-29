@@ -1,3 +1,4 @@
+
 import { Navigate, Route, Routes } from "react-router-dom"
 import Tutor from "./pages/tutor/Tutor"
 import VaccinePage from "./pages/tutor/Vaccine"
@@ -15,6 +16,7 @@ import Home from "./pages"
 import Medic from "./pages/medic/medic"
 import PatientsForMedic from "./pages/medic/patients"
 import ViewPatient from "./pages/medic/viewPatient"
+import SearchResult from "./pages/tutor/searchResult"
 
 const PrivateRouter = ({ user, children }) => {
   // console.log(user);
@@ -33,6 +35,7 @@ export default function Router(){
             <Route path="/receitas" element={<Revenues/>} />
             <Route path="/bem-estar" element={<WellBeing/>} />
             <Route path="/consulta" element={<ScheduleTutor/>} />
+            <Route path="/resultado-pesquisa" element={<SearchResult/>} />
                        
             {/* <Route path="/vets" element={<VetCloser/>} /> */}
             {/* <Route path="/receitas" element={<Revenues/>} /> */}
@@ -55,7 +58,7 @@ export default function Router(){
 
       {/* ==x==x==x==x==x==x== */}
 
-            <Route path="/medic" 
+            <Route path="/medico" 
                 element={
                     <PrivateRouter user={true}>
                         <Medic/>
