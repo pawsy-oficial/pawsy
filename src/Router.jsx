@@ -27,15 +27,15 @@ const PrivateRouter = ({user, children}) => {
 export default function Router(){
     return(
         <Routes>
+            <Route path="*" element={<Home/>}/>
+
+
             <Route path="/tutor" element={<Tutor/>} />
             <Route path="/carteira" element={<VaccinePage/>} />
             <Route path="/vets" element={<VetCloser/>} />
             <Route path="/receitas" element={<Revenues/>} />
             <Route path="/bem-estar" element={<WellBeing/>} />
             <Route path="/consulta" element={<ScheduleTutor/>} />
-                       
-            {/* <Route path="/vets" element={<VetCloser/>} /> */}
-            {/* <Route path="/receitas" element={<Revenues/>} /> */}
             
             {/* ==x==x==x==x==x==x== */}
 
@@ -51,11 +51,9 @@ export default function Router(){
             <Route path="/marketing" element={<Marketing/>}/>
             <Route path="/pacientes" element={<Patient/>}/>
 
-            <Route path="*" element={<Home/>}/>
-
             {/* ==x==x==x==x==x==x== */}
 
-            <Route path="/medic" 
+            <Route path="/medico" 
                 element={
                     <PrivateRouter user={true}>
                         <Medic/>
@@ -68,7 +66,6 @@ export default function Router(){
             <Route path="/paciente" 
                 element={<ViewPatient/>} 
             />
-
         </Routes>
     )
 }
