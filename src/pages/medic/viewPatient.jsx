@@ -4,8 +4,8 @@ import dono from "../../img/profilePerson.jpeg"
 import { ArrowUUpLeft, GenderMale, X } from "@phosphor-icons/react";
 import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
 import { useState } from "react";
-import ViewRevenues from "../../components/componentsMedic/viewPatientsComponents/viewRevenues";
-import ViewVaccines from "../../components/componentsMedic/viewPatientsComponents/viewVaccines";
+import ViewRevenues from "../../components/componentsMedic/viewPatientsComponents/ViewRevenues";
+import ViewVaccines from "../../components/componentsMedic/viewPatientsComponents/ViewVaccines";
 
 
 export default function ViewPatient(){
