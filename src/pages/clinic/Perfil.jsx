@@ -1,8 +1,6 @@
-import ClientsPerfil, { Avaliation, VaccinePets } from "../../components/cardsAndBoxes/cardClinicProfile";
 import PostBox from "../../components/cardsAndBoxes/postBox";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
-import { Header } from "../../components/header/Header";
 import { ModalSeeMedic } from "../../components/ClinicPerfilComponents/ModalSeeMedic";
 import { CommentsForClinic } from "../../components/ClinicPerfilComponents/CommentsForClinic";
 import { ModalAddMedic } from "../../components/ClinicPerfilComponents/ModalAddMedic";

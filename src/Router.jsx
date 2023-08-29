@@ -47,6 +47,8 @@ const PrivateRouter = ({user, children}) => {
 export default function Router(){
     return(
         <Routes>
+            <Route path="*" element={<Home/>}/>
+
             <Route 
                 path="/resultado-pesquisa" 
                 element={
