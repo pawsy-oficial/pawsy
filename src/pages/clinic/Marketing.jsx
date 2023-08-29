@@ -4,7 +4,6 @@ import { NavbarClinic } from "../../components/Navbar";
 import { CaretLeft } from "@phosphor-icons/react";
 import { CardRevenues } from "../../components/componentsMedic/CardRevenues";
 import { Revenues } from "../../components/componentsMedic/Revenues";
-import { useNavigate } from "react-router-dom";
 import { CreateNewRevenues } from "../../components/componentsMedic/CreateNewRevenues";
 
 const RevenuesList = ({ state }) => {

@@ -52,7 +52,12 @@ export function Revenues() {
         <CardMedicines />
       </section>
 
-      <div className="w-44 h-[1px] my-20 mx-auto bg-black" />
+      <div className="w-44 h-[1px] my-20 mx-auto bg-black">
+        <div className="flex flex-col items-center">
+          <p className="text-xs">Drª Vanessa Santos</p>
+          <p className="text-[9px]">CRMV: 10.000</p>
+        </div>
+      </div>
 
       <div className="w-[595px] h-8 bg-primary flex justify-center items-center absolute bottom-0">
         <img src="src/img/logo.png" alt="" className="w-16" />
