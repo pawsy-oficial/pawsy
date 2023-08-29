@@ -1,6 +1,25 @@
 import photoMarketing from "../../img/photoMarketing.png";
+import ModalDeletePost from "../componentsClinic/modalDeletePost";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 export default function Post({ content, onDeletePost }) {
+  const notify = (message) => {
+    toast.success("Ação realizada com sucesso", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const [open, setOpen] = useState(false);
+
   function handleDeletePost() {
     onDeletePost(content);
   }
@@ -29,16 +48,31 @@ export default function Post({ content, onDeletePost }) {
           <p>Campanha de vacinação</p>
           <p>15 dias</p>
         </div>
-
-        <div className="py-52 flex gap-6">
+        {
+          console.log('ddddd')
+        }
+        <div className="items-end flex gap-6">
           <button
             title="Deletar Post"
-            onClick={handleDeletePost}
+            onClick={() => setOpen(!open)}
             type="submit"
             className="bg-[#DC3545] hover:bg-[#c7303f] w-[7.438rem] h-[2.188rem] rounded-lg text-white"
           >
             Apagar
           </button>
+          <ModalDeletePost isOpen={open} setOpen={setOpen} />
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
           <button
             title="Editar Post"
             onClick={handleDeleteComment}
