@@ -1,4 +1,6 @@
 import { ContainerSchedule } from "../containerSchedule/ContainerSchedule"
+import * as dayjs from "dayjs"
+
 const dataBaseJuny =
     [
         {
@@ -108,7 +110,7 @@ export default function HomeSchedule({alterPage}) {
                 dataBaseJuny.map((period, index) => {
                     return (
                         <section className="mb-6" key={index}>
-                            <h2 className="font-bold text-[32px]">{period.startDate} - {period.endDate}</h2>
+                            <h2 className="font-bold text-[32px]">{dayjs(period.startDate).format("DD MMM")} - {period.endDate}</h2>
                             {
                                 period.info.map(data => {
                                     return <ContainerSchedule date={data.date} appointments={data.appointments} alterPage={alterPage}/>

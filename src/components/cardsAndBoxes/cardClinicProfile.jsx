@@ -1,4 +1,3 @@
-import './CardPerfil.css'
 import { Dog, Cat, Star } from '@phosphor-icons/react'
 
 export default function ClientsPerfil() {

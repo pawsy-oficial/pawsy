@@ -1,8 +1,6 @@
-import './post.css'
-import post1 from '../../img/post1.svg'
 import pessoa from '../../img/person1.png'
 
-export default function Post1({img,name}) {
+export default function PostBox({img,name}) {
     return (
         <div className="relative w-full h-[150px] rounded overflow-hidden">
             <img

@@ -4,7 +4,7 @@ import { ContainerMonthSchedule, TimeLineSchendule } from "../../components/comp
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { useEffect, useState } from "react";
-import { InputDropDown } from "../../components/componentsClinic/Input";
+import { InputDropDown } from "../../components/inputsComponents";
 import HomeSchedule from "../../components/componentsClinic/homeSchedule/HomeSchedule";
 import { PatientContainerSchedule } from "../../components/componentsClinic/patientContainer/PatientContainer";
 
@@ -143,7 +143,7 @@ function FormNewSchedule({alterPage}) {
                     })
                 }
                 {
-                    sectionAddVeterinary.length == 0 && <span className="text-zinc-400 text-center">Adicione um médico veterinário para sua nova consulta</span>
+                    sectionAddVeterinary.length == 0 && <span className="text-zinc-400 text-center">Adicione um médico veterinário para sua nova agenda</span>
                 }
                 <div className="w-full flex justify-center gap-6 text-primary font-lato font-bold">
                     <span className="cursor-pointer" onClick={heandleAddSection}>adicionar mais</span>
