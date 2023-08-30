@@ -1,11 +1,13 @@
+import { Target } from "@phosphor-icons/react"
 import { memo, useState, useEffect } from "react"
+import InputMask from "react-input-mask"
 
-function Switch({state, defaultState}) {
+function Switch({ state, defaultState }) {
     const [handleSwitch, setHandleSwitch] = useState(defaultState || false)
 
-    useEffect(()=>{
+    useEffect(() => {
         state(handleSwitch)
-    },[handleSwitch])    
+    }, [handleSwitch])
 
     return (
         <>
@@ -19,10 +21,10 @@ function Switch({state, defaultState}) {
     )
 }
 
-function InputDropDown({listData}) {
+function InputDropDown({ listData }) {
     const [statusDropDown, setStatusDropDown] = useState(false)
 
-    function heandleDropDown(bool){
+    function heandleDropDown(bool) {
         setStatusDropDown(bool)
     }
 
@@ -34,19 +36,19 @@ function InputDropDown({listData}) {
                     type="text"
                     className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                     placeholder="__/__/____"
-                    onClick={()=>heandleDropDown(!statusDropDown)}
+                    onClick={() => heandleDropDown(!statusDropDown)}
                 />
             </label>
             {
                 statusDropDown && (
-                    <section 
-                        className="grid grid-cols-2 gap-x-4 gap-y-2 p-4 bg-white rounded-lg absolute w-max -translate-x-1/2 left-1/2 top-16 shadow-md z-30" 
+                    <section
+                        className="grid grid-cols-2 gap-x-4 gap-y-2 p-4 bg-white rounded-lg absolute w-max -translate-x-1/2 left-1/2 top-16 shadow-md z-30"
                     >
                         {
-                            listData.map((e,i)=>{
-                                return(
+                            listData.map((e, i) => {
+                                return (
                                     <div className="container-dropdown-input flex cursor-pointer">
-                                        <input type="checkbox" name="" id={`${i}-week`} className="hidden" required/>
+                                        <input type="checkbox" name="" id={`${i}-week`} className="hidden" required />
                                         <label htmlFor={`${i}-week`} className="py-1 px-3 border border-primary rounded">
                                             {e}
                                         </label>
@@ -61,9 +63,46 @@ function InputDropDown({listData}) {
     )
 }
 
+function InputFormRegister({ value, onChange, register, mask, type = "text", placeholder, nameRegister }) {
 
+    return (
+        <InputMask
+            mask={mask}
+            maskChar={null}
+            type={type}
+            placeholder={placeholder}
+            className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`}
+            {...register(nameRegister)}
+            value={value}
+            onChange={onChange}
+        />
+    )
+}
+// ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}
+
+function InputFormRegisterCEP({ value, onChange, loading, register }){
+    return(
+        <InputMask
+            mask={"99999-999"} 
+            maskChar={null}
+            placeholder={"CEP"}
+            className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed `}
+            disabled={loading}
+
+            {...register('cep')}
+
+            value={value}
+            onChange={onChange}
+        />
+    )
+}
+
+const memoInputFormRegisterCEP = memo(InputFormRegisterCEP)
+const memoInputFormRegister = memo(InputFormRegister)
 const memoInputDropDown = memo(InputDropDown)
 const memoSwitch = memo(Switch)
 
+export { memoInputFormRegisterCEP as InputFormRegisterCEP } 
 export { memoInputDropDown as InputDropDown }
 export { memoSwitch as Switch }
+export { memoInputFormRegister as InputFormRegister }

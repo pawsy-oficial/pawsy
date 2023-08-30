@@ -14,6 +14,9 @@ export default {
         lato: 'sans-serif, "lato"',
         sora: 'sans-serif, "sora"'
       },
+      backgroundImage:{
+        "banner": "url(src/img/bannerLogin.jpg)"
+      }
     },
   },
   plugins: [],

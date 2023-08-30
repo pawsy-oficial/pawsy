@@ -1,128 +1,155 @@
 import { List, MagnifyingGlass, X } from "@phosphor-icons/react";
 import ProfileModal from "./ProfileModal";
 import Notification from "./Notification";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
-import Logo from "../../img/logoPawsyGreen.svg"
+import LogoGreen from "../../img/logoPawsyGreen.svg"
+import LogoWhite from "../../img/logoPawsy.svg"
 import { NavBar } from "../Navbar";
 import SearcInput from "./SearchInput";
 
 export function Header({ userType }) {
 
-  const pages = [
-    {
-      name: "Inicío",
-      pathname: "/tutor",
-    },
-    {
-      name: "Carteira de vacinação",
-      pathname: "/carteira",
-    },
-    {
-      name: "Agendar consulta",
-      pathname: "/consulta",
-    },
-    {
-      name: "Vét. mais próximo",
-      pathname: "/vets",
-    },
-    {
-      name: "Bem-estar",
-      pathname: "/bem-estar",
-    },
-    {
-      name: "Receitas",
-      pathname: "/receitas",
-    },
-  ];
+	const pages = [
+		{
+			name: "Inicío",
+			pathname: "/tutor",
+		},
+		{
+			name: "Carteira de vacinação",
+			pathname: "/carteira",
+		},
+		{
+			name: "Agendar consulta",
+			pathname: "/consulta",
+		},
+		{
+			name: "Vét. mais próximo",
+			pathname: "/vets",
+		},
+		{
+			name: "Bem-estar",
+			pathname: "/bem-estar",
+		},
+		{
+			name: "Receitas",
+			pathname: "/receitas",
+		},
+	];
 
 
-  const [windowScreen, setWindowScreen] = useState({ width: null })
+	const [windowScreen, setWindowScreen] = useState({ width: null })
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowScreen({ width: window.innerWidth })
-    }
-    window.addEventListener("resize", handleResize)
-    handleResize()
+	useEffect(() => {
+		function handleResize() {
+			setWindowScreen({ width: window.innerWidth })
+		}
+		window.addEventListener("resize", handleResize)
+		handleResize()
 
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+		return () => window.removeEventListener("resize", handleResize)
+	}, [])
 
-  const [navState, setNavState] = useState(false)
-  const [searchState, setSearchState] = useState(false)
+	const [navState, setNavState] = useState(false)
+	const [searchState, setSearchState] = useState(false)
 
-  useEffect(()=>{
-    if(windowScreen.width > 1020){
-      setNavState(false)
-      setSearchState(false)
-    }
-  },[windowScreen])
+	useEffect(() => {
+		if (windowScreen.width > 1020) {
+			setNavState(false)
+			setSearchState(false)
+		}
+	}, [windowScreen])
 
-  return (
-    <>
-      <header className="w-full bg-[#F9FFFD] py-3 px-6 md:px-20 sticky top-0 z-50">
-        <div className="flex justify-between xl:justify-end items-center">
-          <button
-            className="block lg:hidden"
-            onClick={() => setNavState(!navState)}
-          >
-            {
-              navState
-                ? <X size={24} />
-                : <List size={24} />
-            }
-          </button>
-          <img src={Logo} className="block lg:hidden translate-x-[20%]" />
-          
-        {
-          userType == "tutor" && (
-            <SearcInput/>
-          )
-        }
+	return (
+		<>
+			<header className="w-full bg-[#F9FFFD] py-3 px-6 md:px-20 sticky top-0 z-50">
+				<div className="flex justify-between xl:justify-end items-center">
+					<button
+						className="block lg:hidden"
+						onClick={() => setNavState(!navState)}
+					>
+						{
+							navState
+								? <X size={24} />
+								: <List size={24} />
+						}
+					</button>
+					<img src={LogoGreen} className="block lg:hidden translate-x-[20%]" />
 
-          <div className="flex gap-4 items-center">
-            <div>
+					{
+						userType == "tutor" && (
+							<SearcInput />
+						)
+					}
 
-              {
-                windowScreen.width < 1020
-                  ? (
-                    <button onClick={()=>setSearchState(!searchState)}>
-                      <MagnifyingGlass size={24} />
-                    </button>
-                  )
-                  : <Notification />
-              }
+					<div className="flex gap-4 items-center">
+						<div>
 
-            </div>
-            <div className="">
-              <ProfileModal />
-            </div>
-          </div>
+							{
+								windowScreen.width < 1020
+									? (
+										<button onClick={() => setSearchState(!searchState)}>
+											<MagnifyingGlass size={24} />
+										</button>
+									)
+									: <Notification />
+							}
+
+						</div>
+						<div className="">
+							<ProfileModal />
+						</div>
+					</div>
 
 
-        </div>
-        {
-          searchState && (
-            <div className="w-full mt-2">
-              <input type="search" className="w-full h-full py-1 px-3 border focus:border-primary"/>
-            </div>
-          )
-        }
-        {
-          navState && (
-            <div className=" bg-[#F9FFFD] absolute left-0 right-0 top-full border-b-2 border-primary rounded-b-xl">
-              <ul>
+				</div>
+				{
+					searchState && (
+						<div className="w-full mt-2">
+							<input type="search" className="w-full h-full py-1 px-3 border focus:border-primary" />
+						</div>
+					)
+				}
+				{
+					navState && (
+						<div className=" bg-[#F9FFFD] absolute left-0 right-0 top-full border-b-2 border-primary rounded-b-xl">
+							<ul>
 
-                {
-                  pages.map((page, index) => { return <NavBar page={page} key={index} /> })
-                }
+								{
+									pages.map((page, index) => { return <NavBar page={page} key={index} /> })
+								}
 
-              </ul>
-            </div>
-          )
-        }
-      </header>
-    </>
-  );
+							</ul>
+						</div>
+					)
+				}
+			</header>
+		</>
+	);
 }
+
+
+function HeaderLogin({style}) {
+	return (
+		<header
+			className={`flex justify-between items-center w-full sticky top-0 gap-16 px-16 py-8`}
+			style={style}
+		>
+			<img 
+				src={LogoWhite} alt="Logo pawsy" height={64} width={200}
+				loading="lazy"
+			/>
+
+			<nav
+				className="gap-10 font-lato text-lg text-white hidden md:flex"
+			>
+				<a href="/">página inicial</a>
+				<a href="#">sobre nós</a>
+				<a href="#">suporte</a>
+			</nav>
+		</header>
+	)
+}
+
+const memoHeaderLogin = memo(HeaderLogin)
+export {memoHeaderLogin as HeaderLogin} 

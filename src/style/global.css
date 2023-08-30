@@ -6,8 +6,13 @@
   @apply bg-[#d2f8ff]
 }
 
-body{
-  @apply bg-gray-white min-h-screen
+@layer base{
+  body{
+    @apply bg-gray-white min-h-screen
+  }
+  .bg-secundary{
+    @apply bg-primary
+  }
 }
 
 .nav-link{

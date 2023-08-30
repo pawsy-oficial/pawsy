@@ -12,7 +12,7 @@ import { PlusCircle, GenderMale, GenderFemale, CaretDown } from "@phosphor-icons
 import useTopToScreen from "../../hook/useTopToScreen";
 import { LoadingPaw } from "../../components/loadings/Loading";
 
-// import dayjs from "dayjs"
+import dayjs from "dayjs"
 
 const RadioGroupMyPets = lazy(() => import("../../components/tutor/RadioGroupMyPets"))
 
@@ -131,7 +131,7 @@ function ProfileTutor({ showPet }) {
                     <ul className="flex flex-col gap-2">
                         <li>
                             <span className="font-bold text-xs sm:text-lg">Idade: </span>
-                            {/* <span className="text-sm sm:text-base">{dayjs(pets[showPet].birthday).format("DD/MM/YYYY")}</span> */}
+                            <span className="text-sm sm:text-base">{dayjs(pets[showPet].birthday).format("DD/MM/YYYY")}</span>
                         </li>
                         <li>
                             <span className="font-bold text-xs sm:text-lg">Raça: </span>
