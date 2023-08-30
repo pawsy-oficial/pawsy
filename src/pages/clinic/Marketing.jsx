@@ -1,4 +1,4 @@
-import Post from "../../components/CardsMarketing";
+import Post from "../../components/cardsAndBoxes/cardMarketing";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { CaretLeft } from "@phosphor-icons/react";

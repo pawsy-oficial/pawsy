@@ -6,7 +6,7 @@ import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 // import RadioGroupMyPets from "../../components/tutor/RadioGroupMyPets";
 import { Alert } from "../../components/tutor/Alert";
-import FormNewPet from "../../components/FormNewPet";
+import FormNewPet from "../../components/forms/FormNewPet";
 import { PlusCircle, GenderMale, GenderFemale, CaretDown } from "@phosphor-icons/react";
 
 import useTopToScreen from "../../hook/useTopToScreen";

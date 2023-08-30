@@ -1,13 +1,11 @@
 import { useState } from "react"
 import "./index.css"
-import dog from "../../img/dog.jpg"
-import cat from "../../img/cat.jpg"
+import dog from "../../../img/dog.jpg"
+import cat from "../../../img/cat.jpg"
 import { Camera, GenderFemale, GenderMale } from "@phosphor-icons/react"
-interface IFromNewPet {
-    isFirstAccess: boolean
-}
 
-const FormNewPet = (props: IFromNewPet) => {
+
+const FormNewPet = (props) => {
     const dogsRace = [
         "BullDog",
         "Pitbull",
@@ -43,7 +41,7 @@ const FormNewPet = (props: IFromNewPet) => {
     const { isFirstAccess } = props
     const [animal, setAnimal] = useState(""); // estado inicial vazio
 
-    const handleAnimalChange = (animalType: "dog" | "cat") => {
+    const handleAnimalChange = (animalType) => {
         setAnimal(animalType);
     };
 
@@ -66,7 +64,7 @@ const FormNewPet = (props: IFromNewPet) => {
         "Grande",
     ];
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
 
         const data = new FormData(e.target);

@@ -1,0 +1,14 @@
+
+#animals #cat:checked + div > label, #animals #dog:checked + div > label{
+    background: rgba(34, 183, 126, 0.2);
+    border: #04AD34 1px solid;
+}
+
+input[type="radio"]#mal:checked + label{
+    background-color: #bcd2fc;
+    border: solid 2px #91aee5
+}
+input[type="radio"]#fem:checked + label{
+    background-color: #fac0de;
+    border: solid 2px #f495c6
+}
