@@ -12,7 +12,8 @@ export default {
       },
       fontFamily:{
         lato: 'sans-serif, "lato"',
-        sora: 'sans-serif, "sora"'
+        sora: 'sans-serif, "sora"',
+        baloo2: 'sans-serif, "Baloo 2"'
       },
       backgroundImage:{
         "banner": "url(../bannerLogin.jpg)"
