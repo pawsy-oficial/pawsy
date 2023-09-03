@@ -15,7 +15,7 @@ export default {
         sora: 'sans-serif, "sora"'
       },
       backgroundImage:{
-        "banner": "url(./public/assets/image/bannerLogin.jpg)"
+        "banner": "url(bannerLogin.jpg)"
       }
     },
   },
