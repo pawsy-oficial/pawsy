@@ -26,3 +26,18 @@
         transform: translateX(100px);
     }
 }
+
+.blob-animate{
+    animation: blob-move ease-out infinite;
+}
+
+@keyframes blob-move{
+    0%{
+        right: 0;
+        scale: 0;
+    }
+    100%{
+        right: 100%;
+        scale: 1;
+    }
+}

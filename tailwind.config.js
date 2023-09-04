@@ -11,12 +11,13 @@ export default {
         "secundary": "#1BA8C4" 
       },
       fontFamily:{
-        lato: 'sans-serif, "lato"',
-        sora: 'sans-serif, "sora"',
-        baloo2: 'sans-serif, "Baloo 2"'
+        lato: '"lato", sans-serif',
+        sora: '"sora", sans-serif',
+        baloo2: '"Baloo 2", sans-serif'
       },
       backgroundImage:{
-        "banner": "url(../bannerLogin.jpg)"
+        "banner": "url(../bannerLogin.jpg)",
+        "mockup": "url(../mockup.png)",
       }
     },
   },

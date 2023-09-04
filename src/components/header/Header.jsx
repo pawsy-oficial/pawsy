@@ -178,7 +178,7 @@ function HeaderLandingPage() {
 
 	return (
 		<header
-			className="flex w-full justify-between items-center px-16 py-5 "
+			className="flex w-full justify-between items-center px-16 py-5 fixed top-0 z-10 backdrop-blur-sm"
 		>
 			<div
 				className="flex gap-20"
