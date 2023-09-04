@@ -55,6 +55,9 @@ import Vaccine from "./pages/medic/vaccine"
 import MarketingRevenue from "./pages/medic/revenues"
 import NewRevenues from "./pages/medic/newRevenues"
 import { LoadingPagesPlaceholder } from "./components/loadings/Loading"
+import Plans from "./pages/landinPage/plans"
+import AboutUs from "./pages/landinPage/aboutUs"
+import Features from "./pages/landinPage/features"
 
 const PrivateRouter = ({ user, children }) => {
   // console.log(user);
@@ -67,6 +70,12 @@ const PrivateRouter = ({ user, children }) => {
 export default function Router(){
     return(
         <Routes>
+            
+            <Route path="/planos" element={<Plans/>} />
+            <Route path="/sobre" element={<AboutUs/>} />
+            <Route path="/recursos" element={<Features/>} />
+
+
             <Route path="/tutor" element={<Tutor/>} />
             <Route path="/carteira" element={<VaccinePage/>} />
             <Route path="/vets" element={<VetCloser/>} />

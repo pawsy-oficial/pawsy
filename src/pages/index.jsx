@@ -1,7 +1,9 @@
 import { HeaderLandingPage } from "../components/header/Header"
 import BoxPets from "../components/cardsAndBoxes/boxPets"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
+	const navigate = useNavigate()
 	return (
 		<main className="min-h-screen">
 			<HeaderLandingPage />
@@ -31,6 +33,7 @@ export default function Home() {
 					>
 						<button
 							className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg"
+							onClick={()=>navigate("/acesso")}
 						>
 							Cadastre-se
 						</button>

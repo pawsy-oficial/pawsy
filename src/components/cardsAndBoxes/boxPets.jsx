@@ -7,12 +7,6 @@ export default function BoxPets() {
 
     useEffect(()=>{
         creatBlob()
-        // const timer = setInterval(()=>{
-        // },16000)
-
-        // return ()=>{
-        //     clearInterval(timer)
-        // }
     },[])
 
     function creatBlob(){
