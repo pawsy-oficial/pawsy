@@ -524,6 +524,7 @@ export default function RegisterFormClinic({ userType }) {
                                 {...register("uf")}
                                 onChange={e => {
                                     const i = e.target.options.selectedIndex
+                                    console.log(i);
                                     setSelectUf(i);
                                 }}
                             >

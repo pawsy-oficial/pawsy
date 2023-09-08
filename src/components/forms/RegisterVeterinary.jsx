@@ -1,10 +1,13 @@
 import { Camera, XCircle } from "@phosphor-icons/react";
 import { useState, useEffect } from "react";
 import ProgressPass from "../progress/progressPass";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { InputFormRegister } from "../inputsComponents";
+import axios from "axios";
+import NotifyBox from "../cardsAndBoxes/notifyBox";
+import { useNavigate } from "react-router-dom";
 
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 18))
 
@@ -19,22 +22,32 @@ const schema = Yup.object({
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match'),
     CRMV: Yup.string().required("Campo obrigatório").length(6),
     terms: Yup.bool().oneOf([true], 'Você precisa aceitar os termos'),
+    specialty: Yup.string().required("Campo obrigatório").oneOf(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], "Valor invalido"),
+    image: Yup.mixed().test(
+        "fileSize",
+        "O arquivo é muito grande",
+        value => !value || (value && value.size <= 5242879))
+        .test(
+            "fileType",
+            "Tipo de arquivo não suportado",
+            value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
+        )
 })
 
 function handleValidationCPF(cpf) {
-    const format = cpf.replace(/[^\d]+/g,'');
+    const format = cpf.replace(/[^\d]+/g, '');
     let firstDigit = format[9];
     let secondDigit = format[10];
 
-    if (format == "00000000000" || 
-        format == "11111111111" || 
-        format == "22222222222" || 
-        format == "33333333333" || 
-        format == "44444444444" || 
-        format == "55555555555" || 
-        format == "66666666666" || 
-        format == "77777777777" || 
-        format == "88888888888" || 
+    if (format == "00000000000" ||
+        format == "11111111111" ||
+        format == "22222222222" ||
+        format == "33333333333" ||
+        format == "44444444444" ||
+        format == "55555555555" ||
+        format == "66666666666" ||
+        format == "77777777777" ||
+        format == "88888888888" ||
         format == "99999999999")
         return false;
 
@@ -72,31 +85,95 @@ export default function RegisterFormVeterinary({ userType }) {
     const [cellValue, setCellValue] = useState('')
     const [CRMV, setCRMV] = useState('')
 
-    const { register, handleSubmit, formState } = useForm({
+    const [ loading, setLoading ] = useState(false)
+
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+
+    const [statusForm, setStatusForm] = useState(false)
+    const [msg, setMsg] = useState("")
+    const [sucess, setSucess] = useState(false)
+    
+    const { register, handleSubmit, formState, control } = useForm({
         resolver: yupResolver(schema),
         mode: "onSubmit"
     })
 
+
+    const navigate= useNavigate()
+
     const onSubmit = (data) => {
         console.log(data);
+
+        setLoading(true)
+
+        const time = new Date().getTime()
+        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+
+        const date = new Date(data.date);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        const dataForm = {
+            firstNameMedic: data.name,
+            lastNameMedic: data.lastName,
+            crmv: data.CRMV,
+            email: data.email,
+            cpf: data.cpf,
+            cell: data.cell,
+            birthDate: formattedDate,
+            specialty: data.specialty,
+            password: data.password,
+            urlProfile: urlImageProfile
+        }
+
+        axios.post(`${import.meta.env.VITE_URL}/medico`, dataForm)
+            .then(response => {
+                setLoading(false)
+                console.log(response)
+                navigate("/login", { state: { slug: "medico" } })
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+                setStatusForm(true)
+                setMsg(err.response.data.Message)
+                setSucess(false)
+            })
+            .finally(()=>{
+                setLoading(false)
+            })
     }
 
     const { errors } = formState
 
-    const [ selectImage, setSelectImage ] = useState(null)
-    const [ urlImage, setUrlImage ] = useState(null)
 
-    useEffect(()=>{
-        if(selectImage){
+
+    useEffect(() => {
+        if (selectImage) {
             console.log(selectImage);
-            if(selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg" ){
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
                 console.log("A imagem não atende os requisitos ");
             }
-            else{
+            else {
                 setUrlImage(URL.createObjectURL(selectImage))
             }
         }
-    },[selectImage])
+    }, [selectImage])
+
+    const [specialty, setSpecialty] = useState([])
+    const [selectSpecialty, setSelectSpecialty] = useState("")
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_URL}/especialidade`)
+            .then(response => {
+                // console.log(response);
+                setSpecialty(response.data.result)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     return (
         <section
@@ -111,27 +188,46 @@ export default function RegisterFormVeterinary({ userType }) {
             <form
                 onSubmit={handleSubmit(onSubmit)}
             >
+                {
+                    statusForm && <NotifyBox msg={msg} status={sucess} />
+                }
                 <section
                     className="flex flex-col items-center gap-2"
                 >
-                     <label
+                    <label
                         className="w-28 h-28 overflow-hidden border border-primary bg-primary/20 rounded-full flex flex-col items-center justify-center cursor-pointer"
                         title="Imagem de perfil"
                     >
                         {
-                            urlImage ? <img  className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
+                            urlImage ? <img className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
                         }
-
+                        <Controller
+                            name="image"
+                            control={control}
+                            render={({ field }) => (
+                                <input
+                                    type="file"
+                                    multiple={false}
+                                    className="hidden"
+                                    onChange={event => {
+                                        field.onChange(event.target.files[0]);
+                                        setSelectImage(event.target.files[0]);
+                                    }}
+                                    accept="image/png, image/jpg, image/jpeg"
+                                />
+                            )}
+                        />
                         <input
                             type="file"
                             multiple={false}
                             className="hidden"
-                            onChange={ (event) => setSelectImage(event.target.files[0]) }
+                            onChange={(event) => setSelectImage(event.target.files[0])}
                             accept="image/png, image/jpg, image/jpeg"
+                            {...register("image")}
                         />
                     </label>
                     <small
-                        className="w-28 text-center text-xs text-zinc-400"
+                        className={`w-28 text-center text-xs text-zinc-400  ${errors.image && "!text-red-error"}`}
                     >
                         Formato 1:1, com tamanho máximo de 5MB e nos formatos .png e .jpg
                     </small>
@@ -321,12 +417,38 @@ export default function RegisterFormVeterinary({ userType }) {
                     <div
                         className="flex gap-8 mt-6"
                     >
-                        <select
-                            name="especialidade"
-                            className="w-full py-2 pl-6 border rounded-lg border-zinc-400 h-fit"
-                        >
-                            <option value="Cirurgião">Cirurgião</option>
-                        </select>
+                        <div className="w-full">
+                            <select
+                                name="especialidade"
+                                className="w-full py-2 pl-6 border rounded-lg border-zinc-400 h-fit"
+                                onChange={e => {
+                                    const i = e.target.options.selectedIndex
+                                    setSelectSpecialty(i);
+                                }}
+
+                                {...register("specialty")}
+                            >
+                                <option disabled selected>
+                                    Especialidade
+                                </option>
+                                {
+                                    specialty.map(specialty => {
+                                        return <option value={specialty.id_especialidade}>{specialty.nm_especialidade}</option>
+                                    })
+                                }
+                            </select>
+                            {
+                                errors.specialty &&
+                                <small
+                                    className="text-red-error flex items-center gap-2 mt-1"
+                                >
+                                    <XCircle size={18} />
+                                    {
+                                        errors.specialty?.message
+                                    }
+                                </small>
+                            }
+                        </div>
 
                         <div
                             className="w-full"
@@ -392,9 +514,12 @@ export default function RegisterFormVeterinary({ userType }) {
 
                 <button
                     type="submit"
-                    className="bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8"
+                    className={`bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                    disabled={loading}
                 >
-                    Enviar
+                    {
+                        loading ? "Enviando..." : "Enviar"
+                    }
                 </button>
 
             </form>
