@@ -6,80 +6,89 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
 import axios from "axios";
+import siglaParaId from "../../functions/uf";
 
-const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 16))
 
 const schema = Yup.object({
     name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
-    lastName: Yup.string().required("Campo obrigatório").min(2, "O sobrenome deve ter mais de 2 caracteres"),
     email: Yup.string().required("Campo obrigatório").email("Digite um endereço de e-mail válido"),
     cnpj: Yup.string().required("Campo obrigatório").length(18, "O CNPJ deve ter 11 dígitos").test('valid-cnpj', 'CNPJ inválido', value => validarCNPJ(value)),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
-    date: Yup.date().typeError('Deve ser uma data').required("Campo obrigatório").max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
     number: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
     complement: Yup.string(),
     neighborhood: Yup.string().required("Campo obrigatório"),
-    password: Yup.string().required(),
+    password: Yup.string().required("campo obrigatorio"),
+    CRMV: Yup.string().required("Campo obrigatório").length(6),
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match'),
     terms: Yup.bool().oneOf([true], 'Você precisa aceitar os termos'),
+    uf: Yup.string().required("Selecione um estado"),
+    image: Yup.mixed().test(
+        "fileSize",
+        "O arquivo é muito grande",
+        value => !value || (value && value.size <= 5242879 ))
+    .test(
+        "fileType",
+        "Tipo de arquivo não suportado",
+        value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
+    )
 })
 
 
 function validarCNPJ(cnpj) {
- 
-    cnpj = cnpj.replace(/[^\d]+/g,'');
- 
-    if(cnpj == '') return false;
-     
+
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+
+    if (cnpj == '') return false;
+
     if (cnpj.length != 14)
         return false;
- 
+
     // Elimina CNPJs invalidos conhecidos
-    if (cnpj == "00000000000000" || 
-        cnpj == "11111111111111" || 
-        cnpj == "22222222222222" || 
-        cnpj == "33333333333333" || 
-        cnpj == "44444444444444" || 
-        cnpj == "55555555555555" || 
-        cnpj == "66666666666666" || 
-        cnpj == "77777777777777" || 
-        cnpj == "88888888888888" || 
+    if (cnpj == "00000000000000" ||
+        cnpj == "11111111111111" ||
+        cnpj == "22222222222222" ||
+        cnpj == "33333333333333" ||
+        cnpj == "44444444444444" ||
+        cnpj == "55555555555555" ||
+        cnpj == "66666666666666" ||
+        cnpj == "77777777777777" ||
+        cnpj == "88888888888888" ||
         cnpj == "99999999999999")
         return false;
-         
+
     // Valida DVs
     let tamanho = cnpj.length - 2
-    let numeros = cnpj.substring(0,tamanho);
+    let numeros = cnpj.substring(0, tamanho);
     let digitos = cnpj.substring(tamanho);
     let soma = 0;
     let pos = tamanho - 7;
     for (let i = tamanho; i >= 1; i--) {
-      soma += numeros.charAt(tamanho - i) * pos--;
-      if (pos < 2)
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
             pos = 9;
     }
     let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
     if (resultado != digitos.charAt(0))
         return false;
-         
+
     tamanho = tamanho + 1;
-    numeros = cnpj.substring(0,tamanho);
+    numeros = cnpj.substring(0, tamanho);
     soma = 0;
     pos = tamanho - 7;
     for (let i = tamanho; i >= 1; i--) {
-      soma += numeros.charAt(tamanho - i) * pos--;
-      if (pos < 2)
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
             pos = 9;
     }
     resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
     if (resultado != digitos.charAt(1))
-          return false;
-           
+        return false;
+
     return true;
-    
+
 }
 
 
@@ -97,6 +106,8 @@ export default function RegisterFormClinic({ userType }) {
     const [neighborhood, setNeighborhood] = useState('')
     const [state, setState] = useState('')
     const [street, setStreet] = useState('')
+
+    const [ selectUf, setSelectUf ] = useState("")
 
     const { register, handleSubmit, formState, setValue, setError } = useForm({
         resolver: yupResolver(schema),
@@ -122,15 +133,20 @@ export default function RegisterFormClinic({ userType }) {
                         if (data.street) {
                             setValue("street", data.street)
                         }
+                        else setValue("street", "")
+                        
                         if (data.city) {
                             setValue("city", data.city)
                         }
                         if (data.state) {
                             setValue("state", data.state)
+                            setSelectUf(siglaParaId(data.state))
                         }
                         if (data.neighborhood) {
+                            console.log("ok");
                             setValue("neighborhood", data.neighborhood)
                         }
+                        else setValue("neighborhood", "");
                     }
                 )
                 .catch(err => {
@@ -148,34 +164,49 @@ export default function RegisterFormClinic({ userType }) {
                     setValue("neighborhood", "")
 
                 })
-                .finally(() => {
-                    setLoadingCep(false)
-                    setErrorCep(false)
-                }
+                .finally(
+                    () => {
+                        setLoadingCep(false)
+                        setErrorCep(false)
+                    }
                 )
         }
     }, [cep])
 
     const onSubmit = (data) => {
+        console.log(selectUf)
+        data.uf = parseInt(selectUf)
         console.log(data);
     }
 
     const { errors } = formState
 
-    const [ selectImage, setSelectImage ] = useState(null)
-    const [ urlImage, setUrlImage ] = useState(null)
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    const [CRMV, setCRMV] = useState('')
 
+    const [ uf, setUf ] = useState([])
+    
     useEffect(()=>{
-        if(selectImage){
+        axios.get("http://localhost:3010/uf")
+            .then(response => {
+                console.log(response.data)
+                setUf(response.data.result)
+            })
+            .catch(err => console.log(err))
+    },[])
+
+    useEffect(() => {
+        if (selectImage) {
             console.log(selectImage);
-            if(selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg" ){
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
                 console.log("A imagem não atende os requisitos ");
             }
-            else{
+            else {
                 setUrlImage(URL.createObjectURL(selectImage))
             }
         }
-    },[selectImage])
+    }, [selectImage])
 
     return (
         <section
@@ -198,15 +229,16 @@ export default function RegisterFormClinic({ userType }) {
                         title="Imagem de perfil"
                     >
                         {
-                            urlImage ? <img  className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
+                            urlImage ? <img className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
                         }
 
                         <input
                             type="file"
                             multiple={false}
                             className="hidden"
-                            onChange={ (event) => setSelectImage(event.target.files[0]) }
+                            onChange={(event) => setSelectImage(event.target.files[0])}
                             accept="image/png, image/jpg, image/jpeg"
+                            // {...register("image")}
                         />
                     </label>
                     <small
@@ -272,21 +304,22 @@ export default function RegisterFormClinic({ userType }) {
                         </div>
 
                         <div>
-                            <input
-                                type="date"
-                                // max={"2005-12-31"}
-                                placeholder={"Data de nascimento"}
-                                className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.date && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
-                                {...register("date")}
+                            <InputFormRegister
+                                mask={"99.999"}
+                                onChange={e => setCRMV(e.target.value)}
+                                value={CRMV}
+                                placeholder={"CRMV"}
+                                register={register}
+                                nameRegister={"CRMV"}
                             />
                             {
-                                errors.date &&
+                                errors.CRMV &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.date?.message
+                                        errors.CRMV?.message
                                     }
                                 </small>
                             }
@@ -430,21 +463,30 @@ export default function RegisterFormClinic({ userType }) {
 
                         <div className="w-full">
 
-                            <input
+                            <select
                                 type="text"
                                 placeholder={"Estado"}
-                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.uf && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
                                 disabled={loadingCep}
-                                value={state}
-                            />
+                                {...register("uf")}
+                                onChange={e => {
+                                    const i = e.target.options.selectedIndex
+                                    setSelectUf(i);
+                                }}
+                            >
+                                <option disabled>Estado</option>
+                                {
+                                    uf.map(uf => <option value={uf.id_uf} selected={ uf.nm_estado == state }>{uf.nm_estado}</option>)
+                                }
+                            </select>
                             {
-                                errors.state &&
+                                errors.uf &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.state?.message
+                                        errors.uf?.message
                                     }
                                 </small>
                             }
