@@ -7,35 +7,35 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
 import axios from "axios";
 import siglaParaId from "../../functions/uf";
-
+import NotifyBox from "../cardsAndBoxes/notifyBox";
+import { useNavigate } from "react-router-dom"
 
 const schema = Yup.object({
-    name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
+    clinicName: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
     email: Yup.string().required("Campo obrigatório").email("Digite um endereço de e-mail válido"),
     cnpj: Yup.string().required("Campo obrigatório").length(18, "O CNPJ deve ter 11 dígitos").test('valid-cnpj', 'CNPJ inválido', value => validarCNPJ(value)),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
-    number: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
+    numberHome: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
     complement: Yup.string(),
     neighborhood: Yup.string().required("Campo obrigatório"),
     password: Yup.string().required("campo obrigatorio"),
-    CRMV: Yup.string().required("Campo obrigatório").length(6),
+    crmv: Yup.string().required("Campo obrigatório").length(6),
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match'),
     terms: Yup.bool().oneOf([true], 'Você precisa aceitar os termos'),
     uf: Yup.string().required("Selecione um estado"),
     image: Yup.mixed().test(
         "fileSize",
         "O arquivo é muito grande",
-        value => !value || (value && value.size <= 5242879 ))
-    .test(
-        "fileType",
-        "Tipo de arquivo não suportado",
-        value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
-    )
+        value => !value || (value && value.size <= 5242879))
+        .test(
+            "fileType",
+            "Tipo de arquivo não suportado",
+            value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
+        )
 })
-
 
 function validarCNPJ(cnpj) {
 
@@ -91,8 +91,6 @@ function validarCNPJ(cnpj) {
 
 }
 
-
-
 export default function RegisterFormClinic({ userType }) {
 
     const [valueInput, setValueInput] = useState('')
@@ -107,7 +105,17 @@ export default function RegisterFormClinic({ userType }) {
     const [state, setState] = useState('')
     const [street, setStreet] = useState('')
 
-    const [ selectUf, setSelectUf ] = useState("")
+
+    
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    const [CRMV, setCRMV] = useState('')
+
+    const [uf, setUf] = useState([])
+
+    const [selectUf, setSelectUf] = useState("")
+
+    const navigate = useNavigate()
 
     const { register, handleSubmit, formState, setValue, setError } = useForm({
         resolver: yupResolver(schema),
@@ -134,7 +142,7 @@ export default function RegisterFormClinic({ userType }) {
                             setValue("street", data.street)
                         }
                         else setValue("street", "")
-                        
+
                         if (data.city) {
                             setValue("city", data.city)
                         }
@@ -173,28 +181,68 @@ export default function RegisterFormClinic({ userType }) {
         }
     }, [cep])
 
+    const [statusForm, setStatusForm] = useState(false)
+    const [msg, setMsg] = useState("")
+    const [sucess, setSucess] = useState(false)
+
     const onSubmit = (data) => {
-        console.log(selectUf)
+        const time = new Date().getTime()
+        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+
         data.uf = parseInt(selectUf)
-        console.log(data);
+
+        const options = {
+            clinicName: data.clinicName,
+            crmv: data.crmv,
+            email: data.email,
+            cnpj: data.cnpj,
+            cell: data.cell,
+            password: data.password,
+            cep: data.cep,
+            city: data.city,
+            state: data.uf,
+            street: data.street,
+            numberHome: data.numberHome,
+            neighborhood: data.neighborhood,
+            urlProfile: urlImageProfile
+        };
+
+        axios.post(`${import.meta.env.VITE_URL}/clinica`, options)
+            .then(response => {
+                navigate("/login", { state: { slug: "clinica" } })
+            })
+            .catch(response => {
+                console.log(response.response.data)
+                setStatusForm(true)
+                setMsg(response.response.data.Message)
+                setSucess(false)
+            })
+
+            
+
+            let form = new FormData();
+            form.append("name", urlImageProfile);
+            form.append('file', selectImage, selectImage.name);
+    
+            axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
     }
 
     const { errors } = formState
 
-    const [selectImage, setSelectImage] = useState(null)
-    const [urlImage, setUrlImage] = useState(null)
-    const [CRMV, setCRMV] = useState('')
 
-    const [ uf, setUf ] = useState([])
-    
-    useEffect(()=>{
-        axios.get("http://localhost:3010/uf")
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_URL}/uf`)
             .then(response => {
-                console.log(response.data)
                 setUf(response.data.result)
             })
             .catch(err => console.log(err))
-    },[])
+    }, [])
+
+
 
     useEffect(() => {
         if (selectImage) {
@@ -221,6 +269,11 @@ export default function RegisterFormClinic({ userType }) {
             <form
                 onSubmit={handleSubmit(onSubmit)}
             >
+
+                {
+                    statusForm && <NotifyBox msg={msg} status={sucess} />
+                }
+
                 <section
                     className="flex flex-col items-center gap-2"
                 >
@@ -238,7 +291,7 @@ export default function RegisterFormClinic({ userType }) {
                             className="hidden"
                             onChange={(event) => setSelectImage(event.target.files[0])}
                             accept="image/png, image/jpg, image/jpeg"
-                            // {...register("image")}
+                        // {...register("image")}
                         />
                     </label>
                     <small
@@ -262,17 +315,17 @@ export default function RegisterFormClinic({ userType }) {
                             <input
                                 type="text"
                                 placeholder={"Nome da clínica"}
-                                className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.name && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
-                                {...register("name")}
+                                className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.clinicName && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                {...register("clinicName")}
                             />
                             {
-                                errors.name &&
+                                errors.clinicName &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.name?.message
+                                        errors.clinicName?.message
                                     }
                                 </small>
                             }
@@ -310,16 +363,16 @@ export default function RegisterFormClinic({ userType }) {
                                 value={CRMV}
                                 placeholder={"CRMV"}
                                 register={register}
-                                nameRegister={"CRMV"}
+                                nameRegister={"crmv"}
                             />
                             {
-                                errors.CRMV &&
+                                errors.crmv &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.CRMV?.message
+                                        errors.crmv?.message
                                     }
                                 </small>
                             }
@@ -476,7 +529,7 @@ export default function RegisterFormClinic({ userType }) {
                             >
                                 <option disabled>Estado</option>
                                 {
-                                    uf.map(uf => <option value={uf.id_uf} selected={ uf.nm_estado == state }>{uf.nm_estado}</option>)
+                                    uf.map(uf => <option value={uf.id_uf} selected={uf.nm_estado == state}>{uf.nm_estado}</option>)
                                 }
                             </select>
                             {
@@ -526,17 +579,17 @@ export default function RegisterFormClinic({ userType }) {
                             <input
                                 type="text"
                                 placeholder={"nº"}
-                                className={`h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.number && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
-                                {...register('number')}
+                                className={`h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.numberHome && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                {...register('numberHome')}
                             />
                             {
-                                errors.number &&
+                                errors.numberHome &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.number?.message
+                                        errors.numberHome?.message
                                     }
                                 </small>
                             }
