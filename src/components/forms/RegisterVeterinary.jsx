@@ -8,6 +8,7 @@ import { InputFormRegister } from "../inputsComponents";
 import axios from "axios";
 import NotifyBox from "../cardsAndBoxes/notifyBox";
 import { useNavigate } from "react-router-dom";
+import useTopToScreen from "../../hook/useTopToScreen";
 
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 18))
 
@@ -152,6 +153,8 @@ export default function RegisterFormVeterinary({ userType }) {
                 setStatusForm(true)
                 setMsg(err.response.data.Message)
                 setSucess(false)
+
+                useTopToScreen()
             })
             .finally(()=>{
                 setLoading(false)

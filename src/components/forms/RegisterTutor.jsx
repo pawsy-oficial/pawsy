@@ -8,6 +8,7 @@ import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
 import axios from "axios";
 import NotifyBox from "../cardsAndBoxes/notifyBox";
 import { useNavigate } from "react-router-dom";
+import useTopToScreen from "../../hook/useTopToScreen";
 
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 16))
 
@@ -195,7 +196,11 @@ export default function RegisterFormTutor({ userType }) {
     const [msg, setMsg] = useState("")
     const [sucess, setSucess] = useState(false)
 
+    const [ loading, setLoading ] = useState(false)
+
     const onSubmit = (data) => {
+        setLoading(true)
+
         const time = new Date().getTime()
         const urlImageProfile = `${time}_pawsy_${selectImage.name}`
         data.uf = parseInt(selectUf)
@@ -242,17 +247,22 @@ export default function RegisterFormTutor({ userType }) {
                     }
                 })
                 .then(()=>{
-                    // setLoading(false)
+                    setLoading(false)
                     console.log(response)
                     navigate("/login", { state: { slug: "tutor" } })
                 })
             })
             .catch(err => {
-                // setLoading(false)
+                setLoading(false)
                 console.log(err)
                 setStatusForm(true)
                 setMsg(err.response.data.Message)
                 setSucess(false)
+
+                useTopToScreen()
+            })
+            .finally(()=>{
+                setLoading(false)
             })
     }
 
@@ -718,9 +728,12 @@ export default function RegisterFormTutor({ userType }) {
 
                 <button
                     type="submit"
-                    className="bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8"
+                    className={`bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                    disabled={loading}
                 >
-                    Enviar
+                    {
+                        loading ? "Enviando..." : "Enviar"
+                    }
                 </button>
 
             </form>

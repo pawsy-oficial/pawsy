@@ -9,6 +9,7 @@ import axios from "axios";
 import siglaParaId from "../../functions/uf";
 import NotifyBox from "../cardsAndBoxes/notifyBox";
 import { useNavigate } from "react-router-dom"
+import useTopToScreen from "../../hook/useTopToScreen";
 
 const schema = Yup.object({
     clinicName: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter mais de 2 caracteres"),
@@ -184,7 +185,11 @@ export default function RegisterFormClinic({ userType }) {
     const [msg, setMsg] = useState("")
     const [sucess, setSucess] = useState(false)
 
+    const [ loading, setLoading ] = useState(false)
+
     const onSubmit = (data) => {
+        setLoading(true)
+
         const time = new Date().getTime()
         const urlImageProfile = `${time}_pawsy_${selectImage.name}`
         console.log(data);
@@ -218,15 +223,26 @@ export default function RegisterFormClinic({ userType }) {
                     }
                 })
                 .then(()=>{
+                    setLoading(false)
                     navigate("/login", { state: { slug: "clinica" } })
+                })
+                .catch(err => {
+                    console.log(err)
                 })
             })
             .catch(response => {
+                setLoading(false)
                 console.log(response.response.data)
                 setStatusForm(true)
                 setMsg(response.response.data.Message)
                 setSucess(false)
+
+                useTopToScreen()
             })
+            .finally(()=>{
+                setLoading(false)
+            })
+            
 
 
 
@@ -701,9 +717,12 @@ export default function RegisterFormClinic({ userType }) {
 
                 <button
                     type="submit"
-                    className="bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8"
+                    className={`bg-[#304C52] hover:bg-[#253d42] py-3 w-full text-base text-white rounded-lg uppercase font-bold font-lato mt-8 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                    disabled={loading}
                 >
-                    Enviar
+                    {
+                        loading ? "Enviando..." : "Enviar"
+                    }
                 </button>
 
             </form>
