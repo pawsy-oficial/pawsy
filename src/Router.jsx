@@ -1,5 +1,6 @@
 
 import { Navigate, Route, Routes } from "react-router-dom"
+import PrivateRoute from "./routes/PrivateRoutes"
 import Tutor from "./pages/tutor/Tutor"
 import VaccinePage from "./pages/tutor/Vaccine"
 import VetCloser from "./pages/tutor/VetCloser"
@@ -46,6 +47,7 @@ const ForgotPass = lazy(()=> import("./pages/registers/forgotPassword"))
 // import Marketing from "./pages/clinic/Marketing"
 // import Patient from "./pages/clinic/Patients"
 
+
 import Home from "./pages"
 import Medic from "./pages/medic/medic"
 import PatientsForMedic from "./pages/medic/patients"
@@ -76,13 +78,42 @@ export default function Router(){
             <Route path="/recursos" element={<Features/>} />
 
 
-            <Route path="/tutor" element={<Tutor/>} />
-            <Route path="/carteira" element={<VaccinePage/>} />
-            <Route path="/vets" element={<VetCloser/>} />
-            <Route path="/receitas" element={<Revenues/>} />
-            <Route path="/bem-estar" element={<WellBeing/>} />
-            <Route path="/consulta" element={<ScheduleTutor/>} />
-            <Route path="/resultado-pesquisa" element={<SearchResult/>} />
+            <Route path="/tutor" element={
+                <PrivateRoute role="Tutor" element={<Tutor />}>
+                    <Tutor />
+                </PrivateRoute>
+            } />
+            <Route path="/carteira" element={
+                <PrivateRoute role="Tutor" element={<VaccinePage />}>
+                    <VaccinePage />
+                </PrivateRoute>
+            } />
+            <Route path="/vets" element={
+                <PrivateRoute role="Tutor" element={<VetCloser />}>
+                    <VetCloser />
+                </PrivateRoute>
+            } />
+            <Route path="/receitas" element={
+                <PrivateRoute role="Tutor" element={<Revenues />}>
+                    <Revenues />
+                </PrivateRoute>
+            } />
+            <Route path="/bem-estar" element={
+                <PrivateRoute role="Tutor" element={<WellBeing />}>
+                    <WellBeing />
+                </PrivateRoute>
+            } />
+            <Route path="/consulta" element={
+                <PrivateRoute role="Tutor" element={<ScheduleTutor />}>
+                    <ScheduleTutor />
+                </PrivateRoute>
+            } />
+            <Route path="/resultado-pesquisa" element={
+                <PrivateRoute role="Tutor" element={<SearchResult />}>
+                    <SearchResult />
+                </PrivateRoute>
+            } />
+
             
             <Route 
                 path="/acesso" 
@@ -185,43 +216,88 @@ export default function Router(){
 
             <Route path="/clinica" 
                 element={
-                    <PrivateRouter user={true}>
-                        <Clinic/>
-                    </PrivateRouter>
+                    <PrivateRoute role="Clinica" element={<Clinic />}>
+                        <Clinic />
+                    </PrivateRoute>
                 } 
             />
-            <Route path="/perfil" element={<Perfil/>} />
-            <Route path="/agenda" element={<Schedule/>}/>
-            <Route path="/marketing" element={<Marketing/>}/>
-            <Route path="/pacientes" element={<Patient/>}/>
+            <Route path="/perfil" 
+                element={
+                    <PrivateRoute role="Clinica" element={<Perfil />}>
+                        <Perfil />
+                    </PrivateRoute>
+                } 
+            />
+            <Route path="/agenda" 
+                element={
+                    <PrivateRoute role="Clinica" element={<Schedule />}>
+                        <Schedule />
+                    </PrivateRoute>
+                } 
+            />
+            <Route path="/marketing" 
+                element={
+                    <PrivateRoute role="Clinica" element={<Marketing />}>
+                        <Marketing />
+                    </PrivateRoute>
+                } 
+            />
+            <Route path="/pacientes" 
+                element={
+                    <PrivateRoute role="Clinica" element={<Patient />}>
+                        <Patient />
+                    </PrivateRoute>
+                } 
+            />
 
             <Route path="*" element={<Home/>}/>
+
 
       {/* ==x==x==x==x==x==x== */}
 
             <Route path="/medico" 
                 element={
-                    <PrivateRouter user={true}>
-                        <Medic/>
-                    </PrivateRouter>
+                    <PrivateRoute role="Medico" element={<Medic />}>
+                        <Medic />
+                    </PrivateRoute>
                 } 
             />
             <Route path="/pacientes-clinica" 
-                element={<PatientsForMedic/>} 
+                element={
+                    <PrivateRoute role="Medico" element={<PatientsForMedic />}>
+                        <PatientsForMedic />
+                    </PrivateRoute>
+                } 
             />
             <Route path="/paciente" 
-                element={<ViewPatient/>} 
+                element={
+                    <PrivateRoute role="Medico" element={<ViewPatient />}>
+                        <ViewPatient />
+                    </PrivateRoute>
+                } 
             />
             <Route path="/receitas-medicas" 
-                element={<MarketingRevenue/>} 
+                element={
+                    <PrivateRoute role="Medico" element={<MarketingRevenue />}>
+                        <MarketingRevenue />
+                    </PrivateRoute>
+                } 
             />
             <Route path="/vacinas-e-vermifugacao" 
-                element={<Vaccine/>} 
+                element={
+                    <PrivateRoute role="Medico" element={<Vaccine />}>
+                        <Vaccine />
+                    </PrivateRoute>
+                } 
             />
             <Route path="/nova-receita" 
-                element={<NewRevenues/>} 
+                element={
+                    <PrivateRoute role="Medico" element={<NewRevenues />}>
+                        <NewRevenues />
+                    </PrivateRoute>
+                } 
             />
-
+            
         </Routes>
     )
 }

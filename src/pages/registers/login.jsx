@@ -42,7 +42,7 @@ export default function Login() {
                 >
 
                     <GoBack />
-                    <LoginForm  userType={typeUser} />
+                    <LoginForm userType={typeUser} />
                 </div>
             </main>
             <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
