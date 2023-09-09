@@ -1,11 +1,13 @@
 import { Camera, XCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import ProgressPass from "../progress/progressPass";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
 import axios from "axios";
+import NotifyBox from "../cardsAndBoxes/notifyBox";
+import { useNavigate } from "react-router-dom";
 
 const birthdate = new Date(new Date().setFullYear(new Date().getFullYear() - 16))
 
@@ -16,31 +18,42 @@ const schema = Yup.object({
     cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos").test("cpf-valido", "CPF inválido", (cpf) => handleValidationCPF(cpf)),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
     date: Yup.date().typeError('Deve ser uma data').required("Campo obrigatório").max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
+    
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
-    number: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
+    numberHome: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
     complement: Yup.string(),
     neighborhood: Yup.string().required("Campo obrigatório"),
     password: Yup.string().required(),
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match'),
     terms: Yup.bool().oneOf([true], 'Você precisa aceitar os termos'),
+    uf: Yup.string().required("Selecione um estado"),
+    image: Yup.mixed().test(
+        "fileSize",
+        "O arquivo é muito grande",
+        value => !value || (value && value.size <= 5242879))
+        .test(
+            "fileType",
+            "Tipo de arquivo não suportado",
+            value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
+        )
 })
 
 function handleValidationCPF(cpf) {
-    const format = cpf.replace(/[^\d]+/g,'');
+    const format = cpf.replace(/[^\d]+/g, '');
     let firstDigit = format[9];
     let secondDigit = format[10];
 
-    if (format == "00000000000" || 
-        format == "11111111111" || 
-        format == "22222222222" || 
-        format == "33333333333" || 
-        format == "44444444444" || 
-        format == "55555555555" || 
-        format == "66666666666" || 
-        format == "77777777777" || 
-        format == "88888888888" || 
+    if (format == "00000000000" ||
+        format == "11111111111" ||
+        format == "22222222222" ||
+        format == "33333333333" ||
+        format == "44444444444" ||
+        format == "55555555555" ||
+        format == "66666666666" ||
+        format == "77777777777" ||
+        format == "88888888888" ||
         format == "99999999999")
         return false;
 
@@ -85,25 +98,40 @@ export default function RegisterFormTutor({ userType }) {
     const [state, setState] = useState('')
     const [street, setStreet] = useState('')
 
-    const [ selectImage, setSelectImage ] = useState(null)
-    const [ urlImage, setUrlImage ] = useState(null)
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
 
-    useEffect(()=>{
-        if(selectImage){
+    const navigate = useNavigate() 
+
+    useEffect(() => {
+        if (selectImage) {
             console.log(selectImage);
-            if(selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg" ){
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
                 console.log("A imagem não atende os requisitos ");
             }
-            else{
+            else {
                 setUrlImage(URL.createObjectURL(selectImage))
             }
         }
-    },[selectImage])
+    }, [selectImage])
 
-    const { register, handleSubmit, formState, setValue, setError } = useForm({
+    const { register, handleSubmit, formState, setValue, setError, control } = useForm({
         resolver: yupResolver(schema),
         mode: "onSubmit"
     })
+
+
+    // CEP
+    const [uf, setUf] = useState([])
+    const [selectUf, setSelectUf] = useState("")
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_URL}/uf`)
+            .then(response => {
+                setUf(response.data.result)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     useEffect(() => {
 
@@ -124,15 +152,19 @@ export default function RegisterFormTutor({ userType }) {
                         if (data.street) {
                             setValue("street", data.street)
                         }
+                        else setValue("street", "")
                         if (data.city) {
                             setValue("city", data.city)
                         }
+                        else setValue("city", "")
                         if (data.state) {
                             setValue("state", data.state)
                         }
+                        else setValue("state", "")
                         if (data.neighborhood) {
                             setValue("neighborhood", data.neighborhood)
                         }
+                        else setValue("neighborhood", "")
                     }
                 )
                 .catch(err => {
@@ -150,16 +182,78 @@ export default function RegisterFormTutor({ userType }) {
                     setValue("neighborhood", "")
 
                 })
-                .finally(() => {
-                    setLoadingCep(false)
-                    setErrorCep(false)
-                }
+                .finally(
+                    () => {
+                        setLoadingCep(false)
+                        setErrorCep(false)
+                    }
                 )
         }
     }, [cep])
 
+    const [statusForm, setStatusForm] = useState(false)
+    const [msg, setMsg] = useState("")
+    const [sucess, setSucess] = useState(false)
+
     const onSubmit = (data) => {
-        console.log(data);
+        const time = new Date().getTime()
+        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+        data.uf = parseInt(selectUf)
+
+        const date = new Date(data.date);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        
+
+        const dataForm = {
+            firstName: data.name, 
+            lastName: data.lastName,
+            email: data.email,
+            cpf: data.cpf,
+            birthDate: formattedDate, 
+            cell: data.cell,
+            password: data.password,
+            cep: data.cep,
+            city: data.city,
+            state: data.uf,
+            street: data.street,
+            numberHome: data.numberHome,
+            neighborhood: data.neighborhood,
+            urlProfile: urlImageProfile,
+            complement: data.complement
+
+        }
+
+        console.log(dataForm);
+        
+        axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
+            .then(response => {
+                console.log(response);
+                let form = new FormData();
+                form.append("name", urlImageProfile);
+                form.append('file', selectImage, selectImage.name);
+        
+                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(()=>{
+                    // setLoading(false)
+                    console.log(response)
+                    navigate("/login", { state: { slug: "tutor" } })
+                })
+            })
+            .catch(err => {
+                // setLoading(false)
+                console.log(err)
+                setStatusForm(true)
+                setMsg(err.response.data.Message)
+                setSucess(false)
+            })
     }
 
     const { errors } = formState
@@ -178,6 +272,9 @@ export default function RegisterFormTutor({ userType }) {
             <form
                 onSubmit={handleSubmit(onSubmit)}
             >
+                {
+                    statusForm && <NotifyBox msg={msg} status={sucess} />
+                }
                 <section
                     className="flex flex-col items-center gap-2"
                 >
@@ -186,19 +283,35 @@ export default function RegisterFormTutor({ userType }) {
                         title="Imagem de perfil"
                     >
                         {
-                            urlImage ? <img  className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
+                            urlImage ? <img className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
                         }
-
+                        <Controller
+                            name="image"
+                            control={control}
+                            render={({ field }) => (
+                                <input
+                                    type="file"
+                                    multiple={false}
+                                    className="hidden"
+                                    onChange={event => {
+                                        field.onChange(event.target.files[0]);
+                                        setSelectImage(event.target.files[0]);
+                                    }}
+                                    accept="image/png, image/jpg, image/jpeg"
+                                />
+                            )}
+                        />
                         <input
                             type="file"
                             multiple={false}
                             className="hidden"
-                            onChange={ (event) => setSelectImage(event.target.files[0]) }
+                            onChange={(event) => setSelectImage(event.target.files[0])}
                             accept="image/png, image/jpg, image/jpeg"
+                            {...register("image")}
                         />
                     </label>
                     <small
-                        className="w-28 text-center text-xs text-zinc-400"
+                        className={`w-28 text-center text-xs text-zinc-400  ${errors.image && "!text-red-error"}`}
                     >
                         Formato 1:1, com tamanho máximo de 5MB e nos formatos .png e .jpg
                     </small>
@@ -436,21 +549,31 @@ export default function RegisterFormTutor({ userType }) {
 
                         <div className="w-full">
 
-                            <input
+                            <select
                                 type="text"
                                 placeholder={"Estado"}
-                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.uf && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
                                 disabled={loadingCep}
-                                value={state}
-                            />
+                                {...register("uf")}
+                                onChange={e => {
+                                    const i = e.target.options.selectedIndex
+                                    console.log(i);
+                                    setSelectUf(i);
+                                }}
+                            >
+                                <option disabled>Estado</option>
+                                {
+                                    uf.map(uf => <option value={uf.id_uf} selected={uf.nm_estado == state}>{uf.nm_estado}</option>)
+                                }
+                            </select>
                             {
-                                errors.state &&
+                                errors.uf &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.state?.message
+                                        errors.uf?.message
                                     }
                                 </small>
                             }
@@ -490,17 +613,17 @@ export default function RegisterFormTutor({ userType }) {
                             <input
                                 type="text"
                                 placeholder={"nº"}
-                                className={`h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.number && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
-                                {...register('number')}
+                                className={`h-fit border border-zinc-400 w-40 rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.numberHome && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
+                                {...register('numberHome')}
                             />
                             {
-                                errors.number &&
+                                errors.numberHome &&
                                 <small
                                     className="text-red-error flex items-center gap-2 mt-1"
                                 >
                                     <XCircle size={18} />
                                     {
-                                        errors.number?.message
+                                        errors.numberHome?.message
                                     }
                                 </small>
                             }

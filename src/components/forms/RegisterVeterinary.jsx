@@ -22,7 +22,7 @@ const schema = Yup.object({
     confirm_password: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('password'), null], 'Passwords must match'),
     CRMV: Yup.string().required("Campo obrigatório").length(6),
     terms: Yup.bool().oneOf([true], 'Você precisa aceitar os termos'),
-    specialty: Yup.string().required("Campo obrigatório").oneOf(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], "Valor invalido"),
+    specialty: Yup.string().required("Campo obrigatório").oneOf(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'], "Valor invalido"),
     image: Yup.mixed().test(
         "fileSize",
         "O arquivo é muito grande",
@@ -131,9 +131,20 @@ export default function RegisterFormVeterinary({ userType }) {
 
         axios.post(`${import.meta.env.VITE_URL}/medico`, dataForm)
             .then(response => {
-                setLoading(false)
-                console.log(response)
-                navigate("/login", { state: { slug: "medico" } })
+                let form = new FormData();
+                form.append("name", urlImageProfile);
+                form.append('file', selectImage, selectImage.name);
+        
+                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(()=>{
+                    setLoading(false)
+                    console.log(response)
+                    navigate("/login", { state: { slug: "medico" } })
+                })
             })
             .catch(err => {
                 setLoading(false)

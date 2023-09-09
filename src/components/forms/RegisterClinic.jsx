@@ -1,7 +1,7 @@
 import { Camera, XCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import ProgressPass from "../progress/progressPass";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { InputFormRegister, InputFormRegisterCEP } from "../inputsComponents";
@@ -106,18 +106,17 @@ export default function RegisterFormClinic({ userType }) {
     const [street, setStreet] = useState('')
 
 
-    
+
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     const [CRMV, setCRMV] = useState('')
 
     const [uf, setUf] = useState([])
-
     const [selectUf, setSelectUf] = useState("")
 
     const navigate = useNavigate()
 
-    const { register, handleSubmit, formState, setValue, setError } = useForm({
+    const { register, handleSubmit, formState, setValue, setError, control } = useForm({
         resolver: yupResolver(schema),
         mode: "onSubmit"
     })
@@ -188,7 +187,7 @@ export default function RegisterFormClinic({ userType }) {
     const onSubmit = (data) => {
         const time = new Date().getTime()
         const urlImageProfile = `${time}_pawsy_${selectImage.name}`
-
+        console.log(data);
         data.uf = parseInt(selectUf)
 
         const options = {
@@ -209,7 +208,18 @@ export default function RegisterFormClinic({ userType }) {
 
         axios.post(`${import.meta.env.VITE_URL}/clinica`, options)
             .then(response => {
-                navigate("/login", { state: { slug: "clinica" } })
+                let form = new FormData();
+                form.append("name", urlImageProfile);
+                form.append('file', selectImage, selectImage.name);
+        
+                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(()=>{
+                    navigate("/login", { state: { slug: "clinica" } })
+                })
             })
             .catch(response => {
                 console.log(response.response.data)
@@ -218,17 +228,8 @@ export default function RegisterFormClinic({ userType }) {
                 setSucess(false)
             })
 
-            
 
-            let form = new FormData();
-            form.append("name", urlImageProfile);
-            form.append('file', selectImage, selectImage.name);
-    
-            axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+
     }
 
     const { errors } = formState
@@ -284,18 +285,33 @@ export default function RegisterFormClinic({ userType }) {
                         {
                             urlImage ? <img className="w-full h-full object-cover" src={urlImage} /> : <Camera size={48} color="#22937E" />
                         }
-
+                        <Controller
+                            name="image"
+                            control={control}
+                            render={({ field }) => (
+                                <input
+                                    type="file"
+                                    multiple={false}
+                                    className="hidden"
+                                    onChange={event => {
+                                        field.onChange(event.target.files[0]);
+                                        setSelectImage(event.target.files[0]);
+                                    }}
+                                    accept="image/png, image/jpg, image/jpeg"
+                                />
+                            )}
+                        />
                         <input
                             type="file"
                             multiple={false}
                             className="hidden"
                             onChange={(event) => setSelectImage(event.target.files[0])}
                             accept="image/png, image/jpg, image/jpeg"
-                        // {...register("image")}
+                            {...register("image")}
                         />
                     </label>
                     <small
-                        className="w-28 text-center text-xs text-zinc-400"
+                        className={`w-28 text-center text-xs text-zinc-400  ${errors.image && "!text-red-error"}`}
                     >
                         Formato 1:1, com tamanho máximo de 5MB e nos formatos .png e .jpg
                     </small>
