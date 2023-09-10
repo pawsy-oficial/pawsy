@@ -250,7 +250,7 @@ export default function RegisterFormTutor({ userType }) {
                     setLoading(false)
                     console.log(response)
                     navigate("/login", { state: { slug: "tutor" } })
-                })
+                }).catch(err=> console.log(err))
             })
             .catch(err => {
                 setLoading(false)

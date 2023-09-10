@@ -31,6 +31,11 @@ export default function LoginFormClinic() {
             const url = `${import.meta.env.VITE_URL}/loginClinic`;
             const response = await axios.post(url, data);
 
+            const allCookies = Cookies.get();
+            for (let cookie in allCookies) {
+                Cookies.remove(cookie);
+            }
+
             Cookies.set('jwtTokenClinic', response.data.token, { expires: 1/3 }); // 8 horas
             navigate('/clinica');
         } catch (error) {
@@ -78,11 +83,26 @@ export default function LoginFormClinic() {
                             {errors.password.message}
                         </small>
                     }
+                    <a 
+                        className="text-primary underline text-xs cursor-pointer font-semibold"
+                        onClick={() => navigate("/recuperar-senha", { state: { slug: "clinica" } })}
+                    >
+                        Esqueci a senha
+                    </a>
                 </div>
                 
                 <button type="submit" className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8">
                     ENTRAR
                 </button>
+                <a 
+                    onClick={(event) => {
+                        event.preventDefault();
+                        navigate("/cadastro", { state: { slug: "clinica" } });
+                    }} 
+                    className="mx-auto cursor-pointer"
+                >
+                    Criar uma nova conta
+                </a>
             </div>
         </form>
     )

@@ -24,6 +24,11 @@ export default function LoginFormMedic() {
         try {
             const url = `${import.meta.env.VITE_URL}/loginMedic`;
             const response = await axios.post(url, data);
+            
+            const allCookies = Cookies.get();
+            for (let cookie in allCookies) {
+                Cookies.remove(cookie);
+            }
 
             Cookies.set('jwtTokenMedic', response.data.token, { expires: 1/3 });  // 8 horas
 
@@ -75,7 +80,7 @@ export default function LoginFormMedic() {
                     }
                     <a 
                         className="text-primary underline text-xs cursor-pointer font-semibold"
-                        onClick={() => navigate("/recuperar-senha", { state: { auth: "a" } })}
+                        onClick={() => navigate("/recuperar-senha", { state: { slug: "medico" } })}
                     >
                         Esqueci a senha
                     </a>

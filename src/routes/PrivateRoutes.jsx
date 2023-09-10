@@ -60,7 +60,7 @@ function PrivateRoute(props) {
         return <Navigate to="/" replace />;
     }
 
-    if (props.role && props.role !== userType) {
+    if (props.role && props.role && props.role !== userType) {
         return <Navigate to="/" replace />;
     }
 
