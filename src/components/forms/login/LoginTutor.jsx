@@ -28,6 +28,11 @@ export default function LoginFormTutor() {
             const response = await axios.post(url, data);
 
             console.log("Resposta:", response.data);
+            
+            const allCookies = Cookies.get();
+            for (let cookie in allCookies) {
+                Cookies.remove(cookie);
+            }
 
             Cookies.set('jwtTokenTutor', response.data.token, { expires: 1/3 }); //8 horas
             
@@ -80,7 +85,7 @@ export default function LoginFormTutor() {
                         </small>
                     }
                     <a className="text-primary underline text-xs cursor-pointer font-semibold"
-                       onClick={() => navigate("/recuperar-senha", { state: { auth: "a" } })}>
+                       onClick={() => navigate("/recuperar-senha", { state: { slug: "tutor" } })}>
                         Esqueci a senha
                     </a>
                 </div>

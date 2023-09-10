@@ -1,222 +1,192 @@
-import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { HeaderLogin } from "../../components/header/Header"
-import GoBack from "../../components/buttons/GoBack"
-import { CardNotificationRegisters } from "../../components/cardsAndBoxes/cardNotificationRegister"
-import { useForm } from "react-hook-form"
-import * as Yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { XCircle } from "@phosphor-icons/react"
-import ImputMask from "react-input-mask"
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { HeaderLogin } from "../../components/header/Header";
+import GoBack from "../../components/buttons/GoBack";
+import { CardNotificationRegisters } from "../../components/cardsAndBoxes/cardNotificationRegister";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { XCircle } from "@phosphor-icons/react";
+import ImputMask from "react-input-mask";
+import axios from "axios";
 
-const schema = Yup.object({
-    "email": Yup.string().email("Endereço de email invalido").required("Campo obrigatório")
-})
+const schemaEmail = Yup.object({
+    "email": Yup.string().email("Endereço de email inválido").required("Campo obrigatório"),
+});
 
-export default function forgotPassword() {
+const schemaCode = Yup.object({
+    "code": Yup.string().required("Campo obrigatório"),
+});
 
-    const [forms, setForms] = useState(0)
-    const [email, setEmail] = useState(null)
+const schemaPassword = Yup.object({
+    "password": Yup.string().min(8, "Senha deve ter pelo menos 8 caracteres").required("Campo obrigatório"),
+});
 
-    function HandleForm() {
-        switch (forms) {
-            case 0:
-                return <FirstForm currentForm={setForms} email={setEmail} />
-            case 1:
-                return <SecondForm currentForm={setForms} email={email} />
-            case 2:
-                return <ThirdForm />
-        }
-    }
+const schemaReset = Yup.object({
+    code: Yup.string().required("Código obrigatório").matches(/^[\w\d]{8}$/, "O código deve ter 8 dígitos"),
+    password: Yup.string()
+        .required("Senha obrigatória")
+        .min(8, "Senha deve ter pelo menos 8 caracteres")
+        .matches(/(?=.*[a-z])/, "A senha deve ter ao menos uma letra minúscula")
+        .matches(/(?=.*[A-Z])/, "A senha deve ter ao menos uma letra maiúscula")
+        .matches(/(?=.*[0-9])/, "A senha deve ter ao menos um número")
+        .matches(/(?=.*[!@#$%^&*])/, "A senha deve ter ao menos um caractere especial"),
+    confirmPassword: Yup.string()
+        .required("Confirmação de senha obrigatória")
+        .oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
+});
 
-    const navigate = useNavigate()
-    const location = useLocation()
 
+export default function ForgotPassword() {
+    const [forms, setForms] = useState(0);
+    const [email, setEmail] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (!location.state) {
-            navigate("/acesso")
+            navigate("/acesso");
         }
-
-        document.body.classList.add("bg-primary")
-        return () => { // função de limpeza, é executada quando o componente é desmontado
-            document.body.classList.remove("bg-primary")
+        document.body.classList.add("bg-primary");
+        return () => {
+            document.body.classList.remove("bg-primary");
         }
-    }, [])
-
-    const style = {
-        position: "absolute"
-    }
+    }, []);
 
     return (
         <>
             <main className="h-screen">
-                <HeaderLogin style={style} />
-                <div
-                    className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex flex-col justify-center"
-                >
+                <HeaderLogin />
+                <div className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex flex-col justify-center">
                     <GoBack />
-                    <HandleForm />
+                    {forms === 0 && <FirstForm currentForm={setForms} email={setEmail} />}
+                    {forms === 1 && <SecondForm currentForm={setForms} email={email} />}
                 </div>
             </main>
             <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10">
                 <CardNotificationRegisters />
             </div>
         </>
-    )
+    );
 }
 
 function FirstForm({ currentForm, email }) {
     const { handleSubmit, register, formState } = useForm({
-        resolver: yupResolver(schema),
-        mode: "onSubmit"
-    })
+        resolver: yupResolver(schemaEmail),
+        mode: "onSubmit",
+    });
+    const [errorMessage, setErrorMessage] = useState(null);
+    const { errors } = formState;
+    const location = useLocation();
+    const user = location.state.slug;
 
-    const { errors } = formState
+    const onSubmit = async (data) => {
+        let url;
+        if (user === "tutor") {
+            url = `${import.meta.env.VITE_URL}/sendCodeTutor`;
+        } else if (user === "clinica") {
+            url = `${import.meta.env.VITE_URL}/sendCodeClinic`;
+        } else if (user === "medico") {
+            url = `${import.meta.env.VITE_URL}/sendCodeMedic`;
+        }
 
-    const onSubmit = data => {
-        currentForm(1)
-        email(data.email)
-        console.log(data);
-    }
+        try {
+            await axios.post(url, data);
+            currentForm(1);
+            email(data.email);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setErrorMessage("E-mail não é válido.");
+            } else {
+                setErrorMessage("Erro ao tentar enviar o código.");
+            }
+        }
+    };
+
     return (
-        <form
-            className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md"
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <h2
-                className="font-sora font-bold text-[32px]"
-            >
-                Recuperar senha
-            </h2>
-
+        <form className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="font-sora font-bold text-[32px]">Recuperar senha</h2>
             <div className="flex flex-col gap-4 mt-8">
                 <div className="w-full">
-                    <input
-                        type="text"
-                        placeholder="Email"
-                        className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all ${errors.name && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
-                        {...register("email")}
-                    />
-                    {
-                        errors.email &&
-                        <small
-                            className="text-red-error flex items-center gap-2 mt-1"
-                        >
-                            <XCircle size={18} />
-                            {
-                                errors.email?.message
-                            }
-                        </small>
-                    }
+                    <input type="text" placeholder="Email" className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`} {...register("email")} />
+                    {errors.email && <small className="text-red-error"><XCircle size={18} /> {errors.email?.message}</small>}
+                    {errorMessage && <small className="text-red-error">{errorMessage}</small>}
                 </div>
             </div>
-
             <div className="w-full flex flex-col gap-3">
-                <button
-                    type="submit"
-                    className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8"
-                >
-                    ENVIAR
-                </button>
+                <button type="submit" className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8">ENVIAR</button>
             </div>
-
         </form>
-    )
+    );
 }
 
-function SecondForm({ currentForm, email }) {
+function SecondForm({ email }) {
     const { handleSubmit, register, formState } = useForm({
-        mode: "onSubmit"
-    })
+        resolver: yupResolver(schemaReset),
+        mode: "onSubmit",
+    });
+    const [errorMessage, setErrorMessage] = useState(null);
+    const { errors } = formState;
+    const navigate = useNavigate();
+    const [successMessage, setSuccessMessage] = useState(null);
 
-    const { errors } = formState
+    const location = useLocation();
+    const user = location.state.slug;
 
-    const onSubmit = data => {
-        currentForm(2)
-        // email(data.code)
-        console.log(data);
-    }
+    const onSubmit = async (data) => {
+        let url;
+        if (user === "tutor") {
+            url = `${import.meta.env.VITE_URL}/resetPasswordTutor`;
+        } else if (user === "clinica") {
+            url = `${import.meta.env.VITE_URL}/resetPasswordClinic`;
+        } else if (user === "medico"){
+            url = `${import.meta.env.VITE_URL}/resetPasswordMedic`;
+        }
 
-    return (
-        <form
-            className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md"
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <p>
-                Um código de verificação foi enviado para o email <span className="text-secundary underline">{email}</span>
-            </p>
+        const payload = {
+            email: email,
+            code: data.code,
+            newPassword: data.password
+        };
 
-            <div className="flex flex-col gap-4 mt-8">
-                <div className="w-full">
-                    <ImputMask 
-                        mask={"999999"}
-                        maskChar={null}
-                        placeholder="xxxxxx"
-                        type="text"
-                        className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`}
-                        {...register("code")}
-                    />
-                </div>
-            </div>
-
-            <div className="w-full flex flex-col gap-3">
-                <button
-                    type="submit"
-                    className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8"
-                >
-                    CONFIRMAR
-                </button>
-            </div>
-
-        </form>
-    )
-}
-
-function ThirdForm({ email }) {
-    // const { handleSubmit, register, formState } = useForm({
-    //     mode: "onSubmit"
-    // })
-
-    // const { errors } = formState
-
-    // const onSubmit = data => {
-    //     currentForm(2)
-    //     // email(data.code)
-    //     console.log(data);
-    // }
+        try {
+            await axios.post(url, payload);
+            setSuccessMessage("Senha alterada com sucesso!");
+            setTimeout(() => {
+                navigate("/acesso");
+            }, 2000);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setErrorMessage("Erro ao atualizar a senha.");
+            } else {
+                setErrorMessage("Erro no servidor. Tente novamente mais tarde.");
+            }
+        }
+    };
 
     return (
-        <form
-            className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md"
-        // onSubmit={handleSubmit(onSubmit)}
-        >
-            <h2
-                className="font-sora font-bold text-[32px]"
-            >
-                Nova senha
-            </h2>
-
+        <form className="bg-white px-5 py-8 rounded-lg w-full md:w-1/2 flex flex-col max-w-md" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="font-sora font-bold text-[32px]">Recuperação de Senha</h2>
+            <p>Um código de verificação foi enviado para o email <span className="text-secundary underline">{email}</span></p>
             <div className="flex flex-col gap-4 mt-8">
                 <div className="w-full">
-                    <input
-                        type="password"
-                        placeholder="Nova senha"
-                        className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`}
-                    // {...register("code")}
-                    />
+                    <input type="text" placeholder="Código de verificação" {...register("code")} className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`} />
+                    {errors.code && <small className="text-red-error"><XCircle size={18} /> {errors.code?.message}</small>}
+                </div>
+                <div className="w-full">
+                    <input type="password" placeholder="Nova senha" {...register("password")} className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`} />
+                    {errors.password && <small className="text-red-error"><XCircle size={18} /> {errors.password?.message}</small>}
+                </div>
+                <div className="w-full">
+                    <input type="password" placeholder="Confirme a nova senha" {...register("confirmPassword")} className={`border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all`} />
+                    {errors.confirmPassword && <small className="text-red-error"><XCircle size={18} /> {errors.confirmPassword?.message}</small>}
                 </div>
             </div>
-
             <div className="w-full flex flex-col gap-3">
-                <button
-                    type="submit"
-                    className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8"
-                >
-                    ALTERAR
-                </button>
+                <button type="submit" className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8">ALTERAR</button>
             </div>
-
+            {successMessage && <small className="text-green-500 mt-3">{successMessage}</small>}
+            {errorMessage && <small className="text-red-error mt-3">{errorMessage}</small>}
         </form>
-    )
+    );
 }
