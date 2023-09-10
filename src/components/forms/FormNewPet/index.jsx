@@ -7,12 +7,15 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as Yup from "yup"
 import axios from "axios"
+import Cookies from "js-cookie"
+import NotifyBox from "../../cardsAndBoxes/notifyBox"
+import useTopToScreen from "../../../hook/useTopToScreen"
 
 const schema = Yup.object({
     name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter no mínimo 2 caracteres"),
     description: Yup.string().max(250, "Limite atingido (250)"),
     date: Yup.date().typeError("Deve ser uma data").required("Campo obrigatório"),
-    coat: Yup.string().required("Campo obrigatório"),
+    coat: Yup.string().oneOf(["1", "2", "3"]).required("Campo obrigatório"),
     race: Yup.string().required("Campo obrigatório"),
     gender: Yup.string().oneOf(["1", "2"], "valor invalido").required("Campo obrigatório"),
     pet: Yup.string().oneOf(["1", "2"], "valor invalido").required("Qual a espécie do seu pet?"),
@@ -39,6 +42,7 @@ const FormNewPet = (props) => {
 
     const [catsRace, setCatsRace] = useState([])
     const [dogsRace, setDogsRace] = useState([])
+    const [idTutor, setIdTutor] = useState(null)
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/raca?kind=cat`)
@@ -51,6 +55,20 @@ const FormNewPet = (props) => {
                 setDogsRace(response.data.result)
             })
             .catch(err => console.log(err))
+
+
+        const tutorToken = Cookies.get('jwtTokenTutor');
+        const url = `${import.meta.env.VITE_URL}/profileTutor`;
+
+        const response = axios.get(url, {
+            headers: {
+                Authorization: `Bearer ${tutorToken}`
+            }
+        }).then(
+            e => setIdTutor(e.data.storedIdTutor)
+        ).catch(
+            e => console.log(e)
+        )
     }, [])
 
     const { isFirstAccess } = props
@@ -84,9 +102,6 @@ const FormNewPet = (props) => {
         "Grande",
     ];
 
-    const onSubmit = dataForm => {
-        console.log(dataForm)
-    }
 
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
@@ -102,6 +117,77 @@ const FormNewPet = (props) => {
         }
     }, [selectImage])
 
+    const [ loading, setLoading ] = useState(false)
+    const [ statusForm, setStatusForm ] = useState(false)
+
+    const onSubmit = dataForm => {
+
+        // console.log(dataForm)
+        setLoading(true)
+
+        let date = new Date(dataForm.date);
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+        let formattedDate = `${year}-${month}-${day}`;
+
+        const time = new Date().getTime()
+        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+
+        const data = {
+            "name": dataForm.name,
+            "typeKind": dataForm.pet,
+            "gender": dataForm.gender,
+            "date": formattedDate,
+            "description": dataForm.description,
+            "coat": dataForm.coat,
+            "urlProfile": urlImageProfile,
+            "id_tutor": idTutor,
+            "race": dataForm.race
+        }
+
+        console.log(data);
+
+
+        axios.post(`${import.meta.env.VITE_URL}/pet-register`, data)
+            .then(response => {
+                console.log(response);
+                let form = new FormData();
+                form.append("name", urlImageProfile);
+                form.append('file', selectImage, selectImage.name);
+        
+                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(()=>{
+                    setLoading(false)
+                    console.log(response)
+                    props.addPet(true)
+                })
+                .catch(
+                    err => {
+                        console.log(err)
+                        setLoading(false)
+                        setStatusForm(true)
+                    }
+                )
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err.response.data)
+                setStatusForm(true)
+
+                useTopToScreen()
+            })
+            .finally(()=>{
+                setLoading(false)
+            })
+    }
+
+    
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -110,6 +196,10 @@ const FormNewPet = (props) => {
             <h1 className=" text-2xl pt-3 font-bold self-start">Novo Pet</h1>
 
             <section className="flex flex-col gap-6 w-full">
+                {
+                    statusForm &&
+                    <NotifyBox msg={"Ocorreu um erro ao fazer o cadastro do seu pet, tente novamente mais tarde"} status={false}/>
+                }
                 <div className="w-32 mx-auto flex flex-col items-center gap-3" style={{ width: "164px" }}>
                     <input type="file" name="imagePet" id="imagePet" className="hidden" />
 
@@ -153,8 +243,6 @@ const FormNewPet = (props) => {
 
                 </div>
 
-
-
                 <section id="animals" className="my-5 flex flex-col gap-16 justify-between">
                     <div className="w-full flex flex-col items-center">
                         <div className="flex gap-4 justify-around w-full">
@@ -165,8 +253,13 @@ const FormNewPet = (props) => {
                                 id="dog"
                                 // ref={register("pet")}
                                 className="hidden"
-                                {...register("pet")}
-                                onChange={(e) => handleAnimalChange(e.target.value)}
+                                // {...register("pet")}
+                                {
+                                ...register("pet", {
+                                    onChange: (e) => handleAnimalChange(e.target.value)
+                                })
+                                }
+                            // onChange={(e) => handleAnimalChange(e.target.value)}
                             />
                             <label
                                 htmlFor="dog"
@@ -184,8 +277,12 @@ const FormNewPet = (props) => {
                                 id="cat"
                                 className="hidden"
                                 // ref={register("pet")}
-                                {...register("pet")}
-                                onChange={(e) => handleAnimalChange(e.target.value)}
+                                {
+                                ...register("pet", {
+                                    onChange: (e) => handleAnimalChange(e.target.value)
+                                })
+                                }
+                            // onChange={(e) => handleAnimalChange(e.target.value)}
                             />
 
                             <label htmlFor="cat" className="flex flex-col items-center py-1 px-2 rounded-lg cursor-pointer border border-transparent">
@@ -289,8 +386,8 @@ const FormNewPet = (props) => {
                     >
                         <option value="" disabled selected defaultValue="">Pelagem</option>
                         {
-                            coat.map(dog => (
-                                <option key={dog}>{dog}</option>
+                            coat.map((dog, index) => (
+                                <option key={index} value={index + 1}>{dog}</option>
                             ))
                         }
                     </select>
@@ -361,17 +458,21 @@ const FormNewPet = (props) => {
                 {
                     !isFirstAccess &&
                     <button
-                        className="bg-red-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-red-600"
+                        className="bg-red-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed"
                         onClick={() => { props.addPet(true) }}
+                        disabled={loading}
                     >
                         Cancelar
                     </button>
                 }
                 <button
-                    className="bg-green-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-green-600"
+                    className={`bg-green-500 text-white py-1 px-6 rounded-lg cursor-pointer hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed`}
                     type="submit"
+                    disabled={loading}
                 >
-                    Adicionar
+                    {
+                        loading ? "Enviando..." : "Adicionar"
+                    }
                 </button>
             </div>
         </form>
