@@ -1,5 +1,5 @@
 
-#animals #cat:checked + div > label, #animals #dog:checked + div > label{
+#animals #cat:checked + label, #animals #dog:checked + label{
     background: rgba(34, 183, 126, 0.2);
     border: #04AD34 1px solid;
 }
