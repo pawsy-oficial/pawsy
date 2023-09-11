@@ -10,6 +10,7 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import NotifyBox from "../../cardsAndBoxes/notifyBox"
 import useTopToScreen from "../../../hook/useTopToScreen"
+import { useNavigate } from "react-router-dom"
 
 const schema = Yup.object({
     name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter no mínimo 2 caracteres"),
@@ -32,7 +33,7 @@ const schema = Yup.object({
 
 
 const FormNewPet = (props) => {
-
+    const navigate = useNavigate()
     const { register, handleSubmit, formState, control } = useForm({
         mode: "onSubmit",
         resolver: yupResolver(schema)
@@ -102,7 +103,6 @@ const FormNewPet = (props) => {
         "Grande",
     ];
 
-
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     useEffect(() => {
@@ -164,6 +164,7 @@ const FormNewPet = (props) => {
                 .then(()=>{
                     setLoading(false)
                     console.log(response)
+                    navigate("/tutor")
                     props.addPet(true)
                 })
                 .catch(
@@ -185,8 +186,6 @@ const FormNewPet = (props) => {
                 setLoading(false)
             })
     }
-
-    
 
     return (
         <form

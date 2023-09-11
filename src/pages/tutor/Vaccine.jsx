@@ -7,12 +7,14 @@ import { CaretDown } from "@phosphor-icons/react";
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
 import dayjs from 'dayjs'
+import useCheckedPet from "../../hook/useCheckedPet";
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
 	const [namePet, setNamePet] = useState("");
 	const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
 
+	useCheckedPet()
 	/*
 	const vaccineName = ["Antirrábica","Viratec 10 CVL", "V8"]; //Viratec 10 CVL é obrigatória
 	const dateVaccine = ["24/03/2020","24/03/2021","24/03/2022","24/03/2023", "30/05/2023"];

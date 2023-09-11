@@ -242,10 +242,6 @@ export default function RegisterFormClinic({ userType }) {
             .finally(()=>{
                 setLoading(false)
             })
-            
-
-
-
     }
 
     const { errors } = formState
