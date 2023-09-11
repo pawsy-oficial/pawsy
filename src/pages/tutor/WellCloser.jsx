@@ -3,6 +3,7 @@ import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import "../../style/wellbeing.css"
 import { Info, Ruler, Scales } from "@phosphor-icons/react";
+import useCheckedPet from "../../hook/useCheckedPet";
 
 const dataBaseParms = 100 // provisorio - 0 - 100
 
@@ -11,7 +12,7 @@ export default function WellBeing() {
 		angle: 0,
 		valueStatus: "Ruim"
 	})
-	
+	useCheckedPet()
 	useEffect(() => {
 		switch (dataBaseParms) {
 			case 0:

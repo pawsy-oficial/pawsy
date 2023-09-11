@@ -7,6 +7,7 @@ import { useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
 import CardSchedule from "../../components/cardsAndBoxes/cardSchedule";
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import useCheckedPet from "../../hook/useCheckedPet";
 
 const SCHEDULES =
     [
@@ -94,6 +95,7 @@ const SCHEDULES =
 
 export default function ScheduleTutor() {
     useTopToScreen()
+    useCheckedPet()
     const [handlePage, setHandlePage] = useState(false)
 
     return (

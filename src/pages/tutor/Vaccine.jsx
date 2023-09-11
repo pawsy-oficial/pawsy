@@ -387,7 +387,9 @@ export default function VaccinePage() {
 											{
 												alterTable ?
 													(
-														<table className="w-full cursor-default">
+														<table 
+															className="w-full cursor-default rounded-lg border-0"
+														>
 															<thead>
 																<tr className=" border-b border-black">
 																	<th className=" bg-primary text-white text-sm w-40 p-2">
@@ -417,7 +419,7 @@ export default function VaccinePage() {
 
 																						return (
 																							<>
-																								<td>{f.vaccineName}</td>
+																								<td className="border-none">{f.vaccineName}</td>
 																								<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
 																								<td>{f.returnVaccine}</td>
 																								<td>{f.vetAplication}</td>
@@ -469,22 +471,22 @@ export default function VaccinePage() {
 									)
 								}
 
-								<table className="w-full cursor-default hidden lg:block">
-									<thead>
-										<tr className=" border-b border-black">
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+								<table className="w-full cursor-default hidden lg:block border-none rounded-lg rounded-r-2xl">
+									<thead className="border-none">
+										<tr className="border-b border-black border-none">
+											<th className=" bg-primary text-white text-sm w-40 p-2 border-none rounded-tl-lg">
 												Vacina
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" p-2 bg-primary text-white text-sm w-40 border-none">
 												Data de aplicação
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" p-2 bg-primary text-white text-sm w-40 border-none">
 												Retorno
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" p-2 bg-primary text-white text-sm w-40 border-none">
 												Veterinário
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" p-2 bg-primary text-white text-sm w-40 border-none rounded-tr-lg">
 												CRMV
 											</th>
 										</tr>
@@ -493,17 +495,17 @@ export default function VaccinePage() {
 										{
 											table[positioPet].map((e, index) => {
 												return (
-													<tr key={index} className="border-b border-black">
+													<tr key={index} className="border-b border-black border-none">
 														{
 															e.map((f) => {
 
 																return (
 																	<>
-																		<td>{f.vaccineName}</td>
-																		<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
-																		<td>{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
-																		<td>{f.vetAplication}</td>
-																		<td>{f.CRMV}</td>
+																		<td className="border-none rounded-bl-lg">{f.vaccineName}</td>
+																		<td className="border-none">{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																		<td className="border-none">{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
+																		<td className="border-none">{f.vetAplication}</td>
+																		<td className="border-none rounded-br-lg">{f.CRMV}</td>
 																	</>
 																);
 															})
@@ -519,11 +521,11 @@ export default function VaccinePage() {
 								<h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vermífugos</h3>
 								<table className="cursor-default">
 									<thead>
-										<tr className=" border-b border-black">
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+										<tr className="">
+											<th className=" bg-primary text-white text-sm w-40 p-2 border-none rounded-tl-lg">
 												Data
 											</th>
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+											<th className=" bg-primary text-white text-sm w-40 p-2 border-none rounded-tr-lg">
 												Nome
 											</th>
 										</tr>
@@ -531,13 +533,13 @@ export default function VaccinePage() {
 									<tbody className="second">
 										{tableVermifugo[positioPet].map((e) => {
 											return (
-												<tr className="border-b border-black">
+												<tr className="">
 													{e.map((f) => {
 
 														return (
 															<>
-																<td>{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
-																<td>{f.nameVermifugo}</td>
+																<td className="border-none rounded-bl-lg">{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
+																<td className="border-none rounded-bl-lg">{f.nameVermifugo}</td>
 															</>
 														);
 													})}

@@ -3,6 +3,7 @@ import { NavbarTutor } from "../../components/Navbar"
 import { Header } from "../../components/header/Header"
 import { CaretLeft } from "@phosphor-icons/react"
 import CardsVetCloser from "../../components/cardsAndBoxes/cardClinicCloser"
+import useCheckedPet from "../../hook/useCheckedPet"
 
 
 const CLINICS = [
@@ -25,7 +26,7 @@ const CLINICS = [
 ]
 
 export default function SearchResult() {
-
+    useCheckedPet()
     const location = useLocation()
     const { clinicName } = location.state
     const navigate = useNavigate()
