@@ -3,7 +3,7 @@ import { NavbarClinic } from "../../components/Navbar";
 import { GenderFemale, GenderMale, MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import { PatientsCard } from "../../components/PatientsComponents/PatientsCard";
 import { useState } from "react";
-import { ModalPetQuestion } from "../../components/PatientsComponents/ModalPetQuestion";
+import { ModalPetExists } from "../../components/PatientsComponents/ModalPetExists";
 
 export default function Patient() {
   const [open, setOpen] = useState(false)
@@ -49,7 +49,7 @@ export default function Patient() {
           </section>
 
           <aside className="flex flex-col gap-10">
-            <ModalPetQuestion isOpen={open} setOpen={setOpen} />
+            <ModalPetExists isOpen={open} setOpen={setOpen} />
             <section className="w-96 bg-white px-4 py-8 items-center rounded-2xl flex flex-col gap-5 h-max">
               <div className="bg-primary w-4/5 h-12 rounded-full flex items-center justify-center">
                 <button className="flex gap-4" onClick={() => setOpen(!open)}>
