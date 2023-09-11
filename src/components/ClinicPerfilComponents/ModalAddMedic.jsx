@@ -50,6 +50,7 @@ export function ModalAddMedic(props) {
 		const jwtTokenClinic = Cookies.get('jwtTokenClinic');
 		const url = `${import.meta.env.VITE_URL}/medico?id=${medicDetails.id}&crmv=${medicDetails.crmv}`
 
+		console.log(url);
 
 		axios.get(url, {
 			headers: {
@@ -57,8 +58,9 @@ export function ModalAddMedic(props) {
 			}
 		}).then(
 			e => {
+				console.log(e)
 				setNameMedic(e.data.result[0].nm_medico)
-				console.log(`${import.meta.env.VITE_URL}/files/${e.data.result[0].url_imagem}`)
+				// console.log(`${import.meta.env.VITE_URL}/files/${e.data.result[0].url_imagem}`)
 				setUrlImagem(`${import.meta.env.VITE_URL}/files/${e.data.result[0].url_imagem}`)
 			}
 		).catch(

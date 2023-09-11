@@ -165,6 +165,7 @@ const FormNewPet = (props) => {
                     setLoading(false)
                     console.log(response)
                     navigate("/tutor")
+                    window.location.reload()
                     props.addPet(true)
                 })
                 .catch(

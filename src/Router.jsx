@@ -54,7 +54,7 @@ import PatientsForMedic from "./pages/medic/patients"
 import ViewPatient from "./pages/medic/viewPatient"
 import SearchResult from "./pages/tutor/searchResult"
 import Vaccine from "./pages/medic/vaccine"
-import MarketingRevenue from "./pages/medic/revenues"
+// import MarketingRevenue from "./pages/medic/revenues"    
 import NewRevenues from "./pages/medic/newRevenues"
 import { LoadingPagesPlaceholder } from "./components/loadings/Loading"
 import Plans from "./pages/landinPage/plans"
@@ -276,13 +276,13 @@ export default function Router(){
                     </PrivateRoute>
                 } 
             />
-            <Route path="/receitas-medicas" 
+            {/* <Route path="/receitas-medicas" 
                 element={
                     <PrivateRoute role="Medico" element={<MarketingRevenue />}>
                         <MarketingRevenue />
                     </PrivateRoute>
                 } 
-            />
+            /> */}
             <Route path="/vacinas-e-vermifugacao" 
                 element={
                     <PrivateRoute role="Medico" element={<Vaccine />}>
