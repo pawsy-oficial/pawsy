@@ -58,7 +58,7 @@ input:focus{
 }
 
 table {
-  @apply text-center rounded overflow-hidden
+  @apply text-center
 }
 
 th, td{
@@ -152,4 +152,20 @@ th, td{
 
 #vacina:checked + label, #vermifugo:checked + label{
   @apply border-primary
+}
+
+.line-colors > tr:nth-child(odd){
+  @apply bg-[#7CE3F8]
+}
+.line-colors > tr:nth-child(even){
+  @apply bg-[#F1FDFF]
+}
+
+
+tbody:before{
+  content: ".";
+  display: block;
+  line-height: 1em;
+  color: transparent;
+  background: #fff;
 }
