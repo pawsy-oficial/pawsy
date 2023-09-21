@@ -157,9 +157,12 @@ function MySchedules({ alterNewSchedulePage }) {
     )
 }
 
+function AvailableClinics(){
+    
+}
+
 function NewSchedule() {
-    // console.table(SCHEDULES[0].schedules)
-    console.log("ok")
+  
 
     const date = new Date()
     const dayCurrent = date.getDate().toString().padStart(2, 0)
