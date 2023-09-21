@@ -166,6 +166,11 @@ function ProfileTutor({ showPet }) {
                         {pets[showPet].observations}
                     </p>
                 </section>
+                <button 
+                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                >
+                    Editar perfil
+                </button>
             </div>
             <div className="flex flex-col gap-6">
                 <section>
