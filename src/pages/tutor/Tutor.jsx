@@ -1,5 +1,5 @@
 // import FormNewPet from "../../components/FormNewPet";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 
 
 import { Header } from "../../components/header/Header";
@@ -13,6 +13,9 @@ import useTopToScreen from "../../hook/useTopToScreen";
 import { LoadingPaw } from "../../components/loadings/Loading";
 
 import dayjs from "dayjs"
+import { useLocation } from "react-router-dom";
+import useCheckedPet from "../../hook/useCheckedPet";
+
 
 const RadioGroupMyPets = lazy(() => import("../../components/tutor/RadioGroupMyPets"))
 
@@ -21,13 +24,25 @@ export default function Tutor() {
 
     const [showPet, setShowPet] = useState(0)
     const [addPet, setAddPet] = useState(true)
+    const [firstAccess, setFirstAccess] = useState(false)
 
     useTopToScreen()
+    useCheckedPet()
+    const { state } = useLocation()
+    useEffect(()=>{
+        if(state != null){
+            if(state.addPet){
+                setFirstAccess(true)
+                setAddPet(!state.addPet)
+            }
+        }
+    },[state])
+    
 
     return (
         <main className="flex min-h-screen">
 
-            <NavbarTutor page={0} />
+            <NavbarTutor page={0} isFirstAccess={firstAccess} />
 
             <section className="flex-1">
                 <Header userType={"tutor"} />
@@ -63,7 +78,7 @@ export default function Tutor() {
                                     </section>
                                 </>
                             )
-                            : <FormNewPet addPet={setAddPet} />
+                            : <FormNewPet addPet={setAddPet} isFirstAccess={firstAccess}/>
                     }
 
                 </main>
@@ -76,6 +91,7 @@ import caramelo from '../../img/caramelo.webp'
 import oreo from '../../img/oreo.jpg'
 import flor from '../../img/flor.jpg'
 import pantera from '../../img/pantera.jpg'
+
 
 
 
@@ -150,6 +166,11 @@ function ProfileTutor({ showPet }) {
                         {pets[showPet].observations}
                     </p>
                 </section>
+                <button 
+                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                >
+                    Editar perfil
+                </button>
             </div>
             <div className="flex flex-col gap-6">
                 <section>

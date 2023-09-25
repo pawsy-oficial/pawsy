@@ -1,8 +1,10 @@
 import { Header } from "../../components/header/Header";
 import { NavbarTutor } from "../../components/Navbar";
 import CardsVetCloser from "../../components/cardsAndBoxes/cardClinicCloser";
+import useCheckedPet from "../../hook/useCheckedPet";
 
 export default function VetCloser() {
+  useCheckedPet()
     return (
       <main className="flex min-h-screen">
         <NavbarTutor />

@@ -7,6 +7,7 @@ import { useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
 import CardSchedule from "../../components/cardsAndBoxes/cardSchedule";
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import useCheckedPet from "../../hook/useCheckedPet";
 
 const SCHEDULES =
     [
@@ -94,6 +95,7 @@ const SCHEDULES =
 
 export default function ScheduleTutor() {
     useTopToScreen()
+    useCheckedPet()
     const [handlePage, setHandlePage] = useState(false)
 
     return (
@@ -155,9 +157,12 @@ function MySchedules({ alterNewSchedulePage }) {
     )
 }
 
+function AvailableClinics(){
+    
+}
+
 function NewSchedule() {
-    // console.table(SCHEDULES[0].schedules)
-    console.log("ok")
+  
 
     const date = new Date()
     const dayCurrent = date.getDate().toString().padStart(2, 0)

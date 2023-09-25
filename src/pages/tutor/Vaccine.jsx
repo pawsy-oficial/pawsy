@@ -7,19 +7,14 @@ import { CaretDown } from "@phosphor-icons/react";
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
 import dayjs from 'dayjs'
+import useCheckedPet from "../../hook/useCheckedPet";
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
 	const [namePet, setNamePet] = useState("");
 	const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
 
-	/*
-	const vaccineName = ["Antirrábica","Viratec 10 CVL", "V8"]; //Viratec 10 CVL é obrigatória
-	const dateVaccine = ["24/03/2020","24/03/2021","24/03/2022","24/03/2023", "30/05/2023"];
-	const returnVaccine = ["24/03/2021", "24/03/2022", "24/03/2023", "24/03/2024", "30/05/2024"];
-	const CRMV = ["000-00", "111-11"];
-	const vetAplication = ["Vanessa Santos - "]
-	*/
+	useCheckedPet()
 
 	//Lista Vacinas
 	const table = [
@@ -356,10 +351,10 @@ export default function VaccinePage() {
 
 					<section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
 						<div className="w-full flex justify-between gap-10">
-							<div className="md:flex-1 w-full">
+							<div className="md:flex-1 w-full max-w-3xl">
 								<h3 className="font-semibold text-2xl mb-3 text-center font-lato hidden md:block">Vacinas</h3>
 
-								{
+								{ // responsivo
 									windowScreen.width < 1024
 									&& (
 										<section className="w-full flex flex-col items-center">
@@ -385,40 +380,39 @@ export default function VaccinePage() {
 											{
 												alterTable ?
 													(
-														<table className="w-full cursor-default">
+														<table 
+															className="w-full cursor-default border-0"
+														>
 															<thead>
-																<tr className=" border-b border-black">
-																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																<tr className="border-none">
+																	<th className="py-1 border-none bg-primary text-white text-sm w-40 rounded-l-full">
 																		Vacina
 																	</th>
-																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																	<th className=" py-1 border-none bg-primary text-white text-sm w-40">
 																		Data de aplicação
 																	</th>
-																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																	<th className=" py-1 border-none bg-primary text-white text-sm w-40">
 																		Retorno
 																	</th>
-																	<th className=" p-2 bg-primary text-white text-sm w-40">
+																	<th className=" py-1 border-none bg-primary text-white text-sm w-40 rounded-r-full">
 																		Veterinário
-																	</th>
-																	<th className="hidden p-2 bg-primary text-white text-sm w-40">
-																		CRMV
 																	</th>
 																</tr>
 															</thead>
-															<tbody className="second">
+															<tbody className="second line-colors border-0">
 																{
 																	table[positioPet].map((e, index) => {
 																		return (
-																			<tr key={index} className="border-b border-black">
+																			<tr key={index} className="border-none">
 																				{
 																					e.map((f) => {
 
 																						return (
 																							<>
-																								<td>{f.vaccineName}</td>
-																								<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
-																								<td>{f.returnVaccine}</td>
-																								<td>{f.vetAplication}</td>
+																								<td className="border-none rounded-l-full">{f.vaccineName}</td>
+																								<td className="border-none">{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																								<td className="border-none">{f.returnVaccine}</td>
+																								<td className="border-none rounded-r-full">{f.vetAplication}</td>
 																								<td className="hidden">{f.CRMV}</td>
 																							</>
 																						);
@@ -467,41 +461,41 @@ export default function VaccinePage() {
 									)
 								}
 
-								<table className="w-full cursor-default hidden lg:block">
-									<thead>
-										<tr className=" border-b border-black">
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+								<table className="w-full cursor-default hidden lg:block border-none rounded-lg rounded-r-2xl">
+									<thead className="border-none">
+										<tr className="border-b border-black border-none">
+											<th className="py-1 bg-primary text-white text-sm w-40 border-none rounded-l-full">
 												Vacina
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" py-1 bg-primary text-white text-sm w-40 border-none">
 												Data de aplicação
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" py-1 bg-primary text-white text-sm w-40 border-none">
 												Retorno
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" py-1 bg-primary text-white text-sm w-40 border-none">
 												Veterinário
 											</th>
-											<th className=" p-2 bg-primary text-white text-sm w-40">
+											<th className=" py-1 bg-primary text-white text-sm w-40 border-none rounded-r-full">
 												CRMV
 											</th>
 										</tr>
 									</thead>
-									<tbody className="second">
+									<tbody className="second line-colors">
 										{
 											table[positioPet].map((e, index) => {
 												return (
-													<tr key={index} className="border-b border-black">
+													<tr key={index} className="border-none">
 														{
 															e.map((f) => {
 
 																return (
 																	<>
-																		<td>{f.vaccineName}</td>
-																		<td>{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
-																		<td>{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
-																		<td>{f.vetAplication}</td>
-																		<td>{f.CRMV}</td>
+																		<td className="border-none rounded-l-full">{f.vaccineName}</td>
+																		<td className="border-none">{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
+																		<td className="border-none">{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
+																		<td className="border-none">{f.vetAplication}</td>
+																		<td className="border-none rounded-r-full">{f.CRMV}</td>
 																	</>
 																);
 															})
@@ -517,25 +511,25 @@ export default function VaccinePage() {
 								<h3 className="font-semibold text-2xl mb-3 text-center font-lato">Vermífugos</h3>
 								<table className="cursor-default">
 									<thead>
-										<tr className=" border-b border-black">
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+										<tr className="">
+											<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-l-full">
 												Data
 											</th>
-											<th className=" bg-primary text-white text-sm w-40 p-2">
+											<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
 												Nome
 											</th>
 										</tr>
 									</thead>
-									<tbody className="second">
+									<tbody className="second line-colors">
 										{tableVermifugo[positioPet].map((e) => {
 											return (
-												<tr className="border-b border-black">
+												<tr className="">
 													{e.map((f) => {
 
 														return (
 															<>
-																<td>{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
-																<td>{f.nameVermifugo}</td>
+																<td className="border-none rounded-l-full">{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
+																<td className="border-none rounded-r-full">{f.nameVermifugo}</td>
 															</>
 														);
 													})}

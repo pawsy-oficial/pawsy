@@ -11,7 +11,6 @@ export default function Register() {
     const location = useLocation()
     const navigate = useNavigate()
 
-
     useEffect(() => {
         if (!location.state) {
             navigate("/acesso")
