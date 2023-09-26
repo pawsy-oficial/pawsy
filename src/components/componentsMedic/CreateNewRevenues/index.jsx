@@ -1,8 +1,15 @@
 import LogoWaterMark from "../../../img/waterMark.svg";
 import { CreateNewMedicines } from "../CreateNewMedicines";
 import { PlusCircle } from "@phosphor-icons/react";
+import { useState } from "react";
 
 export function CreateNewRevenues() {
+  const [isComponentVisible, setComponentVisibility] = useState(false);
+
+  const toggleComponent = () => {
+    setComponentVisibility(!isComponentVisible);
+  };
+
   return (
     <div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative">
       <img
@@ -36,8 +43,9 @@ export function CreateNewRevenues() {
         <CreateNewMedicines />
       </section>
 
-      <div className="flex justify-center">
-        <button className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3">
+      <div className="flex justify-center flex-col items-center gap-6">
+        {isComponentVisible && <CreateNewMedicines/>}
+        <button className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3" onClick={toggleComponent}>
           <PlusCircle size={20} />
           adicionar
         </button>
