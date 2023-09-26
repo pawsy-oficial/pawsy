@@ -19,7 +19,7 @@ const schema = Yup.object({
     cpf: Yup.string().required("Campo obrigatório").length(14, "O CPF deve ter 11 dígitos").test("cpf-valido", "CPF inválido", (cpf) => handleValidationCPF(cpf)),
     cell: Yup.string().required("Campo obrigatório").matches(/^\(\d{2}\)\s\d{9}$/, "Número de celular inválido. Use o formato (99) 999999999"),
     date: Yup.date().typeError('Deve ser uma data').required("Campo obrigatório").max(birthdate, "A conta só pode ser criada para maiores de 16 anos"),
-    
+
     cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
     city: Yup.string().required("Campo obrigatório"),
     street: Yup.string().required("Campo obrigatório"),
@@ -102,7 +102,7 @@ export default function RegisterFormTutor({ userType }) {
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
 
-    const navigate = useNavigate() 
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (selectImage) {
@@ -196,7 +196,7 @@ export default function RegisterFormTutor({ userType }) {
     const [msg, setMsg] = useState("")
     const [sucess, setSucess] = useState(false)
 
-    const [ loading, setLoading ] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const onSubmit = (data) => {
         setLoading(true)
@@ -211,57 +211,70 @@ export default function RegisterFormTutor({ userType }) {
         const day = date.getDate().toString().padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
 
-        
 
-        const dataForm = {
-            firstName: data.name, 
-            lastName: data.lastName,
-            email: data.email,
-            cpf: data.cpf,
-            birthDate: formattedDate, 
-            cell: data.cell,
-            password: data.password,
-            cep: data.cep,
-            city: data.city,
-            state: data.uf,
-            street: data.street,
-            numberHome: data.numberHome,
-            neighborhood: data.neighborhood,
-            urlProfile: urlImageProfile,
-            complement: data.complement
+        const streetFormat = data.street.replace(/ /g, "%20")
+        const cityFormat = data.city.replace(/ /g, "%20")
+        const neighborhoodFormat = data.neighborhood.replace(/ /g, "%20")
+        const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
 
-        }
+        axios.get(urlGeocode)
+            .then((e) => {
+                const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
 
-        console.log(dataForm);
+                const dataForm = {
+                    firstName: data.name,
+                    lastName: data.lastName,
+                    email: data.email,
+                    cpf: data.cpf,
+                    birthDate: formattedDate,
+                    cell: data.cell,
+                    password: data.password,
+                    cep: data.cep,
+                    city: data.city,
+                    state: data.uf,
+                    street: data.street,
+                    numberHome: data.numberHome,
+                    neighborhood: data.neighborhood,
+                    urlProfile: urlImageProfile,
+                    complement: data.complement,
+                    latitude: latitude,
+                    longitude: longitude
+                }
+                console.log(dataForm);
+                
+                axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
+                    .then(response => {
+                        console.log(response);
+                        let form = new FormData();
+                        form.append("name", urlImageProfile);
+                        form.append('file', selectImage, selectImage.name);
+                
+                        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then(()=>{
+                            setLoading(false)
+                            console.log(response)
+                            navigate("/login", { state: { slug: "tutor" } })
+                        }).catch(err=> console.log(err))
+                    })
+                    .catch(err => {
+                        setLoading(false)
+                        console.log(err)
+                        setStatusForm(true)
+                        setMsg(err.response.data.Message)
+                        setSucess(false)
         
-        axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
-            .then(response => {
-                console.log(response);
-                let form = new FormData();
-                form.append("name", urlImageProfile);
-                form.append('file', selectImage, selectImage.name);
-        
-                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(()=>{
-                    setLoading(false)
-                    console.log(response)
-                    navigate("/login", { state: { slug: "tutor" } })
-                }).catch(err=> console.log(err))
+                        useTopToScreen()
+                    })
+                    .finally(()=>{
+                        setLoading(false)
+                    })
             })
-            .catch(err => {
-                setLoading(false)
-                console.log(err)
-                setStatusForm(true)
-                setMsg(err.response.data.Message)
-                setSucess(false)
-
-                useTopToScreen()
-            })
-            .finally(()=>{
+            .catch((e) => {
+                console.log(e)
                 setLoading(false)
             })
     }
