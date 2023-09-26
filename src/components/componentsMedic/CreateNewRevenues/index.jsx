@@ -36,14 +36,11 @@ export function CreateNewRevenues() {
         <CreateNewMedicines />
       </section>
 
-      <div className="flex flex-col">
-        <a
-          className="flex items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
-          onClick={() => navigate("/receitas-medicas")}
-        >
+      <div className="flex justify-center">
+        <button className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3">
           <PlusCircle size={20} />
           adicionar
-        </a>
+        </button>
       </div>
 
       <div className="w-44 h-[1px] my-20 mx-auto bg-black">
