@@ -160,6 +160,9 @@ export default function RegisterFormTutor({ userType }) {
                         else setValue("city", "")
                         if (data.state) {
                             setValue("state", data.state)
+                            console.log(data.state)
+                            console.log(uf.indexOf(data.state))
+                            setSelectUf(uf.map(e => e.nm_estado).indexOf(data.state) + 1)
                         }
                         else setValue("state", "")
                         if (data.neighborhood) {
@@ -244,7 +247,7 @@ export default function RegisterFormTutor({ userType }) {
                 }
                 console.log(dataForm);
                 
-                /*axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
+                axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
                     .then(response => {
                         console.log(response);
                         let form = new FormData();
@@ -273,8 +276,8 @@ export default function RegisterFormTutor({ userType }) {
                     })
                     .finally(()=>{
                         setLoading(false)
-                    })*/
-                    setLoading(false)
+                    })
+                    // setLoading(false)
             })
             .catch((e) => {
                 console.log(e)
