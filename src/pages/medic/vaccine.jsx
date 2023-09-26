@@ -14,6 +14,8 @@ export default function Vaccine() {
   const [openVermifuge, setOpenVermifuge] = useState(false);
   const [openVaccine, setOpenVaccine] = useState(false);
 
+  
+
   const table = [
     [
       //Caramelo (pets[0])
