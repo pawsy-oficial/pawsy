@@ -36,10 +36,35 @@ export default function VetCloser() {
 	}
 
 	const [mapaCarregado, setMapaCarregado] = useState(false);
+	const [location, setLocation] = useState({latitude: null, longitude: null})
 	useEffect(() => {
+
+		const {jwtTokenTutor} = Cookies.get()
+
+		axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+			headers: {
+				Authorization: `Bearer ${jwtTokenTutor}`
+			}
+		}).then(
+			(e)=> {
+				axios.get(`${import.meta.env.VITE_URL}/coordinates?idTutor=${e.data.storedIdTutor}`,{
+					headers: {
+						Authorization: `Bearer ${jwtTokenTutor}`
+					}
+				})
+				.then(e => setLocation({
+					latitude: e.data[0].latitude,
+					longitude: e.data[0].longitude,
+				}))
+				.catch(err => console.log(err))
+			}
+		).catch(err => console.log(err))
+	}, []);
+
+	useEffect(()=>{
 		const script = document.createElement('script');
 		script.type = 'text/javascript';
-		script.src = 'https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=';
+		script.src = `https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`;
 		script.async = true;
 		script.defer = true;
 
@@ -56,25 +81,12 @@ export default function VetCloser() {
 		};
 
 		document.body.appendChild(script);
-		console.log("ooo");
-		// const {jwtTokenTutor} = Cookies.get()
-		// console.log(jwtTokenTutor);
-		
-		// axios.get(`${import.meta.env.VITE_URL}/coordinates`, {
-		// 	headers: {
-        //         Authorization: `Bearer ${jwtTokenTutor}`
-        //     }
-		// }).then(
-		// 	(e)=>{
-		// 		console.log(e)
-		// 	}
-		// )
 		
 		return () => {
 			delete window.GetMap;
 			document.body.removeChild(script);
 		};
-	}, []);
+	}, [location]);
 
 	let map, pinLayer, searchPolygon, infobox;
 
@@ -107,14 +119,14 @@ export default function VetCloser() {
 		`
 
 	function GetMap() {
-		console.log();
+		console.log(location.latitude, location.longitude);
 		let navigationBarMode = Microsoft.Maps.NavigationBarMode;
 		map = new Microsoft.Maps.Map('#myMap', { // create map
 
-			credentials: import.meta.env.VITE_API_KEY, // api Key
+			credentials: import.meta.env.VITE_KEY_TOKEN_MAP, // api Key
 
 			// start point
-			center: new Microsoft.Maps.Location(-23.957762, -46.367653),
+			center: new Microsoft.Maps.Location(location.latitude, location.longitude),
 
 			// style default map
 			mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
@@ -140,7 +152,7 @@ export default function VetCloser() {
 
 		});
 
-		let pinMe = new Microsoft.Maps.Pushpin(map.getCenter(), { // cria e configura um pin
+		let pinMe = new Microsoft.Maps.Pushpin({latitude: location.latitude, longitude: location.longitude}, { // cria e configura um pin
 			title: "Você",
 			color: "#009b65"
 		})
@@ -185,7 +197,7 @@ export default function VetCloser() {
 		const title = "Test"
 		const address = `Praça coronel lopez`
 
-		infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
+		infobox = new Microsoft.Maps.Infobox({latitude: location.latitude, longitude: location.longitude}, {
 			visible: false,
 			htmlContent: infoboxTemplate.replace('{title}', title).replace('{address}', address)
 		});
@@ -196,7 +208,7 @@ export default function VetCloser() {
 
 	function Search() {
 		//Use the center of the map as the center of the search area.
-		let origin = { latitude: -23.957762, longitude: -46.367653 };
+		let origin = { latitude: location.latitude, longitude: location.longitude };
 		let radiusOption = 2.5;
 		let radius = parseFloat(radiusOption);
 
