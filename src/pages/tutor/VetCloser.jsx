@@ -5,6 +5,7 @@ import useCheckedPet from "../../hook/useCheckedPet";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { ArrowCounterClockwise } from "@phosphor-icons/react";
 
 export default function VetCloser() {
 	useCheckedPet()
@@ -91,26 +92,26 @@ export default function VetCloser() {
 	let map, pinLayer, searchPolygon, infobox;
 
 	let infoboxTemplate = `
-                <div class="box-infobox">
-                    <div class="box-img">
-                        <div class="img"></div>
-                        <div class="title">
-                            <h3>{title}</h3>
-                            <span>aberto</span>
+                <div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
+                    <div class="flex gap-3 items-center">
+                        <div class="bg-red-400 rounded-full w-10 h-10"></div>
+                        <div class="flex flex-col">
+                            <h3 class="text-2xl font-lato font-bold">{title}</h3>
+                            <span class="text-green-600 text-xs">aberto</span>
                         </div>
                     </div>
-                    <div class="box-description">
-                        <p class="address">{address}</p>
-                        <div class="container">
-                            <span>1.4KM</span>    
-                            <div class="classification">
-                                <span>4,8</span>    
-                                <div class="stars">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>    
+                    <div class="flex flex-col">
+                        <p class="text-zinc-400 text-xs my-2">{address}</p>
+                        <div class="flex justify-between w-full items-center">
+                            <span class="text-base font-semibold">1.4KM</span>    
+                            <div class="flex gap-4 items-center">
+                                <span class="text-xs">4,8</span>    
+                                <div class="flex gap-1">
+									<div class="bg-yellow-500 w-2 h-2"></div>   
+									<div class="bg-yellow-500 w-2 h-2"></div>   
+									<div class="bg-yellow-500 w-2 h-2"></div>   
+									<div class="bg-yellow-500 w-2 h-2"></div>   
+									<div class="bg-yellow-500 w-2 h-2"></div>   
                                 </div>    
                             </div>    
                         </div>
@@ -282,13 +283,21 @@ export default function VetCloser() {
 				<Header userType="tutor" />
 
 				<main className="lg:max-w-5xl mx-auto px-5 my-8">
-					<h1 className="text-2xl">Veterinário mais próximo de você:</h1>
+					<div className="flex justify-between items-center">
+						<h1 className="text-2xl">Veterinário mais próximo de você:</h1>
+						<button 
+							className="p-2 bg-primary rounded hover:bg-primary/80"
+							onClick={()=>{window.location.reload()}}
+						>
+							<ArrowCounterClockwise size={18} color="#ffffff" weight="bold"/>
+						</button>
+					</div>
 					<div className="flex justify-center my-8 w-full h-[32rem] border-primary border-2 rounded-[4px]">
 						{
 							!mapaCarregado ? <p>Carregando...</p> : <div id="myMap"/> 
 						}
 					</div>
-
+						
 					<div className="w-[calc(100vw-64px)] xl:w-full lg:w-[calc(100vw-256px-64px)]">
 						<h2 className="pb-6">Na sua área</h2>
 						<div className="flex flex-row gap-4 pb-6 overflow-x-auto">
