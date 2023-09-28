@@ -206,6 +206,8 @@ export default function VetCloser() {
 		infobox.setMap(map);
 	}
 
+	const [ clinicCloser, setClinicCloser ] = useState([])
+
 	function Search() {
 		//Use the center of the map as the center of the search area.
 		let origin = { latitude: location.latitude, longitude: location.longitude };
@@ -222,7 +224,11 @@ export default function VetCloser() {
 
 			if (distance <= radius) {
 				pins[i].setOptions({ color: 'blue' });
-				console.log(`${pins[i].id} : active`);
+				console.log(pins[i].metadata.id);
+				const idClinic = pins[i].metadata.id
+				const newArrayIdClinic = [...clinicCloser, idClinic]
+				console.log(newArrayIdClinic);
+				setClinicCloser(newArrayIdClinic)
 			} else {
 				pins[i].setOptions({ visible: false });
 			}
@@ -243,7 +249,7 @@ export default function VetCloser() {
 		}
 	}
 
-	function insertPin({ latitude, longitude }) {
+	function insertPin({ latitude, longitude, idClinica }) {
 		// console.log(answer.results[0].location); // jogar isso no banco
 		let c = new Microsoft.Maps.Pushpin(
 			{ latitude: latitude, longitude: longitude }, {
@@ -252,7 +258,8 @@ export default function VetCloser() {
 
 		c.metadata = {
 			title: 'Pin Title',
-			description: 'Pin discription'
+			description: 'Pin discription',
+			id: idClinica
 		};
 		Microsoft.Maps.Events.addHandler(c, "click", pushpinClicked)
 
@@ -300,11 +307,14 @@ export default function VetCloser() {
 					<div className="w-[calc(100vw-64px)] xl:w-full lg:w-[calc(100vw-256px-64px)]">
 						<h2 className="pb-6">Na sua área</h2>
 						<div className="flex flex-row gap-4 pb-6 overflow-x-auto">
+							{
+								clinicCloser.map(id => console.log(clinicCloser))
+							}
+							{/* <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
+							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} /> */}
 						</div>
 					</div>
 					{/* <h2 className="">Ver mais</h2> */}
