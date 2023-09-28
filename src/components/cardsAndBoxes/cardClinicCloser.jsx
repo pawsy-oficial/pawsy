@@ -1,7 +1,8 @@
+import { memo } from "react"
 import iconClinic from "../../img/iconClinic.svg"
 import { Star } from "@phosphor-icons/react"
 
-export default function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTheClinic, assessment }) {
+function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTheClinic, assessment, id }) {
     return (
         <div className="min-w-[256px] min-h-[128px] bg-white rounded-lg flex-col flex justify-around p-2 gap-2">
             <div className="flex flex-row gap-3">
@@ -25,6 +26,9 @@ export default function CardsVetCloser({ nameClinic, clinicOpenOrClose, address,
                     </div>
                 </div>
             </div>
+            {id}
         </div>
     )
 }
+
+export default memo(CardsVetCloser)
