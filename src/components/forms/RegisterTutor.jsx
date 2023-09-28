@@ -160,9 +160,9 @@ export default function RegisterFormTutor({ userType }) {
                         else setValue("city", "")
                         if (data.state) {
                             setValue("state", data.state)
-                            console.log(data.state)
-                            console.log(uf.indexOf(data.state))
-                            setSelectUf(uf.map(e => e.nm_estado).indexOf(data.state) + 1)
+                            setSelectUf(
+                                uf.map(e => e.nm_estado).indexOf(data.state) + 1
+                            )
                         }
                         else setValue("state", "")
                         if (data.neighborhood) {

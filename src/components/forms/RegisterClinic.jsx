@@ -151,7 +151,6 @@ export default function RegisterFormClinic({ userType }) {
                             setSelectUf(siglaParaId(data.state))
                         }
                         if (data.neighborhood) {
-                            console.log("ok");
                             setValue("neighborhood", data.neighborhood)
                         }
                         else setValue("neighborhood", "");
@@ -185,62 +184,77 @@ export default function RegisterFormClinic({ userType }) {
     const [msg, setMsg] = useState("")
     const [sucess, setSucess] = useState(false)
 
-    const [ loading, setLoading ] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const onSubmit = (data) => {
         setLoading(true)
 
         const time = new Date().getTime()
         const urlImageProfile = `${time}_pawsy_${selectImage.name}`
-        console.log(data);
+        // console.log(data);
         data.uf = parseInt(selectUf)
 
-        const options = {
-            clinicName: data.clinicName,
-            crmv: data.crmv,
-            email: data.email,
-            cnpj: data.cnpj,
-            cell: data.cell,
-            password: data.password,
-            cep: data.cep,
-            city: data.city,
-            state: data.uf,
-            street: data.street,
-            numberHome: data.numberHome,
-            neighborhood: data.neighborhood,
-            urlProfile: urlImageProfile
-        };
+        const streetFormat = data.street.replace(/ /g, "%20")
+        const cityFormat = data.city.replace(/ /g, "%20")
+        const neighborhoodFormat = data.neighborhood.replace(/ /g, "%20")
+        const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
 
-        axios.post(`${import.meta.env.VITE_URL}/clinica`, options)
-            .then(response => {
-                let form = new FormData();
-                form.append("name", urlImageProfile);
-                form.append('file', selectImage, selectImage.name);
-        
-                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(()=>{
-                    setLoading(false)
-                    navigate("/login", { state: { slug: "clinica" } })
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            })
-            .catch(response => {
-                setLoading(false)
-                console.log(response.response.data)
-                setStatusForm(true)
-                setMsg(response.response.data.Message)
-                setSucess(false)
+        axios.get(urlGeocode)
+            .then(e => {
+                const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
 
-                useTopToScreen()
-            })
-            .finally(()=>{
-                setLoading(false)
+
+                const options = {
+                    clinicName: data.clinicName,
+                    crmv: data.crmv,
+                    email: data.email,
+                    cnpj: data.cnpj,
+                    cell: data.cell,
+                    password: data.password,
+                    cep: data.cep,
+                    city: data.city,
+                    state: data.uf,
+                    street: data.street,
+                    numberHome: data.numberHome,
+                    neighborhood: data.neighborhood,
+                    urlProfile: urlImageProfile,
+                    latitude: latitude,
+                    longitude: longitude
+                };
+
+                axios.post(`${import.meta.env.VITE_URL}/clinica`, options)
+                    .then(response => {
+                        let form = new FormData();
+                        form.append("name", urlImageProfile);
+                        form.append('file', selectImage, selectImage.name);
+
+                        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                            .then(() => {
+                                setLoading(false)
+                                navigate("/login", { state: { slug: "clinica" } })
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                    })
+                    .catch(response => {
+                        setLoading(false)
+                        console.log(response.response.data)
+                        setStatusForm(true)
+                        setMsg(response.response.data.Message)
+                        setSucess(false)
+
+                        useTopToScreen()
+                    })
+                    .finally(() => {
+                        setLoading(false)
+                    })
+                console.log(options);
+                // setLoading(false)
             })
     }
 
