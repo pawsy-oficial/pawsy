@@ -38,6 +38,7 @@ export default function VetCloser() {
 
 	const [mapaCarregado, setMapaCarregado] = useState(false);
 	const [location, setLocation] = useState({latitude: null, longitude: null})
+	const [clinicsLocation, setClinicsLocation] = useState([])
 	useEffect(() => {
 
 		const {jwtTokenTutor} = Cookies.get()
@@ -53,21 +54,34 @@ export default function VetCloser() {
 						Authorization: `Bearer ${jwtTokenTutor}`
 					}
 				})
-				.then(e => setLocation({
-					latitude: e.data[0].latitude,
-					longitude: e.data[0].longitude,
-				}))
+				.then(e => {
+					setLocation({
+						latitude: e.data[0].latitude,
+						longitude: e.data[0].longitude,
+					})
+				})
 				.catch(err => console.log(err))
 			}
 		).catch(err => console.log(err))
 	}, []);
 
 	useEffect(()=>{
+
+		const {jwtTokenTutor} = Cookies.get()
+
 		const script = document.createElement('script');
 		script.type = 'text/javascript';
 		script.src = `https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`;
 		script.async = true;
 		script.defer = true;
+
+		axios.get(`${import.meta.env.VITE_URL}/ClinicCoordinates`, {
+			headers:{
+				Authorization: `Bearer ${jwtTokenTutor}`
+			}
+		}).then(res=>{
+			setClinicsLocation(res.data);
+		})
 
 		window.GetMap = async () => {
 			setMapaCarregado(true);
@@ -120,7 +134,7 @@ export default function VetCloser() {
 		`
 
 	function GetMap() {
-		console.log(location.latitude, location.longitude);
+		// console.log(location.latitude, location.longitude);
 		let navigationBarMode = Microsoft.Maps.NavigationBarMode;
 		map = new Microsoft.Maps.Map('#myMap', { // create map
 
@@ -162,23 +176,8 @@ export default function VetCloser() {
 
 		pinLayer = new Microsoft.Maps.Layer();
 		map.layers.insert(pinLayer);
-		const locations = [
-			{
-				latitude: -23.9373066,
-				longitude: -46.3741295
-			},
-			{
-				latitude: -23.9651855,
-				longitude: -46.3852806
-			},
-			{
-				latitude: -23.9589126,
-				longitude: -46.3766286
-			},
 
-		]
-
-		locations.forEach((location) => {
+		clinicsLocation.forEach((location) => {
 			/*function getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
 				let theta = longitude1 - longitude2;
 				let distance = 60 * 1.1515 * (180/Math.PI) * Math.acos(
