@@ -10,8 +10,6 @@ import { ArrowCounterClockwise } from "@phosphor-icons/react";
 export default function VetCloser() {
 	useCheckedPet()
 	
-
-
 	function waitForSpatialMath() {
 		return new Promise((resolve, reject) => {
 			const maxAttempts = 10; // Número máximo de tentativas
@@ -39,6 +37,8 @@ export default function VetCloser() {
 	const [mapaCarregado, setMapaCarregado] = useState(false);
 	const [location, setLocation] = useState({latitude: null, longitude: null})
 	const [clinicsLocation, setClinicsLocation] = useState([])
+	const [ clinicCloser, setClinicCloser ] = useState([])
+	
 	useEffect(() => {
 
 		const {jwtTokenTutor} = Cookies.get()
@@ -80,6 +80,7 @@ export default function VetCloser() {
 				Authorization: `Bearer ${jwtTokenTutor}`
 			}
 		}).then(res=>{
+			console.log(res.data);
 			setClinicsLocation(res.data);
 		})
 
@@ -206,8 +207,6 @@ export default function VetCloser() {
 		infobox.setMap(map);
 	}
 
-	const [ clinicCloser, setClinicCloser ] = useState([])
-
 	function Search() {
 		//Use the center of the map as the center of the search area.
 		let origin = { latitude: location.latitude, longitude: location.longitude };
@@ -224,11 +223,11 @@ export default function VetCloser() {
 
 			if (distance <= radius) {
 				pins[i].setOptions({ color: 'blue' });
-				console.log(pins[i].metadata.id);
+				// console.log(pins[i].metadata.id);
 				const idClinic = pins[i].metadata.id
-				const newArrayIdClinic = [...clinicCloser, idClinic]
-				console.log(newArrayIdClinic);
-				setClinicCloser(newArrayIdClinic)
+				setClinicCloser(oldArray => [...oldArray, idClinic])
+				// const newArrayIdClinic = [...clinicCloser, idClinic]
+				// console.log(newArrayIdClinic);
 			} else {
 				pins[i].setOptions({ visible: false });
 			}
@@ -308,10 +307,12 @@ export default function VetCloser() {
 						<h2 className="pb-6">Na sua área</h2>
 						<div className="flex flex-row gap-4 pb-6 overflow-x-auto">
 							{
-								clinicCloser.map(id => console.log(clinicCloser))
+								clinicCloser.map(
+									id => <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} id={id} />
+								)
 							}
+							{/* <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} /> */}
 							{/* <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
 							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} /> */}
