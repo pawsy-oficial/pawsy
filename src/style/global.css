@@ -169,3 +169,9 @@ tbody:before{
   color: transparent;
   background: #fff;
 }
+
+.text-limit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

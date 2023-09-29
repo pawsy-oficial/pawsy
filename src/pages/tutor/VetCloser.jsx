@@ -7,67 +7,68 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ArrowCounterClockwise } from "@phosphor-icons/react";
 
+function waitForSpatialMath() {
+	return new Promise((resolve, reject) => {
+		const maxAttempts = 10; // Número máximo de tentativas
+		let attempts = 0;
+
+		function checkAvailability() {
+			attempts++;
+
+			if (attempts > maxAttempts) {
+				reject(new Error('O método SpatialMath.getDistanceTo não está disponível após várias tentativas.'));
+				return;
+			}
+
+			if (Microsoft.Maps.SpatialMath && typeof Microsoft.Maps.SpatialMath.getDistanceTo === 'function') {
+				clearTimeout(timer)
+				resolve();
+			} else {
+				var timer = setTimeout(checkAvailability, 1000); // Verifica a cada segundo
+			}
+		}
+		checkAvailability();
+	});
+}
+
 export default function VetCloser() {
 	useCheckedPet()
-	
-	function waitForSpatialMath() {
-		return new Promise((resolve, reject) => {
-			const maxAttempts = 10; // Número máximo de tentativas
-			let attempts = 0;
 
-			function checkAvailability() {
-				attempts++;
-
-				if (attempts > maxAttempts) {
-					reject(new Error('O método SpatialMath.getDistanceTo não está disponível após várias tentativas.'));
-					return;
-				}
-
-				if (Microsoft.Maps.SpatialMath && typeof Microsoft.Maps.SpatialMath.getDistanceTo === 'function') {
-					clearTimeout(timer)
-					resolve();
-				} else {
-					var timer = setTimeout(checkAvailability, 1000); // Verifica a cada segundo
-				}
-			}
-			checkAvailability();
-		});
-	}
 
 	const [mapaCarregado, setMapaCarregado] = useState(false);
-	const [location, setLocation] = useState({latitude: null, longitude: null})
-	const [clinicsLocation, setClinicsLocation] = useState([])
-	const [ clinicCloser, setClinicCloser ] = useState([])
-	
-	useEffect(() => {
+	const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+	const [clinicsLocation, setClinicsLocation] = useState([]);
+	const [clinicCloser, setClinicCloser] = useState([]);
 
-		const {jwtTokenTutor} = Cookies.get()
+	useEffect(() => {
+		const { jwtTokenTutor } = Cookies.get();
 
 		axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
 			headers: {
-				Authorization: `Bearer ${jwtTokenTutor}`
-			}
-		}).then(
-			(e)=> {
-				axios.get(`${import.meta.env.VITE_URL}/coordinates?idTutor=${e.data.storedIdTutor}`,{
+				Authorization: `Bearer ${jwtTokenTutor}`,
+			},
+		})
+			.then((e) => {
+				axios.get(`${import.meta.env.VITE_URL}/coordinates?idTutor=${e.data.storedIdTutor}`, {
 					headers: {
-						Authorization: `Bearer ${jwtTokenTutor}`
-					}
+						Authorization: `Bearer ${jwtTokenTutor}`,
+					},
 				})
-				.then(e => {
-					setLocation({
-						latitude: e.data[0].latitude,
-						longitude: e.data[0].longitude,
+					.then((e) => {
+						setLocation({
+							latitude: e.data[0].latitude,
+							longitude: e.data[0].longitude,
+						});
 					})
-				})
-				.catch(err => console.log(err))
-			}
-		).catch(err => console.log(err))
+					.catch((err) => console.log(err));
+			})
+			.catch((err) => console.log(err));
 	}, []);
 
-	useEffect(()=>{
+	let searchExecuted = false
 
-		const {jwtTokenTutor} = Cookies.get()
+	useEffect(() => {
+		const { jwtTokenTutor } = Cookies.get();
 
 		const script = document.createElement('script');
 		script.type = 'text/javascript';
@@ -75,34 +76,40 @@ export default function VetCloser() {
 		script.async = true;
 		script.defer = true;
 
-		axios.get(`${import.meta.env.VITE_URL}/ClinicCoordinates`, {
-			headers:{
-				Authorization: `Bearer ${jwtTokenTutor}`
-			}
-		}).then(res=>{
-			console.log(res.data);
-			setClinicsLocation(res.data);
-		})
-
-		window.GetMap = async () => {
-			setMapaCarregado(true);
-			await GetMap()
-			waitForSpatialMath()
-				.then(() => {
-					Search()
+		if (location.latitude != null || location.longitude != null) {
+			axios.get(`${import.meta.env.VITE_URL}/ClinicCoordinates`, {
+				headers: {
+					Authorization: `Bearer ${jwtTokenTutor}`,
+				},
+			})
+				.then((res) => {
+					setClinicsLocation(res.data);
 				})
-				.catch((error) => {
+				.catch((err) => console.log(err));
+
+			window.GetMap = async () => {
+				setMapaCarregado(true);
+				await GetMap();
+				try {
+					await waitForSpatialMath();
+
+					if (!searchExecuted) { // Verificar se a pesquisa já foi executada
+						searchExecuted = true // Definir para true após a primeira execução
+						Search();
+					}
+				} catch (error) {
 					console.error('Erro ao esperar pelo método SpatialMath.getDistanceTo:', error);
-				});
-		};
+				}
+			};
+		}
 
 		document.body.appendChild(script);
-		
+
 		return () => {
 			delete window.GetMap;
 			document.body.removeChild(script);
 		};
-	}, [location]);
+	}, [location.latitude, location.longitude]);
 
 	let map, pinLayer, searchPolygon, infobox;
 
@@ -168,7 +175,7 @@ export default function VetCloser() {
 
 		});
 
-		let pinMe = new Microsoft.Maps.Pushpin({latitude: location.latitude, longitude: location.longitude}, { // cria e configura um pin
+		let pinMe = new Microsoft.Maps.Pushpin({ latitude: location.latitude, longitude: location.longitude }, { // cria e configura um pin
 			title: "Você",
 			color: "#009b65"
 		})
@@ -198,7 +205,7 @@ export default function VetCloser() {
 		const title = "Test"
 		const address = `Praça coronel lopez`
 
-		infobox = new Microsoft.Maps.Infobox({latitude: location.latitude, longitude: location.longitude}, {
+		infobox = new Microsoft.Maps.Infobox({ latitude: location.latitude, longitude: location.longitude }, {
 			visible: false,
 			htmlContent: infoboxTemplate.replace('{title}', title).replace('{address}', address)
 		});
@@ -208,6 +215,8 @@ export default function VetCloser() {
 	}
 
 	function Search() {
+		console.log("aqui");
+		console.log(searchExecuted);
 		//Use the center of the map as the center of the search area.
 		let origin = { latitude: location.latitude, longitude: location.longitude };
 		let radiusOption = 2.5;
@@ -281,6 +290,15 @@ export default function VetCloser() {
 		}
 	}
 
+	const [ clinicInfoPreview, setClinicInfoPreview ] = useState([])
+	useEffect(()=>{
+		clinicCloser.forEach(id=>{
+			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
+				.then(res => setClinicInfoPreview(oldInfos => [...oldInfos, res.data]))
+				.catch(err => console.log(err))
+		})
+	},[clinicCloser])
+
 	return (
 		<main className="flex min-h-screen">
 			<NavbarTutor />
@@ -290,32 +308,27 @@ export default function VetCloser() {
 				<main className="lg:max-w-5xl mx-auto px-5 my-8">
 					<div className="flex justify-between items-center">
 						<h1 className="text-2xl">Veterinário mais próximo de você:</h1>
-						<button 
+						<button
 							className="p-2 bg-primary rounded hover:bg-primary/80"
-							onClick={()=>{window.location.reload()}}
+							onClick={() => { window.location.reload() }}
 						>
-							<ArrowCounterClockwise size={18} color="#ffffff" weight="bold"/>
+							<ArrowCounterClockwise size={18} color="#ffffff" weight="bold" />
 						</button>
 					</div>
 					<div className="flex justify-center my-8 w-full h-[32rem] border-primary border-2 rounded-[4px]">
 						{
-							!mapaCarregado ? <p>Carregando...</p> : <div id="myMap"/> 
+							!mapaCarregado ? <p>Carregando...</p> : <div id="myMap" />
 						}
 					</div>
-						
+
 					<div className="w-[calc(100vw-64px)] xl:w-full lg:w-[calc(100vw-256px-64px)]">
-						<h2 className="pb-6">Na sua área</h2>
-						<div className="flex flex-row gap-4 pb-6 overflow-x-auto">
+						<h2>Na sua área:</h2>
+						<div className="flex flex-row gap-4 overflow-x-auto pb-3 mt-6">
 							{
-								clinicCloser.map(
-									id => <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} id={id} />
+								clinicInfoPreview.map(
+									clinicInfo => <CardsVetCloser nameClinic={clinicInfo.Nome} clinicOpenOrClose={"Aberto"} address={clinicInfo.Endereço} distanceFromTheClinic={"1.5 km"}  img={clinicInfo.Imagem} assessment={"4,0"} id={clinicInfo.Id} />
 								)
 							}
-							{/* <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} /> */}
-							{/* <CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} />
-							<CardsVetCloser nameClinic={"ZN Vet"} clinicOpenOrClose={"Aberto"} address={"Av. Brg. Faria Lima, 320 - Radio Clube"} distanceFromTheClinic={"1.5 km"} assessment={"4,0"} /> */}
 						</div>
 					</div>
 					{/* <h2 className="">Ver mais</h2> */}
