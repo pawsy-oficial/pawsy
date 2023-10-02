@@ -97,7 +97,7 @@ export function NavbarTutor({ page, isFirstAccess=false }) {
 export function NavbarClinic() {
 	const pages = [
 		{
-			name: "Inicío",
+			name: "Perfil",
 			pathname: "/clinica",
 		},
 		{
@@ -111,10 +111,6 @@ export function NavbarClinic() {
 		{
 			name: "Pacientes",
 			pathname: "/pacientes",
-		},
-		{
-			name: "Perfil",
-			pathname: "/perfil",
 		},
 	];
 

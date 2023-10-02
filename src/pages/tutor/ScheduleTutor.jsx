@@ -331,7 +331,9 @@ function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHou
                     </AlertDialog.Description>
                     <div className="flex justify-end gap-6 mt-6">
                         <AlertDialog.Cancel asChild>
-                            <button className="hover:bg-red-error hover:text-white transition-all rounded py-1 px-4 text-black border border-red-error">
+                            <button 
+                                className="hover:bg-red-error hover:text-white transition-all rounded py-1 px-4 text-red-error border border-red-error "
+                            >
                                 Cancelar
                             </button>
                         </AlertDialog.Cancel>

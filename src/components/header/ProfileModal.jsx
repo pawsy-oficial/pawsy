@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import { CaretDown, Gear, Lock, UserCircle } from '@phosphor-icons/react';
+import { CaretDown, Gear, Lock, SignOut, UserCircle } from '@phosphor-icons/react';
 import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -17,6 +17,15 @@ export default function ProfileModal({ userType }) {
             Authorization: `Bearer ${tutorToken}`
         }
     }).then(e => setImg(e.data.storedImg))
+
+    const handleButtonClickSignOut = () => {
+		const allCookies = Cookies.get();
+		for (let cookie in allCookies) {
+				Cookies.remove(cookie);
+		}
+
+		window.location.reload();
+	};
 
     return (
         <Popover.Root>
@@ -43,13 +52,20 @@ export default function ProfileModal({ userType }) {
                             <UserCircle size={24} color="#22B77E" />
                             <span>Perfil</span>
                         </li>
-                        <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
+                        {/* <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
                             <Lock size={24} color="#22B77E" />
                             <span>Segurança</span>
-                        </li>
+                        </li> */}
                         <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
                             <Gear size={24} color="#22B77E" />
                             <span>Configurações</span>
+                        </li>
+                        <li 
+                            className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
+                            onClick={handleButtonClickSignOut}
+                        >
+                            <SignOut size={24} color="#22B77E" />
+                            <span>Sair</span>
                         </li>
                     </ul>
                     <Popover.Arrow className='fill-white' />

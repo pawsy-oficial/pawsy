@@ -41,27 +41,34 @@ export default function Perfil() {
                 </main>
                 <main className="pl-10 pr-16 py-8 flex gap-5">
                     <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
-                        <section className="flex">
-                            <div className="w-48 h-48 rounded-lg overflow-hidden">
-                                <img src={clinica[0].imageClinic} alt={clinica[0].nameClinic} className="h-full w-full object-cover" />
+                        <section className="flex justify-between">
+                            <div className="flex items-center">
+                                <div className="w-48 h-48 rounded-lg overflow-hidden">
+                                    <img src={clinica[0].imageClinic} alt={clinica[0].nameClinic} className="h-full w-full object-cover" />
+                                </div>
+                                <div className="flex flex-col p-4 gap-2  text-left">
+                                    <h3 className="text-[32px] font-bold uppercase flex gap-4 items-center">
+                                        {clinica[0].nameClinic}
+                                    </h3>
+                                    <p>
+                                        {infos[0].endereco}
+                                    </p>
+                                    <p>
+                                        {infos[0].telefone}
+                                    </p>
+                                    <p>
+                                        {infos[0].email}
+                                    </p>
+                                    <p>
+                                        {infos[0].funcionamento}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="flex flex-col p-4 gap-2  text-left">
-                                <h3 className="text-[32px] font-bold uppercase flex gap-4 items-center">
-                                    {clinica[0].nameClinic}
-                                </h3>
-                                <p>
-                                    {infos[0].endereco}
-                                </p>
-                                <p>
-                                    {infos[0].telefone}
-                                </p>
-                                <p>
-                                    {infos[0].email}
-                                </p>
-                                <p>
-                                    {infos[0].funcionamento}
-                                </p>
-                            </div>
+                            <button
+                                className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                            >
+                                Editar perfil
+                            </button>
                         </section>
                         <div className="flex flex-col">
                             <h2 className="mt-4 font-bold text-lg pb-2">
@@ -86,15 +93,15 @@ export default function Perfil() {
                             </h2>
                             <div className="flex flex-col gap-4">
                                 <div className="grid grid-cols-3 grid-rows-2 gap-4">
-                                    <PostBox img={frajola} name={"Frajola"}/>
-                                    <PostBox img={dog} name={"Tob"}/>
-                                    <PostBox img={caramelo} name={"Caramelo"}/>
-                                    <PostBox img={gato} name={"Gato"}/>
+                                    <PostBox img={frajola} name={"Frajola"} />
+                                    <PostBox img={dog} name={"Tob"} />
+                                    <PostBox img={caramelo} name={"Caramelo"} />
+                                    <PostBox img={gato} name={"Gato"} />
                                 </div>
                                 <div className="justify-center flex w-full gap-2">
-                                    <input type="radio" name="anchorPost" defaultChecked={true} className=" border-2 border-primary bg-primary w-6 h-6 rounded-full"/>
-                                    <input type="radio" name="anchorPost" className=" border-2 border-primary w-6 h-6 rounded-full"/>
-                                    <input type="radio" name="anchorPost" className="border-2 border-primary  w-6 h-6 rounded-full"/>
+                                    <input type="radio" name="anchorPost" defaultChecked={true} className=" border-2 border-primary bg-primary w-6 h-6 rounded-full" />
+                                    <input type="radio" name="anchorPost" className=" border-2 border-primary w-6 h-6 rounded-full" />
+                                    <input type="radio" name="anchorPost" className="border-2 border-primary  w-6 h-6 rounded-full" />
                                 </div>
                             </div>
                         </section>
@@ -104,16 +111,16 @@ export default function Perfil() {
                             <h1 className="font-bold text-lg">Médicos veterinários</h1>
                             <div>
                                 <button onClick={() => setSee(!see)} type="">
-                                    <MedicForClinic/>
+                                    <MedicForClinic />
                                 </button>
-                                <ModalSeeMedic isSee={see} setSee={setSee}/>
+                                <ModalSeeMedic isSee={see} setSee={setSee} />
                             </div>
                             <div className="flex w-full justify-center">
                                 <button onClick={() => setOpen(!open)} type="" className="flex gap-2">
-                                    <PlusCircle size={24} color="#22B77E"/>
+                                    <PlusCircle size={24} color="#22B77E" />
                                     <p className="text-primary font-bold">Adicionar</p>
                                 </button>
-                            <ModalAddMedic isOpen={open} setOpen={setOpen}/>
+                                <ModalAddMedic isOpen={open} setOpen={setOpen} />
                             </div>
                         </section>
                         <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
