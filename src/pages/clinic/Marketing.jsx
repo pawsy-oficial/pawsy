@@ -85,7 +85,7 @@ export default function Marketing() {
 			<NavbarClinic page={0} />
 
 			<section className="flex-1">
-				<Header />
+				<Header userType={"clinica"} />
 
 				<main className="pl-14 py-9">
 					<h1 className="text-[32px] font-bold py-3">Criar novo anúncio</h1>

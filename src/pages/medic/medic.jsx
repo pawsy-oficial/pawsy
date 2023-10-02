@@ -10,7 +10,7 @@ export default function Medic() {
 
   const horarios = [8, 12, 14, 19]
   const namesMedic = ["Claudemir Machado", "Vanessa Santos"]
-  
+
   const [openOrClose, setOpenOrClose] = useState(false);
 
   useEffect(() => {
@@ -32,29 +32,29 @@ export default function Medic() {
   }, []);
 
   const ClinicasInfo = [
-    {randomClinic}, "PetMax",
-    {ZnVet}, "ZnVet",
-    {randomClinic}, "MonoPet"
+    { randomClinic }, "PetMax",
+    { ZnVet }, "ZnVet",
+    { randomClinic }, "MonoPet"
   ]
 
-  return(
-      <>
-        <header>
-          <HeaderMedic/>
-        </header>
-        <section className="max-w-7xl mx-auto mt-8 bg-[#F5F7FB]">
-          <h1 className="text-3xl font-semibold">
-            Olá, {namesMedic[0]}
-          </h1>
-          <h3 className="mt-8 text-lg">
-            Clínicas onde você trabalha:
-          </h3>
-          <nav className="flex flex-wrap gap-3">
-            <CardClinics img={ZnVet} nameClinic={ClinicasInfo[3]} openOrClose={openOrClose}/>
-            <CardClinics img={randomClinic} nameClinic={ClinicasInfo[1]} openOrClose={openOrClose}/>
-            <CardClinics img={randomClinic} nameClinic={ClinicasInfo[5]} openOrClose={openOrClose}/>
-          </nav>
-        </section>
-      </>
-    )
+  return (
+    <>
+      <header>
+        <HeaderMedic />
+      </header>
+      <section className="max-w-7xl mx-auto mt-8 bg-[#F5F7FB]">
+        <h1 className="text-3xl font-semibold">
+          Olá, {namesMedic[0]}
+        </h1>
+        <h3 className="mt-8 text-lg">
+          Clínicas onde você trabalha:
+        </h3>
+        <nav className="flex flex-wrap gap-3">
+          <CardClinics img={ZnVet} nameClinic={ClinicasInfo[3]} openOrClose={openOrClose} />
+          <CardClinics img={randomClinic} nameClinic={ClinicasInfo[1]} openOrClose={openOrClose} />
+          <CardClinics img={randomClinic} nameClinic={ClinicasInfo[5]} openOrClose={openOrClose} />
+        </nav>
+      </section>
+    </>
+  )
 }
