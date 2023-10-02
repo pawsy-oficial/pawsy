@@ -258,7 +258,7 @@ export default function VetCloser() {
 			var html =	`
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
-						<div class="bg-primary overflow-hidden rounded-full w-10 h-10">
+						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10">
 							<img src="${import.meta.env.VITE_URL}/files/${pin.metadata.image}" class="h-full w-full object-cover">
 						</div>
 						<div class="flex flex-col">
