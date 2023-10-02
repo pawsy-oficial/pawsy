@@ -34,7 +34,6 @@ function waitForSpatialMath() {
 export default function VetCloser() {
 	useCheckedPet()
 
-
 	const [mapaCarregado, setMapaCarregado] = useState(false);
 	const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
 	const [clinicsLocation, setClinicsLocation] = useState([]);
@@ -160,8 +159,8 @@ export default function VetCloser() {
 		pinLayer = new Microsoft.Maps.Layer();
 		map.layers.insert(pinLayer);
 
-		if(!executed && clinicsLocation.length){
-		executed = true
+		if (!executed && clinicsLocation.length) {
+			executed = true
 			clinicsLocation.forEach((location) => {
 				insertPin(location)
 			})
@@ -169,16 +168,18 @@ export default function VetCloser() {
 		infobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), { visible: false });
 		infoboxLayer.push(infobox);
 
-
-
 		//Assign the infobox to a map instance.
 		infobox.setMap(map);
+		Microsoft.Maps.Events.addHandler(map, 'click', function (e) { infobox.setOptions({ visible: false }) });
+		Microsoft.Maps.Events.addHandler(map, 'mouseup', function (e) { document.querySelector("#myMap").style.cursor = "grab" });
+		Microsoft.Maps.Events.addHandler(map, 'mousedown', function (e) { document.querySelector("#myMap").style.cursor = "grabbing" });
 	}
+
 
 	function Search() {
 		//Use the center of the map as the center of the search area.
 		let origin = { latitude: location.latitude, longitude: location.longitude };
-		let radiusOption = 1;
+		let radiusOption = 2;
 		let radius = parseFloat(radiusOption);
 
 		//Get all the pushpins from the pinLayer.
@@ -186,12 +187,12 @@ export default function VetCloser() {
 
 		//Loop through each pushpin and calculate its distance from the origin and change the color depending on if it is within the search area or not.
 
-		if(pins.length > 0){
+		if (pins.length > 0) {
 			for (let i = 0; i < pins.length; i++) {
 				// console.log(typeof Microsoft.Maps.SpatialMath.getDistanceTo);
 				let distance = Microsoft.Maps.SpatialMath.getDistanceTo(origin, pins[i].getLocation(), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers);
 				// console.log("oook");
-	
+
 				if (distance <= radius) {
 					pins[i].setOptions({ color: 'blue' });
 					// console.log(pins[i].metadata.id);
@@ -221,11 +222,10 @@ export default function VetCloser() {
 		}
 	}
 
-	
 
 	function insertPin({ latitude, longitude, idClinica }) {
 		// console.log(answer.results[0].location); // jogar isso no banco
-		
+
 		axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${idClinica}`)
 			.then(res => {
 				let c = new Microsoft.Maps.Pushpin(
@@ -234,7 +234,7 @@ export default function VetCloser() {
 						<svg width="37" height="49" viewBox="0 0 37 49" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 42.5C15.5 44.1667 19 47 24 42.5M9 43C11 44.6667 19 52.5 28 43" stroke="#1BA8C4"/><g filter="url(#filter0_d_1622_2746)"><path d="M33 18.4537C33 30.2063 18.5 41.1754 18.5 41.1754C18.5 41.1754 4 30.2063 4 18.4537C4 14.0899 5.52767 9.90484 8.24695 6.81917C10.9662 3.73351 14.6544 2 18.5 2C22.3456 2 26.0338 3.73351 28.753 6.81917C31.4723 9.90484 33 14.0899 33 18.4537Z" fill="#1BA8C4"/></g><path d="M18.5002 25.9123C23.6984 25.9123 27.9125 21.6983 27.9125 16.5C27.9125 11.3017 23.6984 7.08772 18.5002 7.08772C13.3019 7.08772 9.08789 11.3017 9.08789 16.5C9.08789 21.6983 13.3019 25.9123 18.5002 25.9123Z" fill="#F8F8F8" stroke="#F8F8F8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.6305 11.1798C18.2964 11.2671 17.592 11.688 17.6271 13.1215C17.6308 13.2705 17.8186 14.4793 18.8907 14.5595C19.6947 14.6196 20.1621 13.6184 20.1271 12.6912C20.0935 11.8005 19.3873 11.0931 18.7211 11.1626C18.6956 11.1653 18.6651 11.1707 18.6305 11.1798ZM15.0877 12.0853C14.9958 12.1098 14.9097 12.1469 14.8321 12.1972C14.6075 12.3428 14.0236 13.0337 14.8527 14.4102C14.9308 14.5398 15.7036 15.5212 16.6886 15.1146C17.4272 14.8097 17.3358 13.7195 16.8391 12.9182C16.429 12.2566 15.6493 11.9354 15.0877 12.0853ZM21.5134 13.2052C21.1592 13.2984 20.5682 13.6683 20.42 14.8659C20.4029 15.0048 20.4112 16.1502 21.4015 16.3538C22.1441 16.5066 22.719 15.6329 22.8145 14.7675C22.9063 13.9361 22.3444 13.1939 21.7125 13.1781C21.6643 13.1769 21.5952 13.1837 21.5134 13.2052ZM13.8055 15.3584C13.6442 15.3975 13.5013 15.47 13.3909 15.5764C13.2112 15.7496 12.8031 16.4882 13.8282 17.6158C13.9247 17.722 14.8232 18.4947 15.6549 17.9493C16.2786 17.5403 15.9883 16.5497 15.3786 15.8956C14.9393 15.4243 14.2893 15.2411 13.8055 15.3584ZM18.2523 16.0731C16.9167 16.4162 16.5458 17.3642 16.3027 18.1007C15.992 19.0422 15.7671 20.3086 16.5079 20.658C17.5155 21.1332 17.9174 20.472 18.4469 20.1601C19.1131 19.7677 19.3094 19.6923 19.6464 19.6195C20.0996 19.5215 20.5352 19.6328 20.9707 19.6778C22.2593 19.811 22.566 19.3306 22.5354 18.8295C22.4687 17.7337 21.111 16.9493 20.2801 16.4279C19.6423 16.0277 18.9928 15.8971 18.3167 16.0572C18.295 16.0623 18.2735 16.0676 18.2523 16.0731Z" fill="black"/><defs><filter id="filter0_d_1622_2746" x="0" y="0" width="37" height="47.1754" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="2"/><feGaussianBlur stdDeviation="2"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1622_2746"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1622_2746" result="shape"/></filter></defs></svg>
 					`
 				});
-		
+
 				c.metadata = {
 					nameClinic: res.data.Nome,
 					address: res.data.Endereço,
@@ -242,7 +242,7 @@ export default function VetCloser() {
 					id: idClinica
 				};
 				Microsoft.Maps.Events.addHandler(c, "click", pushpinClicked)
-		
+
 				pinLayer.add(c)
 			})
 			.catch(err => console.log(err))
@@ -250,12 +250,12 @@ export default function VetCloser() {
 		Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath');
 	}
 
+
 	function pushpinClicked(e) {
 		if (e.targetType == "pushpin") {
 			var pin = e.target;
 			console.log(pin.metadata);
-			var html = 
-			`
+			var html =	`
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
 						<div class="bg-primary overflow-hidden rounded-full w-10 h-10">
@@ -305,7 +305,7 @@ export default function VetCloser() {
 		clinicCloser.forEach(id => {
 			console.log("1");
 			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
-			.then(res => {
+				.then(res => {
 					console.log("ddd");
 					setClinicInfoPreview(oldInfos => [...oldInfos, res.data])
 				})
