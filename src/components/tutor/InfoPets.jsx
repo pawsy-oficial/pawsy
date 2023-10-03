@@ -4,7 +4,7 @@ import flor from '../../img/flor.jpg'
 import pantera from '../../img/pantera.jpg'
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useState, useEffect, memo} from "react"
+import { useState, useEffect, memo } from "react"
 import { GenderFemale, GenderMale } from '@phosphor-icons/react';
 import { Alert } from './Alert';
 import dayjs from 'dayjs';
@@ -16,33 +16,34 @@ function ProfileTutor({ showPet }) {
             { name: "oreo", image: oreo, status: true, id: "0002", birthday: "2022-05-03", breed: "Husky siberiano", gender: "mas", observations: "Oreo é um verdadeiro artista do uivo! Seus vocais noturnos podem até incomodar os vizinhos, mas não há como negar que ele sabe como expressar sua paixão pela música... ops, quer dizer, pela vida selvagem!" },
             { name: "flor", image: flor, status: false, id: "0003", birthday: "2022-05-06", breed: "persa", gender: "fem", observations: "Não possui observações" },
             { name: "pantera", image: pantera, status: false, id: "0004", birthday: "2022-05-06", breed: "mau egípcio", gender: "fem", observations: "Não possui observações" }
-    ]
+        ]
 
-    const [ loading, setLoading ] = useState(false)
-    const [ myPet, setMyPet ] = useState([])
-    const tokenTutor = Cookies.get('jwtTokenTutor') 
+    const [stateEdit, setStateEdit] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [myPet, setMyPet] = useState([])
+    const tokenTutor = Cookies.get('jwtTokenTutor')
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true)
         axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
             headers: {
                 Authorization: `Bearer ${tokenTutor}`
             }
         })
-        .then(res => {
-            // console.log(res);
-            axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`, {
-                headers: {
-                    Authorization: `Bearer ${tokenTutor}`
-                }
-            })
-                .then(res => {
-                    setLoading(false)
-                    setMyPet(res.data.myPets);
+            .then(res => {
+                // console.log(res);
+                axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`, {
+                    headers: {
+                        Authorization: `Bearer ${tokenTutor}`
+                    }
                 })
-                .catch(err => console.log(err))
-        }).catch(err => console.log(err))
-    },[])
+                    .then(res => {
+                        setLoading(false)
+                        setMyPet(res.data.myPets);
+                    })
+                    .catch(err => console.log(err))
+            }).catch(err => console.log(err))
+    }, [])
 
     const historys =
         [
@@ -53,7 +54,26 @@ function ProfileTutor({ showPet }) {
             { nameClinic: "PetHappy", description: "Tratamento Odontológico - Limpeza de tártaro", date: "2023-07-20" }
         ]
     historys.sort((a, b) => new Date(b.date) - new Date(a.date));
-    console.log(myPet);
+
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    useEffect(() => {
+        if (selectImage) {
+            console.log(selectImage);
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+                console.log("A imagem não atende os requisitos ");
+            }
+            else {
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    }, [selectImage])
+
+    useEffect(()=>{
+        setStateEdit(false)
+    }, [showPet])
+
+
     return (
         <section className="flex-1 bg-white px-6 py-8 rounded-2xl">
             {
@@ -62,14 +82,32 @@ function ProfileTutor({ showPet }) {
                         <div className="flex gap-6 mb-6 items-center">
 
                             <div className="flex flex-col gap-2 items-center">
-                                <div className="w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20">
-                                    <img 
-                                        src={`${import.meta.env.VITE_URL}/files/${myPet[showPet].url_img}`}
-                                        alt={myPet.nm_pet}
-                                        className="h-full w-full object-cover" 
-                                        draggable={false}
-                                    />    
-                                </div>
+                                <label className={`w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20 ${stateEdit && "cursor-pointer"}`}>
+                                    {
+                                        (urlImage && stateEdit) && <img className="w-full h-full object-cover" src={urlImage} draggable={false}/>
+                                    }
+                                    {
+                                        stateEdit
+                                            ? (
+                                                <input
+                                                    type="file"
+                                                    multiple={false}
+                                                    className="hidden"
+                                                    onChange={(event) => setSelectImage(event.target.files[0])}
+                                                    accept="image/png, image/jpg, image/jpeg"
+                                                    // {...register("image")}
+                                                />
+                                            )
+                                            : (
+                                                <img
+                                                    src={`${import.meta.env.VITE_URL}/files/${myPet[showPet].url_img}`}
+                                                    alt={myPet.nm_pet}
+                                                    className="h-full w-full object-cover"
+                                                    draggable={false}
+                                                />
+                                            )
+                                    }
+                                </label>
                                 <span
                                     className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
                                 >
@@ -103,22 +141,50 @@ function ProfileTutor({ showPet }) {
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <section className="max-w-[360px] ml-6 self-start hidden lg:inline-block">
                                 <h3 className="text-2xl font-semibold mb-3">Descrição</h3>
                                 <p className="text-zinc-800 leading-relaxed text-xs">
-                                {
-                                    myPet[showPet].resumo.length == 0 ? <p>Não possui uma descrição</p> : (
+                                    {
+                                        myPet[showPet].resumo.length == 0 ? <p>Não possui uma descrição</p> : (
                                             myPet[showPet].resumo
-                                            )
-                                        }
+                                        )
+                                    }
                                 </p>
                             </section>
-                            <button 
-                                className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
-                            >
-                                Editar perfil
-                            </button>
+
+                            {
+                                stateEdit 
+                                ? (
+                                    <div className='flex gap-4'>
+                                        <button
+                                            className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                                            onClick={() => {
+                                                setStateEdit(!stateEdit)
+                                                // update aqui
+                                            }}
+                                        >
+                                            Salvar alterações
+                                        </button>
+                                        <button
+                                            className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"
+                                            onClick={() => setStateEdit(!stateEdit)}
+                                        >
+                                            Cancelar
+                                        </button>
+
+                                    </div>
+                                )
+                                :(
+                                    <button
+                                        className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                                        onClick={() => setStateEdit(!stateEdit)}
+                                    >
+                                        Editar perfil
+                                    </button>
+                                )
+                            }
+
                         </div>
                         <div className="flex flex-col gap-6">
                             <section>
@@ -172,7 +238,7 @@ function ProfileTutor({ showPet }) {
                         </div>
                     </>
                 )
-                : <p>carregando...</p>
+                    : <p>carregando...</p>
             }
         </section>
     )
