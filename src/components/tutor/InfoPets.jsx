@@ -17,21 +17,31 @@ function ProfileTutor({ showPet }) {
             { name: "flor", image: flor, status: false, id: "0003", birthday: "2022-05-06", breed: "persa", gender: "fem", observations: "Não possui observações" },
             { name: "pantera", image: pantera, status: false, id: "0004", birthday: "2022-05-06", breed: "mau egípcio", gender: "fem", observations: "Não possui observações" }
     ]
+
     const [ loading, setLoading ] = useState(false)
     const [ myPet, setMyPet ] = useState([])
     const tokenTutor = Cookies.get('jwtTokenTutor') 
+
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${import.meta.env.VITE_URL}/get-all-pets/1`, {
-            headers:{
+        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+            headers: {
                 Authorization: `Bearer ${tokenTutor}`
             }
         })
-            .then(res => {
-                setLoading(false)
-                setMyPet(res.data.myPets);
+        .then(res => {
+            // console.log(res);
+            axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`, {
+                headers: {
+                    Authorization: `Bearer ${tokenTutor}`
+                }
             })
-            .catch(err => console.log(err))
+                .then(res => {
+                    setLoading(false)
+                    setMyPet(res.data.myPets);
+                })
+                .catch(err => console.log(err))
+        }).catch(err => console.log(err))
     },[])
 
     const historys =
