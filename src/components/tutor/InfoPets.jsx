@@ -44,7 +44,7 @@ function ProfileTutor({ showPet }) {
                     })
                     .catch(err => console.log(err))
             }).catch(err => console.log(err))
-    }, [])
+    }, [stateEdit])
 
     const historys =
         [
@@ -59,7 +59,6 @@ function ProfileTutor({ showPet }) {
     useEffect(() => {
         setStateEdit(false)
     }, [showPet])
-
 
     return (
         <section className="flex-1 bg-white px-6 py-8 rounded-2xl">
