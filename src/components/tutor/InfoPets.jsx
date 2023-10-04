@@ -8,6 +8,7 @@ import { useState, useEffect, memo } from "react"
 import { GenderFemale, GenderMale } from '@phosphor-icons/react';
 import { Alert } from './Alert';
 import dayjs from 'dayjs';
+import { UpdateFormPet } from '../forms/UpdateForm';
 
 function ProfileTutor({ showPet }) {
     const pets =
@@ -39,7 +40,7 @@ function ProfileTutor({ showPet }) {
                 })
                     .then(res => {
                         setLoading(false)
-                        setMyPet(res.data.myPets);
+                        setMyPet(res.data.myPets)
                     })
                     .catch(err => console.log(err))
             }).catch(err => console.log(err))
@@ -55,21 +56,7 @@ function ProfileTutor({ showPet }) {
         ]
     historys.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const [selectImage, setSelectImage] = useState(null)
-    const [urlImage, setUrlImage] = useState(null)
     useEffect(() => {
-        if (selectImage) {
-            console.log(selectImage);
-            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
-                console.log("A imagem não atende os requisitos ");
-            }
-            else {
-                setUrlImage(URL.createObjectURL(selectImage))
-            }
-        }
-    }, [selectImage])
-
-    useEffect(()=>{
         setStateEdit(false)
     }, [showPet])
 
@@ -79,113 +66,78 @@ function ProfileTutor({ showPet }) {
             {
                 myPet.length != 0 ? (
                     <>
-                        <div className="flex gap-6 mb-6 items-center">
-
-                            <div className="flex flex-col gap-2 items-center">
-                                <label className={`w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20 ${stateEdit && "cursor-pointer"}`}>
-                                    {
-                                        (urlImage && stateEdit) && <img className="w-full h-full object-cover" src={urlImage} draggable={false}/>
-                                    }
-                                    {
-                                        stateEdit
-                                            ? (
-                                                <input
-                                                    type="file"
-                                                    multiple={false}
-                                                    className="hidden"
-                                                    onChange={(event) => setSelectImage(event.target.files[0])}
-                                                    accept="image/png, image/jpg, image/jpeg"
-                                                    // {...register("image")}
-                                                />
-                                            )
-                                            : (
+                        {
+                            stateEdit
+                                ? (
+                                    <UpdateFormPet myPet={myPet} showPet={showPet} stateEdit={setStateEdit} setStateEdit={setStateEdit}/>
+                                )
+                                : (
+                                    <div className="flex gap-6 mb-6 items-center relative">
+                                        <div className="flex flex-col gap-2 items-center">
+                                            <div
+                                                className={`w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20`}
+                                            >
                                                 <img
                                                     src={`${import.meta.env.VITE_URL}/files/${myPet[showPet].url_img}`}
                                                     alt={myPet.nm_pet}
                                                     className="h-full w-full object-cover"
                                                     draggable={false}
                                                 />
-                                            )
-                                    }
-                                </label>
-                                <span
-                                    className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
-                                >
-                                    #{myPet[showPet].id_pawsy.toString().padStart(4, '0')}
-                                </span>
-                            </div>
-                            <div className="flex flex-col gap-4 self-start">
-                                <div className="flex gap-x-4 items-center w-full flex-wrap">
-                                    <h3 className="lg:text-[32px] text-2xl font-bold uppercase">
-                                        {myPet[showPet].nm_pet}
-                                    </h3>
-                                    {
-                                        myPet[showPet].sexo == "macho" ? <GenderMale size={24} color="#8FB5FF" weight="bold" /> : <GenderFemale size={24} color="#FF8FCB" weight="bold" />
-                                    }
-                                    {
-                                        pets[showPet].status && <Alert />
-                                    }
-                                </div>
-                                <ul className="flex flex-col gap-2">
-                                    <li>
-                                        <span className="font-bold text-xs sm:text-lg">Idade: </span>
-                                        <span className="text-sm sm:text-base">{dayjs(myPet[showPet].dt_nascimento).format("DD/MM/YYYY")}</span>
-                                    </li>
-                                    <li>
-                                        <span className="font-bold text-xs sm:text-lg">Raça: </span>
-                                        <span className="text-sm sm:text-base">{myPet[showPet].nm_raca}</span>
-                                    </li>
-                                    <li>
-                                        <span className="font-bold text-xs sm:text-lg">Status: </span>
-                                        <span className="text-sm sm:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
-                                    </li>
-                                </ul>
-                            </div>
+                                            </div>
+                                            <span
+                                                className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
+                                            >
+                                                #{myPet[showPet].id_pawsy.toString().padStart(4, '0')}
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-col gap-4 self-start">
+                                            <div className="flex gap-x-4 items-center w-full flex-wrap">
+                                                <h3 className="lg:text-[32px] text-2xl font-bold uppercase">
+                                                    {myPet[showPet].nm_pet}
+                                                </h3>
+                                                {
+                                                    myPet[showPet].sexo == "macho" ? <GenderMale size={24} color="#8FB5FF" weight="bold" /> : <GenderFemale size={24} color="#FF8FCB" weight="bold" />
+                                                }
+                                                {
+                                                    pets[showPet].status && <Alert />
+                                                }
+                                            </div>
+                                            <ul className="flex flex-col gap-2">
+                                                <li>
+                                                    <span className="font-bold text-xs sm:text-lg">Idade: </span>
+                                                    <span className="text-sm sm:text-base">{dayjs(myPet[showPet].dt_nascimento).format("DD/MM/YYYY")}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="font-bold text-xs sm:text-lg">Raça: </span>
+                                                    <span className="text-sm sm:text-base">{myPet[showPet].nm_raca}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="font-bold text-xs sm:text-lg">Status: </span>
+                                                    <span className="text-sm sm:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                            <section className="max-w-[360px] ml-6 self-start hidden lg:inline-block">
-                                <h3 className="text-2xl font-semibold mb-3">Descrição</h3>
-                                <p className="text-zinc-800 leading-relaxed text-xs">
-                                    {
-                                        myPet[showPet].resumo.length == 0 ? <p>Não possui uma descrição</p> : (
-                                            myPet[showPet].resumo
-                                        )
-                                    }
-                                </p>
-                            </section>
+                                        <section className="max-w-[360px] ml-6 self-start hidden lg:inline-block">
+                                            <h3 className="text-2xl font-semibold mb-3">Descrição</h3>
+                                            <p className="text-zinc-800 leading-relaxed text-xs">
+                                                {
+                                                    myPet[showPet].resumo.length == 0 ? <p>Não possui uma descrição</p> : (
+                                                        myPet[showPet].resumo
+                                                    )
+                                                }
+                                            </p>
+                                        </section>
 
-                            {
-                                stateEdit 
-                                ? (
-                                    <div className='flex gap-4'>
                                         <button
-                                            className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
-                                            onClick={() => {
-                                                setStateEdit(!stateEdit)
-                                                // update aqui
-                                            }}
-                                        >
-                                            Salvar alterações
-                                        </button>
-                                        <button
-                                            className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"
+                                            className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90 absolute bottom-0 right-0"
                                             onClick={() => setStateEdit(!stateEdit)}
                                         >
-                                            Cancelar
+                                            Editar perfil
                                         </button>
-
                                     </div>
                                 )
-                                :(
-                                    <button
-                                        className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
-                                        onClick={() => setStateEdit(!stateEdit)}
-                                    >
-                                        Editar perfil
-                                    </button>
-                                )
-                            }
-
-                        </div>
+                        }
                         <div className="flex flex-col gap-6">
                             <section>
                                 <h3 className="text-2xl font-semibold mb-3">Observações</h3>
