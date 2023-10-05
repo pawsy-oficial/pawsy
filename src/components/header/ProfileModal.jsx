@@ -1,22 +1,50 @@
 import * as Popover from '@radix-ui/react-popover';
-import { CaretDown, Gear, Lock, UserCircle } from '@phosphor-icons/react';
-import profilePerson from "../../img/profilePerson.jpeg"
+import { CaretDown, Gear, SignOut, UserCircle } from '@phosphor-icons/react';
+// import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-export default function ProfileModal({ userType }) {
+function ProfileModal({ userType }) {
 
     const [ img, setImg ] = useState("")
+    let tutorToken
+    let url
 
-    const tutorToken = Cookies.get('jwtTokenTutor');
-    const url = `${import.meta.env.VITE_URL}/profileTutor`;
+    if(userType == "tutor"){
+        tutorToken = Cookies.get("jwtTokenTutor")
+        url = `${import.meta.env.VITE_URL}/profileTutor`;
+    }
+    else if(userType == "clinica"){
+        tutorToken = Cookies.get("jwtTokenClinic")
+        url = `${import.meta.env.VITE_URL}/profileClinic`;
+    }
+    else if(userType == "medico"){
+        tutorToken = Cookies.get("jwtTokenMedic")
+        url = `${import.meta.env.VITE_URL}/profileMedic`;
+    }
+
 
     const response = axios.get(url, {
         headers: {
             Authorization: `Bearer ${tutorToken}`
         }
-    }).then(e => setImg(e.data.storedImg))
+    }).then(
+        e => {
+            setImg(e.data.storedImg)
+        }
+    ).catch(
+        err => console.log(err)
+    )
+
+    const handleButtonClickSignOut = () => {
+		const allCookies = Cookies.get();
+		for (let cookie in allCookies) {
+				Cookies.remove(cookie);
+		}
+
+		window.location.reload();
+	};
 
     return (
         <Popover.Root>
@@ -44,12 +72,15 @@ export default function ProfileModal({ userType }) {
                             <span>Perfil</span>
                         </li>
                         <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
-                            <Lock size={24} color="#22B77E" />
-                            <span>Segurança</span>
-                        </li>
-                        <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
                             <Gear size={24} color="#22B77E" />
                             <span>Configurações</span>
+                        </li>
+                        <li 
+                            className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
+                            onClick={handleButtonClickSignOut}
+                        >
+                            <SignOut size={24} color="#22B77E" />
+                            <span>Sair</span>
                         </li>
                     </ul>
                     <Popover.Arrow className='fill-white' />
@@ -58,3 +89,5 @@ export default function ProfileModal({ userType }) {
         </Popover.Root>
     )
 }
+
+export default memo(ProfileModal)

@@ -17,7 +17,7 @@ export default function Patient() {
     <main className="flex min-h-screen">
       <NavbarClinic page={0} />
       <section className="flex-1">
-        <Header />
+        <Header userType={"clinica"} />
 
         <main className="pl-10 pr-16 py-8 flex gap-5">
           <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">

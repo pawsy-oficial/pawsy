@@ -34,7 +34,7 @@ export default function Schedule() {
             <NavbarClinic page={0} />
 
             <section className="flex-1">
-                <Header />
+                <Header userType={"clinica"} />
                 <section className="p-8">
                     <div className="flex gap-5">
                         <section className={`flex-1 ${allSchendule ? "" : "max-w-5xl"}`}>

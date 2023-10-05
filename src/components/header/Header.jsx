@@ -98,7 +98,7 @@ export function Header({ userType }) {
 
 						</div>
 						<div className="">
-							<ProfileModal />
+							<ProfileModal userType={userType} />
 						</div>
 					</div>
 
