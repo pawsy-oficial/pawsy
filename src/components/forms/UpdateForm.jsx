@@ -4,12 +4,13 @@ import { Alert } from "../tutor/Alert";
 import dayjs from "dayjs";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import InputMask from "react-input-mask"
 
 export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     const [namePet, setNamePet] = useState(`${myPet[showPet].nm_pet}`)
-    const [birthDay,setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
+    const [birthDay, setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
     const [saveLoading, setSaveLoading] = useState(false)
 
     const { register, handleSubmit, formState, setValue, setError, control } = useForm({
@@ -46,12 +47,12 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
         setSaveLoading(true)
         axios.post(`${import.meta.env.VITE_URL}/update-pet`, dataForm)
             .then(res => {
-                selectImage 
-                ? uploadImage(nameFile, selectImage) 
-                : (
-                    setSaveLoading(false),
-                    setStateEdit(!stateEdit)
-                )
+                selectImage
+                    ? uploadImage(nameFile, selectImage)
+                    : (
+                        setSaveLoading(false),
+                        setStateEdit(!stateEdit)
+                    )
             })
             .catch(err => console.log(err))
     }
@@ -106,7 +107,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             />
                         )}
                     />
-                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32}/>
+                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32} />
                     {/* <input
                         type="file"
                         multiple={false}
@@ -165,7 +166,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             type="date"
                             value={dayjs(birthDay).format("YYYY-MM-DD")}
                             {...register("birthday", {
-                                onChange: e=>setBirthday(e.target.value)
+                                onChange: e => setBirthday(e.target.value)
                             })}
                         />
                     </li>
@@ -203,6 +204,99 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                 <button
                     className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"
                     onClick={() => setStateEdit(!stateEdit)}
+                >
+                    Cancelar
+                </button>
+
+            </div>
+        </form>
+    )
+}
+
+export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
+    const [nameClinic, setNameClinic] = useState(infoClinic.storedNameClinica)
+    const [numberTell, setNumberTell] = useState(infoClinic.storedTellClinica)
+    const [saveLoading, setSaveLoading] = useState(false)
+
+    const { register, handleSubmit, control } = useForm({
+        mode: "onSubmit"
+    })
+
+    const onSubmit = (data) => {
+        console.log(data);
+
+        actionStateEdit(false)
+    }
+
+    return (
+        <form
+            className="flex justify-between relative"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex items-center">
+                <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
+                    <img
+                        src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
+                        alt={infoClinic.storedNameClinica}
+                        className="h-full w-full object-cover"
+                    />
+                </div>
+                <div className="flex flex-col p-4 gap-2  text-left">
+                    <input
+                        className="text-[32px] font-bold uppercase flex gap-4 items-center"
+                        value={nameClinic}
+                        {...register("nameClinic", {
+                            onChange: e => setNameClinic(e.target.value)
+                        })}
+                    />
+                    <div
+                        className="flex gap-2"
+                    >
+                        <p>
+                            {infoClinic.Rua}, {infoClinic.Numero}
+                        </p>
+
+                        {
+                            infoClinic.Complemento && <p>{infoClinic.Complemento}</p>
+                        }
+                    </div>
+                    <InputMask
+                        mask={"(99) 99999 9999"}
+                        maskChar={null}
+                        placeholder={"(00) 00000 0000"}
+                        className={`border border-zinc-400 rounded-lg`}
+                        {...register(numberTell)}
+                        value={numberTell}
+                        onChange={e => setNumberTell(e.target.value)}
+                    />
+                    {/* <input
+                        value={numberTell}
+                        {...register("numberTell", {
+                            onChange: e => {
+                                setNumberTell(e.target.value)
+                            }
+                        })}
+                    /> */}
+                    <p>
+                        {infoClinic.storedEmailClinica}
+                    </p>
+                    <p>
+                        {/* {infos[0].funcionamento} */}
+                    </p>
+                </div>
+            </div>
+            <div className='flex gap-4 absolute bottom-0 right-0'>
+                <button
+                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                    type="submit"
+                >
+                    {
+                        saveLoading ? "..." : "Salvar alterações"
+                    }
+                </button>
+                <button
+                    className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"
+                    onClick={() => actionStateEdit(false)}
                 >
                     Cancelar
                 </button>

@@ -17,13 +17,14 @@ import { PlusCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { UpdateFormClinic } from "../../components/forms/UpdateForm";
 
 
 export default function Perfil() {
     const [open, setOpen] = useState(false)
     const [see, setSee] = useState(false)
     const [infoClinic, setInfoClinic] = useState([])
-
+    const [stateEdit, setStateEdit] = useState(false)
 
     const clinica = [
         { nameClinic: "Petz", imageClinic: "https://pbs.twimg.com/profile_images/1489579803846090758/PI8ujLgX_400x400.jpg" }
@@ -50,6 +51,8 @@ export default function Perfil() {
             })
     }, [])
 
+
+
     return (
         <main className="flex min-h-screen">
             <NavbarClinic page={3} />
@@ -64,7 +67,10 @@ export default function Perfil() {
                 </main>
                 <main className="pl-10 pr-16 py-8 flex gap-5">
                     <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
-                        <section className="flex justify-between relative">
+                        {
+                            stateEdit 
+                            ? <UpdateFormClinic infoClinic={infoClinic} actionStateEdit={setStateEdit}/> 
+                            : (<section className="flex justify-between relative">
                             <div className="flex items-center">
                                 <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
                                     <img
@@ -96,10 +102,14 @@ export default function Perfil() {
                             </div>
                             <button
                                 className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90 absolute bottom-0 right-0"
+                                onClick={()=>setStateEdit(!stateEdit)}
                             >
                                 Editar perfil
                             </button>
-                        </section>
+                        </section>)
+                        }
+                        
+                        
                         <div className="flex flex-col">
                             <div
                                 className="flex mt-4 justify-between w-full items-center"
