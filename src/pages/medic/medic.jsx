@@ -3,6 +3,8 @@ import CardClinics from "../../components/componentsMedic/CardClinics/CardClinic
 import ZnVet from "../../img/znvet.jpg"
 import randomClinic from "../../img/colors=purple.png"
 import { useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Medic() {
   const date = new Date()
@@ -11,7 +13,11 @@ export default function Medic() {
   const horarios = [8, 12, 14, 19]
   const namesMedic = ["Claudemir Machado", "Vanessa Santos"]
 
+  const [infoMedic, setInfoMedic] = useState([]);
+
   const [openOrClose, setOpenOrClose] = useState(false);
+
+  const tokenMedic = Cookies.get("jwtTokenMedic")
 
   useEffect(() => {
     const checkOpeningHours = () => {
@@ -22,6 +28,14 @@ export default function Medic() {
         setOpenOrClose(false);
       }
     };
+
+    axios.get(`${import.meta.env.VITE_URL}/profileMedic`, {
+      headers: {
+        Authorization: `Bearer ${tokenMedic}`
+      }
+    }).then(res =>{
+      setInfoMedic(res.data)
+    })
 
     checkOpeningHours();
     const intervalId = setInterval(checkOpeningHours, 60000);
@@ -44,7 +58,7 @@ export default function Medic() {
       </header>
       <section className="max-w-7xl mx-auto mt-8 bg-[#F5F7FB]">
         <h1 className="text-3xl font-semibold">
-          Olá, {namesMedic[0]}
+          Olá, {infoMedic.storedNameMedic}
         </h1>
         <h3 className="mt-8 text-lg">
           Clínicas onde você trabalha:
