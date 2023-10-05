@@ -1,4 +1,4 @@
-import { GenderFemale, GenderMale } from "@phosphor-icons/react";
+import { Camera, GenderFemale, GenderMale } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Alert } from "../tutor/Alert";
 import dayjs from "dayjs";
@@ -9,6 +9,8 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     const [namePet, setNamePet] = useState(`${myPet[showPet].nm_pet}`)
+    const [birthDay,setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
+    const [saveLoading, setSaveLoading] = useState(false)
 
     const { register, handleSubmit, formState, setValue, setError, control } = useForm({
         // resolver: yupResolver(schema),
@@ -29,7 +31,8 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
 
     const onSubmit = (data) => {
         const currentTime = new Date().getTime()
-        const nameFile = `${currentTime}_pawsy_${selectImage.name}`;
+        let nameFile
+        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = myPet[showPet].url_img
 
         const dataForm = {
             url_imagem: nameFile,
@@ -39,28 +42,37 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
             idPet: myPet[showPet].id_pawsy,
             namePet: data.name_pet
         }
-        console.log(dataForm);
-
+        // console.log(dataForm, selectImage);
+        setSaveLoading(true)
         axios.post(`${import.meta.env.VITE_URL}/update-pet`, dataForm)
             .then(res => {
-                let form = new FormData();
-                form.append("name", nameFile);
-                form.append('file', selectImage, selectImage.name);
-
-                axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                    .then(() => {
-                        console.log(response)
-                        setStateEdit(!stateEdit)
-                    }).catch(err => {
-                        console.error(err)
-                        setStateEdit(!stateEdit)
-                    })
+                selectImage 
+                ? uploadImage(nameFile, selectImage) 
+                : (
+                    setSaveLoading(false),
+                    setStateEdit(!stateEdit)
+                )
             })
             .catch(err => console.log(err))
+    }
+
+    function uploadImage(nameFile, selectImage) {
+        let form = new FormData();
+        form.append("name", nameFile)
+        form.append('file', selectImage, selectImage.name)
+        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(() => {
+                console.log(response)
+                setSaveLoading(false)
+                setStateEdit(!stateEdit)
+            }).catch(err => {
+                console.error(err)
+                setStateEdit(!stateEdit)
+            })
     }
 
     return (
@@ -70,12 +82,12 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
         >
             <div className="flex flex-col gap-2 items-center">
                 <label
-                    className={`w-[90px] h-[90px]  sm:w-40 sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20 cursor-pointer`}
+                    className={`w-[90px] h-[90px] relative sm:w-40 group sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20 cursor-pointer`}
                 >
                     <img
                         src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${myPet[showPet].url_img}`}
                         alt={myPet.nm_pet}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover group-hover:brightness-50 transition-all"
                         draggable={false}
                     />
                     <Controller
@@ -94,14 +106,15 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             />
                         )}
                     />
-                    <input
+                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32}/>
+                    {/* <input
                         type="file"
                         multiple={false}
                         className="hidden"
                         onChange={(event) => setSelectImage(event.target.files[0])}
                         accept="image/png, image/jpg, image/jpeg"
                     // {...register("image")}
-                    />
+                    /> */}
                 </label>
                 <span
                     className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
@@ -114,25 +127,28 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     <input
                         className="lg:text-[32px] text-2xl font-bold uppercase max-w-[50%]"
                         value={namePet}
-                        
+
                         {...register("name_pet", {
-                            onChange: e=>{
+                            onChange: e => {
                                 setNamePet(e.target.value)
                             }
                         })}
                     />
                     <select
                         {...register("sexo")}
+                        className="px-1 border border-primary rounded cursor-pointer hover:bg-primary/20 focus:bg-primary/20 focus-visible:overflow-hidden"
                     >
                         <option
                             value={1}
                             selected={myPet[showPet].sexo == "macho" ? true : false}
+                            className="cursor-pointer"
                         >
                             Macho ♂
                         </option>
                         <option
                             value={2}
                             selected={myPet[showPet].sexo == "fêmea" ? true : false}
+                            className="cursor-pointer"
                         >
                             Fêmea ♀
                         </option>
@@ -145,10 +161,12 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     <li>
                         <span className="font-bold text-xs sm:text-lg">Idade: </span>
                         <input
-                            className="text-sm sm:text-base"
+                            className="text-sm sm:text-base border border-primary rounded px-2"
                             type="date"
-                            value={dayjs(myPet[showPet].dt_nascimento).format("YYYY-MM-DD")}
-                            {...register("birthday")}
+                            value={dayjs(birthDay).format("YYYY-MM-DD")}
+                            {...register("birthday", {
+                                onChange: e=>setBirthday(e.target.value)
+                            })}
                         />
                     </li>
                     <li>
@@ -165,7 +183,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
             <section className="max-w-[360px] self-start hidden lg:inline-block w-full">
                 <h3 className="text-2xl font-semibold mb-3">Descrição</h3>
                 <textarea
-                    className="text-zinc-800 leading-relaxed text-xs resize-none border-2 border-primary focus:border-primary w-full h-20"
+                    className="text-zinc-800 leading-relaxed text-xs resize-none p-2 border-2 border-primary focus:border-primary w-full h-20"
                     {...register("description")}
                 >
                     {
@@ -177,11 +195,10 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                 <button
                     className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
                     type="submit"
-                    onClick={() => {
-                        // setStateEdit(!stateEdit)
-                    }}
                 >
-                    Salvar alterações
+                    {
+                        saveLoading ? "..." : "Salvar alterações"
+                    }
                 </button>
                 <button
                     className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"

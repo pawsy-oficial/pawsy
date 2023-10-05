@@ -27,6 +27,8 @@ export default function Tutor() {
     const [addPet, setAddPet] = useState(true)
     const [firstAccess, setFirstAccess] = useState(false)
 
+    const [stateEdit, setStateEdit] = useState(false)
+
     useTopToScreen()
     useCheckedPet()
     const { state } = useLocation()
@@ -53,7 +55,7 @@ export default function Tutor() {
                         addPet
                             ? (
                                 <>
-                                    <InfoPets showPet={showPet} />
+                                    <InfoPets showPet={showPet} stateEdit={stateEdit} setStateEdit={setStateEdit}/>
                                     <section className="lg:w-64 w-full bg-white px-4 py-2 lg:py-8 rounded-2xl flex flex-col gap-5 h-max">
                                         <SelectMyPet action={setShowPet} titleSelect="Meus pets" navigation={setAddPet}/>
 
@@ -63,7 +65,7 @@ export default function Tutor() {
 
                                         <div className="lg:flex flex-col gap-3 hidden">
                                             <Suspense fallback={<LoadingPaw />}>
-                                                <RadioGroupMyPets showPet={setShowPet} />
+                                                <RadioGroupMyPets showPet={setShowPet} edit={stateEdit}/>
                                             </Suspense>
                                         </div>
 

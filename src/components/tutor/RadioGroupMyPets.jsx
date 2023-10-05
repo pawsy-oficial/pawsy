@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { memo, useEffect, useState } from "react";
 
-function RadioGroupMyPets({ showPet }) {
+function RadioGroupMyPets({ showPet, edit }) {
     const [ myPets, setMyPets ] = useState([])
 
     const tokenTutor = Cookies.get('jwtTokenTutor')
@@ -25,7 +25,7 @@ function RadioGroupMyPets({ showPet }) {
                 .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-    },[])
+    },[edit])
     
     return (
         <>

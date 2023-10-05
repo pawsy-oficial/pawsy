@@ -10,7 +10,7 @@ import { Alert } from './Alert';
 import dayjs from 'dayjs';
 import { UpdateFormPet } from '../forms/UpdateForm';
 
-function ProfileTutor({ showPet }) {
+function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
     const pets =
         [
             { name: "caramelo", image: caramelo, status: false, id: "0001", birthday: "2022-05-05", breed: "Sem raça definida", gender: "mas", observations: "Meu Caramelo é territorial e protetor, mas carinhoso e brincalhão. Avista com latidos e rosnados, mas uma carícia ou brincadeira o acalma. Adora correr atrás de brinquedos e é muito inteligente. Cuido com amor e atenção, recebendo amor e alegria em troca." },
@@ -19,7 +19,7 @@ function ProfileTutor({ showPet }) {
             { name: "pantera", image: pantera, status: false, id: "0004", birthday: "2022-05-06", breed: "mau egípcio", gender: "fem", observations: "Não possui observações" }
         ]
 
-    const [stateEdit, setStateEdit] = useState(false)
+    // const [stateEdit, setStateEdit] = useState(false)
     const [loading, setLoading] = useState(false)
     const [myPet, setMyPet] = useState([])
     const tokenTutor = Cookies.get('jwtTokenTutor')
