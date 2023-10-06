@@ -1,10 +1,11 @@
-import { Camera, GenderFemale, GenderMale } from "@phosphor-icons/react";
+import { Camera, GenderFemale, GenderMale, Pen } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Alert } from "../tutor/Alert";
 import dayjs from "dayjs";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import InputMask from "react-input-mask"
+import ModalDialogEditAddress from "../cardsAndBoxes/modal";
 
 export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const [selectImage, setSelectImage] = useState(null)
@@ -218,6 +219,20 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     const [numberTell, setNumberTell] = useState(infoClinic.storedTellClinica)
     const [saveLoading, setSaveLoading] = useState(false)
 
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    useEffect(() => {
+        if (selectImage) {
+            // console.log(selectImage);
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+                console.log("A imagem não atende os requisitos ");
+            }
+            else {
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    }, [selectImage])
+
     const { register, handleSubmit, control } = useForm({
         mode: "onSubmit"
     })
@@ -225,7 +240,7 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     const onSubmit = (data) => {
         console.log(data);
 
-        actionStateEdit(false)
+        //actionStateEdit(false)
     }
 
     return (
@@ -234,13 +249,31 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
             onSubmit={handleSubmit(onSubmit)}
         >
             <div className="flex items-center">
-                <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
+                <label className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden relative group cursor-pointer">
                     <img
-                        src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
+                        src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
                         alt={infoClinic.storedNameClinica}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover group-hover:brightness-50 transition-all"
+                        draggable={false}
                     />
-                </div>
+                    <Controller
+                        name="image"
+                        control={control}
+                        render={({ field }) => (
+                            <input
+                                type="file"
+                                multiple={false}
+                                className="hidden"
+                                onChange={event => {
+                                    field.onChange(event.target.files[0]);
+                                    setSelectImage(event.target.files[0]);
+                                }}
+                                accept="image/png, image/jpg, image/jpeg"
+                            />
+                        )}
+                    />
+                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32} />
+                </label>
                 <div className="flex flex-col p-4 gap-2  text-left">
                     <input
                         className="text-[32px] font-bold uppercase flex gap-4 items-center"
@@ -250,33 +283,27 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
                         })}
                     />
                     <div
-                        className="flex gap-2"
+                        className="flex gap-2 items-center"
                     >
                         <p>
-                            {infoClinic.Rua}, {infoClinic.Numero}
+                            {infoClinic.Rua}, {infoClinic.Numero} - {infoClinic.CEP} 
                         </p>
 
                         {
-                            infoClinic.Complemento && <p>{infoClinic.Complemento}</p>
+                         //   infoClinic.Complemento!
                         }
+
+                        <ModalDialogEditAddress/>
                     </div>
                     <InputMask
                         mask={"(99) 99999 9999"}
                         maskChar={null}
                         placeholder={"(00) 00000 0000"}
-                        className={`border border-zinc-400 rounded-lg`}
-                        {...register(numberTell)}
+                        className={`border border-primary rounded-lg w-fit px-2`}
+                        {...register("numberTell")}
                         value={numberTell}
                         onChange={e => setNumberTell(e.target.value)}
                     />
-                    {/* <input
-                        value={numberTell}
-                        {...register("numberTell", {
-                            onChange: e => {
-                                setNumberTell(e.target.value)
-                            }
-                        })}
-                    /> */}
                     <p>
                         {infoClinic.storedEmailClinica}
                     </p>

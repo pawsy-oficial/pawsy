@@ -68,48 +68,51 @@ export default function Perfil() {
                 <main className="pl-10 pr-16 py-8 flex gap-5">
                     <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
                         {
-                            stateEdit 
-                            ? <UpdateFormClinic infoClinic={infoClinic} actionStateEdit={setStateEdit}/> 
-                            : (<section className="flex justify-between relative">
-                            <div className="flex items-center">
-                                <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
-                                    <img
-                                        src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
-                                        alt={infoClinic.storedNameClinica}
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
-                                <div className="flex flex-col p-4 gap-2  text-left">
-                                    <h3 className="text-[32px] font-bold uppercase flex gap-4 items-center">
-                                        {infoClinic.storedNameClinica}
-                                    </h3>
-                                    <p>
-                                        {infoClinic.Rua}, {infoClinic.Numero}
-                                    </p>
-                                    {
-                                        infoClinic.Complemento && <p>{infoClinic.Complemento}</p>
-                                    }
-                                    <p>
-                                        {infoClinic.storedTellClinica}
-                                    </p>
-                                    <p>
-                                        {infoClinic.storedEmailClinica}
-                                    </p>
-                                    <p>
-                                        {infos[0].funcionamento}
-                                    </p>
-                                </div>
-                            </div>
-                            <button
-                                className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90 absolute bottom-0 right-0"
-                                onClick={()=>setStateEdit(!stateEdit)}
-                            >
-                                Editar perfil
-                            </button>
-                        </section>)
+                            stateEdit
+                                ? <UpdateFormClinic infoClinic={infoClinic} actionStateEdit={setStateEdit} />
+                                : (
+                                    <section className="flex justify-between relative">
+                                        <div className="flex items-center">
+                                            <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
+                                                <img
+                                                    src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
+                                                    alt={infoClinic.storedNameClinica}
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col p-4 gap-2  text-left">
+                                                <h3 className="text-[32px] font-bold uppercase flex gap-4 items-center">
+                                                    {infoClinic.storedNameClinica}
+                                                </h3>
+                                                <p>
+                                                    {infoClinic.Rua}, {infoClinic.Numero}
+                                                </p>
+                                                {
+                                                    infoClinic.Complemento && <p>{infoClinic.Complemento}</p>
+                                                }
+                                                <p>
+                                                    {infoClinic.storedTellClinica}
+                                                </p>
+                                                <p>
+                                                    {infoClinic.storedEmailClinica}
+                                                </p>
+                                                <p>
+                                                    {infos[0].funcionamento}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90 absolute bottom-0 right-0 disabled:cursor-not-allowed disabled:opacity-25 disabled:transition-all"
+                                            onClick={() => setStateEdit(!stateEdit)}
+                                            disabled={stateEdit}
+                                        >
+                                            Editar perfil
+                                        </button>
+                                    </section>
+                                )
                         }
-                        
-                        
+
+
                         <div className="flex flex-col">
                             <div
                                 className="flex mt-4 justify-between w-full items-center"
@@ -118,7 +121,8 @@ export default function Perfil() {
                                     Sobre nós
                                 </h2>
                                 <button
-                                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs hover:bg-primary/90"
+                                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-25 disabled:transition-all"
+                                    disabled={stateEdit}
                                 >
                                     Editar
                                 </button>
