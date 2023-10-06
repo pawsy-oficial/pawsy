@@ -227,7 +227,9 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
         numberHome: infoClinic.Numero,
         state: infoClinic.Estado,
         street: infoClinic.Rua,
-        uf: null
+        uf: infoClinic.storedIdEstado,
+        latitude: infoClinic.Latitude,
+        longitude: infoClinic.Longitude
     })
 
     const [selectImage, setSelectImage] = useState(null)
@@ -254,10 +256,24 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
         (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = infoClinic.storedImg
 
         data.image = nameFile
-        const x = { ...data, ...address }
 
-        console.log(x);
         console.log(selectImage);
+
+        const streetFormat = x.street.replace(/ /g, "%20")
+        const cityFormat = x.city.replace(/ /g, "%20")
+        const neighborhoodFormat = x.neighborhood.replace(/ /g, "%20")
+        const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
+
+        axios.get(urlGeocode)
+            .then((e) => {
+                const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
+
+                console.log(latitude, longitude);
+                const x = { ...data, ...address }
+
+                console.log(x);
+            }
+            )
     }
 
 
