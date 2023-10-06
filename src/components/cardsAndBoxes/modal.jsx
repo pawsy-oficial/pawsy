@@ -7,7 +7,7 @@ import axios from 'axios';
 import ReactDOM from 'react-dom';
 
 
-function ModalDialogEditAddress() {
+function ModalDialogEditAddress({ setAddress }) {
 
     const [cep, setCep] = useState('')
     const [errorCep, setErrorCep] = useState(false)
@@ -101,13 +101,16 @@ function ModalDialogEditAddress() {
     }, [cep])
 
     const { errors } = formState
+    const [ showModal, setShowModal ] = useState(false)
 
     const onSubmite = (data)=>{
         data.uf = selectUf
         console.log(data);
+
+        setAddress(data)
+        setShowModal(false)
     }
 
-    const [ showModal, setShowModal ] = useState(false)
 
     return (
         <>

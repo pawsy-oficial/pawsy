@@ -219,6 +219,17 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     const [numberTell, setNumberTell] = useState(infoClinic.storedTellClinica)
     const [saveLoading, setSaveLoading] = useState(false)
 
+    const [address, setAddress] = useState({
+        cep: infoClinic.CEP,
+        city: infoClinic.Cidade,
+        complement: infoClinic.Complemento,
+        neighborhood: infoClinic.Bairro,
+        numberHome: infoClinic.Numero,
+        state: infoClinic.Estado,
+        street: infoClinic.Rua,
+        uf: null
+    })
+
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     useEffect(() => {
@@ -238,10 +249,17 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     })
 
     const onSubmit = (data) => {
-        console.log(data);
+        const currentTime = new Date().getTime()
+        let nameFile
+        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = infoClinic.storedImg
 
-        //actionStateEdit(false)
+        data.image = nameFile
+        const x = { ...data, ...address }
+
+        console.log(x);
+        console.log(selectImage);
     }
+
 
     return (
         <form
@@ -286,14 +304,17 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
                         className="flex gap-2 items-center"
                     >
                         <p>
-                            {infoClinic.Rua}, {infoClinic.Numero} - {infoClinic.CEP} 
+                            {
+                                address ? address.street : infoClinic.Rua
+                            },
+                            {
+                                address ? address.numberHome : infoClinic.Numero
+                            } -
+                            {
+                                address ? address.cep : infoClinic.CEP
+                            }
                         </p>
-
-                        {
-                         //   infoClinic.Complemento!
-                        }
-
-                        <ModalDialogEditAddress/>
+                        <ModalDialogEditAddress setAddress={setAddress} />
                     </div>
                     <InputMask
                         mask={"(99) 99999 9999"}
