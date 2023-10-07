@@ -1,5 +1,5 @@
 import { Camera, GenderFemale, GenderMale, Pen } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Alert } from "../tutor/Alert";
 import dayjs from "dayjs";
 import { Controller, useForm } from "react-hook-form";
@@ -214,10 +214,11 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     )
 }
 
-export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
+function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     const [nameClinic, setNameClinic] = useState(infoClinic.storedNameClinica)
     const [numberTell, setNumberTell] = useState(infoClinic.storedTellClinica)
     const [saveLoading, setSaveLoading] = useState(false)
+    const [clickSave, setClickSave] = useState(false)
 
     const [address, setAddress] = useState({
         cep: infoClinic.CEP,
@@ -256,26 +257,47 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
         (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = infoClinic.storedImg
 
         data.image = nameFile
+        data.numberTell = data.numberTell.replace(/[^\d]+/g, '')
 
-        console.log(selectImage);
+        // console.log(data.image);
 
-        const streetFormat = x.street.replace(/ /g, "%20")
-        const cityFormat = x.city.replace(/ /g, "%20")
-        const neighborhoodFormat = x.neighborhood.replace(/ /g, "%20")
+        const streetFormat = address.street.replace(/ /g, "%20")
+        const cityFormat = address.city.replace(/ /g, "%20")
+        const neighborhoodFormat = address.neighborhood.replace(/ /g, "%20")
         const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
 
+        setSaveLoading(true)
         axios.get(urlGeocode)
             .then((e) => {
                 const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
 
-                console.log(latitude, longitude);
-                const x = { ...data, ...address }
+                const x = { ...data, ...address, latitude: latitude, longitude: longitude, idClinic: infoClinic.storedIdClinica }
 
-                console.log(x);
-            }
-            )
+                if (clickSave) {
+                    axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile`, x)
+                        .then(res => {
+                            let form = new FormData();
+                            form.append("name", nameFile);
+                            form.append('file', selectImage, selectImage.name);
+
+                            axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(()=>{
+                                setSaveLoading(false)
+                                actionStateEdit(false)
+                            }).catch(err => console.log(err))
+                        })
+                        .catch(err => {
+                            setSaveLoading(false)
+                            console.log(err.response.data);
+                        })
+                }
+                else setSaveLoading(false)
+            })
+            .catch(err => console.log(err))
     }
-
 
     return (
         <form
@@ -353,6 +375,7 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
                 <button
                     className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
                     type="submit"
+                    onClick={() => setClickSave(true)}
                 >
                     {
                         saveLoading ? "..." : "Salvar alterações"
@@ -369,3 +392,6 @@ export function UpdateFormClinic({ infoClinic, actionStateEdit }) {
         </form>
     )
 }
+
+const memoUpdateFormClinic = memo(UpdateFormClinic)
+export { memoUpdateFormClinic as UpdateFormClinic }

@@ -350,7 +350,7 @@ function ModalDialogEditAddress({ setAddress }) {
                                                     className="bg-green-600 rounded py-1 px-4 text-white"
                                                     type='submit'
                                                 >
-                                                    Agendar
+                                                    Alterar
                                                 </button>
                                             {/* </AlertDialog.Action> */}
                                         </div>

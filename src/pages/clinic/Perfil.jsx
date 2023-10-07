@@ -49,7 +49,7 @@ export default function Perfil() {
             .catch(err => {
                 console.log(err)
             })
-    }, [])
+    }, [stateEdit])
 
 
 
