@@ -47,13 +47,9 @@ function ModalAddMedic(props) {
 		}
 	};
 
-	let x = true
+	// let x = true
 
 	useEffect(()=>{
-		if(x) {
-			x = false
-			return
-		}
 		const jwtTokenClinic = Cookies.get('jwtTokenClinic');
 		const url = `${import.meta.env.VITE_URL}/medico?id=${medicDetails.id}&crmv=${medicDetails.crmv}`
 
