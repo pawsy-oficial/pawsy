@@ -403,5 +403,10 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     )
 }
 
+/*function UpdateFormClinicAboutUs({}){}*/
+
 const memoUpdateFormClinic = memo(UpdateFormClinic)
 export { memoUpdateFormClinic as UpdateFormClinic }
+
+/*const memoUpdateFormClinicAboutUs = memo(UpdateFormClinicAboutUs)
+export {memoUpdateFormClinicAboutUs as UpdateFormClinicAboutUs}*/
