@@ -21,6 +21,12 @@ export default function Perfil() {
     const [stateEdit, setStateEdit] = useState(false)
     const [editAboutUs, setEditAboutUs] = useState(false)
     const [textAboutUs, setTextAboutUs] = useState(null)
+    const [popUpMessage, setPopUpMessage] = useState({
+        active: false,
+        message: null,
+        messageError: false
+    })
+
 
     let tokenClinic
 
@@ -39,11 +45,50 @@ export default function Perfil() {
             .catch(err => {
                 console.log(err)
             })
-    }, [stateEdit])
+    }, [stateEdit, editAboutUs])
 
     function handleUpdateAboutUs() {
-        setEditAboutUs(!editAboutUs)
+        if (editAboutUs) {
+            const data = {
+                description: textAboutUs,
+                idClinic: infoClinic.storedIdClinica
+            }
+            axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile?about=true`, data)
+                .then(e => {
+                    if(e.data.result){
+                        setPopUpMessage({
+                            active: true,
+                            message: e.data.result,
+                            messageError: false
+                        })
+                        setEditAboutUs(!editAboutUs)
+                    }
+                    else if(e.data.error){
+                        setPopUpMessage({
+                            active: true,
+                            message: e.data.error,
+                            messageError: true
+                        })
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+        else {
+            setEditAboutUs(!editAboutUs)
+        }
     }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setPopUpMessage({
+                ctive: false,
+                message: null,
+                messageError: false
+            })
+        }, 8000)
+
+        return ()=>clearTimeout(timer)
+    }, [popUpMessage])
 
 
     return (
@@ -58,6 +103,17 @@ export default function Perfil() {
                         <Avaliation />
                     </div>
                 </main>
+                {
+                    popUpMessage.active && (
+                        <div
+                            className={`rounded-lg fixed right-6 bottom-6 p-2 capitalize text-white ${popUpMessage.messageError ? "bg-red-error/80" : "bg-emerald-500/80"}`}
+                        >
+                            <p>
+                                {popUpMessage.message}
+                            </p>
+                        </div>
+                    )
+                }
                 <main className="pl-10 pr-16 py-8 flex gap-5">
                     <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
                         {
@@ -212,12 +268,12 @@ export default function Perfil() {
                         <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
                             <h1 className="font-bold text-lg">Médicos veterinários</h1>
 
-                            <MedicsClinic see={see} setSee={setSee} idClinic={infoClinic.storedIdClinica}/>
+                            <MedicsClinic see={see} setSee={setSee} idClinic={infoClinic.storedIdClinica} />
 
                             <div className="flex w-full justify-center">
-                                <button 
-                                    onClick={() => setOpen(!open)} 
-                                    type="" 
+                                <button
+                                    onClick={() => setOpen(!open)}
+                                    type=""
                                     className="flex gap-2 disabled:opacity-20 disabled:cursor-not-allowed"
                                     disabled={editAboutUs || stateEdit}
                                 >
@@ -234,11 +290,11 @@ export default function Perfil() {
     )
 }
 
-function MedicsClinic({see, setSee, idClinic}) {
-    const [ medics, setMedics ] = useState([])
-    const [ infoMedicSelect, setInfoMedicSelect ] = useState()
-    useEffect(()=>{
- 
+function MedicsClinic({ see, setSee, idClinic }) {
+    const [medics, setMedics] = useState([])
+    const [infoMedicSelect, setInfoMedicSelect] = useState()
+    useEffect(() => {
+
 
         axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
             headers: {
@@ -251,7 +307,7 @@ function MedicsClinic({see, setSee, idClinic}) {
                         Authorization: `Bearer: ${Cookies.get("jwtTokenClinic")}`
                     }
                 })
-                    .then(e=>{
+                    .then(e => {
                         setMedics(e.data)
                     })
                     .catch(err => console.log(err))
@@ -260,7 +316,7 @@ function MedicsClinic({see, setSee, idClinic}) {
                 console.log(err)
             })
 
-    },[])
+    }, [])
 
     return (
         <div
@@ -269,7 +325,7 @@ function MedicsClinic({see, setSee, idClinic}) {
             {
                 medics.map((medic, key) => {
                     return <>
-                        <button 
+                        <button
                             key={key}
                             onClick={() => {
                                 console.log(medic);
