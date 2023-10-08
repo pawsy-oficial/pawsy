@@ -25,6 +25,7 @@ export default function Perfil() {
     const [see, setSee] = useState(false)
     const [infoClinic, setInfoClinic] = useState([])
     const [stateEdit, setStateEdit] = useState(false)
+    const [editAboutUs, setEditAboutUs] = useState(false)
 
     const clinica = [
         { nameClinic: "Petz", imageClinic: "https://pbs.twimg.com/profile_images/1489579803846090758/PI8ujLgX_400x400.jpg" }
@@ -123,15 +124,29 @@ export default function Perfil() {
                                 <button
                                     className="px-4 py-2 bg-primary rounded text-white font-lato text-xs hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-25 disabled:transition-all"
                                     disabled={stateEdit}
+                                    onClick={()=>setEditAboutUs(!editAboutUs)}
                                 >
-                                    Editar
+                                    {editAboutUs ? "Aplicar alterações" : "Editar"}
                                 </button>
                             </div>
-                            <p className="text-sm font-normal">
-                                {
-                                    !infoClinic.storedDescriptionClinica || infoClinic.storedDescriptionClinica.length == 0 ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : infoClinic.storedDescriptionClinica
-                                }
-                            </p>
+                            {
+                                editAboutUs 
+                                ? (
+                                    <textarea
+                                        className="border rounded-lg mt-4 resize-none h-52 border-primary focus-within:outline-secundary p-4 bg-primary/5 text-base"
+                                        value={
+                                            !infoClinic.storedDescriptionClinica || infoClinic.storedDescriptionClinica.length == 0 ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : infoClinic.storedDescriptionClinica
+                                        }
+                                    />
+                                )
+                                : (
+                                    <p className="text-sm font-normal">
+                                        {
+                                            !infoClinic.storedDescriptionClinica || infoClinic.storedDescriptionClinica.length == 0 ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : infoClinic.storedDescriptionClinica
+                                        }
+                                    </p>
+                                )
+                            }
                         </div>
                         <div className="mnegative flex flex-col">
                             <h2 className="font-bold text-lg pb-2">

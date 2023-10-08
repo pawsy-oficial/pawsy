@@ -274,29 +274,39 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
                 const x = { ...data, ...address, latitude: latitude, longitude: longitude, idClinic: infoClinic.storedIdClinica }
 
                 if (clickSave) {
+                    console.log(x);
                     axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile`, x)
                         .then(res => {
-                            let form = new FormData();
-                            form.append("name", nameFile);
-                            form.append('file', selectImage, selectImage.name);
-
-                            axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            }).then(()=>{
-                                setSaveLoading(false)
-                                actionStateEdit(false)
-                            }).catch(err => console.log(err))
+                            selectImage
+                                ? uploadImage(nameFile, selectImage)
+                                : (
+                                    setSaveLoading(false),
+                                    actionStateEdit(false)
+                                )
                         })
                         .catch(err => {
                             setSaveLoading(false)
-                            console.log(err.response.data);
+                            // console.log(err);
                         })
                 }
                 else setSaveLoading(false)
             })
             .catch(err => console.log(err))
+    }
+
+    function uploadImage() {
+        let form = new FormData();
+        form.append("name", nameFile);
+        form.append('file', selectImage, selectImage.name);
+
+        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(() => {
+            setSaveLoading(false)
+            actionStateEdit(false)
+        }).catch(err => console.log(err))
     }
 
     return (
