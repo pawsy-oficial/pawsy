@@ -108,7 +108,7 @@ export default function Perfil() {
                     )
                 }
                 <main className="pl-10 pr-16 py-8 flex gap-5">
-                    <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
+                    <section className={`flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl`}>
                         {
                             stateEdit
                                 ? <UpdateFormClinic infoClinic={infoClinic} actionStateEdit={setStateEdit} />
@@ -206,14 +206,16 @@ export default function Perfil() {
                                                 }}
                                             />
                                             <span
-                                                className={`absolute right-0 -bottom-4 ${textAboutUs.length == 680 && "text-emerald-500"}`}
+                                                className={`absolute right-0 -bottom-4 ${textAboutUs && (textAboutUs.length == 680 && "text-emerald-500")}`}
                                             >
-                                                {textAboutUs.length} / 680
+                                                {
+                                                    textAboutUs == null ? "0/680" : `${textAboutUs.length} / 680`
+                                                }
                                             </span>
                                         </div>
                                     )
                                     : (
-                                        <p className="text-sm font-normal">
+                                        <p className="text-sm font-normal text-limit max-w-3xl">
                                             {
                                                 !infoClinic.storedDescriptionClinica || infoClinic.storedDescriptionClinica.length == 0 ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : infoClinic.storedDescriptionClinica
                                             }
