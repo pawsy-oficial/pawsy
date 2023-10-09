@@ -45,7 +45,7 @@ export default function Perfil() {
             .catch(err => {
                 console.log(err)
             })
-    }, [stateEdit, editAboutUs])
+    }, [stateEdit])
 
     function handleUpdateAboutUs() {
         if (editAboutUs) {
@@ -55,21 +55,12 @@ export default function Perfil() {
             }
             axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile?about=true`, data)
                 .then(e => {
-                    if(e.data.result){
-                        setPopUpMessage({
-                            active: true,
-                            message: e.data.result,
-                            messageError: false
-                        })
-                        setEditAboutUs(!editAboutUs)
-                    }
-                    else if(e.data.error){
-                        setPopUpMessage({
-                            active: true,
-                            message: e.data.error,
-                            messageError: true
-                        })
-                    }
+                    setPopUpMessage({
+                        active: true,
+                        message: e.data.result,
+                        messageError: false
+                    })
+                    setEditAboutUs(!editAboutUs)
                 })
                 .catch(err => console.log(err))
         }
@@ -79,13 +70,15 @@ export default function Perfil() {
     }
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setPopUpMessage({
-                ctive: false,
-                message: null,
-                messageError: false
-            })
-        }, 8000)
+        if(popUpMessage.active){
+            var timer = setTimeout(() => {
+                setPopUpMessage({
+                    ctive: false,
+                    message: null,
+                    messageError: false
+                })
+            }, 8000)
+        }
 
         return ()=>clearTimeout(timer)
     }, [popUpMessage])

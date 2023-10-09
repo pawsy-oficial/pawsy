@@ -2,66 +2,123 @@ import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { GenderFemale, GenderMale, MagnifyingGlass, Plus } from "@phosphor-icons/react";
 import { PatientsCard } from "../../components/PatientsComponents/PatientsCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalPetExists } from "../../components/PatientsComponents/ModalPetExists";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Patient() {
-  const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(false)
+	const [ patients, setPatients ] = useState([])
 
-  const donos = ["Davi Silva", "Rodrygo Goes", "Kevin Gomes", "Kauan Viera"]
-  const idPatients = [222, 312, 664, 83]
-  const NmPatients = ["Flor", "Rabico", "Waguinho", "Zezinho"]
-  const qtdPatients = [4]
+	const donos = ["Davi Silva", "Rodrygo Goes", "Kevin Gomes", "Kauan Viera"]
+	const idPatients = [222, 312, 664, 83]
+	const NmPatients = ["Flor", "Rabico", "Waguinho", "Zezinho"]
+	
+	let idClinic
 
-  return (
-    <main className="flex min-h-screen">
-      <NavbarClinic page={0} />
-      <section className="flex-1">
-        <Header userType={"clinica"} />
+	useEffect(()=>{
+		const tokenClinic = Cookies.get("jwtTokenClinic")
 
-        <main className="pl-10 pr-16 py-8 flex gap-5">
-          <section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
-            <div className="flex items-center gap-2">
-              <h1 className="font-semibold text-2xl">Pacientes</h1>
-              <p className="text-gray-400 text-sm">({qtdPatients[0]})</p>
-            </div>
-            <div className="flex justify-between">
-              <div className="flex gap-3 mt-5">
-                <input type="radio" name="gender" id="mal" className="hidden" />
-                <label id="male" htmlFor="mal">Macho <GenderMale color="#8FB5FF" size="24px" /></label>
+        axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+            headers: {
+                Authorization: `Bearer ${tokenClinic}`
+            }
+        }).then(e => {
+                idClinic = e.data.storedIdClinica
+				axios.get(`${import.meta.env.VITE_URL}/getAllPatients/${idClinic}`, {
+					headers:{
+						Authorization: `Bearer ${tokenClinic}`
+					}
+				}).then(e => setPatients(e.data.result))
+				.catch(err => console.log(err))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+	},[open])
 
-                <input type="radio" id="fem" name="gender" className="hidden" />
-                <label id="female" htmlFor="fem">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
-              </div>
+	return (
+		<main className="flex min-h-screen">
+			<NavbarClinic page={0} />
+			<section className="flex-1">
+				<Header userType={"clinica"} />
 
-              <div className="flex gap-1 border-primary border rounded-lg p-1 h-8 mt-5 bg-[#F5FFFE]">
-                <input type="text" name="" id="" className="bg-[#F5FFFE]" placeholder="Pesquisa" />
-                <button><MagnifyingGlass /></button>
-              </div>
-            </div>
+				<main className="pl-10 pr-16 py-8 flex gap-5">
+					<section className="flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl">
+						<div className="flex items-center gap-2">
+							<h1 className="font-semibold text-2xl">Pacientes</h1>
+							<p className="text-gray-400 text-sm">({patients.length})</p>
+						</div>
+						<div className="flex justify-between mt-5">
+							<div className="flex gap-3">
+								<input 
+									type="radio"
+									name="gender"
+									id="mal"
+									className="hidden"
+								/>
+								<label 
+									id="male"
+									htmlFor="mal"
+									className="flex py-1 px-2 rounded-lg cursor-pointer gap-1 border-2 border-transparent hover:border-[#8fB5FF]"
+								>
+									<span>Macho</span>
+									<GenderMale color="#8FB5FF" size="24px" />
+								</label>
 
-            <section className="mt-10 flex flex-col gap-5">
-              <PatientsCard donosP={donos[0]} id={idPatients[0]} pet={NmPatients[0]} />
-              <PatientsCard donosP={donos[1]} id={idPatients[1]} pet={NmPatients[1]} />
-              <PatientsCard donosP={donos[2]} id={idPatients[2]} pet={NmPatients[2]} />
-              <PatientsCard donosP={donos[3]} id={idPatients[3]} pet={NmPatients[3]} />
-            </section>
-          </section>
+								<input type="radio" id="fem" name="gender" className="hidden" />
+								<label 
+									id="female"
+									htmlFor="fem"
+									className="flex py-1 px-2 rounded-lg cursor-pointer gap-1 border-2 border-transparent hover:border-[#FF8FCB]"
+								>
+									<span>Fêmea</span> 
+									<GenderFemale color="#FF8FCB" size="24px" />
+								</label>
+							</div>
 
-          <aside className="flex flex-col gap-10">
-            <ModalPetExists isOpen={open} setOpen={setOpen} />
-            <section className="w-96 bg-white px-4 py-8 items-center rounded-2xl flex flex-col gap-5 h-max">
-              <div className="bg-primary w-4/5 h-12 rounded-full flex items-center justify-center">
-                <button className="flex gap-4" onClick={() => setOpen(!open)}>
-                  <Plus size={24} color="#FFF" />
-                  <p className="text-white text-lg font-medium">Adicionar novo paciente</p>
-                </button>
-              </div>
-            </section>
-          </aside>
+							<div className="flex gap-1 border-primary border rounded-lg py-1 px-4 h-8  bg-[#F5FFFE]">
+								<input type="text" name="" id="" className="bg-[#F5FFFE]" placeholder="Pesquisa" />
+								<button><MagnifyingGlass /></button>
+							</div>
+						</div>
 
-        </main>
-      </section>
-    </main>
-  )
+						<section className="mt-10 flex flex-col gap-5">
+							{
+								patients.length == 0 
+								? <p className="text-zinc-500">A clínica não possui pacientes cadastrados</p>
+								: patients.map(patient => {
+									return <PatientsCard donosP={patient.nameTutor} id={patient.id} pet={patient.namePet} image={patient.imagePet} />
+								})
+							}
+						</section>
+					</section>
+
+					<aside className="flex flex-col gap-10">
+						<ModalPetExists 
+							isOpen={open} 
+							setOpen={setOpen}
+						/>
+						<section className="w-96 bg-white px-4 py-8 items-center rounded-2xl flex flex-col gap-5 h-max">
+							<button 
+								className="bg-primary w-full rounded-full flex items-center justify-center py-2 gap-3 hover:bg-primary/80"
+								onClick={() => setOpen(!open)}
+							>
+								{/* <button className="flex gap-4"> */}
+									<Plus size={24} color="#FFF" />
+									<span 
+										className="text-white text-lg font-medium"
+									>
+										Adicionar novo paciente
+									</span>
+								{/* </button> */}
+							</button>
+						</section>
+					</aside>
+
+				</main>
+			</section>
+		</main>
+	)
 }
