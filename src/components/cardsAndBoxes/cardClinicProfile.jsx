@@ -1,7 +1,18 @@
 import { Dog, Cat, Star } from '@phosphor-icons/react'
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { memo, useEffect, useState } from 'react';
 
-export default function ClientsPerfil() {
-    const clients = ['85','40'];
+function ClientsPerfil({idClinc}) {
+    const [clientClinic, setClientClinic] = useState([])
+    useEffect(()=>{
+        axios.get(`${import.meta.env.VITE_URL}/countPatients/${idClinc}`, {
+            headers:{
+                Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+            }
+        }).then(e => setClientClinic(e.data.client)).catch(err => console.log(err))
+    },[])
+    
     return(
         <div className="w-64 bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
             <h4 className="p-3 text-lg font-medium">
@@ -9,9 +20,13 @@ export default function ClientsPerfil() {
             </h4>
             <div className="flex items-center">
                 <Dog className="px-3" size={48} />
-                <p className="text-base font-medium">{clients[0]}</p>
+                <p className="text-base font-medium">{
+                    clientClinic.length > 0 && clientClinic[0].quantidade
+                }</p>
                 <Cat className="px-3" size={48} />
-                <p className="text-base font-medium">{clients[1]}</p>
+                <p className="text-base font-medium">{
+                    clientClinic.length > 0 && clientClinic[1].quantidade
+                }</p>
             </div>
         </div>
     )
@@ -51,3 +66,5 @@ export function Avaliation() {
         </div>
     )
 }
+
+export default memo(ClientsPerfil)

@@ -91,7 +91,7 @@ export default function Perfil() {
                 <Header userType={"clinica"} />
                 <main className="pl-10 pr-16 py-8 flex gap-5">
                     <div className="flex gap-5">
-                        <ClientsPerfil />
+                        <ClientsPerfil idClinc={infoClinic.storedIdClinica} />
                         <VaccinePets />
                         <Avaliation />
                     </div>
