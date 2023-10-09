@@ -18,19 +18,19 @@ export default function ViewPatient() {
 
   const [viewType, setViewType] = useState("none");
 
-//   const [clinicsPet, setClinicsPet] = useState([]);
+  //   const [petInfo, setPetInfo] = useState([]);
 
-//   useEffect(() => {
-//     const tokenMedic = Cookies.get("jwtTokenMedic")
-//     axios.get(`${import.meta.env.VITE_URL}/clinicsPet`, {
-//         headers: {
-//           Authorization: `Bearer ${tokenMedic}`
-//         }
-//       }).then(res =>{
-//         setClinicsPet(res.data.results)
-//       })
-// }, []);
-
+  //   useEffect(() => {
+  //     const tokenMedic = Cookies.get("jwtTokenMedic")
+  //     axios.get(`${import.meta.env.VITE_URL}/pets/:petId`, {
+  //         headers: {
+  //           Authorization: `Bearer ${tokenMedic}`
+  //         }
+  //       }).then(res =>{
+  //         setPetInfo(res.data.results)
+  //       })
+  // }, []);
+  console.log({ pet });
 
   return (
     <>
@@ -50,7 +50,10 @@ export default function ViewPatient() {
         <section className="bg-white p-6 rounded-xl w-3/4 flex justify-between">
           <div className="flex gap-6 ">
             <div className="flex flex-col items-center">
-              <img className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"/>
+              <img
+                src={`${import.meta.env.VITE_URL}/files/${pet.img}`}
+                className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"
+              />
               <label className="mt-4 p-1 w-20 rounded-xl bg-[#1BA8C4] text-white text-center text-sm">
                 #{pet.idPet}
               </label>
@@ -83,11 +86,11 @@ export default function ViewPatient() {
               </h1>
               <h2 className="font-semibold text-base">Idade: {pet.idade}</h2>
               <h3 className="font-semibold text-base">Raça: {pet.raca}</h3>
-              <h4 className="font-semibold text-base">
+              {/* <h4 className="font-semibold text-base">
                 Bem-estar: {pet.bemestar}
-              </h4>
-              <h5 className="font-semibold text-base">Peso: {pet.peso}</h5>
-              <h6 className="font-semibold text-base">Altura: {pet.altura}</h6>
+              </h4> */}
+              {/* <h5 className="font-semibold text-base">Peso: {pet.peso}</h5>
+              <h6 className="font-semibold text-base">Altura: {pet.altura}</h6> */}
             </div>
           </div>
           <div className="flex flex-col items-end gap-4 h-full justify-center">
@@ -117,7 +120,7 @@ export default function ViewPatient() {
           </div>
           <div className="flex gap-4 items-center mt-5">
             <img
-              src={pet.img}
+              src={`${import.meta.env.VITE_URL}/files/${pet.img}`}
               className="w-10 h-10 rounded-full border-2 border-primary"
             />
             <h2 className="font-semibold text-base">{pet.namePet}</h2>
