@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { Dog } from "@phosphor-icons/react";
 
 export function ModalPetExists(props) {
+	const [selectedOption, setSelectedOption] = useState(0)
 	const [petDetails, setPetDetails] = useState({
 		id_pet: "",
 		cpf_tutor: ""
@@ -38,42 +39,72 @@ export function ModalPetExists(props) {
 	}, [petDetails])
 
 
-	useEffect(() => {
-
-	}, [])
-
-
 	const handleSubmit = async () => {
-		try {
-			const jwtTokenClinic = Cookies.get('jwtTokenClinic');
-			axios.get(import.meta.env.VITE_URL + '/profileClinic', {
-				headers: {
-					'Authorization': 'Bearer ' + jwtTokenClinic
-				}
-			}).then(e => {
-				const id_clinica = e.data.storedIdClinica
-				axios.post(import.meta.env.VITE_URL + '/integrar-paciente-clinica', {
-					...petDetails,
-					id_clinica
-				}).then(e => {
-					if (e.data.message === "Pet-paciente integrado com sucesso!") {
-						props.setOpen(false);
-					} else {
-						setErrorMessage(response.data.error);  // Atualiza a mensagem de erro
+		if(petDetails.cpf_tutor){
+			setPetDetails({
+				id_pet: infoPet[selectedOption].id_pet,
+				cpf_tutor: petDetails.cpf_tutor
+			})
+			try {
+				const jwtTokenClinic = Cookies.get('jwtTokenClinic');
+				axios.get(import.meta.env.VITE_URL + '/profileClinic', {
+					headers: {
+						'Authorization': 'Bearer ' + jwtTokenClinic
 					}
-				})
-				.catch(err => console.log(err))
-	
-			}).catch(err => console.log(err))
-		} catch (error) {
-			setErrorMessage("Erro ao integrar o pet.");  // Mensagem genérica
-			console.error("Error integrating pet:", error);
+				}).then(e => {
+					const id_clinica = e.data.storedIdClinica
+					axios.post(import.meta.env.VITE_URL + '/integrar-paciente-clinica', {
+						...petDetails,
+						id_clinica
+					}).then(e => {
+						if (e.data.message === "Pet-paciente integrado com sucesso!") {
+							props.setOpen(false);
+						} else {
+							setErrorMessage(response.data.error);  // Atualiza a mensagem de erro
+						}
+					})
+					.catch(err => console.log(err))
+		
+				}).catch(err => console.log(err))
+			} catch (error) {
+				setErrorMessage("Erro ao integrar o pet.");  // Mensagem genérica
+				console.error("Error integrating pet:", error);
+			}
+		}
+		else{
+			try {
+				const jwtTokenClinic = Cookies.get('jwtTokenClinic');
+				axios.get(import.meta.env.VITE_URL + '/profileClinic', {
+					headers: {
+						'Authorization': 'Bearer ' + jwtTokenClinic
+					}
+				}).then(e => {
+					const id_clinica = e.data.storedIdClinica
+					axios.post(import.meta.env.VITE_URL + '/integrar-paciente-clinica', {
+						...petDetails,
+						id_clinica
+					}).then(e => {
+						if (e.data.message === "Pet-paciente integrado com sucesso!") {
+							props.setOpen(false);
+						} else {
+							setErrorMessage(response.data.error);  // Atualiza a mensagem de erro
+						}
+					})
+					.catch(err => console.log(err))
+		
+				}).catch(err => console.log(err))
+			} catch (error) {
+				setErrorMessage("Erro ao integrar o pet.");  // Mensagem genérica
+				console.error("Error integrating pet:", error);
+			}
 		}
 	};
 
-	const [selectedOption, setSelectedOption] = useState(0)
+
 	function handleChangeSelect(e) {
 		setSelectedOption(e.target.value)
+
+		handleChange(e)
 	}
 
 	if (props.isOpen) {
@@ -121,8 +152,9 @@ export function ModalPetExists(props) {
 								name="id_pet"
 								className="border-b-2 w-64"
 								placeholder="ex.: #0000"
-								value={petDetails.id_pet}
+								value={petDetails.cpf_tutor.length > 0 ? "" : petDetails.id_pet}
 								onChange={handleChange}
+								disabled={petDetails.cpf_tutor.length > 0}
 							/>
 							<p className="pt-4 pb-1 text-base font-normal">CPF tutor:</p>
 							<input
@@ -130,8 +162,9 @@ export function ModalPetExists(props) {
 								name="cpf_tutor"
 								className="border-b-2 w-64"
 								placeholder="ex.: 123.456.789-00"
-								value={petDetails.cpf_tutor}
+								value={petDetails.id_pet.length > 0 ? "" : petDetails.cpf_tutor}
 								onChange={handleChange}
+								disabled={petDetails.id_pet.length > 0}
 							/>
 						</div>
 					</div>

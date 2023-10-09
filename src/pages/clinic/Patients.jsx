@@ -11,10 +11,6 @@ export default function Patient() {
 	const [open, setOpen] = useState(false)
 	const [ patients, setPatients ] = useState([])
 
-	const donos = ["Davi Silva", "Rodrygo Goes", "Kevin Gomes", "Kauan Viera"]
-	const idPatients = [222, 312, 664, 83]
-	const NmPatients = ["Flor", "Rabico", "Waguinho", "Zezinho"]
-	
 	let idClinic
 
 	useEffect(()=>{
