@@ -11,9 +11,10 @@ export default function Medic() {
   const dateHour = date.getHours()
 
   const horarios = [8, 12, 14, 19]
-  const namesMedic = ["Claudemir Machado", "Vanessa Santos"]
 
   const [infoMedic, setInfoMedic] = useState([]);
+
+  const [clinicsMedic, setClinicsMedic] = useState([]);
 
   const [openOrClose, setOpenOrClose] = useState(false);
 
@@ -35,6 +36,14 @@ export default function Medic() {
       }
     }).then(res =>{
       setInfoMedic(res.data)
+    })
+
+    axios.get(`${import.meta.env.VITE_URL}/clinicsMedic`, {
+      headers: {
+        Authorization: `Bearer ${tokenMedic}`
+      }
+    }).then(res =>{
+      setClinicsMedic(res.data.results)
     })
 
     checkOpeningHours();
@@ -64,9 +73,13 @@ export default function Medic() {
           Clínicas onde você trabalha:
         </h3>
         <nav className="flex flex-wrap gap-3">
-          <CardClinics img={ZnVet} nameClinic={ClinicasInfo[3]} openOrClose={openOrClose} />
-          <CardClinics img={randomClinic} nameClinic={ClinicasInfo[1]} openOrClose={openOrClose} />
-          <CardClinics img={randomClinic} nameClinic={ClinicasInfo[5]} openOrClose={openOrClose} />
+          {
+            clinicsMedic.map(clinic => {
+              return (
+                <CardClinics img={clinic.url_imagem} nameClinic={clinic.nm_clinica} openOrClose={clinic.status_loja} />
+              )
+            })
+          }
         </nav>
       </section>
     </>

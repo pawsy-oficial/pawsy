@@ -3,7 +3,9 @@ import { HeaderMedic } from "../../components/HeaderMedic";
 import dono from "../../img/profilePerson.jpeg";
 import { ArrowUUpLeft, GenderMale, X } from "@phosphor-icons/react";
 import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import ViewRevenues from "../../components/componentsMedic/viewPatientsComponents/ViewRevenues";
 import ViewVaccines from "../../components/componentsMedic/viewPatientsComponents/ViewVaccines";
 
@@ -15,6 +17,20 @@ export default function ViewPatient() {
   const { pet } = location.state;
 
   const [viewType, setViewType] = useState("none");
+
+//   const [clinicsPet, setClinicsPet] = useState([]);
+
+//   useEffect(() => {
+//     const tokenMedic = Cookies.get("jwtTokenMedic")
+//     axios.get(`${import.meta.env.VITE_URL}/clinicsPet`, {
+//         headers: {
+//           Authorization: `Bearer ${tokenMedic}`
+//         }
+//       }).then(res =>{
+//         setClinicsPet(res.data.results)
+//       })
+// }, []);
+
 
   return (
     <>
@@ -34,10 +50,7 @@ export default function ViewPatient() {
         <section className="bg-white p-6 rounded-xl w-3/4 flex justify-between">
           <div className="flex gap-6 ">
             <div className="flex flex-col items-center">
-              <img
-                src={pet.img}
-                className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"
-              />
+              <img className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"/>
               <label className="mt-4 p-1 w-20 rounded-xl bg-[#1BA8C4] text-white text-center text-sm">
                 #{pet.idPet}
               </label>
