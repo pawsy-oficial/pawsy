@@ -144,7 +144,7 @@ export default function RegisterFormVeterinary({ userType }) {
                 .then(()=>{
                     setLoading(false)
                     console.log(response)
-                    navigate("/login", { state: { slug: "medico" } })
+                    navigate("/login", { state: { slug: "veterinario" } })
                 })
             })
             .catch(err => {
