@@ -1,6 +1,6 @@
 export function CreateNewMedicines() {
   return (
-    <div className="flex flex-col mx-auto pb-8 pt-4 px-6 gap-3 w-[531px] border border-[#1BA8C4] rounded-lg">
+    <div className="flex flex-col mx-auto pb-8 pt-4 px-6 gap-3 w-[531px] border border-[#1BA8C4] rounded-lg z-10">
       <div className="flex flex-col gap-2">
         <div className="flex gap-8 text-xs items-center">
           <p>Medicamento:</p>

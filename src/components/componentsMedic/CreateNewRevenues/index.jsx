@@ -1,8 +1,15 @@
 import LogoWaterMark from "../../../img/waterMark.svg";
 import { CreateNewMedicines } from "../CreateNewMedicines";
-import { PlusCircle } from "@phosphor-icons/react";
+import { PlusCircle, XCircle } from "@phosphor-icons/react";
+import { useState } from "react";
 
 export function CreateNewRevenues() {
+  const [isComponentVisible, setComponentVisibility] = useState(false);
+
+  const toggleComponent = () => {
+    setComponentVisibility(!isComponentVisible);
+  };
+
   return (
     <div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative">
       <img
@@ -36,14 +43,38 @@ export function CreateNewRevenues() {
         <CreateNewMedicines />
       </section>
 
-      <div className="flex flex-col">
-        <a
-          className="flex items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
-          onClick={() => navigate("/receitas-medicas")}
+      {/* <div className="flex justify-center flex-col items-center gap-6">
+        {isComponentVisible && <CreateNewMedicines />}
+        <button
+          className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
+          onClick={toggleComponent}
         >
           <PlusCircle size={20} />
           adicionar
-        </a>
+        </button>
+      </div> */}
+
+      <div className="flex justify-center flex-col items-center gap-6">
+        {isComponentVisible ? (
+          <div>
+            <CreateNewMedicines />
+            <button
+              className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-red-500 gap-3"
+              onClick={toggleComponent}
+            >
+              <XCircle size={20} />
+              Cancelar
+            </button>
+          </div>
+        ) : (
+          <button
+            className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
+            onClick={toggleComponent}
+          >
+            <PlusCircle size={20} />
+            Adicionar
+          </button>
+        )}
       </div>
 
       <div className="w-44 h-[1px] my-20 mx-auto bg-black">

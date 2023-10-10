@@ -19,12 +19,14 @@ export default function NewRevenues() {
           Voltar
         </a>
       </div>
-      <div className="flex flex-col items-center max-h-full gap-16">
+      <div className="flex flex-col items-center max-h-full gap-2">
         <CreateNewRevenues />
-        <button className="flex items-center bg-[#22937E] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]">
-          <FloppyDisk size={24} />
-          SALVAR
-        </button>
+        <div className="flex h-12">
+          <button className="flex items-center bg-[#22937E] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]">
+            <FloppyDisk size={24} />
+            SALVAR
+          </button>
+        </div>
       </div>
     </>
   );

@@ -24,7 +24,7 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine }) {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <p className="text-xs">Data de Validade</p>
+              <p className="text-xs">Data de Retorno</p>
               <input
                 type="date"
                 className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
