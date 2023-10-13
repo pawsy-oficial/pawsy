@@ -146,8 +146,8 @@ function HeaderLogin({ style }) {
 			<nav
 				className="gap-10 font-lato text-lg text-white hidden md:flex"
 			>
-				<a 
-					onClick={()=>navigate("/")}
+				<a
+					onClick={() => navigate("/")}
 					className="cursor-pointer"
 				>
 					página inicial
@@ -167,6 +167,26 @@ function HeaderLandingPage() {
 	const isActive = (pathname) => {
 		return window?.location?.pathname === pathname
 	};
+	const [ limit, setLimit ] = useState(false)
+
+	function handleScroll(e) {
+		let scroll = window.scrollY
+		if(scroll > 700){
+			setLimit(true)
+		}
+		else {
+			setLimit(false)
+			const newLocal = "menor";
+			// console.log(newLocal);
+		}
+	}
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll)
+
+		// return ()=> removeEventListener("scroll")
+	}, [])
+
 	const pages = [
 		{
 			pageName: "Home",
@@ -188,7 +208,7 @@ function HeaderLandingPage() {
 
 	return (
 		<header
-			className="flex w-full justify-between items-center px-16 py-5 fixed top-0 z-10 backdrop-blur-sm"
+			className={`flex w-full justify-between items-center px-16 py-5 fixed top-0 z-50 backdrop-blur-sm ${limit && "bg-white"} transition-colors duration-700`}
 		>
 			<div
 				className="flex gap-20"
@@ -205,7 +225,7 @@ function HeaderLandingPage() {
 								<a
 									className="font-baloo2 font-semibold text-base flex flex-col items-center cursor-pointer gap-1 data-[status=active]:text-primary"
 									data-status={isActive(page.urlPage) ? "active" : "disabled"}
-									onClick={()=>navigate(`${page.urlPage}`)}
+									onClick={() => navigate(`${page.urlPage}`)}
 								>
 									{page.pageName}
 									{
@@ -230,7 +250,7 @@ function HeaderLandingPage() {
 			<div>
 				<button
 					className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg"
-					onClick={()=>navigate("/acesso")}
+					onClick={() => navigate("/acesso")}
 				>
 					Acessar
 				</button>
