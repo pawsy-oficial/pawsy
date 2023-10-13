@@ -75,7 +75,7 @@ function Footer() {
                 <strong 
                     className="text-white font-normal font-lato text-center w-full"
                 >
-                    ©2023 - Pawsy
+                    © 2023 - Pawsy
                 </strong>
             </section>
 

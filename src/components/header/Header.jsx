@@ -171,20 +171,11 @@ function HeaderLandingPage() {
 
 	function handleScroll(e) {
 		let scroll = window.scrollY
-		if(scroll > 700){
-			setLimit(true)
-		}
-		else {
-			setLimit(false)
-			const newLocal = "menor";
-			// console.log(newLocal);
-		}
+		scroll > 700 ? setLimit(true) : setLimit(false)
 	}
 
 	useEffect(() => {
 		window.addEventListener("scroll", handleScroll)
-
-		// return ()=> removeEventListener("scroll")
 	}, [])
 
 	const pages = [

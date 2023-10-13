@@ -11,6 +11,7 @@ import route from "../img/route.svg"
 import team from "../img/team.svg"
 import vaccine from "../img/vaccine.svg"
 import Footer from "../components/footer"
+import GoToTop from "../components/buttons/GoTop"
 
 const infoFeatures = [
 	{
@@ -65,6 +66,8 @@ export default function Home() {
 		<main className="min-h-screen">
 			<HeaderLandingPage />
 
+			<GoToTop />
+
 			<section
 				className="min-h-[800px] bg-[#E0FAFF] flex items-center relative overflow-hidden"
 			>
@@ -93,6 +96,17 @@ export default function Home() {
 							onClick={() => navigate("/acesso")}
 						>
 							Cadastre-se
+						</button>
+						<button
+							className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-primary/80 transition-colors duration-500"
+							onClick={() => {
+								window.scrollTo({
+									top: 720,
+									behavior: "smooth",
+								});
+							}}
+						>
+							Saiba mais
 						</button>
 					</div>
 				</section>
@@ -237,7 +251,7 @@ export default function Home() {
 				className="bg-banner_footer w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top"
 			/>
 
-			<Footer/>
+			<Footer />
 		</main>
 	)
 }
