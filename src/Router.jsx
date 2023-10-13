@@ -57,6 +57,7 @@ import { LoadingPagesPlaceholder } from "./components/loadings/Loading";
 import Plans from "./pages/landinPage/plans";
 import AboutUs from "./pages/landinPage/aboutUs";
 import Features from "./pages/landinPage/features";
+import PageNotFound from "./pages/pageNotFound";
 
 const PrivateRouter = ({ user, children }) => {
   // console.log(user);
@@ -259,7 +260,15 @@ export default function Router() {
         }
       />
 
-      <Route path="*" element={<Home />} />
+      <Route 
+        path="/" 
+        element={<Home />}
+      />
+
+      <Route 
+        path="*" 
+        element={<PageNotFound />}
+      />
 
       {/* ==x==x==x==x==x==x== */}
 
