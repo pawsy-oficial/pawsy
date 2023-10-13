@@ -150,10 +150,15 @@ function HeaderLogin({ style }) {
 					onClick={() => navigate("/")}
 					className="cursor-pointer"
 				>
-					página inicial
+					Página inicial
 				</a>
-				<a href="#">sobre nós</a>
-				<a href="#">suporte</a>
+				<a
+					onClick={() => navigate("/sobre")}
+					className="cursor-pointer"
+				>
+					Sobre nós
+				</a>
+				{/* <a href="#">suporte</a> */}
 			</nav>
 		</header>
 	)
