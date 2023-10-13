@@ -2,7 +2,7 @@ import { HeaderLandingPage } from "../components/header/Header"
 import BoxPets from "../components/cardsAndBoxes/boxPets"
 import { useNavigate } from "react-router-dom"
 import { CheckCircle } from "@phosphor-icons/react"
-import BoxFeatures from "../components/cardsAndBoxes/boxFeatures"
+import { BoxFeatures, BoxFetureSections } from "../components/cardsAndBoxes/boxFeatures"
 
 import calendar from "../img/calendar.svg"
 import fileMedical from "../img/file-medical.svg"
@@ -44,9 +44,22 @@ const infoFeatures = [
 	},
 ]
 
+const infoFeaturesSectionTutor = [
+	"Perfil com todas as informações do pet",
+	"Carteira de vacinação e vermífugos",
+	"Agendamento de consultas e/ou exames",
+	"Veterinários mais próximos"
+]
+const infoFeaturesSectionClinic = [
+	"Controle de agendamento de consultas e/ou exames",
+	"Acesso ao prontuário médico dos pets ",
+	"Perfil para divulgação da clínica",
+	"Criação de alertas de promoções ou campanhas de vacinação"
+]
+
 export default function Home() {
 	const navigate = useNavigate()
-	
+
 	return (
 		<main className="min-h-screen">
 			<HeaderLandingPage />
@@ -75,7 +88,7 @@ export default function Home() {
 						className="w-full flex gap-16 mt-10"
 					>
 						<button
-							className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg"
+							className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-primary/80 transition-colors duration-500"
 							onClick={() => navigate("/acesso")}
 						>
 							Cadastre-se
@@ -95,56 +108,56 @@ export default function Home() {
 					className="flex flex-col gap-8"
 				>
 					<article
-						className="max-w-lg"
+						className="max-w-lg flex"
 					>
-						<div
-							className="flex flex-col gap-2"
-						>
-							<span
-								className="text-primary font-baloo2 text-base font-semibold"
+						<div className="flex flex-col gap-8">
+							<div
+								className="flex flex-col gap-2"
 							>
-								Como funciona?
-							</span>
-							<h2
-								className="font-semibold font-sora text-[2rem]"
+								<span
+									className="text-primary font-baloo2 text-base font-semibold"
+								>
+									Como funciona?
+								</span>
+								<h2
+									className="font-semibold font-sora text-[2rem]"
+								>
+									Uma plataforma que conecta tutores e clínicas veterinárias em um só lugar
+								</h2>
+								<p
+									className="text-zinc-500 font-lato text-xs leading-relaxed"
+								>
+									Com a Pawsy, monitorar o bem-estar dos seus pets e de seus clientes se torna uma experiência simples e ágil. Agende consultas, controle a carteira de vacinação, encontre clínicas próximas e ofereça um cuidado completo e dedicado aos pets.
+								</p>
+							</div>
+							<ul
+								className="flex flex-col gap-2"
 							>
-								Uma plataforma que conecta tutores e clínicas veterinárias em um só lugar
-							</h2>
-							<p
-								className="text-zinc-500 font-lato text-xs leading-relaxed"
-							>
-								Com a Pawsy, monitorar o bem-estar dos seus pets e de seus clientes se torna uma experiência simples e ágil. Agende consultas, controle a carteira de vacinação, encontre clínicas próximas e ofereça um cuidado completo e dedicado aos pets.
-							</p>
+								<li
+									className="flex gap-6 items-center"
+								>
+									<CheckCircle color="#22B77E" size={24} />
+									<span>Fácil e intuitivo de usar</span>
+								</li>
+								<li
+									className="flex gap-6 items-center"
+								>
+									<CheckCircle color="#22B77E" size={24} />
+									<span>Interface simples e acessível</span>
+								</li>
+								<li
+									className="flex gap-6 items-center"
+								>
+									<CheckCircle color="#22B77E" size={24} />
+									<span>Interface simples e acessível</span>
+								</li>
+							</ul>
 						</div>
-
-						<ul
-							className="mt-8 flex flex-col gap-2"
-						>
-							<li
-								className="flex gap-6 items-center"
-							>
-								<CheckCircle color="#22B77E" size={24}/>
-								<span>Fácil e intuitivo de usar</span>
-							</li>
-							<li
-								className="flex gap-6 items-center"
-							>
-								<CheckCircle color="#22B77E" size={24}/>
-								<span>Interface simples e acessível</span>
-							</li>
-							<li
-								className="flex gap-6 items-center"
-							>
-								<CheckCircle color="#22B77E" size={24}/>
-								<span>Interface simples e acessível</span>
-							</li>
-						</ul>
-
 					</article>
 
 					<article
 						className="w-full flex flex-col gap-10"
-					>	
+					>
 						<div
 							className="flex flex-col gap-2 items-center"
 						>
@@ -164,17 +177,60 @@ export default function Home() {
 						>
 							{
 								infoFeatures.map(info => {
-									return(
-										<BoxFeatures 
-											description={info.description} 
+									return (
+										<BoxFeatures
+											description={info.description}
 											icon={info.icon}
-											title={info.title}	
+											title={info.title}
 										/>
 									)
 								})
 							}
 						</div>
 					</article>
+
+					<article
+						className="w-full flex flex-col gap-10 mt-6"
+					>
+						<div
+							className="flex flex-col gap-2 items-center"
+						>
+							<h2
+								className="font-semibold font-sora text-[2rem] max-w-sm text-center"
+							>
+								Alguns recursos
+							</h2>
+						</div>
+
+						<div
+							className="flex gap-5 max-w-4xl mx-auto"
+						>
+							<BoxFetureSections
+								title="TUTOR"
+								list={infoFeaturesSectionTutor}
+							/>
+							<BoxFetureSections
+								title="Clínica veterinária"
+								list={infoFeaturesSectionClinic}
+							/>
+						</div>
+
+						<div
+							className="flex flex-col gap-4 items-center"
+						>
+							<span>
+								Explore todas as vantagens que a Pawsy tem a oferecer
+							</span>
+							<button
+								className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-primary/80 transition-colors duration-500"
+								onClick={() => navigate("/recursos")}
+							>
+								Mais recursos
+							</button>
+						</div>
+					</article>
+
+					
 				</section>
 			</main>
 		</main>
