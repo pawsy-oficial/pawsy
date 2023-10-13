@@ -18,6 +18,7 @@ export default {
       backgroundImage:{
         "banner": "url(../bannerLogin.jpg)",
         "mockup": "url(../mockup.png)",
+        "banner_footer": "url(../banner_footer.jpg)"
       }
     },
   },

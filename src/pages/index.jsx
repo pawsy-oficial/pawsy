@@ -10,6 +10,7 @@ import health from "../img/health.svg"
 import route from "../img/route.svg"
 import team from "../img/team.svg"
 import vaccine from "../img/vaccine.svg"
+import Footer from "../components/footer"
 
 const infoFeatures = [
 	{
@@ -229,10 +230,14 @@ export default function Home() {
 							</button>
 						</div>
 					</article>
-
-					
 				</section>
 			</main>
+
+			<section
+				className="bg-banner_footer w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top"
+			/>
+
+			<Footer/>
 		</main>
 	)
 }
