@@ -7,7 +7,7 @@ function BoxFeatures({title = "Title", icon=":(", description="description"}) {
             className="max-w-xs flex flex-col gap-6 group"
         >
             <div
-                className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary border border-transparent transition-colors duration-400"
+                className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary border border-transparent transition-all duration-5000 group-hover:scale-105 group-hover:shadow-[4px_4px_0_#22b77e] group-hover:-skew-x-12 group-hover:skew-y-6 group-hover:rotate-6"
             >
                 <img src={icon} />
             </div>
@@ -48,8 +48,12 @@ function BoxFetureSections({title = "Title", list = []}){
                         return(
                             <li
                                 className="flex gap-6 items-center"
-                            >
-                                <CheckCircle size={24} color="#22B77E" />
+                            >   
+                                <div
+                                    className="min-w-[24px]"
+                                >
+                                    <CheckCircle size={24} color="#22B77E" />
+                                </div>
                                 <span
                                     className="font-lato text-base"
                                 >

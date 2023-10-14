@@ -248,8 +248,25 @@ export default function Home() {
 			</main>
 
 			<section
-				className="bg-banner_footer w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top"
-			/>
+				className="bg-banner_footer w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top flex items-center"
+			>
+				<div
+					className="w-full max-w-5xl mx-auto flex flex-col gap-8"
+				>
+					<p
+						className="font-baloo2 text-white text-5xl w-3/4"
+					>
+						Veja agora mesmo como está a saúde do seu pet
+					</p>
+					<button
+						className="bg-secundary text-white w-fit font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-secundary/80 transition-colors duration-500"
+						onClick={() => navigate("/acesso")}
+					>
+						Ver agora
+					</button>
+				</div>
+
+			</section>
 
 			<Footer />
 		</main>
