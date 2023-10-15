@@ -134,7 +134,7 @@ export default function Router() {
       <Route
         path="/acesso"
         element={
-          <Suspense fallback={<LoadingPagesPlaceholder />}>
+          <Suspense fallback={<p>Carregando...</p>}>
             <Access />
           </Suspense>
         }
@@ -142,7 +142,7 @@ export default function Router() {
       <Route
         path="/recuperar-senha"
         element={
-          <Suspense fallback={<LoadingPagesPlaceholder />}>
+          <Suspense fallback={<p>Carregando...</p>}>
             <ForgotPass />
           </Suspense>
         }
@@ -150,7 +150,7 @@ export default function Router() {
       <Route
         path="/cadastro"
         element={
-          <Suspense fallback={<LoadingPagesPlaceholder />}>
+          <Suspense fallback={<p>Carregando...</p>}>
             <Register />
           </Suspense>
         }
@@ -158,7 +158,7 @@ export default function Router() {
       <Route
         path="/login"
         element={
-          <Suspense fallback={<LoadingPagesPlaceholder />}>
+          <Suspense fallback={<p>Carregando...</p>}>
             <Login />
           </Suspense>
         }
@@ -167,7 +167,7 @@ export default function Router() {
       <Route
         path="/resultado-pesquisa"
         element={
-          <Suspense fallback={<LoadingPagesPlaceholder />}>
+          <Suspense fallback={<p>Carregando...</p>}>
             <SearchResult />
           </Suspense>
         }

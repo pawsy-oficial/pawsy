@@ -11,14 +11,14 @@ const pages = [
         pageName: "Sobre nós",
         urlPage: "/sobre"
     },
-    {
-        pageName: "Planos",
-        urlPage: "/planos"
-    },
-    {
-        pageName: "Recursos",
-        urlPage: "/recursos"
-    }
+    // {
+    //     pageName: "Planos",
+    //     urlPage: "/planos"
+    // },
+    // {
+    //     pageName: "Recursos",
+    //     urlPage: "/recursos"
+    // }
 ]
 
 function Footer() {
