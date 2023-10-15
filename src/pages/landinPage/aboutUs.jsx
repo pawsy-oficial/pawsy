@@ -4,7 +4,6 @@ import space from "../../img/element_space.svg"
 import Footer from "../../components/footer";
 import useTopToScreen from "../../hook/useTopToScreen";
 import romullo from "../../img/romullo.jpg"
-import { InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
 import BoxAbout from "../../components/cardsAndBoxes/boxAbout";
 
 const infoTeam = [
@@ -24,7 +23,7 @@ const infoTeam = [
 ]
 
 export default function AboutUs() {
-    // useTopToScreen()
+    useTopToScreen()
     return (
         <>
             <HeaderLandingPage type="light" />
