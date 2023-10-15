@@ -1,7 +1,7 @@
 import { HeaderLandingPage } from "../components/header/Header"
 import BoxPets from "../components/cardsAndBoxes/boxPets"
 import { useNavigate } from "react-router-dom"
-import { CheckCircle } from "@phosphor-icons/react"
+import { CheckCircle, PlusCircle } from "@phosphor-icons/react"
 import { BoxFeatures, BoxFetureSections } from "../components/cardsAndBoxes/boxFeatures"
 
 import calendar from "../img/calendar.svg"
@@ -12,9 +12,12 @@ import team from "../img/team.svg"
 import vaccine from "../img/vaccine.svg"
 import Footer from "../components/footer"
 import GoToTop from "../components/buttons/GoTop"
+import ButtonSelect from "../components/buttons/ButtonSelect"
 
 import pawImage1 from "../img/paw_img.png"
 import pawImage2 from "../img/paw_img_2.png"
+import elementSpace from "../img/element_space.svg"
+
 
 const infoFeatures = [
 	{
@@ -250,6 +253,47 @@ export default function Home() {
 								className="translate-x-20"
 							/>
 						</div>
+					</article>
+
+					<article
+						className="w-full flex flex-col gap-3 mt-6 items-center"
+					>
+						<h2
+							className="w-full text-center flex flex-col font-sora text-[2rem] font-bold"
+						>
+							Perguntas frequentes
+							<img 
+								src={elementSpace}
+								className="h-6"
+								draggable="false"
+							/>
+						</h2>
+
+						<section
+							className="max-w-3xl w-full"
+						>
+							<ButtonSelect
+								question="Como posso me cadastrar na Pawsy?"
+								answare={`Para se cadastrar na Pawsy, basta clicar no botão "Acessar" na página inicial. Você pode escolher entre as opções de cadastro para tutor, clínica ou médico e preencher as informações necessárias.`}
+							/>
+							<ButtonSelect
+								question="Quanto custa o uso da plataforma Pawsy?"
+								answare={`O uso básico da Pawsy é totalmente gratuito. Oferecemos funcionalidades essenciais para cuidar dos seus pets sem custo. No entanto, para acessar recursos extras, como o gerenciamento de mais de 5 pets, oferecemos planos de assinatura a preços acessíveis.`}
+							/>
+							<ButtonSelect
+								question="Como posso encontrar uma clínica veterinária próxima na Pawsy?"
+								answare={`Para encontrar uma clínica veterinária próxima, vá para a seção "Localizar Clínicas" e insira o endereço da sua residência. A Pawsy mostrará uma lista de clínicas veterinárias próximas com base na sua localização.`}
+							/>
+							<ButtonSelect
+								question="Posso compartilhar as informações do perfil do meu pet com outras pessoas?"
+								answare={`No momento, a Pawsy não oferece a opção de compartilhar informações do perfil do seu pet com outras pessoas. Todas as informações são privadas e visíveis apenas para você e as clínicas veterinárias que você escolher.`}
+							/>
+							<ButtonSelect
+								question="Como entro em contato com a equipe de suporte da Pawsy?"
+								answare={`Você pode entrar em contato com a equipe de suporte da Pawsy clicando no botão de ajuda na parte inferior direita do menu de navegação dentro da plataforma. Estamos aqui para ajudar com todas as suas dúvidas e sugestões.`}
+							/>
+
+						</section>
 					</article>
 				</section>
 			</main>

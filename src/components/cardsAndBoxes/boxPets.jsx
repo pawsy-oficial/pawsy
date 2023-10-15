@@ -26,6 +26,7 @@ export default function BoxPets() {
                         width: `${randomNumber * 10 }px`,
                         height: `${randomNumber * 10 }px`
                     }}
+                    draggable="false"
                 />
             )
         }
