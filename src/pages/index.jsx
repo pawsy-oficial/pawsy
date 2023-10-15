@@ -17,6 +17,7 @@ import ButtonSelect from "../components/buttons/ButtonSelect"
 import pawImage1 from "../img/paw_img.png"
 import pawImage2 from "../img/paw_img_2.png"
 import elementSpace from "../img/element_space.svg"
+import useTopToScreen from "../hook/useTopToScreen"
 
 
 const infoFeatures = [
@@ -67,7 +68,7 @@ const infoFeaturesSectionClinic = [
 
 export default function Home() {
 	const navigate = useNavigate()
-
+	useTopToScreen()
 	return (
 		<main className="min-h-screen">
 			<HeaderLandingPage />
@@ -278,11 +279,11 @@ export default function Home() {
 							/>
 							<ButtonSelect
 								question="Quanto custa o uso da plataforma Pawsy?"
-								answare={`O uso básico da Pawsy é totalmente gratuito. Oferecemos funcionalidades essenciais para cuidar dos seus pets sem custo. No entanto, para acessar recursos extras, como o gerenciamento de mais de 5 pets, oferecemos planos de assinatura a preços acessíveis.`}
+								answare={`O uso básico da Pawsy é totalmente gratuito. Oferecemos funcionalidades essenciais para cuidar dos seus pets sem custo.`}
 							/>
 							<ButtonSelect
 								question="Como posso encontrar uma clínica veterinária próxima na Pawsy?"
-								answare={`Para encontrar uma clínica veterinária próxima, vá para a seção "Localizar Clínicas" e insira o endereço da sua residência. A Pawsy mostrará uma lista de clínicas veterinárias próximas com base na sua localização.`}
+								answare={`Para encontrar uma clínica veterinária próxima, vá para a seção "Vet. mais próximo". A Pawsy mostrará um mapa e uma lista de clínicas veterinárias próximas com base no endereço fornecido.`}
 							/>
 							<ButtonSelect
 								question="Posso compartilhar as informações do perfil do meu pet com outras pessoas?"

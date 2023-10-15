@@ -165,7 +165,7 @@ function HeaderLogin({ style }) {
 }
 
 
-function HeaderLandingPage() {
+function HeaderLandingPage({type}) {
 
 	const navigate = useNavigate()
 
@@ -204,7 +204,7 @@ function HeaderLandingPage() {
 
 	return (
 		<header
-			className={`flex w-full justify-between items-center px-16 py-5 fixed top-0 z-50 backdrop-blur-sm ${limit && "bg-white"} transition-colors duration-700`}
+			className={`flex w-full justify-between items-center px-16 py-5 fixed top-0 z-50 backdrop-blur-sm ${(limit || type == "light" ) && "bg-white"} transition-colors duration-700`}
 		>
 			<div
 				className="flex gap-20"

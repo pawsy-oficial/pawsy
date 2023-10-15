@@ -41,3 +41,16 @@
         scale: 1;
     }
 }
+
+.bg-animate{
+    animation: bg-move 120s  linear infinite alternate-reverse;
+}
+
+@keyframes bg-move {
+    0%{
+        background-position: 0 0;
+    }
+    100%{
+        background-position: 100% 100%;
+    }
+}

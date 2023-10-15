@@ -8,14 +8,14 @@ function GoToTop() {
 
     function handleScroll() {
         let scroll = window.scrollY
-
+        // console.log(scroll);
         if (scroll < 20) {
             setLevel(0)
         }
-        else if (scroll > 40 && scroll < 1700) {
+        else if (scroll > 40 && scroll < 2543) {
             setLevel(1)
         }
-        else if (scroll > 1700) {
+        else if (scroll > 2543) {
             setLevel(2)
         }
     }
