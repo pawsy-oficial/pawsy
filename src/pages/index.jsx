@@ -13,6 +13,9 @@ import vaccine from "../img/vaccine.svg"
 import Footer from "../components/footer"
 import GoToTop from "../components/buttons/GoTop"
 
+import pawImage1 from "../img/paw_img.png"
+import pawImage2 from "../img/paw_img_2.png"
+
 const infoFeatures = [
 	{
 		title: "Agendamento Simplificado",
@@ -211,37 +214,41 @@ export default function Home() {
 							className="flex flex-col gap-2 items-center"
 						>
 							<h2
-								className="font-semibold font-sora text-[2rem] max-w-sm text-center"
+								className="font-semibold font-sora text-[2rem] max-w-lg text-center"
 							>
-								Alguns recursos
+								Quais vantagens a Pawsy oferece para tutores e clínicas?
 							</h2>
 						</div>
 
 						<div
-							className="flex gap-5 max-w-4xl mx-auto"
+							className="flex items-center"
 						>
-							<BoxFetureSections
-								title="TUTOR"
-								list={infoFeaturesSectionTutor}
+							<img 
+								src={pawImage1} 
+								alt=""
+								draggable="false"	
+								className="-translate-x-20"
 							/>
 							<BoxFetureSections
 								title="Clínica veterinária"
+								description="Oferecemos uma série de recursos projetados para simplificar o dia a dia das clínicas veterinárias. Descubra como a Pawsy pode ajudar a melhorar a eficiência e o atendimento, permitindo que você se concentre no que mais importa: cuidar dos pets."
 								list={infoFeaturesSectionClinic}
 							/>
 						</div>
-
 						<div
-							className="flex flex-col gap-4 items-center"
+							className="flex items-center"
 						>
-							<span>
-								Explore todas as vantagens que a Pawsy tem a oferecer
-							</span>
-							<button
-								className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-primary/80 transition-colors duration-500"
-								onClick={() => navigate("/recursos")}
-							>
-								Mais recursos
-							</button>
+							<BoxFetureSections
+								title="Tutores"
+								description="Descubra como os recursos da Pawsy podem facilitar o cuidado e o acompanhamento da saúde dos seus pets. Com funcionalidades intuitivas, ajudamos você a manter seus pets saudáveis e felizes, tudo em um só lugar."
+								list={infoFeaturesSectionTutor}
+							/>
+							<img 
+								src={pawImage2} 
+								alt=""
+								draggable="false"	
+								className="translate-x-20"
+							/>
 						</div>
 					</article>
 				</section>

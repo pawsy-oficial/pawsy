@@ -192,14 +192,14 @@ function HeaderLandingPage() {
 			pageName: "Sobre nós",
 			urlPage: "/sobre"
 		},
-		{
-			pageName: "Planos",
-			urlPage: "/planos"
-		},
-		{
-			pageName: "Recursos",
-			urlPage: "/recursos"
-		}
+		// {
+		// 	pageName: "Planos",
+		// 	urlPage: "/planos"
+		// },
+		// {
+		// 	pageName: "Recursos",
+		// 	urlPage: "/recursos"
+		// }
 	]
 
 	return (
