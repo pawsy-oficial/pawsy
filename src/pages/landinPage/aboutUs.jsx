@@ -3,9 +3,28 @@ import pet from "../../img/pet.png"
 import space from "../../img/element_space.svg"
 import Footer from "../../components/footer";
 import useTopToScreen from "../../hook/useTopToScreen";
+import romullo from "../../img/romullo.jpg"
+import { InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
+import BoxAbout from "../../components/cardsAndBoxes/boxAbout";
+
+const infoTeam = [
+    {
+        name: "Rômullo Melo",
+        role: "Desenvolvedor & designer",
+        img: romullo,
+        description: "Lorem ipsum odor amet, consectetuer adipiscing elit. Nulla metus aliquet. Eget proin arcu mi.",
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "https://linkedin.com/in/romullomelo",
+                github: "https://github.com/rom013"
+            }
+        ]
+    }
+]
 
 export default function AboutUs() {
-    useTopToScreen()
+    // useTopToScreen()
     return (
         <>
             <HeaderLandingPage type="light" />
@@ -71,6 +90,24 @@ export default function AboutUs() {
                             Conheça as pessoas que trabalham incansavelmente para tornar a Pawsy a plataforma definitiva para cuidar dos nossos pets.
                         </p>
                     </div>
+
+                    <section
+                        className="flex gap-5 justify-center flex-wrap mt-6"
+                    >
+                        {
+                            infoTeam.map(i => {
+                                return (
+                                    <BoxAbout
+                                        description={i.description}
+                                        name={i.name}
+                                        image={i.img}
+                                        network={i.network}
+                                        role={i.role}
+                                    />
+                                )
+                            })
+                        }
+                    </section>
                 </article>
             </main>
 
