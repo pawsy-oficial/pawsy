@@ -5,20 +5,25 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge }) {
-	
+	const [vermifuge, setVermifuge] = useState("");
 	const jwtTokenMedic = Cookies.get("jwtTokenMedic")
+	const data = {
+			"nm_vermifuge": "vermifuge"
+	}
 	const handleSubmit = async () => {
 		try {
-			axios.post(`${import.meta.env.VITE_URL}/vermifuge`, {
-				headers: {
-					'Authorization': 'Bearer ' + jwtTokenMedic
-				}
+			axios.post(`${import.meta.env.VITE_URL}/vermifuge`, data, {
+					headers: {
+						'Authorization': 'Bearer ' + jwtTokenMedic
+					}
+				,
 			}).then(e => {
+				console.log(e);
 				setOpenVermifuge(!isOpenVermifuge)
 			}).catch(err => console.log(err))
 
 		} catch (error) {
-			console.log("Erro ao integrar médico: ");
+			console.log("Erro ao integrar vermifugo: ");
 		}
 	};
 	if (isOpenVermifuge) {
@@ -30,6 +35,8 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge }) {
 						<p className="text-xs">Proteção</p>
 						<input
 							type="text"
+							value={vermifuge}
+							onChange={e => setVermifuge(e.target.value)}
 							name="vermifuge"
 							className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
 						/>

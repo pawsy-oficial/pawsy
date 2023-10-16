@@ -63,7 +63,7 @@ export default function PatientsForMedic(){
                     <div className="flex justify-center">
                         <img 
                             src={`${import.meta.env.VITE_URL}/files/${imgClinic}`} 
-                            className="w-44 rounded-full border-4 border-[#22B77E]"
+                            className="w-44 h-44 rounded-full border-4 border-[#22B77E]"
                         />
                     </div>
                     <h1 className="text-center text-2xl font-semibold mt-4 uppercase">
