@@ -4,28 +4,11 @@ import { Header } from "../../components/header/Header"
 import { CaretLeft } from "@phosphor-icons/react"
 import CardsVetCloser from "../../components/cardsAndBoxes/cardClinicCloser"
 import useCheckedPet from "../../hook/useCheckedPet"
-
-
-const CLINICS = [
-    {
-        clinicName: "ZNVet",
-        addres: "xxxx",
-    },
-    {
-        clinicName: "ZN Vet Santos",
-        addres: "xxxx",
-    },
-    {
-        clinicName: "Canarinho",
-        addres: "xxxx",
-    },
-    {
-        clinicName: "Beija-flor",
-        addres: "xxxx",
-    },
-]
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 export default function SearchResult() {
+    const [ clinics, setClinics ] = useState([])
     useCheckedPet()
     const location = useLocation()
     const { clinicName } = location.state
@@ -38,25 +21,14 @@ export default function SearchResult() {
         return stringJoin
     }
 
-    function searchClinics(){
-        const filter = CLINICS.filter(clinic => {
-            const searchUser = formatString(clinicName)
-            const clinicNameDataBase = formatString(clinic.clinicName)
-            return clinicNameDataBase.includes(searchUser)
+    useEffect(()=>{
+        axios.get(`${import.meta.env.VITE_URL}/pesquisa?clinicName=${clinicName}`)
+        .then(res => {
+            console.log(res);
+            setClinics(res.data.result)
         })
-
-        return filter.map(result => {
-            return (
-                <CardsVetCloser 
-                    nameClinic={result.clinicName} 
-                    clinicOpenOrClose={"Aberto"} 
-                    address={"Av. Brg. Faria Lima, 320 - Radio Clube"} 
-                    distanceFromTheClinic={"1.5 km"} 
-                    assessment={"4,0"} 
-                />
-            )
-        })
-    }
+        .catch(err => console.log(err))
+    },[clinicName])
 
     return (
         <main className="flex min-h-screen">
@@ -80,7 +52,22 @@ export default function SearchResult() {
                     </p>
                     <section className="flex gap-5">
                         {
-                            searchClinics()
+                            clinics.length == 0 
+                                ? <p className="text-sm text-zinc-400">OPS! A clínica que você procura não esta cadastrada na Pawsy</p> 
+                                : (
+                                    clinics.map(clinic => {
+                                        return(
+                                            <CardsVetCloser 
+                                                img={clinic.url_imagem}
+                                                nameClinic={clinic.nm_clinica} 
+                                                clinicOpenOrClose={clinic.status_loja} 
+                                                address={`${clinic.nm_rua} ${clinic.num_residencia}`} 
+                                                distanceFromTheClinic={"1.5 km"} 
+                                                assessment={"4,0"} 
+                                            />
+                                        )
+                                })
+                            )
                         }
                     </section>
                 </main>

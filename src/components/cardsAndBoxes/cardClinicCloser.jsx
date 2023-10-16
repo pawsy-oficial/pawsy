@@ -9,7 +9,7 @@ function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTh
         >
             <div className="flex flex-row gap-3">
                 <div
-                    className="w-16 h-16 overflow-hidden rounded-full"
+                    className="min-w-[4rem] w-16 h-16 overflow-hidden rounded-full border border-primary"
                 >
                     <img 
                         src={`${import.meta.env.VITE_URL}/files/${img}`} 
