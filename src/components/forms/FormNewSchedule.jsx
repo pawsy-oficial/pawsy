@@ -6,23 +6,27 @@ import InputMask from "react-input-mask"
 import axios from "axios"
 import Cookies from "js-cookie"
 
-const veterinaryNameDataBase = ["Vanessa Santos", "Leonardo Nabio", "Thereza Soares"]
-
 function FormNewSchedule({ alterPage }) {
     const [veterinaryName, setVeterinaryName] = useState([])
     const [addNewRestriction, setAddNewRestriction] = useState([])
     useEffect(() => {
-        // get all medics from database - HERE
-        axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${1}&all=true`, {
+        axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
             }
         }).then(res => {
-            console.log(res.data);
-            setVeterinaryName(res.data)
+            const idClinic = res.data.storedIdClinica
+            axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${idClinic}&all=true`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+                }
+            }).then(response => {
+                setVeterinaryName(response.data)
+            })
+                .catch(err => console.log(err))
         })
-        .catch(err => console.log(err))
-        
+            .catch(err => console.log(err))
+
     }, [])
 
     const [valueTextArea, setValueTextArea] = useState("")
@@ -107,7 +111,7 @@ function FormNewSchedule({ alterPage }) {
                 <div className="flex flex-col items-center justify-center gap-6">
                     <button
                         // onClick={heandleAddRestriction}
-                        onClick={()=>append({ data: "" })}
+                        onClick={() => append({ data: "" })}
                         className="text-zinc-800 underline cursor-pointer"
                     >
                         Possui alguma restrição de data?
@@ -128,27 +132,14 @@ function FormNewSchedule({ alterPage }) {
 
                         {
                             fields.map((field, index) => (
-                                <AddNewRestriction 
+                                <AddNewRestriction
                                     key={field.id}
-                                    index={index} 
+                                    index={index}
                                     remove={remove}
                                     register={register}
                                 />)
                             )
                         }
-
-                        {/* {
-                            addNewRestriction.map((a,i)=>{
-                                return( 
-                                    <AddNewRestriction 
-                                        restrictionControl={setAddNewRestriction} 
-                                        restrictions={addNewRestriction} 
-                                        index={i} 
-                                        value={a}
-                                        register={register}
-                                    />)
-                            })
-                        } */}
                     </div>
                 </div>
             </section>
@@ -232,21 +223,21 @@ function TitleSectionForm({ title, description = "" }) {
 
 function SectionAddVeterinary({ names }) {
     const week = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "sábado"]
-    const [ selected, setSelected ] = useState(0)
+    const [selected, setSelected] = useState(0)
     return (
         <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full group">
-            <div className="flex justify-center gap-6">
-                <label 
-                    className="flex flex-col gap-1"
+            <div className="flex justify-between gap-6">
+                <label
+                    className="flex flex-col gap-1 w-1/2"
                 >
-                    <strong 
+                    <strong
                         className="text-base font-lato font-normal"
                     >
                         Veterinário
                     </strong>
-                    <select 
+                    <select
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary capitalize"
-                        onChange={e=> setSelected(e.target.selectedIndex)}
+                        onChange={e => setSelected(e.target.selectedIndex)}
                     >
                         {
                             names.map(e => {
@@ -259,21 +250,36 @@ function SectionAddVeterinary({ names }) {
                         }
                     </select>
                 </label>
-                <label className="flex flex-col gap-1">
-                    <strong className="text-base font-lato font-normal">Especialidade</strong>  
-                    <input 
-                        type="text" 
+                <label className="flex flex-col gap-1 w-1/2">
+                    <strong className="text-base font-lato font-normal">Especialidade</strong>
+                    <input
+                        type="text"
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] capitalize"
                         value={names.length > 0 && names[selected].especialidade}
                         disabled
                     />
                 </label>
             </div>
-            <div className="flex justify-center gap-6">
-                <InputDropDown listData={week} />
-                <label className="flex flex-col gap-1">
+            <div className="flex justify-between gap-6">
+                <label className="flex flex-col gap-1 w-1/2">
+                    <strong className="text-base font-lato font-normal">Horário disponível</strong>
+                    <div
+                        className="flex gap-2"
+                    >
+                        <input
+                            type="time"
+                            className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
+                        />
+                        <input
+                            type="time"
+                            className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
+                        />
+                    </div>
+                </label>
+                {/* <InputDropDown listData={week} /> */}
+                <label className="flex flex-col gap-1 w-1/2">
                     <strong className="text-base font-lato font-normal">Intervalo</strong>
-                    <select 
+                    <select
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary"
                     >
                         <option value="5">5 min</option>
