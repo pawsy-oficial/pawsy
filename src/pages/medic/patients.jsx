@@ -5,10 +5,10 @@ import CardPatients from "../../components/componentsMedic/CardPatients/CardPati
 import gato from "../../img/gato.jpg";
 import axios from "axios";
 import { props, useEffect, useState } from "react";
-import dayjs from "dayjs" 
+import dayjs from "dayjs"
 import Cookies from "js-cookie";
 
-export default function PatientsForMedic(){
+export default function PatientsForMedic() {
     const navigate = useNavigate()
     const location = useLocation()
     const { informacoes } = location.state
@@ -18,14 +18,14 @@ export default function PatientsForMedic(){
         const tokenMedic = Cookies.get("jwtTokenMedic")
         axios.get(`${import.meta.env.VITE_URL}/clinicsPet`, {
             headers: {
-              Authorization: `Bearer ${tokenMedic}`
+                Authorization: `Bearer ${tokenMedic}`
             }
-          }).then(res =>{
+        }).then(res => {
             setClinicsPet(res.data.results)
-          })
+        })
     }, []);
 
-    
+
 
     const imgClinic = informacoes.img;
     const nameClinic = informacoes.nameClinic;
@@ -50,19 +50,19 @@ export default function PatientsForMedic(){
 
     // ]
 
-    return(
+    return (
         <>
             <header>
-                <HeaderMedic/>
+                <HeaderMedic />
             </header>
             <div className="flex">
-                <button onClick={() => navigate("/medico")} className="px-96 flex items-center gap-2 -mb-10 mt-5"><ArrowUUpLeft color="#22B77E"/>Voltar</button>
+                <button onClick={() => navigate("/medico")} className="px-96 flex items-center gap-2 -mb-10 mt-5"><ArrowUUpLeft color="#22B77E" />Voltar</button>
             </div>
             <section className="mt-16 flex justify-center items-center bg-[#F5F7FB]">
                 <div className="p-6 bg-white rounded-lg flex flex-col">
                     <div className="flex justify-center">
-                        <img 
-                            src={`${import.meta.env.VITE_URL}/files/${imgClinic}`} 
+                        <img
+                            src={`${import.meta.env.VITE_URL}/files/${imgClinic}`}
                             className="w-44 h-44 rounded-full border-4 border-[#22B77E]"
                         />
                     </div>
@@ -78,26 +78,26 @@ export default function PatientsForMedic(){
                         <label id="female" htmlFor="fem">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
                     </div>
                     <div className="flex flex-col">
-                    {
-                        clinicsPet.map(patients => {
-                        return (
-                            <CardPatients img={patients.url_img} 
-                            namePet={patients.nm_pet} 
-                            nameDono={patients.nm_tutor} 
-                            idPet={patients.id_pet} 
-                            idade={dayjs(patients.dt_nascimento).format("DD/MM/YYYY")} 
-                            raca={patients.id_raca} 
-                            //bemestar={health[6]} 
-                            peso={patients.num_peso} 
-                            //altura={health[12]} 
-                            //alergia={health[15]} 
-                            //castrado={health[19]} 
-                            //comportamento={health[22]} 
-                            //tratamento={health[25]} 
-                            />
-                        )
-                        })
-                    }
+                        {
+                            clinicsPet.map(patients => {
+                                return (
+                                    <CardPatients img={patients.url_img}
+                                        namePet={patients.nm_pet}
+                                        nameDono={patients.nm_tutor}
+                                        idPet={patients.id_pet}
+                                        idade={dayjs(patients.dt_nascimento).format("DD/MM/YYYY")}
+                                        raca={patients.id_raca}
+                                        //bemestar={health[6]} 
+                                        peso={patients.num_peso}
+                                    //altura={health[12]} 
+                                    //alergia={health[15]} 
+                                    //castrado={health[19]} 
+                                    //comportamento={health[22]} 
+                                    //tratamento={health[25]} 
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </section>

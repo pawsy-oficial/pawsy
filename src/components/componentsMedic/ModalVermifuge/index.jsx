@@ -4,11 +4,13 @@ import { useState } from "react";
 import axios from 'axios';
 import Cookies from "js-cookie";
 
-export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge }) {
+export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 	const [vermifuge, setVermifuge] = useState("");
 	const jwtTokenMedic = Cookies.get("jwtTokenMedic")
 	const data = {
-			"nm_vermifuge": "vermifuge"
+			vermifuge: vermifuge,
+			id_pet: id,
+			id_medic: "1"
 	}
 	const handleSubmit = async () => {
 		try {

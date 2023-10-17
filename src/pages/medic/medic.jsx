@@ -54,12 +54,6 @@ export default function Medic() {
     };
   }, []);
 
-  const ClinicasInfo = [
-    { randomClinic }, "PetMax",
-    { ZnVet }, "ZnVet",
-    { randomClinic }, "MonoPet"
-  ]
-
   return (
     <>
       <header>
