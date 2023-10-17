@@ -3,6 +3,8 @@ import { memo, useEffect, useState } from "react"
 import { InputDropDown } from "../inputsComponents"
 import { useFieldArray, useForm } from "react-hook-form"
 import InputMask from "react-input-mask"
+import axios from "axios"
+import Cookies from "js-cookie"
 
 const veterinaryNameDataBase = ["Vanessa Santos", "Leonardo Nabio", "Thereza Soares"]
 
@@ -11,7 +13,16 @@ function FormNewSchedule({ alterPage }) {
     const [addNewRestriction, setAddNewRestriction] = useState([])
     useEffect(() => {
         // get all medics from database - HERE
-        setVeterinaryName(veterinaryNameDataBase)
+        axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${1}&all=true`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+            }
+        }).then(res => {
+            console.log(res.data);
+            setVeterinaryName(res.data)
+        })
+        .catch(err => console.log(err))
+        
     }, [])
 
     const [valueTextArea, setValueTextArea] = useState("")
@@ -221,18 +232,27 @@ function TitleSectionForm({ title, description = "" }) {
 
 function SectionAddVeterinary({ names }) {
     const week = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "sábado"]
-
+    const [ selected, setSelected ] = useState(0)
     return (
         <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full group">
             <div className="flex justify-center gap-6">
-                <label className="flex flex-col gap-1">
-                    <strong className="text-base font-lato font-normal">Veterinário</strong>
-                    <select name="" id="" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary">
+                <label 
+                    className="flex flex-col gap-1"
+                >
+                    <strong 
+                        className="text-base font-lato font-normal"
+                    >
+                        Veterinário
+                    </strong>
+                    <select 
+                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary capitalize"
+                        onChange={e=> setSelected(e.target.selectedIndex)}
+                    >
                         {
                             names.map(e => {
                                 return (
-                                    <option value={e}>
-                                        {e}
+                                    <option value={e.idMedico}>
+                                        {e.nomeMedico}
                                     </option>
                                 )
                             })
@@ -240,15 +260,34 @@ function SectionAddVeterinary({ names }) {
                     </select>
                 </label>
                 <label className="flex flex-col gap-1">
-                    <strong className="text-base font-lato font-normal">Especialidade</strong>
-                    <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
+                    <strong className="text-base font-lato font-normal">Especialidade</strong>  
+                    <input 
+                        type="text" 
+                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] capitalize"
+                        value={names.length > 0 && names[selected].especialidade}
+                        disabled
+                    />
                 </label>
             </div>
             <div className="flex justify-center gap-6">
                 <InputDropDown listData={week} />
                 <label className="flex flex-col gap-1">
-                    <strong className="text-base font-lato font-normal">Horario disponível</strong>
-                    <input type="text" className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]" placeholder="__:__" />
+                    <strong className="text-base font-lato font-normal">Intervalo</strong>
+                    <select 
+                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary"
+                    >
+                        <option value="5">5 min</option>
+                        <option value="10">10 min</option>
+                        <option value="15">15 min</option>
+                        <option value="20">20 min</option>
+                        <option value="25">25 min</option>
+                        <option value="30">30 min</option>
+                        <option value="35">35 min</option>
+                        <option value="40">40 min</option>
+                        <option value="45">45 min</option>
+                        <option value="50">50 min</option>
+                        <option value="55">55 min</option>
+                    </select>
                 </label>
             </div>
         </section>

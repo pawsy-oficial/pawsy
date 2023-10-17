@@ -267,7 +267,11 @@ export default function Perfil() {
                         <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
                             <h1 className="font-bold text-lg">Médicos veterinários</h1>
 
-                            <MedicsClinic see={see} setSee={setSee} idClinic={infoClinic.storedIdClinica} />
+                            <MedicsClinic 
+                                see={see} 
+                                setSee={setSee} 
+                                idClinic={infoClinic.storedIdClinica} 
+                            />
 
                             <div className="flex w-full justify-center">
                                 <button
@@ -279,7 +283,10 @@ export default function Perfil() {
                                     <PlusCircle size={24} color="#22B77E" />
                                     <p className="text-primary font-bold">Adicionar</p>
                                 </button>
-                                <ModalAddMedic isOpen={open} setOpen={setOpen} />
+                                <ModalAddMedic 
+                                    isOpen={open} 
+                                    setOpen={setOpen}
+                                />
                             </div>
                         </section>
                     </aside>
@@ -293,8 +300,6 @@ function MedicsClinic({ see, setSee, idClinic }) {
     const [medics, setMedics] = useState([])
     const [infoMedicSelect, setInfoMedicSelect] = useState()
     useEffect(() => {
-
-
         axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
