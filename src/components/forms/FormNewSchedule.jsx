@@ -114,7 +114,7 @@ function FormNewSchedule({ alterPage }) {
 
                 <div className="flex flex-col items-center justify-center gap-6">
                     <button
-                        // onClick={heandleAddRestriction}
+                        type="button"
                         onClick={() => appendRestriction({ data: "" })}
                         className="text-zinc-800 underline cursor-pointer"
                     >
@@ -125,10 +125,10 @@ function FormNewSchedule({ alterPage }) {
                         className="flex flex-col gap-2 items-center"
                     >
                         {
-                            addNewRestriction.length > 0 && (
+                            fieldsRestriction.length > 0 && (
                                 <strong className="text-base font-lato font-normal">
                                     {
-                                        addNewRestriction.length == 1 ? "Data da restrição" : "Data das restrições"
+                                        fieldsRestriction.length == 1 ? "Data da restrição" : "Data das restrições"
                                     }
                                 </strong>
                             )
@@ -170,7 +170,7 @@ function FormNewSchedule({ alterPage }) {
                     })
                 }
                 {
-                    sectionAddVeterinary.length == 0 && (
+                    fieldsAvailable.length == 0 && (
                         <span
                             className="text-zinc-400 text-center"
                         >
