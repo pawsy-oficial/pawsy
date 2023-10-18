@@ -1,8 +1,6 @@
-import { CaretLeft, PlusCircle, Trash, X } from "@phosphor-icons/react"
+import { CaretLeft, PlusCircle } from "@phosphor-icons/react"
 import { memo, useEffect, useState } from "react"
-import { InputDropDown } from "../inputsComponents"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
-import InputMask from "react-input-mask"
+import { useFieldArray, useForm } from "react-hook-form"
 import axios from "axios"
 import Cookies from "js-cookie"
 import SectionVeterinary from "./schedule/SectionVeterinary"
@@ -10,7 +8,6 @@ import Restriction from "./schedule/Restriction"
 
 function FormNewSchedule({ alterPage }) {
     const [veterinaryName, setVeterinaryName] = useState([])
-    const [addNewRestriction, setAddNewRestriction] = useState([])
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
             headers: {
@@ -32,21 +29,6 @@ function FormNewSchedule({ alterPage }) {
     }, [])
 
     const [valueTextArea, setValueTextArea] = useState("")
-    const [sectionAddVeterinary, setSectionAddVeterinary] = useState([""])
-
-    // function heandleAddSection() {
-    //     setSectionAddVeterinary([...sectionAddVeterinary, ""])
-    // }
-    // function heandleAddRestriction() {
-    //     setAddNewRestriction([...addNewRestriction, ""])
-    // }
-
-    // function heandleRemoveSection() {
-    //     const remove = [...sectionAddVeterinary]
-    //     remove.pop()
-    //     setSectionAddVeterinary(remove)
-    // }
-
 
     // start react hook form
 
