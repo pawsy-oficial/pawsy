@@ -23,7 +23,7 @@ function Switch({ state, defaultState }) {
 
 import styles from "./style.module.css"
 
-function InputDropDown({ listData }) {
+function InputDropDown({ listData, register, index }) {
     const id = `${listData}_pawsy_${Math.random()*(new Date().getTime())}`
     return (
         <>
@@ -32,6 +32,7 @@ function InputDropDown({ listData }) {
                 id={id}
                 className="hidden"
                 value={listData}
+                {...register(`Available.${index}.week`)}
             />
             <label
                 htmlFor={id}

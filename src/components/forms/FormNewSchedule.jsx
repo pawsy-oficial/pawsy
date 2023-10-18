@@ -1,7 +1,7 @@
 import { CaretLeft, Trash } from "@phosphor-icons/react"
 import { memo, useEffect, useState } from "react"
 import { InputDropDown } from "../inputsComponents"
-import { useFieldArray, useForm } from "react-hook-form"
+import { Controller, useFieldArray, useForm } from "react-hook-form"
 import InputMask from "react-input-mask"
 import axios from "axios"
 import Cookies from "js-cookie"
@@ -32,29 +32,34 @@ function FormNewSchedule({ alterPage }) {
     const [valueTextArea, setValueTextArea] = useState("")
     const [sectionAddVeterinary, setSectionAddVeterinary] = useState([""])
 
-    function heandleAddSection() {
-        setSectionAddVeterinary([...sectionAddVeterinary, ""])
-    }
-    function heandleAddRestriction() {
-        setAddNewRestriction([...addNewRestriction, ""])
-    }
+    // function heandleAddSection() {
+    //     setSectionAddVeterinary([...sectionAddVeterinary, ""])
+    // }
+    // function heandleAddRestriction() {
+    //     setAddNewRestriction([...addNewRestriction, ""])
+    // }
 
-    function heandleRemoveSection() {
-        const remove = [...sectionAddVeterinary]
-        remove.pop()
-        setSectionAddVeterinary(remove)
-    }
+    // function heandleRemoveSection() {
+    //     const remove = [...sectionAddVeterinary]
+    //     remove.pop()
+    //     setSectionAddVeterinary(remove)
+    // }
 
 
     // start react hook form
 
-    const { register, handleSubmit, control } = useForm({
+    const { register, handleSubmit, control, setValue } = useForm({
         mode: "onSubmit"
     })
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields: fieldsRestriction, append: appendRestriction, remove: removeRestriction } = useFieldArray({
         control,
-        name: "restrições",
+        name: "restriction",
+        shouldUnregister: true
+    })
+    const { fields: fieldsAvailable, append: appendAvailable, remove: removeAvailable } = useFieldArray({
+        control,
+        name: "Available",
         shouldUnregister: true
     })
 
@@ -107,11 +112,10 @@ function FormNewSchedule({ alterPage }) {
                     </div>
                 </div>
 
-
                 <div className="flex flex-col items-center justify-center gap-6">
                     <button
                         // onClick={heandleAddRestriction}
-                        onClick={() => append({ data: "" })}
+                        onClick={() => appendRestriction({ data: "" })}
                         className="text-zinc-800 underline cursor-pointer"
                     >
                         Possui alguma restrição de data?
@@ -131,14 +135,14 @@ function FormNewSchedule({ alterPage }) {
                         }
 
                         {
-                            fields.map((field, index) => (
+                            fieldsRestriction.map((field, index) => (
                                 <AddNewRestriction
                                     key={field.id}
                                     index={index}
-                                    remove={remove}
+                                    removeRestriction={removeRestriction}
                                     register={register}
-                                />)
-                            )
+                                />
+                            ))
                         }
                     </div>
                 </div>
@@ -151,8 +155,18 @@ function FormNewSchedule({ alterPage }) {
 
             <section className="flex flex-col gap-6">
                 {
-                    sectionAddVeterinary.map(() => {
-                        return <SectionAddVeterinary names={veterinaryName} />
+                    fieldsAvailable.map((field, index) => {
+                        return (
+                            <SectionAddVeterinary
+                                key={field.id}
+                                index={index}
+                                names={veterinaryName}
+                                remove={removeAvailable}
+                                register={register}
+                                control={control}
+                                setValue={setValue}
+                            />
+                        )
                     })
                 }
                 {
@@ -169,16 +183,11 @@ function FormNewSchedule({ alterPage }) {
                 >
                     <span
                         className="cursor-pointer"
-                        onClick={heandleAddSection}
+                        onClick={() => appendAvailable({ name: "", specialty: "", hr_open_medic: "", hr_close_medic: "", interval: "", week: [] })}
                     >
                         adicionar mais
                     </span>
-                    <span
-                        className="cursor-pointer"
-                        onClick={heandleRemoveSection}
-                    >
-                        remover
-                    </span>
+
                 </div>
             </section>
 
@@ -221,9 +230,14 @@ function TitleSectionForm({ title, description = "" }) {
     )
 }
 
-function SectionAddVeterinary({ names }) {
+function SectionAddVeterinary({ names, remove, index, register, control, setValue }) {
     const week = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "sábado"]
-    const [selected, setSelected] = useState(0)
+
+    const handleVeterinarioChange = (selectedVeterinario) => {
+        const novaEspecialidade = names.find((veterinario) => veterinario.nomeMedico === selectedVeterinario)?.especialidade;
+        setValue(`Available.${index}.specialty`, novaEspecialidade);
+    };
+
     return (
         <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full group">
             <div className="flex justify-between gap-6">
@@ -237,12 +251,14 @@ function SectionAddVeterinary({ names }) {
                     </strong>
                     <select
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary capitalize"
-                        onChange={e => setSelected(e.target.selectedIndex)}
+                        {...register(`Available.${index}.name`, {
+                            onChange: e => handleVeterinarioChange(e.target.value)
+                        })}
                     >
                         {
                             names.map(e => {
                                 return (
-                                    <option value={e.idMedico}>
+                                    <option value={e.nomeMedico}>
                                         {e.nomeMedico}
                                     </option>
                                 )
@@ -252,11 +268,19 @@ function SectionAddVeterinary({ names }) {
                 </label>
                 <label className="flex flex-col gap-1 w-1/2">
                     <strong className="text-base font-lato font-normal">Especialidade</strong>
-                    <input
-                        type="text"
-                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] capitalize"
-                        value={names.length > 0 && names[selected].especialidade}
-                        disabled
+                    <Controller
+                        control={control}
+                        name={`Available.${index}.specialty`}
+                        render={({ field }) => {
+                            return (
+                                <input
+                                    type="text"
+                                    className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] capitalize"
+                                    {...field}
+                                    readOnly
+                                />
+                            )
+                        }}
                     />
                 </label>
             </div>
@@ -270,6 +294,7 @@ function SectionAddVeterinary({ names }) {
                             type="time"
                             step={300}
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
+                            {...register(`Available.${index}.hr_open_medic`)}
                         />
                         <span
                             className="text-base text-zinc-600"
@@ -280,14 +305,16 @@ function SectionAddVeterinary({ names }) {
                             type="time"
                             step={300}
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
+                            {...register(`Available.${index}.hr_close_medic`)}
                         />
                     </div>
                 </label>
-                
+
                 <label className="flex flex-col gap-1 w-1/2">
                     <strong className="text-base font-lato font-normal">Intervalo</strong>
                     <select
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary"
+                        {...register(`Available.${index}.interval`)}
                     >
                         <option value="5">5 min</option>
                         <option value="10">10 min</option>
@@ -314,37 +341,23 @@ function SectionAddVeterinary({ names }) {
                 >
                     {
                         week.map(w => {
-                            return <InputDropDown listData={w} />
+                            return <InputDropDown listData={w} register={register} index={index} />
                         })
                     }
                 </div>
             </div>
+            <span
+                className="cursor-pointer"
+                onClick={() => remove(index)}
+            >
+                remover
+            </span>
         </section>
     )
 }
 
 
-function AddNewRestriction({ index, register, remove }) {
-    // const [inputValue, setInputValue] = useState(value)
-
-    // useEffect(()=>{
-    //     setInputValue(value)
-    // },[value])
-
-
-    // function heandleRemoveRestriction(i){
-    //     const restriction = [...restrictions]
-    //     restriction.splice(i, 1)
-    //     restrictionControl(restriction)
-    // }
-    // function handleInputRestriction(){
-    //     let allArr = []
-    //     allArr.push(...restrictions)
-    //     allArr.push(inputValue)
-    //     allArr.splice(index, 1)
-    //     restrictionControl(allArr)
-    // }
-
+function AddNewRestriction({ index, register, removeRestriction }) {
     return (
         <div className="flex justify-center gap-6">
             <div className="flex flex-col gap-1">
@@ -353,13 +366,11 @@ function AddNewRestriction({ index, register, remove }) {
                         type="date"
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                         placeholder="__/__/____"
-                        // onChange={(e)=>setInputValue(e.target.value)}
-                        // onBlur={handleInputRestriction}
-                        // value={inputValue}
-                        {...register(`restrições.${index}.data`)}
+                        {...register(`restriction.${index}.data`)}
                     />
                     <button
-                        onClick={() => remove(index)}
+                        type="button"
+                        onClick={() => removeRestriction(index)}
                         className="cursor-pointer flex items-center justify-center bg-primary text-white rounded-tr-lg rounded-br-lg px-4 -translate-x-1"
                     >
                         <Trash weight={"bold"} size={20} />
