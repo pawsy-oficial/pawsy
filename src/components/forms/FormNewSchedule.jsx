@@ -264,19 +264,26 @@ function SectionAddVeterinary({ names }) {
                 <label className="flex flex-col gap-1 w-1/2">
                     <strong className="text-base font-lato font-normal">Horário disponível</strong>
                     <div
-                        className="flex gap-2"
+                        className="flex gap-2 items-center"
                     >
                         <input
                             type="time"
+                            step={300}
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
                         />
+                        <span
+                            className="text-base text-zinc-600"
+                        >
+                            às
+                        </span>
                         <input
                             type="time"
+                            step={300}
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
                         />
                     </div>
                 </label>
-                {/* <InputDropDown listData={week} /> */}
+                
                 <label className="flex flex-col gap-1 w-1/2">
                     <strong className="text-base font-lato font-normal">Intervalo</strong>
                     <select
@@ -295,6 +302,22 @@ function SectionAddVeterinary({ names }) {
                         <option value="55">55 min</option>
                     </select>
                 </label>
+            </div>
+            <div className="flex flex-col gap-1">
+                <strong
+                    className="text-base font-lato font-normal"
+                >
+                    Dias disponíveis
+                </strong>
+                <div
+                    className="flex w-full justify-between gap-2"
+                >
+                    {
+                        week.map(w => {
+                            return <InputDropDown listData={w} />
+                        })
+                    }
+                </div>
             </div>
         </section>
     )
