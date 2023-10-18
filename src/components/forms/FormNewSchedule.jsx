@@ -1,10 +1,12 @@
-import { CaretLeft, Trash } from "@phosphor-icons/react"
+import { CaretLeft, PlusCircle, Trash, X } from "@phosphor-icons/react"
 import { memo, useEffect, useState } from "react"
 import { InputDropDown } from "../inputsComponents"
 import { Controller, useFieldArray, useForm } from "react-hook-form"
 import InputMask from "react-input-mask"
 import axios from "axios"
 import Cookies from "js-cookie"
+import SectionVeterinary from "./schedule/SectionVeterinary"
+import Restriction from "./schedule/Restriction"
 
 function FormNewSchedule({ alterPage }) {
     const [veterinaryName, setVeterinaryName] = useState([])
@@ -136,7 +138,7 @@ function FormNewSchedule({ alterPage }) {
 
                         {
                             fieldsRestriction.map((field, index) => (
-                                <AddNewRestriction
+                                <Restriction
                                     key={field.id}
                                     index={index}
                                     removeRestriction={removeRestriction}
@@ -157,7 +159,7 @@ function FormNewSchedule({ alterPage }) {
                 {
                     fieldsAvailable.map((field, index) => {
                         return (
-                            <SectionAddVeterinary
+                            <SectionVeterinary
                                 key={field.id}
                                 index={index}
                                 names={veterinaryName}
@@ -182,9 +184,10 @@ function FormNewSchedule({ alterPage }) {
                     className="w-full flex justify-center gap-6 text-primary font-lato font-bold"
                 >
                     <span
-                        className="cursor-pointer"
+                        className="cursor-pointer flex gap-2 items-center"
                         onClick={() => appendAvailable({ name: "", specialty: "", hr_open_medic: "", hr_close_medic: "", interval: "", week: [] })}
                     >
+                        <PlusCircle color="#22B77e" size={16} />
                         adicionar mais
                     </span>
 
@@ -226,157 +229,6 @@ function TitleSectionForm({ title, description = "" }) {
         <div className="flex flex-col mb-2 mt-8">
             <h3 className="font-lato font-semibold text-2xl">{title}</h3>
             <p>{description}</p>
-        </div>
-    )
-}
-
-function SectionAddVeterinary({ names, remove, index, register, control, setValue }) {
-    const week = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "sábado"]
-
-    const handleVeterinarioChange = (selectedVeterinario) => {
-        const novaEspecialidade = names.find((veterinario) => veterinario.nomeMedico === selectedVeterinario)?.especialidade;
-        setValue(`Available.${index}.specialty`, novaEspecialidade);
-    };
-
-    return (
-        <section className="border border-zinc-500 rounded-tr-2xl rounded-bl-2xl rounded-tl-lg rounded-br-lg p-3 flex flex-col gap-3 w-full group">
-            <div className="flex justify-between gap-6">
-                <label
-                    className="flex flex-col gap-1 w-1/2"
-                >
-                    <strong
-                        className="text-base font-lato font-normal"
-                    >
-                        Veterinário
-                    </strong>
-                    <select
-                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary capitalize"
-                        {...register(`Available.${index}.name`, {
-                            onChange: e => handleVeterinarioChange(e.target.value)
-                        })}
-                    >
-                        {
-                            names.map(e => {
-                                return (
-                                    <option value={e.nomeMedico}>
-                                        {e.nomeMedico}
-                                    </option>
-                                )
-                            })
-                        }
-                    </select>
-                </label>
-                <label className="flex flex-col gap-1 w-1/2">
-                    <strong className="text-base font-lato font-normal">Especialidade</strong>
-                    <Controller
-                        control={control}
-                        name={`Available.${index}.specialty`}
-                        render={({ field }) => {
-                            return (
-                                <input
-                                    type="text"
-                                    className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] capitalize"
-                                    {...field}
-                                    readOnly
-                                />
-                            )
-                        }}
-                    />
-                </label>
-            </div>
-            <div className="flex justify-between gap-6">
-                <label className="flex flex-col gap-1 w-1/2">
-                    <strong className="text-base font-lato font-normal">Horário disponível</strong>
-                    <div
-                        className="flex gap-2 items-center"
-                    >
-                        <input
-                            type="time"
-                            step={300}
-                            className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
-                            {...register(`Available.${index}.hr_open_medic`)}
-                        />
-                        <span
-                            className="text-base text-zinc-600"
-                        >
-                            às
-                        </span>
-                        <input
-                            type="time"
-                            step={300}
-                            className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary capitalize w-1/2"
-                            {...register(`Available.${index}.hr_close_medic`)}
-                        />
-                    </div>
-                </label>
-
-                <label className="flex flex-col gap-1 w-1/2">
-                    <strong className="text-base font-lato font-normal">Intervalo</strong>
-                    <select
-                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary"
-                        {...register(`Available.${index}.interval`)}
-                    >
-                        <option value="5">5 min</option>
-                        <option value="10">10 min</option>
-                        <option value="15">15 min</option>
-                        <option value="20">20 min</option>
-                        <option value="25">25 min</option>
-                        <option value="30">30 min</option>
-                        <option value="35">35 min</option>
-                        <option value="40">40 min</option>
-                        <option value="45">45 min</option>
-                        <option value="50">50 min</option>
-                        <option value="55">55 min</option>
-                    </select>
-                </label>
-            </div>
-            <div className="flex flex-col gap-1">
-                <strong
-                    className="text-base font-lato font-normal"
-                >
-                    Dias disponíveis
-                </strong>
-                <div
-                    className="flex w-full justify-between gap-2"
-                >
-                    {
-                        week.map(w => {
-                            return <InputDropDown listData={w} register={register} index={index} />
-                        })
-                    }
-                </div>
-            </div>
-            <span
-                className="cursor-pointer"
-                onClick={() => remove(index)}
-            >
-                remover
-            </span>
-        </section>
-    )
-}
-
-
-function AddNewRestriction({ index, register, removeRestriction }) {
-    return (
-        <div className="flex justify-center gap-6">
-            <div className="flex flex-col gap-1">
-                <div className="flex">
-                    <input
-                        type="date"
-                        className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
-                        placeholder="__/__/____"
-                        {...register(`restriction.${index}.data`)}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => removeRestriction(index)}
-                        className="cursor-pointer flex items-center justify-center bg-primary text-white rounded-tr-lg rounded-br-lg px-4 -translate-x-1"
-                    >
-                        <Trash weight={"bold"} size={20} />
-                    </button>
-                </div>
-            </div>
         </div>
     )
 }
