@@ -27,13 +27,6 @@ export function HeaderMedic() {
 				<div className="">
 					<ProfileModal userType={"medico"} />
 				</div>
-				<div className="">
-					<button
-						onClick={handleButtonClickSignOut}
-					>
-						<SignOut size={24} color="#000" />
-					</button>
-				</div>
 			</div>
 		</header>
 	);

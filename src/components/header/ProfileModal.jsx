@@ -4,6 +4,7 @@ import { CaretDown, Gear, SignOut, UserCircle } from '@phosphor-icons/react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { memo, useState } from 'react';
+import ButtonSignOut from '../buttons/ButtonSignOut';
 
 function ProfileModal({ userType }) {
 
@@ -37,14 +38,7 @@ function ProfileModal({ userType }) {
         err => console.log(err)
     )
 
-    const handleButtonClickSignOut = () => {
-		const allCookies = Cookies.get();
-		for (let cookie in allCookies) {
-				Cookies.remove(cookie);
-		}
-
-		window.location.reload();
-	};
+    
 
     return (
         <Popover.Root>
@@ -76,11 +70,9 @@ function ProfileModal({ userType }) {
                             <span>Configurações</span>
                         </li>
                         <li 
-                            className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
-                            onClick={handleButtonClickSignOut}
+                            className='flex gap-3 items-center cursor-pointer hover:bg-primary/10 transition-all'
                         >
-                            <SignOut size={24} color="#22B77E" />
-                            <span>Sair</span>
+                            <ButtonSignOut/>
                         </li>
                     </ul>
                     <Popover.Arrow className='fill-white' />
