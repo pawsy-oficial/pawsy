@@ -1,4 +1,3 @@
-import { Target } from "@phosphor-icons/react"
 import { memo, useState, useEffect } from "react"
 import InputMask from "react-input-mask"
 

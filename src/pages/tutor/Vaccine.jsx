@@ -1,17 +1,24 @@
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
-import * as Select from "@radix-ui/react-select";
+
 import { useEffect, useState } from "react";
 import { WarningVaccine } from "../../components/tutor/Alert";
-import { CaretDown } from "@phosphor-icons/react";
+
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
 import dayjs from 'dayjs'
 import useCheckedPet from "../../hook/useCheckedPet";
+import { SelectPetsVaccine } from "../../components/inputsComponents/selects";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
 	const [namePet, setNamePet] = useState("");
+	const [alterTable, setAlterTable] = useState(true)
+	const [myPets, setMyPets] = useState([])
+
+    const tokenTutor = Cookies.get('jwtTokenTutor')
 	const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
 
 	useCheckedPet()
@@ -304,7 +311,25 @@ export default function VaccinePage() {
 		return () => window.removeEventListener("resize", handleResize)
 	}, [])
 
-	const [alterTable, setAlterTable] = useState(true)
+	useEffect(() => {
+        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+            headers: {
+                Authorization: `Bearer ${tokenTutor}`
+            }
+        }).then(res => {
+            axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`, {
+                headers: {
+                    Authorization: `Bearer ${tokenTutor}`
+                }
+            })
+                .then(res => {
+                    setMyPets(res.data.myPets);
+                    setNamePet(res.data.myPets[0].nm_pet)
+                })
+                .catch(err => console.log(err))
+        })
+            .catch(err => console.log(err))
+    }, [])
 
 	return (
 		<main className="flex min-h-screen">
@@ -313,38 +338,7 @@ export default function VaccinePage() {
 				<Header userType="tutor" />
 				<main className="px-8 lg:pl-10 lg:pr-16 py-8 flex flex-col gap-5 w-screen md:w-[calc(100vw-256px-24px)] mx-auto">
 					<div className="flex gap-6 items-center">
-						<Select.Root value={namePet} onValueChange={setNamePet}>
-							<Select.Trigger
-								className="lg:min-w-[220px] w-80 flex items-center justify-between rounded px-6 py-2 text-2xl font-semibold leading-none h-8 gap-1 bg-white focus:outline-none"
-								aria-label="pet"
-							>
-								<Select.Value className="font-sora" aria-label={namePet}>
-									{namePet}
-								</Select.Value>
-								<CaretDown weight="fill" />
-							</Select.Trigger>
-							<Select.Portal>
-								<Select.Content className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-									<Select.Viewport className="px-3 py-8">
-										<Select.Group>
-											<Select.Label className="text-xs text-gray-500 mb-6">
-												Meus pets
-											</Select.Label>
-											{pets.map((name, index) => {
-												return (
-													<Select.Item
-														value={`${name}`}
-														className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl"
-													>
-														<Select.ItemText>{name}</Select.ItemText>
-													</Select.Item>
-												);
-											})}
-										</Select.Group>
-									</Select.Viewport>
-								</Select.Content>
-							</Select.Portal>
-						</Select.Root>
+						<SelectPetsVaccine pets={myPets} setNamePet={setNamePet} name={namePet}/>
 
 						{positioPet == 1 && <WarningVaccine nameVaccine={"Viratec 10"} />}
 					</div>
