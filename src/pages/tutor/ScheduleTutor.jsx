@@ -3,11 +3,12 @@ import { Switch } from "../../components/inputsComponents";
 import { CaretLeft, PlusCircle } from "@phosphor-icons/react";
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
-import CardSchedule from "../../components/cardsAndBoxes/cardSchedule";
+import CardSchedule, { CardClinics } from "../../components/cardsAndBoxes/cardSchedule";
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import useCheckedPet from "../../hook/useCheckedPet";
+import axios from "axios";
 
 const SCHEDULES =
     [
@@ -120,7 +121,7 @@ export default function ScheduleTutor() {
 
                     {
                         handlePage
-                            ? <NewSchedule /> // true 
+                            ? <AvailableClinics /> // true 
                             : <MySchedules alterNewSchedulePage={setHandlePage} /> // false
                     }
 
@@ -157,12 +158,42 @@ function MySchedules({ alterNewSchedulePage }) {
     )
 }
 
-function AvailableClinics(){
-    
+function AvailableClinics() {
+    const [pageControll, setPageControll] = useState({
+        newSchedule: false,
+        idClinic: 1
+    })
+
+    return (
+        <>
+            {
+                !pageControll.newSchedule
+                    ? (
+                        <>
+                            <strong className="text-2xl font-lato font-semibold">Clínicas disponíveis</strong>
+
+                            <section className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 my-10">
+                                <CardClinics pageControll={setPageControll} />
+                            </section>
+                        </>
+                    )
+                    : (
+                        <NewSchedule pageControll={setPageControll} />
+                    )
+            }
+        </>
+    )
 }
 
-function NewSchedule() {
-  
+function NewSchedule({ pageControll }) {
+
+    const [typesConsultation, setTypesConsultation] = useState([])
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_URL}/get-all-consultation`)
+            .then(res => setTypesConsultation(res.data.response))
+            .catch(err => console.log(err))
+    }, [])
 
     const date = new Date()
     const dayCurrent = date.getDate().toString().padStart(2, 0)
@@ -217,19 +248,42 @@ function NewSchedule() {
                             className="border-2 disabled:opacity-20 transition-all border-primary rounded px-1 bg-[#F5FFFE]"
                         />
                     </div>
-                    <div className="flex justify-between gap-4 w-full md:w-auto">
-                        <label className="text-base" htmlFor="selectTypeSchedule">Tipo do agendamento:</label>
-                        <select
-                            id="selectTypeSchedule"
-                            className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none"
-                            onChange={(e) => setTypeSchedule(e.target.value)}
+                    <div className="flex justify-between gap-4 w-full md:w-auto flex-1">
+                        <div
+                            className="flex gap-2 items-center"
                         >
-                            <option value="consulta">Consulta</option>
-                            <option value="internação">Internação</option>
-                            <option value="ultrassom">Ultrassom</option>
-                            <option value="eletrocardiograma">Eletrocardiograma</option>
-                            <option value="cirurgia">Cirurgia</option>
-                        </select>
+                            <label className="text-base" htmlFor="selectTypeConsultation">Tipo do agendamento:</label>
+                            <select
+                                id="selectTypeConsultation"
+                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none"
+                                onChange={(e) => setTypeSchedule(e.target.value)}
+                            >
+                                {
+                                    typesConsultation.map(typeConsultation => {
+                                        return (
+                                            <option value={typeConsultation.id_tipo}>
+                                                {
+                                                    typeConsultation.nm_tipo
+                                                }
+                                            </option>
+                                        )
+                                    })
+                                }
+                            </select>
+                        </div>
+
+                        <div
+                            className="flex gap-2 items-center"
+                        >
+                            <label className="text-base" htmlFor="selectMedic">Médico veterinário:</label>
+                            <select
+                                id="selectMedic"
+                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none"
+                                onChange={(e) => setTypeSchedule(e.target.value)}
+                            >
+
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div className="flex justify-between gap-4 w-full md:justify-start">
@@ -252,13 +306,13 @@ function NewSchedule() {
                                         }).map(e => {
                                             return (
                                                 <>
-                                                    <CreateNewScheduleModal 
-                                                        clinicName={e.clinicName} 
-                                                        logoVet={e.clinicLogo} 
-                                                        scheduleDate={schedule.date} 
-                                                        scheduleHour={e.hour} 
-                                                        scheduleType={e.type} 
-                                                        vetName={e.veterinaryName} 
+                                                    <CreateNewScheduleModal
+                                                        clinicName={e.clinicName}
+                                                        logoVet={e.clinicLogo}
+                                                        scheduleDate={schedule.date}
+                                                        scheduleHour={e.hour}
+                                                        scheduleType={e.type}
+                                                        vetName={e.veterinaryName}
                                                     />
                                                 </>
                                             )
@@ -278,14 +332,14 @@ function NewSchedule() {
 
 function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHour, scheduleType, vetName }) {
 
-    const [ namePet, setNamePet ] = useState("caramelo") // nome do pet
+    const [namePet, setNamePet] = useState("caramelo") // nome do pet
 
-    function handleSubmit(){
+    function handleSubmit() {
         const dataSchedule = {
-            clinicName, 
-            scheduleDate, 
-            scheduleHour, 
-            scheduleType, 
+            clinicName,
+            scheduleDate,
+            scheduleHour,
+            scheduleType,
             vetName,
             namePet
         }
@@ -315,9 +369,9 @@ function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHou
                                 <span className="underline text-primary text-base">{vetName}</span>
                                 <span>{scheduleDate} {scheduleHour}</span>
 
-                                <select 
+                                <select
                                     className="uppercase text-2xl font-bold cursor-pointer hover:border-primary active:border-primary border-2 pl-3 focus:outline-none rounded transition-colors focus:none"
-                                    onChange={(e)=>setNamePet(e.target.value)}    
+                                    onChange={(e) => setNamePet(e.target.value)}
                                 >
                                     <option value="caramelo" className="text-base capitalize text-start" defaultChecked>caramelo</option>
                                     <option value="oreo" className="text-base capitalize text-start">oreo</option>
@@ -331,7 +385,7 @@ function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHou
                     </AlertDialog.Description>
                     <div className="flex justify-end gap-6 mt-6">
                         <AlertDialog.Cancel asChild>
-                            <button 
+                            <button
                                 className="hover:bg-red-error hover:text-white transition-all rounded py-1 px-4 text-red-error border border-red-error "
                             >
                                 Cancelar

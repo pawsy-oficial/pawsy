@@ -47,3 +47,38 @@ export default function CardSchedule({ deleteButton, logoVet, clinicName, schedu
         </div>
     )
 }
+
+export function CardClinics({ pageControll }) {
+    return (
+        <button
+            className={`flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full bg-[#f8fffc]`}
+            onClick={() => pageControll({
+                newSchedule: true,
+                idClinic: 1
+            })}
+        >
+            <div
+                className="w-16 h-16 rounded-full overflow-hidden"
+            >
+                <img src="https://placehold.co/400" alt={`Logo`} className="object-cover w-full h-full" />
+            </div>
+
+            <div className="flex flex-col gap-3">
+                <strong
+                    className="text-base text-start"
+                >
+                    PET
+                </strong>
+                <div
+                    className="flex flex-col gap-2 items-start"
+                >
+                    <p
+                        className="text-sm"
+                    >
+                        Consultas disponíveis: <span className="text-primary" >80</span>
+                    </p>
+                </div>
+            </div>
+        </button>
+    )
+}
