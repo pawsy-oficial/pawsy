@@ -196,21 +196,21 @@ function NewSchedule({ pageControll }) {
     const [handleSwitch, setHandleSwitch] = useState(false)
     const [dateCurrent, setDateCurrent] = useState(`${yearCurrent}-${monthCurrent}-${dayCurrent}`)
     const [typeSchedule, setTypeSchedule] = useState("consulta")
-    const [ medicsInfo, setMedicInfo ] = useState([])
-    
-    useEffect(()=>{
+    const [medicsInfo, setMedicInfo] = useState([])
+
+    useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/get-all-consultation`)
-        .then(res => setTypesConsultation(res.data.response))
-        .catch(err => console.log(err))
-        
+            .then(res => setTypesConsultation(res.data.response))
+            .catch(err => console.log(err))
+
         axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados-schedule?idClinica=1`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
             }
         })
-        .then(res => setMedicInfo(res.data))
-        .catch(err => console.log(err))
-    },[])
+            .then(res => setMedicInfo(res.data))
+            .catch(err => console.log(err))
+    }, [])
 
     // function handleFilterSchedule() {
     //     const filterSchedule = SCHEDULES.filter(schedule => schedule.date == dateCurrent)
@@ -263,7 +263,7 @@ function NewSchedule({ pageControll }) {
                             <label className="text-base" htmlFor="selectTypeConsultation">Tipo do agendamento:</label>
                             <select
                                 id="selectTypeConsultation"
-                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none"
+                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
                                 onChange={(e) => setTypeSchedule(e.target.value)}
                             >
                                 {
@@ -289,9 +289,16 @@ function NewSchedule({ pageControll }) {
                                 className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
                                 onChange={(e) => setTypeSchedule(e.target.value)}
                             >
+                                <option 
+                                    value="0"
+                                    defaultChecked
+                                    defaultValue={"0"}
+                                >
+                                    Todos
+                                </option>
                                 {
                                     medicsInfo.map(medic => {
-                                        return(
+                                        return (
                                             <option value={medic.codIntegracao}>
                                                 {
                                                     medic.medicoIntegrado
@@ -313,8 +320,57 @@ function NewSchedule({ pageControll }) {
             <section>
                 <strong className="text-sm mt-6 block font-semibold font-lato">Disponíveis para essa data</strong>
 
-                <div className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 mt-4">
-                    <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} />
+                <div className="flex flex-col w-full gap-6 mt-4">
+                    {/* <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} /> */}
+                    <table
+                        className="w-full cursor-default border-0"
+                    >
+                        <thead>
+                            <tr className="border-none selection:bg-secundary">
+                                <th className="py-1 border-none bg-primary text-white text-sm w-40 rounded-l-full">
+                                    Médico
+                                </th>
+                                <th className=" py-1 border-none bg-primary text-white text-sm w-40">
+                                    Data da consulta
+                                </th>
+                                <th className=" py-1 border-none bg-primary text-white text-sm w-40">
+                                    Horário
+                                </th>
+                                <th className=" py-1 border-none bg-primary text-white text-sm w-40 rounded-r-full">
+                                    Tipo
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="second line-colors border-0">
+                            <tr
+                                className="border-none"
+                            >
+                                <td className="border-none rounded-l-full">as</td>
+                                <td className="border-none">222</td>
+                                <td className="border-none">asd</td>
+                                <td className="border-none rounded-r-full">asd</td>
+                                <td className="hidden">asd</td>
+                            </tr>
+                            <tr
+                                className="border-none"
+                            >
+                                <td className="border-none rounded-l-full">as</td>
+                                <td className="border-none">222</td>
+                                <td className="border-none">asd</td>
+                                <td className="border-none rounded-r-full">asd</td>
+                                <td className="hidden">asd</td>
+                            </tr>
+                            <tr
+                                className="border-none"
+                            >
+                                <td className="border-none rounded-l-full">as</td>
+                                <td className="border-none">222</td>
+                                <td className="border-none">asd</td>
+                                <td className="border-none rounded-r-full">asd</td>
+                                <td className="hidden">asd</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     {/* {
                         handleSwitch
                             ? (
