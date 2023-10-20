@@ -9,6 +9,7 @@ import CardSchedule, { CardClinics } from "../../components/cardsAndBoxes/cardSc
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import useCheckedPet from "../../hook/useCheckedPet";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const SCHEDULES =
     [
@@ -186,49 +187,56 @@ function AvailableClinics() {
 }
 
 function NewSchedule({ pageControll }) {
-
-    const [typesConsultation, setTypesConsultation] = useState([])
-
-    useEffect(() => {
-        axios.get(`${import.meta.env.VITE_URL}/get-all-consultation`)
-            .then(res => setTypesConsultation(res.data.response))
-            .catch(err => console.log(err))
-    }, [])
-
     const date = new Date()
     const dayCurrent = date.getDate().toString().padStart(2, 0)
     const monthCurrent = (date.getMonth() + 1).toString().padStart(2, 0)
     const yearCurrent = date.getFullYear()
 
+    const [typesConsultation, setTypesConsultation] = useState([])
     const [handleSwitch, setHandleSwitch] = useState(false)
     const [dateCurrent, setDateCurrent] = useState(`${yearCurrent}-${monthCurrent}-${dayCurrent}`)
     const [typeSchedule, setTypeSchedule] = useState("consulta")
+    const [ medicsInfo, setMedicInfo ] = useState([])
+    
+    useEffect(()=>{
+        axios.get(`${import.meta.env.VITE_URL}/get-all-consultation`)
+        .then(res => setTypesConsultation(res.data.response))
+        .catch(err => console.log(err))
+        
+        axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados-schedule?idClinica=1`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
+            }
+        })
+        .then(res => setMedicInfo(res.data))
+        .catch(err => console.log(err))
+    },[])
 
-    function handleFilterSchedule() {
-        const filterSchedule = SCHEDULES.filter(schedule => schedule.date == dateCurrent)
+    // function handleFilterSchedule() {
+    //     const filterSchedule = SCHEDULES.filter(schedule => schedule.date == dateCurrent)
 
-        return filterSchedule.length < 1
-            ? <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} />
-            : filterSchedule.map((scheduleFilter) => {
-                const filterTypeSchedule = scheduleFilter.schedules.filter(a => a.type == typeSchedule)
-                return filterTypeSchedule.length < 1
-                    ? <ScheduleNotFound mesage={"Infelizmente, não há agendas para esse tipo nessa data escolhida, escolha outra data."} />
-                    : filterTypeSchedule.map(e => {
-                        return (
-                            <CreateNewScheduleModal
-                                clinicName={e.clinicName}
-                                logoVet={e.clinicLogo}
-                                scheduleDate={scheduleFilter.date}
-                                scheduleHour={e.hour}
-                                scheduleType={e.type}
-                                vetName={e.veterinaryName}
-                            />
-                        )
-                    })
+    //     return filterSchedule.length < 1
+    //         ? <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} />
+    //         : filterSchedule.map((scheduleFilter) => {
+    //             const filterTypeSchedule = scheduleFilter.schedules.filter(a => a.type == typeSchedule)
+    //             return filterTypeSchedule.length < 1
+    //                 ? <ScheduleNotFound mesage={"Infelizmente, não há agendas para esse tipo nessa data escolhida, escolha outra data."} />
+    //                 : filterTypeSchedule.map(e => {
+    //                     return (
+    //                         <CreateNewScheduleModal
+    //                             clinicName={e.clinicName}
+    //                             logoVet={e.clinicLogo}
+    //                             scheduleDate={scheduleFilter.date}
+    //                             scheduleHour={e.hour}
+    //                             scheduleType={e.type}
+    //                             vetName={e.veterinaryName}
+    //                         />
+    //                     )
+    //                 })
 
-            })
+    //         })
 
-    }
+    // }
 
     return (
         <>
@@ -278,10 +286,20 @@ function NewSchedule({ pageControll }) {
                             <label className="text-base" htmlFor="selectMedic">Médico veterinário:</label>
                             <select
                                 id="selectMedic"
-                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none"
+                                className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
                                 onChange={(e) => setTypeSchedule(e.target.value)}
                             >
-
+                                {
+                                    medicsInfo.map(medic => {
+                                        return(
+                                            <option value={medic.codIntegracao}>
+                                                {
+                                                    medic.medicoIntegrado
+                                                }
+                                            </option>
+                                        )
+                                    })
+                                }
                             </select>
                         </div>
                     </div>
@@ -296,7 +314,8 @@ function NewSchedule({ pageControll }) {
                 <strong className="text-sm mt-6 block font-semibold font-lato">Disponíveis para essa data</strong>
 
                 <div className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 mt-4">
-                    {
+                    <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} />
+                    {/* {
                         handleSwitch
                             ? (
                                 SCHEDULES.map(schedule => {
@@ -323,7 +342,7 @@ function NewSchedule({ pageControll }) {
                             : (
                                 handleFilterSchedule()
                             )
-                    }
+                    } */}
                 </div>
             </section>
         </>
