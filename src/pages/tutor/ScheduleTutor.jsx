@@ -6,10 +6,11 @@ import { Header } from "../../components/header/Header";
 import { useEffect, useState } from "react";
 import ScheduleNotFound from "../../components/scheduleNotFound";
 import CardSchedule, { CardClinics } from "../../components/cardsAndBoxes/cardSchedule";
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import useCheckedPet from "../../hook/useCheckedPet";
 import axios from "axios";
 import Cookies from "js-cookie";
+import ReactDOM from 'react-dom';
+import Pagination from "../../components/pagination";
 
 const SCHEDULES =
     [
@@ -289,7 +290,7 @@ function NewSchedule({ pageControll }) {
                                 className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
                                 onChange={(e) => setTypeSchedule(e.target.value)}
                             >
-                                <option 
+                                <option
                                     value="0"
                                     defaultChecked
                                     defaultValue={"0"}
@@ -319,7 +320,7 @@ function NewSchedule({ pageControll }) {
 
             <section>
                 <strong className="text-sm mt-6 block font-semibold font-lato">Disponíveis para essa data</strong>
-
+                <Pagination />
                 <div className="flex flex-col w-full gap-6 mt-4">
                     {/* <ScheduleNotFound mesage={"Infelizmente, não há horários disponíveis para a data selecionada. Por favor, escolha outra data."} /> */}
                     <table
@@ -342,33 +343,16 @@ function NewSchedule({ pageControll }) {
                             </tr>
                         </thead>
                         <tbody className="second line-colors border-0">
-                            <tr
-                                className="border-none"
-                            >
-                                <td className="border-none rounded-l-full">as</td>
-                                <td className="border-none">222</td>
-                                <td className="border-none">asd</td>
-                                <td className="border-none rounded-r-full">asd</td>
-                                <td className="hidden">asd</td>
-                            </tr>
-                            <tr
-                                className="border-none"
-                            >
-                                <td className="border-none rounded-l-full">as</td>
-                                <td className="border-none">222</td>
-                                <td className="border-none">asd</td>
-                                <td className="border-none rounded-r-full">asd</td>
-                                <td className="hidden">asd</td>
-                            </tr>
-                            <tr
-                                className="border-none"
-                            >
-                                <td className="border-none rounded-l-full">as</td>
-                                <td className="border-none">222</td>
-                                <td className="border-none">asd</td>
-                                <td className="border-none rounded-r-full">asd</td>
-                                <td className="hidden">asd</td>
-                            </tr>
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
+                            <CreateNewScheduleModal />
                         </tbody>
                     </table>
                     {/* {
@@ -399,6 +383,8 @@ function NewSchedule({ pageControll }) {
                                 handleFilterSchedule()
                             )
                     } */}
+
+
                 </div>
             </section>
         </>
@@ -407,73 +393,138 @@ function NewSchedule({ pageControll }) {
 
 function CreateNewScheduleModal({ clinicName, logoVet, scheduleDate, scheduleHour, scheduleType, vetName }) {
 
-    const [namePet, setNamePet] = useState("caramelo") // nome do pet
+    const [showModalSchedule, setShowModalSchedule] = useState(false)
 
-    function handleSubmit() {
-        const dataSchedule = {
-            clinicName,
-            scheduleDate,
-            scheduleHour,
-            scheduleType,
-            vetName,
-            namePet
-        }
-
-        console.log(dataSchedule)
-    }
+    useEffect(() => {
+        document.body.classList.toggle("overflow-hidden")
+    }, [showModalSchedule])
 
     return (
-        <AlertDialog.Root>
-            <AlertDialog.Trigger>
-                <CardSchedule clinicName={clinicName} logoVet={logoVet} scheduleDate={scheduleDate} scheduleHour={scheduleHour} scheduleType={scheduleType} vetName={vetName} />
-            </AlertDialog.Trigger>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className="bg-primary/50 z-[60] flex justify-center items-center fixed inset-0" />
-                <AlertDialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-white py-4 px-16 rounded-lg">
-                    <AlertDialog.Description asChild className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
-                        <main>
-                            <section className="flex flex-col gap-2 items-center mb-2">
-                                <figure className="w-20 h-20">
-                                    <img src={logoVet} alt={`Logo ${clinicName}`} className="object-cover h-full w-full" />
-                                </figure>
-                                <span className="font-bold text-lg">{clinicName}</span>
-                                <small className="text-zinc-500">R. xxxxxxx, 550</small>
-                            </section>
-                            <hr />
-                            <section className="mt-4 flex flex-col gap-6 items-center">
-                                <span className="underline text-primary text-base">{vetName}</span>
-                                <span>{scheduleDate} {scheduleHour}</span>
-
-                                <select
-                                    className="uppercase text-2xl font-bold cursor-pointer hover:border-primary active:border-primary border-2 pl-3 focus:outline-none rounded transition-colors focus:none"
-                                    onChange={(e) => setNamePet(e.target.value)}
-                                >
-                                    <option value="caramelo" className="text-base capitalize text-start" defaultChecked>caramelo</option>
-                                    <option value="oreo" className="text-base capitalize text-start">oreo</option>
-                                    <option value="flor" className="text-base capitalize text-start">flor</option>
-                                    <option value="pantera" className="text-base capitalize text-start">pantera</option>
-                                </select>
-
-                            </section>
-
-                        </main>
-                    </AlertDialog.Description>
-                    <div className="flex justify-end gap-6 mt-6">
-                        <AlertDialog.Cancel asChild>
-                            <button
-                                className="hover:bg-red-error hover:text-white transition-all rounded py-1 px-4 text-red-error border border-red-error "
+        <>
+            <tr
+                className="border-none"
+                role="button"
+                onClick={() => setShowModalSchedule(!showModalSchedule)}
+            >
+                <td className="border-none rounded-l-full py-2">as</td>
+                <td className="border-none py-2">222</td>
+                <td className="border-none py-2">asd</td>
+                <td className="border-none py-2 rounded-r-full">asd</td>
+            </tr>
+            {
+                showModalSchedule && (
+                    ReactDOM.createPortal(
+                        <section
+                            onClick={e => e.target.tagName == "SECTION" && setShowModalSchedule(false)}
+                            className="fixed inset-0 bg-primary/40 z-[80] flex flex-col gap-6 justify-center"
+                        >
+                            <div
+                                className="max-w-xl w-full self-center flex flex-col gap-6"
                             >
-                                Cancelar
-                            </button>
-                        </AlertDialog.Cancel>
-                        <AlertDialog.Action asChild>
-                            <button className="bg-green-600 rounded py-1 px-4 text-white" onClick={handleSubmit}>
-                                Agendar
-                            </button>
-                        </AlertDialog.Action>
-                    </div>
-                </AlertDialog.Content>
-            </AlertDialog.Portal>
-        </AlertDialog.Root>
+                                <article
+                                    className="bg-white p-4 rounded-2xl flex flex-col max-w-xl"
+                                >
+                                    <div
+                                        className="flex justify-between items-center gap-6"
+                                    >
+                                        <div
+                                            className="flex items-center gap-2 pb-4"
+                                        >
+                                            <div
+                                                className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary"
+                                            >
+                                                <img
+                                                    src="https://placehold.co/600x400"
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                    draggable={false}
+                                                />
+                                            </div>
+
+                                            <div
+                                                className="flex flex-col"
+                                            >
+                                                <h3
+                                                    className="text-lg font-lato font-bold"
+                                                >
+                                                    ZN Vet
+                                                </h3>
+                                                <span
+                                                    className="text-zinc-500 font-lato text-sm"
+                                                >
+                                                    R. Sla das quantas, 855 - santos
+                                                </span>
+                                                <strong
+                                                    className="text-emerald-500 font-lato text-sm underline"
+                                                >
+                                                    Mauricio Melo
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="flex flex-col text-zinc-700 font-bold font-lato"
+                                        >
+                                            <span>
+                                                07/11/2023
+                                            </span>
+                                            <span>
+                                                07:00
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        className="py-6 border-t border-zinc-200 flex flex-col items-center gap-2"
+                                    >
+                                        <span
+                                            className="self-start text-zinc-600 text-base"
+                                        >
+                                            Agendar para:
+                                        </span>
+                                        <div
+                                            className="w-40 h-40 rounded-full overflow-hidden border-2 border-secundary"
+                                        >
+                                            <img
+                                                src="https://placehold.co/600x400"
+                                                alt=""
+                                                className="h-full w-full object-cover"
+                                                draggable={false}
+                                            />
+                                        </div>
+                                        <select
+                                            className="px-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
+                                        >
+                                            <option value="">d</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div
+                                        className="flex justify-end gap-6 mt-6"
+                                    >
+                                        <button
+                                            className="hover:bg-red-error w-full hover:text-white transition-all rounded py-1 px-4 text-red-error border border-red-error "
+                                            onClick={()=>setShowModalSchedule(false)}
+                                            title="cancelar agendamento"
+                                            >
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            className="bg-green-600 rounded py-1 px-4 w-full text-white"
+                                            onClick={()=>setShowModalSchedule(false)}
+                                            title="aceitar o agendamento"
+                                        >
+                                            Agendar
+                                        </button>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>,
+                        document.body
+                    )
+                )
+            }
+        </>
     )
 }
