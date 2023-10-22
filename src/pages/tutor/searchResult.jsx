@@ -11,20 +11,14 @@ export default function SearchResult() {
     const [ clinics, setClinics ] = useState([])
     useCheckedPet()
     const location = useLocation()
+    // (location.state == null) && navigate("/tutor");
     const { clinicName } = location.state
     const navigate = useNavigate()
-
-    function formatString(string){
-        const lowerCase = string.toLowerCase()
-        const stringJoin = lowerCase.replace(" ", "")
-
-        return stringJoin
-    }
 
     useEffect(()=>{
         axios.get(`${import.meta.env.VITE_URL}/pesquisa?clinicName=${clinicName}`)
         .then(res => {
-            console.log(res);
+            console.log(res.data);
             setClinics(res.data.result)
         })
         .catch(err => console.log(err))
@@ -64,6 +58,7 @@ export default function SearchResult() {
                                                 address={`${clinic.nm_rua} ${clinic.num_residencia}`} 
                                                 distanceFromTheClinic={"1.5 km"} 
                                                 assessment={"4,0"} 
+                                                id={clinic.id_clinica}
                                             />
                                         )
                                 })

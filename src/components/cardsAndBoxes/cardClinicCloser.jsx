@@ -1,9 +1,14 @@
 import { memo } from "react"
 import { Star } from "@phosphor-icons/react"
+import { useNavigate } from "react-router-dom"
 
 function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTheClinic, assessment, id, img }) {
+    const navigate = useNavigate()
     return (
-        <div 
+        <button
+            type="button"
+            title={`conhecer o perfil da clínica ${nameClinic}`}
+            onClick={()=>navigate("/clinica", {state: { id: id }})} 
             id={`clinic_pawsy_${id}`}
             className="min-w-[256px] w-[256px] min-h-[128px] group bg-white rounded-lg flex-col flex justify-around p-2 gap-2 overflow-hidden shadow-md"
         >
@@ -40,7 +45,7 @@ function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTh
                     </div>
                 </div>
             </div>
-        </div>
+        </button>
     )
 }
 

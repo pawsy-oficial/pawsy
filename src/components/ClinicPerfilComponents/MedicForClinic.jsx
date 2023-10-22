@@ -9,6 +9,7 @@ export default function MedicForClinic({nameMedic, imageMedic}) {
 					src={`${import.meta.env.VITE_URL}/files/${imageMedic}`}
 					alt={`@${nameMedic}`}
 					className="object-cover w-full h-full"
+					draggable={false}
 				/>
 			</div>
 			<p className="pl-2 text-base capitalize">{nameMedic}</p>

@@ -18,6 +18,7 @@ export function ModalSeeMedic({isSee, setSee, infoMedic, tutor = false}) {
 									src={`${import.meta.env.VITE_URL}/files/${infoMedic.imagemPerfil}`} 
 									alt={`@${infoMedic.nomeMedico}`} 
 									className="flex items-center justify-center w-44 h-44 border-4 border-primary rounded-full object-cover" 
+									draggable={false}
 								/>
 							</div>
 							<div

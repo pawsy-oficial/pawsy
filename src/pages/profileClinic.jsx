@@ -12,10 +12,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { UpdateFormClinic } from "../components/forms/UpdateForm";
 import GoBack from "../components/buttons/GoBack";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 export default function ProfileClinic() {
 
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const isOwner = (Cookies.get().jwtTokenClinic) && true
 
@@ -34,8 +37,8 @@ export default function ProfileClinic() {
     let token
 
     useEffect(() => {
+        (location.state == null) && navigate(-1);
         token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
-
         isOwner
             ? (
                 axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
@@ -52,7 +55,7 @@ export default function ProfileClinic() {
                     })
             )
             : (
-                axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=1&all=true`)
+                axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${location.state.id}&all=true`)
                     .then(e => {
                         console.log(e.data.result[0]);
                         setInfoClinic(e.data.result[0]);
@@ -160,6 +163,7 @@ export default function ProfileClinic() {
                                                     src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
                                                     alt={infoClinic.storedNameClinica}
                                                     className="h-full w-full object-cover"
+                                                    draggable={false}
                                                 />
                                             </div>
                                             <div className="flex flex-col p-4 gap-2  text-left">
@@ -364,14 +368,14 @@ function SectionScoreClinic() {
     )
 }
 
-function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit }) {
+function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0}) {
     const [open, setOpen] = useState(false)
     const [medics, setMedics] = useState([])
     const [infoMedicSelect, setInfoMedicSelect] = useState()
     useEffect(() => {
         tutor
             ? (
-                axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=1&all=true`)
+                axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${idClinic}&all=true`)
                     .then(e => {
                         setMedics(e.data)
                     })
@@ -396,7 +400,7 @@ function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdi
                     })
             )
 
-    }, [])
+    }, [idClinic])
 
     return (
         <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
