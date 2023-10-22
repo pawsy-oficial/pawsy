@@ -47,7 +47,7 @@ export function ModalSeeMedic({isSee, setSee, infoMedic, tutor = false}) {
 						</div>
 
 						{
-							tutor && (
+							!tutor && (
 								<div className="flex justify-end">
 									<button onClick={() => setSee(!isSee)} type="" className="py-1 px-5 bg-red-error rounded-lg">
 										<p className="text-base font-semibold text-white">Apagar</p>

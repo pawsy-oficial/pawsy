@@ -241,8 +241,8 @@ export default function Router() {
 			<Route
 				path="/minha-clinica"
 				element={
-					<PrivateRoute role="Clinica" element={<Perfil />}>
-						<Perfil />
+					<PrivateRoute role="Clinica" element={<ProfileClinic />}>
+						<ProfileClinic />
 					</PrivateRoute>
 				}
 			/>

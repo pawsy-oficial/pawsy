@@ -11,9 +11,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { UpdateFormClinic } from "../components/forms/UpdateForm";
+import GoBack from "../components/buttons/GoBack";
 
 
 export default function ProfileClinic() {
+
+
+    const isOwner = (Cookies.get().jwtTokenClinic) && true
 
     const [see, setSee] = useState(false)
     const [infoClinic, setInfoClinic] = useState([])
@@ -27,23 +31,37 @@ export default function ProfileClinic() {
     })
 
 
-    let tokenClinic
+    let token
 
     useEffect(() => {
-        tokenClinic = Cookies.get("jwtTokenClinic")
+        token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
 
-        axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
-            headers: {
-                Authorization: `Bearer ${tokenClinic}`
-            }
-        })
-            .then(e => {
-                setInfoClinic(e.data);
-                setTextAboutUs(e.data.storedDescriptionClinica)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        isOwner
+            ? (
+                axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(e => {
+                        setInfoClinic(e.data);
+                        setTextAboutUs(e.data.storedDescriptionClinica)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            )
+            : (
+                axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=1&all=true`)
+                    .then(e => {
+                        console.log(e.data.result[0]);
+                        setInfoClinic(e.data.result[0]);
+                        // setTextAboutUs(e.data.storedDescriptionClinica)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            )
     }, [stateEdit])
 
     function handleUpdateAboutUs() {
@@ -82,11 +100,14 @@ export default function ProfileClinic() {
         return () => clearTimeout(timer)
     }, [popUpMessage])
 
-    const isOwner = false
+
 
     return (
         <main className="flex min-h-screen">
-            <NavbarTutor page={3} />
+            {
+                isOwner ? <NavbarClinic page={3} /> : <NavbarTutor page={3} />
+            }
+
             <section className="flex-1">
                 <Header userType={isOwner ? "clinica" : "tutor"} />
                 {
@@ -115,8 +136,18 @@ export default function ProfileClinic() {
                         </div>
                     )
                 }
-                <main className="pl-10 pr-16 py-8 flex gap-5">
-                    {/* isOwner */}
+                {
+                    !isOwner && (
+                        <div
+                            className="ml-10"
+                        >
+                            <GoBack theme="dark" />
+                        </div>
+                    )
+                }
+
+
+                <main className="pl-10 pr-16 pb-8 flex gap-5">
                     <section className={`flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl`}>
                         {
                             stateEdit && isOwner
@@ -124,7 +155,7 @@ export default function ProfileClinic() {
                                 : (
                                     <section className="flex justify-between relative">
                                         <div className="flex items-center">
-                                            <div className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden">
+                                            <div className="min-w-[12rem] w-48 h-48 rounded-full overflow-hidden border-2 border-secundary">
                                                 <img
                                                     src={`${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
                                                     alt={infoClinic.storedNameClinica}
@@ -290,7 +321,7 @@ export default function ProfileClinic() {
                                         <SectionMedicsClinic
                                             see={see}
                                             setSee={setSee}
-                                            tutor={false}
+                                            tutor={true}
                                             idClinic={infoClinic.storedIdClinica}
                                             editAboutUs={editAboutUs}
                                             stateEdit={stateEdit}
@@ -333,13 +364,21 @@ function SectionScoreClinic() {
     )
 }
 
-function SectionMedicsClinic({ see, setSee, tutor = true, editAboutUs, stateEdit }) {
+function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit }) {
     const [open, setOpen] = useState(false)
     const [medics, setMedics] = useState([])
     const [infoMedicSelect, setInfoMedicSelect] = useState()
     useEffect(() => {
         tutor
             ? (
+                axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=1&all=true`)
+                    .then(e => {
+                        setMedics(e.data)
+                    })
+                    .catch(err => console.log(err))
+
+            )
+            : (
                 axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
                     headers: {
                         Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
@@ -356,61 +395,54 @@ function SectionMedicsClinic({ see, setSee, tutor = true, editAboutUs, stateEdit
                         console.log(err)
                     })
             )
-            : (
-                axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=1&all=true`)
-                    .then(e => {
-                        setMedics(e.data)
+
+    }, [])
+
+    return (
+        <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
+            <h2 className="font-bold text-lg">Médicos veterinários</h2>
+            <div
+                className="flex flex-col gap-2"
+            >
+                {
+                    medics.map((medic, key) => {
+                        return <>
+                            <button
+                                key={key}
+                                onClick={() => {
+                                    console.log(medic);
+                                    setInfoMedicSelect(medic)
+                                    setSee(!see)
+                                }}
+                                type=""
+                                className="border-transparent border-r-2 hover:border-primary hover:bg-secundary/5 transition-all rounded-l-full p-1"
+                            >
+                                <MedicForClinic nameMedic={medic.nomeMedico} imageMedic={medic.imagemPerfil} />
+                            </button>
+                        </>
                     })
-                    .catch(err => console.log(err))
-            )
-
-}, [])
-
-return (
-    <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
-        <h2 className="font-bold text-lg">Médicos veterinários</h2>
-        <div
-            className="flex flex-col gap-2"
-        >
+                }
+                {
+                    see && <ModalSeeMedic isSee={see} setSee={setSee} infoMedic={infoMedicSelect} tutor={tutor} />
+                }
+            </div>
             {
-                medics.map((medic, key) => {
-                    return <>
+                !tutor && (
+                    <div className="flex w-full justify-center">
                         <button
-                            key={key}
-                            onClick={() => {
-                                console.log(medic);
-                                setInfoMedicSelect(medic)
-                                setSee(!see)
-                            }}
+                            onClick={() => setOpen(!open)}
                             type=""
-                            className="border-transparent border-r-2 hover:border-primary hover:bg-secundary/5 transition-all rounded-l-full p-1"
+                            className="flex gap-2 disabled:opacity-20 disabled:cursor-not-allowed"
+                            disabled={editAboutUs || stateEdit}
                         >
-                            <MedicForClinic nameMedic={medic.nomeMedico} imageMedic={medic.imagemPerfil} />
+                            <PlusCircle size={24} color="#22B77E" />
+                            <p className="text-primary font-bold">Adicionar</p>
                         </button>
-                    </>
-                })
+                        <ModalAddMedic isOpen={open} setOpen={setOpen} />
+                    </div>
+                )
             }
-            {
-                see && <ModalSeeMedic isSee={see} setSee={setSee} infoMedic={infoMedicSelect} tutor={tutor} />
-            }
-        </div>
-        {
-            tutor && (
-                <div className="flex w-full justify-center">
-                    <button
-                        onClick={() => setOpen(!open)}
-                        type=""
-                        className="flex gap-2 disabled:opacity-20 disabled:cursor-not-allowed"
-                        disabled={editAboutUs || stateEdit}
-                    >
-                        <PlusCircle size={24} color="#22B77E" />
-                        <p className="text-primary font-bold">Adicionar</p>
-                    </button>
-                    <ModalAddMedic isOpen={open} setOpen={setOpen} />
-                </div>
-            )
-        }
-    </section>
+        </section>
 
-)
+    )
 }
