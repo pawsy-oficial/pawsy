@@ -29,7 +29,6 @@ async function getUserTypeFromToken() {
                 Authorization: `Bearer ${token}`
             }
         });
-
         return response.data.storedType;
 
     } catch (error) {

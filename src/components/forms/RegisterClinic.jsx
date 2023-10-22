@@ -222,7 +222,7 @@ export default function RegisterFormClinic({ userType }) {
                     longitude: longitude
                 };
 
-                axios.post(`${import.meta.env.VITE_URL}/clinica`, options)
+                axios.post(`${import.meta.env.VITE_URL}/minha-clinica`, options)
                     .then(response => {
                         let form = new FormData();
                         form.append("name", urlImageProfile);

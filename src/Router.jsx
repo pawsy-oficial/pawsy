@@ -58,122 +58,133 @@ import Plans from "./pages/landinPage/plans";
 import AboutUs from "./pages/landinPage/aboutUs";
 import Features from "./pages/landinPage/features";
 import PageNotFound from "./pages/pageNotFound";
+import ProfileClinic from "./pages/profileClinic";
 
 const PrivateRouter = ({ user, children }) => {
-  // console.log(user);
-  if (!user) {
-    return <Navigate to={"/"} replace />;
-  }
-  return children;
+	// console.log(user);
+	if (!user) {
+		return <Navigate to={"/"} replace />;
+	}
+	return children;
 };
 
 export default function Router() {
-  return (
-    <Routes>
-      <Route path="/planos" element={<Plans />} />
-      <Route path="/sobre" element={<AboutUs />} />
-      <Route path="/recursos" element={<Features />} />
+	return (
+		<Routes>
+			<Route path="/planos" element={<Plans />} />
+			<Route path="/sobre" element={<AboutUs />} />
+			<Route path="/recursos" element={<Features />} />
 
-      <Route
-        path="/tutor"
-        element={
-          <PrivateRoute role="Tutor" element={<Tutor />}>
-            <Tutor />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/carteira"
-        element={
-          <PrivateRoute role="Tutor" element={<VaccinePage />}>
-            <VaccinePage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/vets"
-        element={
-          <PrivateRoute role="Tutor" element={<VetCloser />}>
-            <VetCloser />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/receitas"
-        element={
-          <PrivateRoute role="Tutor" element={<Revenues />}>
-            <Revenues />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/bem-estar"
-        element={
-          <PrivateRoute role="Tutor" element={<WellBeing />}>
-            <WellBeing />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/consulta"
-        element={
-          <PrivateRoute role="Tutor" element={<ScheduleTutor />}>
-            <ScheduleTutor />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/resultado-pesquisa"
-        element={
-          <PrivateRoute role="Tutor" element={<SearchResult />}>
-            <SearchResult />
-          </PrivateRoute>
-        }
-      />
+			<Route
+				path="/tutor"
+				element={
+					<PrivateRoute role="Tutor" element={<Tutor />}>
+						<Tutor />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/carteira"
+				element={
+					<PrivateRoute role="Tutor" element={<VaccinePage />}>
+						<VaccinePage />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/vets"
+				element={
+					<PrivateRoute role="Tutor" element={<VetCloser />}>
+						<VetCloser />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/receitas"
+				element={
+					<PrivateRoute role="Tutor" element={<Revenues />}>
+						<Revenues />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/bem-estar"
+				element={
+					<PrivateRoute role="Tutor" element={<WellBeing />}>
+						<WellBeing />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/consulta"
+				element={
+					<PrivateRoute role="Tutor" element={<ScheduleTutor />}>
+						<ScheduleTutor />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/resultado-pesquisa"
+				element={
+					<PrivateRoute role="Tutor" element={<SearchResult />}>
+						<SearchResult />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/clinica"
+				element={
+					<PrivateRoute role="Tutor" element={<ProfileClinic />}>
+						<ProfileClinic />
+					</PrivateRoute>
+				}
+			/>
 
-      <Route
-        path="/acesso"
-        element={
-          <Suspense fallback={<p>Carregando...</p>}>
-            <Access />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/recuperar-senha"
-        element={
-          <Suspense fallback={<p>Carregando...</p>}>
-            <ForgotPass />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/cadastro"
-        element={
-          <Suspense fallback={<p>Carregando...</p>}>
-            <Register />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <Suspense fallback={<p>Carregando...</p>}>
-            <Login />
-          </Suspense>
-        }
-      />
 
-      <Route
-        path="/resultado-pesquisa"
-        element={
-          <Suspense fallback={<p>Carregando...</p>}>
-            <SearchResult />
-          </Suspense>
-        }
-      />
 
-      {/* <Route 
+			<Route
+				path="/acesso"
+				element={
+					<Suspense fallback={<p>Carregando...</p>}>
+						<Access />
+					</Suspense>
+				}
+			/>
+			<Route
+				path="/recuperar-senha"
+				element={
+					<Suspense fallback={<p>Carregando...</p>}>
+						<ForgotPass />
+					</Suspense>
+				}
+			/>
+			<Route
+				path="/cadastro"
+				element={
+					<Suspense fallback={<p>Carregando...</p>}>
+						<Register />
+					</Suspense>
+				}
+			/>
+			<Route
+				path="/login"
+				element={
+					<Suspense fallback={<p>Carregando...</p>}>
+						<Login />
+					</Suspense>
+				}
+			/>
+
+			<Route
+				path="/resultado-pesquisa"
+				element={
+					<Suspense fallback={<p>Carregando...</p>}>
+						<SearchResult />
+					</Suspense>
+				}
+			/>
+
+			{/* <Route 
                 path="/tutor" 
                 element={
                     <Suspense fallback={<LoadingPagesPlaceholder/>}>
@@ -222,104 +233,104 @@ export default function Router() {
                 } 
             /> */}
 
-      {/* <Route path="/vets" element={<VetCloser/>} /> */}
-      {/* <Route path="/receitas" element={<Revenues/>} /> */}
+			{/* <Route path="/vets" element={<VetCloser/>} /> */}
+			{/* <Route path="/receitas" element={<Revenues/>} /> */}
 
-      {/* ==x==x==x==x==x==x== */}
+			{/* ==x==x==x==x==x==x== */}
 
-      <Route
-        path="/clinica"
-        element={
-          <PrivateRoute role="Clinica" element={<Perfil />}>
-            <Perfil />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/agenda"
-        element={
-          <PrivateRoute role="Clinica" element={<Schedule />}>
-            <Schedule />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/marketing"
-        element={
-          <PrivateRoute role="Clinica" element={<Marketing />}>
-            <Marketing />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/pacientes"
-        element={
-          <PrivateRoute role="Clinica" element={<Patient />}>
-            <Patient />
-          </PrivateRoute>
-        }
-      />
+			<Route
+				path="/minha-clinica"
+				element={
+					<PrivateRoute role="Clinica" element={<Perfil />}>
+						<Perfil />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/agenda"
+				element={
+					<PrivateRoute role="Clinica" element={<Schedule />}>
+						<Schedule />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/marketing"
+				element={
+					<PrivateRoute role="Clinica" element={<Marketing />}>
+						<Marketing />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/pacientes"
+				element={
+					<PrivateRoute role="Clinica" element={<Patient />}>
+						<Patient />
+					</PrivateRoute>
+				}
+			/>
 
-      <Route 
-        path="/" 
-        element={<Home />}
-      />
+			<Route
+				path="/"
+				element={<Home />}
+			/>
 
-      <Route 
-        path="*" 
-        element={<PageNotFound />}
-      />
+			<Route
+				path="*"
+				element={<PageNotFound />}
+			/>
 
-      {/* ==x==x==x==x==x==x== */}
+			{/* ==x==x==x==x==x==x== */}
 
-      <Route
-        path="/medico"
-        element={
-          <PrivateRoute role="Medico" element={<Medic />}>
-            <Medic />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/pacientes-clinica"
-        element={
-          <PrivateRoute role="Medico" element={<PatientsForMedic />}>
-            <PatientsForMedic />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/paciente"
-        element={
-          <PrivateRoute role="Medico" element={<ViewPatient />}>
-            <ViewPatient />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/receitas-medicas"
-        element={
-          <PrivateRoute role="Medico" element={<MarketingRevenue />}>
-            <MarketingRevenue />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/vacinas-e-vermifugacao"
-        element={
-          <PrivateRoute role="Medico" element={<Vaccine />}>
-            <Vaccine />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/nova-receita"
-        element={
-          <PrivateRoute role="Medico" element={<NewRevenues />}>
-            <NewRevenues />
-          </PrivateRoute>
-        }
-      />
-    </Routes>
-  );
+			<Route
+				path="/medico"
+				element={
+					<PrivateRoute role="Medico" element={<Medic />}>
+						<Medic />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/pacientes-clinica"
+				element={
+					<PrivateRoute role="Medico" element={<PatientsForMedic />}>
+						<PatientsForMedic />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/paciente"
+				element={
+					<PrivateRoute role="Medico" element={<ViewPatient />}>
+						<ViewPatient />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/receitas-medicas"
+				element={
+					<PrivateRoute role="Medico" element={<MarketingRevenue />}>
+						<MarketingRevenue />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/vacinas-e-vermifugacao"
+				element={
+					<PrivateRoute role="Medico" element={<Vaccine />}>
+						<Vaccine />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path="/nova-receita"
+				element={
+					<PrivateRoute role="Medico" element={<NewRevenues />}>
+						<NewRevenues />
+					</PrivateRoute>
+				}
+			/>
+		</Routes>
+	);
 }
