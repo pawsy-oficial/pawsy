@@ -1,69 +1,96 @@
-import { CaretLeft, PlusCircle } from "@phosphor-icons/react"
-import { memo, useEffect, useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
-import axios from "axios"
-import Cookies from "js-cookie"
-import SectionVeterinary from "./schedule/SectionVeterinary"
-import Restriction from "./schedule/Restriction"
+import { CaretLeft, PlusCircle } from "@phosphor-icons/react";
+import { memo, useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import axios from "axios";
+import Cookies from "js-cookie";
+import SectionVeterinary from "./schedule/SectionVeterinary";
+import Restriction from "./schedule/Restriction";
 
 function FormNewSchedule({ alterPage }) {
-    const [veterinaryName, setVeterinaryName] = useState([])
+    const [veterinaryName, setVeterinaryName] = useState([]);
+    const [clinicId, setClinicId] = useState(null); // State para armazenar o ID da clínica
+
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
             }
         }).then(res => {
-            const idClinic = res.data.storedIdClinica
-            axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${idClinic}&all=true`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
-                }
-            }).then(response => {
-                setVeterinaryName(response.data)
-            })
-                .catch(err => console.log(err))
+            setClinicId(res.data.storedIdClinica);
+            console.log(clinicId)
         })
-            .catch(err => console.log(err))
+        .catch(err => console.log(err));
 
-    }, [])
+        axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${clinicId}&all=true`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+            }
+        }).then(response => {
+            setVeterinaryName(response.data);
+        })
+        .catch(err => console.log(err));
 
-    const [valueTextArea, setValueTextArea] = useState("")
+    }, [clinicId]);
 
-    // start react hook form
+    const [valueTextArea, setValueTextArea] = useState("");
 
     const { register, handleSubmit, control, setValue } = useForm({
         mode: "onSubmit"
-    })
+    });
 
     const { fields: fieldsRestriction, append: appendRestriction, remove: removeRestriction } = useFieldArray({
         control,
         name: "restriction",
         shouldUnregister: true
-    })
+    });
+
     const { fields: fieldsAvailable, append: appendAvailable, remove: removeAvailable } = useFieldArray({
         control,
         name: "Available",
         shouldUnregister: true
-    })
+    });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+    try {
+        data.idClinic = clinicId;
+        const response = await axios.post(
+            `${import.meta.env.VITE_URL}/agenda-register`,
+            data,
+            {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+                }
+            }
+        );
+        if (response.status === 200) {
+            console.log("Agenda criada com sucesso!");
+            location.reload();
+        }
+    } catch (error) {
+        console.log(data)
+        console.log("Erro ao criar a agenda:", error);
     }
+}
+
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="max-w-2xl"
-        >
-            <div
-                className="flex gap-2 items-center cursor-pointer"
-                onClick={() => { alterPage(0) }}
-            >
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl">
+            <div className="flex gap-2 items-center cursor-pointer" onClick={() => { alterPage(0) }}>
                 <CaretLeft />
                 <span>Voltar</span>
             </div>
             <h1 className="font-sora font-bold text-[32px]">Nova agenda</h1>
+
+            <TitleSectionForm
+                title={"Nome da agenda"}
+                description={"Informe o nome que deseja para esta agenda."}
+            />
+            <input
+                type="text"
+                placeholder="Nome da agenda"
+                {...register("agenda-name")}
+                className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary w-full"
+            />
 
             <TitleSectionForm
                 title={"Período da agenda"}
