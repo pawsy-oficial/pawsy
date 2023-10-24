@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import { UpdateFormClinic } from "../components/forms/UpdateForm";
 import GoBack from "../components/buttons/GoBack";
 import { useLocation, useNavigate } from "react-router-dom";
+import CommentsClinic from "../components/commentsClinic";
 
 
 export default function ProfileClinic() {
@@ -329,7 +330,8 @@ export default function ProfileClinic() {
                                             idClinic={infoClinic.storedIdClinica}
                                             editAboutUs={editAboutUs}
                                             stateEdit={stateEdit}
-                                        />
+                                            />
+                                        <CommentsClinic/>
                                     </>
                                 )
                         }
