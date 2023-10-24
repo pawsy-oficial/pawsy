@@ -22,6 +22,7 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 			}).then(e => {
 				console.log(e);
 				setOpenVermifuge(!isOpenVermifuge)
+				setVermifuge("")
 			}).catch(err => console.log(err))
 
 		} catch (error) {
@@ -39,6 +40,7 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 					<div className="flex pt-6 flex-col gap-1">
 						<p className="text-xs">Proteção</p>
 						<input
+							autoFocus
 							type="text"
 							value={vermifuge}
 							onChange={e => setVermifuge(e.target.value)}

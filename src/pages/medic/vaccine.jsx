@@ -180,35 +180,7 @@ export default function Vaccine() {
     },
   };
 
-  const [tableVermifugo, setTableVermifugo] = useState([
-    [
-      //caramelo
-      [
-        {
-          dateVermifugo: "2020-02-12",
-          nameVermifugo: "Vermikill",
-        },
-      ],
-      [
-        {
-          dateVermifugo: "2021-02-12",
-          nameVermifugo: "Vermikill",
-        },
-      ],
-      [
-        {
-          dateVermifugo: "2022-02-12",
-          nameVermifugo: "Vermikill",
-        },
-      ],
-      [
-        {
-          dateVermifugo: "2023-02-12",
-          nameVermifugo: "Vermikill",
-        },
-      ],
-    ],
-  ]);
+  const [tableVermifugo, setTableVermifugo] = useState([]);
 
   useEffect(() => {
     axios(request)
@@ -299,6 +271,7 @@ export default function Vaccine() {
                 <ModalVaccine
                   isOpenVaccine={openVaccine}
                   setOpenVaccine={setOpenVaccine}
+                  id={idPet}
                 />
               </div>
             </div>
