@@ -214,21 +214,22 @@ export default function Vaccine() {
     axios(request)
       .then((e) => {
         // console.log(e);
-        console.log(e.data.results);
+        // console.log(e.data.results);
         setTableVermifugo(
           e.data.results.map((item) => {
+            console.log(e);
             return {
-              dateVermifugo: item.dt_aplicacao,
+              dateVermifugo: item.dt_aplicacao.slice(0, 10),
               nameVermifugo: item.nm_vermifugo,
             };
           })
         );
-        console.log(tableVermifugo);
+        // console.log(tableVermifugo);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [tableVermifugo]);
+  }, [openVermifuge]);
 
   const navigate = useNavigate();
   return (
@@ -240,7 +241,7 @@ export default function Vaccine() {
         <div className="flex flex-col gap-7">
           <a
             className="flex items-center  text-sm cursor-pointer"
-            onClick={() => navigate("/medico")}
+            onClick={() => history.back()}
           >
             <CaretLeft color="#22B77E" />
             Voltar

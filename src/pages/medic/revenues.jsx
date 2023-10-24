@@ -11,7 +11,7 @@ const RevenuesList = ({ state }) => {
     <>
       <div className="flex flex-col gap-7">
         <a
-          href="/medico"
+          onClick={() => history.back()}
           className="flex items-center mt-10 text-sm cursor-pointer"
         >
           <CaretLeft color="#22B77E" />

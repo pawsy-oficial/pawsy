@@ -68,9 +68,9 @@ export default function Medic() {
         </h3>
         <nav className="flex flex-wrap gap-3">
           {
-            clinicsMedic.map(clinic => {
+            clinicsMedic.map((clinic, i) => {
               return (
-                <CardClinics img={clinic.url_imagem} nameClinic={clinic.nm_clinica} openOrClose={clinic.status_loja} />
+                <CardClinics key={i} img={clinic.url_imagem} nameClinic={clinic.nm_clinica} openOrClose={clinic.status_loja} />
               )
             })
           }

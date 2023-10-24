@@ -39,7 +39,7 @@ export default function ViewPatient() {
 			</header>
 			<div className="flex">
 				<button
-					onClick={() => navigate("/medico")}
+					onClick={() => history.back()}
 					className="px-80 flex items-center gap-2 -mb-5 mt-5"
 				>
 					<ArrowUUpLeft color="#22B77E" />

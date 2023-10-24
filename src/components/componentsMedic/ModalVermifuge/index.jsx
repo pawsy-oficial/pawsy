@@ -1,5 +1,5 @@
 import style from "./ModalVermifuge.module.css";
-import { FloppyDisk } from "@phosphor-icons/react";
+import { FloppyDisk, X } from "@phosphor-icons/react";
 import { useState } from "react";
 import axios from 'axios';
 import Cookies from "js-cookie";
@@ -32,7 +32,10 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 		return (
 			<div className={style.background}>
 				<form onSubmit={e => e.preventDefault()} className={style.modal}>
-					<h2 className="text-2xl font-semibold">Nome do vermífugo</h2>
+					<button onClick={() => setOpenVermifuge(false)} className="absolute left-80">
+						<X size={24} color="#22937E" />
+					</button>
+					<h2 className="text-2xl font-semibold mt-4">Nome do vermífugo</h2>
 					<div className="flex pt-6 flex-col gap-1">
 						<p className="text-xs">Proteção</p>
 						<input
