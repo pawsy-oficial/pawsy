@@ -1,7 +1,8 @@
 import { Star } from "@phosphor-icons/react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
+import style from "./style.module.css"
 
 function CommentsClinic({ idClinic }) {
     const isOwner = (Cookies.get().jwtTokenClinic) && true
@@ -10,37 +11,33 @@ function CommentsClinic({ idClinic }) {
     let token
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (comments.length === 0) {
-            token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
-            isOwner
-                ? (
-                    axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                        .then(r => {
-                            setComments(r.data.comments)
-                            setLoading(false);
-                        })
-                        .catch(err => console.log(err))
-                )
-                : (
+    isOwner
+        ? (
+            axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(r => {
+                    setComments(r.data.comments)
+                    setLoading(false);
+                })
+                .catch(err => console.log(err))
+        )
+        : (
 
-                    axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                        .then(r => {
-                            setComments(r.data.comments)
-                            setLoading(false);
-                        })
-                        .catch(err => console.log(err))
-                )
-        }
-    }, [comments])
+            axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(r => {
+                    setComments(r.data.comments)
+                    setLoading(false);
+                })
+                .catch(err => console.log(err))
+        )
+
 
     return (
         <section
@@ -93,15 +90,7 @@ function CommentsClinic({ idClinic }) {
                             </span>
                         </div>
                         <div className="flex gap-4 justify-between items-center mt-3">
-                            <div
-                                className="flex gap-1"
-                            >
-                                <Star color="#22B77E" />
-                                <Star color="#22B77E" />
-                                <Star color="#22B77E" />
-                                <Star color="#22B77E" />
-                                <Star color="#22B77E" />
-                            </div>
+                            <AvaliationStars />
                             <button
                                 title="publicar comentário"
                                 className="bg-primary rounded-lg text-white px-6 py-1 hover:bg-primary/80"
@@ -150,4 +139,38 @@ function BoxComments({ nameTutor, imgTutor, msg, date }) {
     )
 }
 
-export default CommentsClinic
+function AvaliationStars() {
+    const [stars, setStars] = useState(["", "", "", "", ""])
+    const [avaliation, setAvaliation] = useState(3)
+
+    return (
+        <div
+            className={`flex gap-1 flex-row-reverse`}
+        >
+            {
+                console.log("oook")
+            }
+            {
+                stars.map((a, i) => {
+                    return(
+                        <label
+                            className={`${style.hover_effect_star} cursor-pointer`}
+                            key={i}
+                            onClick={()=>setAvaliation(i+1)}
+                        >
+                            <input
+                                type="radio"
+                                name="star"
+                                className={`hidden`}
+                            />
+                            {i}
+                            <Star color="#8fceb6" weight="fill" size={18} className={`${i+1 >= avaliation && "!fill-[#22B77E]"}`}/>
+                        </label>
+                    )
+                })
+            }
+        </div>
+    )
+}
+
+export default memo(CommentsClinic)
