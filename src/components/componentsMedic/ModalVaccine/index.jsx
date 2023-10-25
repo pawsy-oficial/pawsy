@@ -1,18 +1,18 @@
 import style from "./ModalVaccine.module.css";
-import { FloppyDisk } from "@phosphor-icons/react";
+import { FloppyDisk, X } from "@phosphor-icons/react";
 import { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import Cookies from "js-cookie";
 
 export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
   const [vacina, setVacina] = useState("");
-	const [retorno, setRetorno] = useState("")
+  const [retorno, setRetorno] = useState("");
   const jwtTokenMedic = Cookies.get("jwtTokenMedic");
   const data = {
     vacina: vacina,
     id_pet: id,
     id_medic: "1",
-    dt_retorno: retorno
+    dt_retorno: retorno,
   };
   const handleSubmit = async () => {
     try {
@@ -24,7 +24,7 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
         })
         .then((e) => {
           console.log(e);
-          setOpenVaccine(!isOpenVaccine)
+          setOpenVaccine(!isOpenVaccine);
           setVacina("");
         })
         .catch((err) => console.log(err));
@@ -36,6 +36,12 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
     return (
       <div className={style.background}>
         <div className={style.modal}>
+          <button
+            onClick={() => setOpenVaccine(false)}
+            className="absolute left-80"
+          >
+            <X size={24} color="#22937E" />
+          </button>
           <h2 className="text-2xl font-semibold">Registrar nova dose</h2>
           <div className="flex pt-6 flex-col gap-5">
             <div className="flex flex-col gap-1">
@@ -65,7 +71,7 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
               <p className="text-xs">Data de Retorno</p>
               <input
                 value={retorno}
-                onChange={e => setRetorno(e.target.value)}
+                onChange={(e) => setRetorno(e.target.value)}
                 type="date"
                 className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
               />
