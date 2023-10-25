@@ -35,7 +35,6 @@ export default function ProfileClinic() {
         messageError: false
     })
 
-
     let token
 
     useEffect(() => {
@@ -59,27 +58,7 @@ export default function ProfileClinic() {
                 (location.state == null) && navigate(-1),
                 axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${location.state.id}&all=true`)
                     .then(e => {
-                        // console.log(e.data.result[0]);
                         setInfoClinic(e.data.result[0]);
-                        // axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
-                        //     headers: {
-                        //         Authorization: `Bearer ${token}`
-                        //     }
-                        // }).then(res => {
-                        //     axios.get(`${import.meta.env.VITE_URL}/comment/${infoClinic.storedIdClinica}`, {
-                        //         headers: {
-                        //             Authorization: `Bearer ${token}`
-                        //         }
-                        //     })
-                        //         .then(r => {
-                        //             console.log(r.data.comments);
-                        //             setComments(r.data.comments)
-                        //         })
-                        //         .catch(err => console.log(err))
-                        // })
-                        // .catch(err => console.log(err))
-                        
-                        // setTextAboutUs(e.data.storedDescriptionClinica)
                     })
                     .catch(err => {
                         console.log(err)
@@ -169,7 +148,7 @@ export default function ProfileClinic() {
 
 
                 <main className="pl-10 pr-16 pb-8 flex gap-5">
-                    <section className={`flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl`}>
+                    <section className={`flex-1 flex flex-col bg-white px-6 py-8 rounded-2xl h-fit`}>
                         {
                             stateEdit && isOwner
                                 ? <UpdateFormClinic infoClinic={infoClinic} actionStateEdit={setStateEdit} />

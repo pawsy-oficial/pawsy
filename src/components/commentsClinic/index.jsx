@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { memo, useEffect, useState } from "react";
 import style from "./style.module.css"
+import { useForm } from "react-hook-form";
 
 function CommentsClinic({ idClinic }) {
     const isOwner = (Cookies.get().jwtTokenClinic) && true
@@ -10,9 +11,13 @@ function CommentsClinic({ idClinic }) {
     const [comments, setComments] = useState([])
     let token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
     const [loading, setLoading] = useState(true);
+    const [avaliation, setAvaliation] = useState(1)
+    const [error, setError] = useState({
+        active: false,
+        msg: ""
+    })
 
     useEffect(()=>{
-        console.log("oook");
         isOwner
             ? (
                 axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
@@ -23,7 +28,6 @@ function CommentsClinic({ idClinic }) {
                     .then(r => {
                         setComments(r.data.comments)
                         setLoading(false);
-                        console.log(idClinic);
                     })
                     .catch(err => console.log(err))
             )
@@ -42,6 +46,47 @@ function CommentsClinic({ idClinic }) {
             )
     },[idClinic])
 
+    const { handleSubmit, register } = useForm({
+        mode: "onSubmit"
+    })
+
+    const onChange = (data)=>{
+        const dataComments = {
+            textComment: data.comment,
+            scoreEvaluation: avaliation,
+            idClinic,
+            idTutor: 1
+        }
+        
+        dataComments.textComment.length > 0 
+        ? (
+            axios.post(`${import.meta.env.VITE_URL}/comment`, dataComments, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                setAvaliation(1)
+                setValueTextArea("")
+                setError({
+                    active: false,
+                    msg: ""
+                })
+            })
+            .catch(err => {
+                setError({
+                    active: true,
+                    msg: err
+                })
+            })
+        )
+        :(
+            setError({
+                active: true,
+                msg: "comentário muito curto"
+            })
+        )
+    }
 
     return (
         <section
@@ -76,10 +121,20 @@ function CommentsClinic({ idClinic }) {
             </div>
             {
                 !isOwner && (
-                    <div
+                    <form
+                        onSubmit={handleSubmit(onChange)}
                         className="mt-6"
                     >
                         <div className="w-full relative">
+                            {
+                                error.active && (
+                                    <span
+                                        className="text-red-error text-center w-full block mb-1"
+                                    >
+                                        {error.msg}
+                                    </span>
+                                )
+                            }
                             <textarea
                                 className="bg-[#F5FFFE] w-full h-24 border border-primary rounded-lg resize-none p-2 focus:border-primary focus-visible:outline-none"
                                 placeholder="Fazer um comentário"
@@ -87,6 +142,7 @@ function CommentsClinic({ idClinic }) {
                                     const count = e.target.value.length;
                                     count <= 300 && setValueTextArea(e.target.value);
                                 }}
+                                {...register("comment")}
                                 value={valueTextArea}
                             />
                             <span className="absolute right-2 bottom-2 font-lato text-zinc-400">
@@ -94,15 +150,16 @@ function CommentsClinic({ idClinic }) {
                             </span>
                         </div>
                         <div className="flex gap-4 justify-between items-center mt-3">
-                            <AvaliationStars />
+                            <AvaliationStars action={setAvaliation} avaliation={avaliation}  />
                             <button
+                                type="submit"
                                 title="publicar comentário"
                                 className="bg-primary rounded-lg text-white px-6 py-1 hover:bg-primary/80"
                             >
                                 Publicar
                             </button>
                         </div>
-                    </div>
+                    </form>
                 )
             }
         </section>
@@ -143,32 +200,27 @@ function BoxComments({ nameTutor, imgTutor, msg, date }) {
     )
 }
 
-function AvaliationStars() {
+function AvaliationStars({avaliation, action}) {
     const [stars, setStars] = useState(["", "", "", "", ""])
-    const [avaliation, setAvaliation] = useState(3)
 
     return (
         <div
-            className={`flex gap-1 flex-row-reverse`}
+            className={`flex gap-1`}
         >
-            {
-                console.log("oook")
-            }
             {
                 stars.map((a, i) => {
                     return (
                         <label
-                            className={`${style.hover_effect_star} cursor-pointer`}
+                            className={`cursor-pointer`}
                             key={i}
-                            onClick={() => setAvaliation(i + 1)}
+                            onClick={() => action(i + 1)}
                         >
                             <input
                                 type="radio"
                                 name="star"
                                 className={`hidden`}
                             />
-                            {i}
-                            <Star color="#8fceb6" weight="fill" size={18} className={`${i + 1 >= avaliation && "!fill-[#22B77E]"}`} />
+                            <Star color="#8fceb6" weight="fill" size={18} className={`${i + 1 <= avaliation && "!fill-[#22B77E]"}`} />
                         </label>
                     )
                 })
