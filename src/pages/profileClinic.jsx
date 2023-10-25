@@ -61,22 +61,24 @@ export default function ProfileClinic() {
                     .then(e => {
                         // console.log(e.data.result[0]);
                         setInfoClinic(e.data.result[0]);
-                        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        }).then(res => {
-                            axios.get(`${import.meta.env.VITE_URL}/comment/${infoClinic.storedIdClinica}`, {
-                                headers: {
-                                    Authorization: `Bearer ${token}`
-                                }
-                            })
-                                .then(r => {
-                                    console.log(r.data.comments);
-                                    setComments(r.data.comments)
-                                })
-                                .catch(err => console.log(err))
-                        }).catch(err => console.log(err))
+                        // axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+                        //     headers: {
+                        //         Authorization: `Bearer ${token}`
+                        //     }
+                        // }).then(res => {
+                        //     axios.get(`${import.meta.env.VITE_URL}/comment/${infoClinic.storedIdClinica}`, {
+                        //         headers: {
+                        //             Authorization: `Bearer ${token}`
+                        //         }
+                        //     })
+                        //         .then(r => {
+                        //             console.log(r.data.comments);
+                        //             setComments(r.data.comments)
+                        //         })
+                        //         .catch(err => console.log(err))
+                        // })
+                        // .catch(err => console.log(err))
+                        
                         // setTextAboutUs(e.data.storedDescriptionClinica)
                     })
                     .catch(err => {

@@ -8,35 +8,39 @@ function CommentsClinic({ idClinic }) {
     const isOwner = (Cookies.get().jwtTokenClinic) && true
     const [valueTextArea, setValueTextArea] = useState("");
     const [comments, setComments] = useState([])
-    let token
+    let token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
     const [loading, setLoading] = useState(true);
 
-    isOwner
-        ? (
-            axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(r => {
-                    setComments(r.data.comments)
-                    setLoading(false);
+    useEffect(()=>{
+        console.log("oook");
+        isOwner
+            ? (
+                axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
-                .catch(err => console.log(err))
-        )
-        : (
-
-            axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(r => {
-                    setComments(r.data.comments)
-                    setLoading(false);
+                    .then(r => {
+                        setComments(r.data.comments)
+                        setLoading(false);
+                        console.log(idClinic);
+                    })
+                    .catch(err => console.log(err))
+            )
+            : (
+    
+                axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
-                .catch(err => console.log(err))
-        )
+                    .then(r => {
+                        setComments(r.data.comments)
+                        setLoading(false);
+                    })
+                    .catch(err => console.log(err))
+            )
+    },[idClinic])
 
 
     return (
@@ -152,11 +156,11 @@ function AvaliationStars() {
             }
             {
                 stars.map((a, i) => {
-                    return(
+                    return (
                         <label
                             className={`${style.hover_effect_star} cursor-pointer`}
                             key={i}
-                            onClick={()=>setAvaliation(i+1)}
+                            onClick={() => setAvaliation(i + 1)}
                         >
                             <input
                                 type="radio"
@@ -164,7 +168,7 @@ function AvaliationStars() {
                                 className={`hidden`}
                             />
                             {i}
-                            <Star color="#8fceb6" weight="fill" size={18} className={`${i+1 >= avaliation && "!fill-[#22B77E]"}`}/>
+                            <Star color="#8fceb6" weight="fill" size={18} className={`${i + 1 >= avaliation && "!fill-[#22B77E]"}`} />
                         </label>
                     )
                 })
