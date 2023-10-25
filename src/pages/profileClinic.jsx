@@ -28,6 +28,7 @@ export default function ProfileClinic() {
     const [stateEdit, setStateEdit] = useState(false)
     const [editAboutUs, setEditAboutUs] = useState(false)
     const [textAboutUs, setTextAboutUs] = useState(null)
+    const [comments, setComments] = useState([])
     const [popUpMessage, setPopUpMessage] = useState({
         active: false,
         message: null,
@@ -38,7 +39,6 @@ export default function ProfileClinic() {
     let token
 
     useEffect(() => {
-        (location.state == null) && navigate(-1);
         token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
         isOwner
             ? (
@@ -56,10 +56,27 @@ export default function ProfileClinic() {
                     })
             )
             : (
+                (location.state == null) && navigate(-1),
                 axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${location.state.id}&all=true`)
                     .then(e => {
-                        console.log(e.data.result[0]);
+                        // console.log(e.data.result[0]);
                         setInfoClinic(e.data.result[0]);
+                        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }).then(res => {
+                            axios.get(`${import.meta.env.VITE_URL}/comment/${infoClinic.storedIdClinica}`, {
+                                headers: {
+                                    Authorization: `Bearer ${token}`
+                                }
+                            })
+                                .then(r => {
+                                    console.log(r.data.comments);
+                                    setComments(r.data.comments)
+                                })
+                                .catch(err => console.log(err))
+                        }).catch(err => console.log(err))
                         // setTextAboutUs(e.data.storedDescriptionClinica)
                     })
                     .catch(err => {
@@ -103,8 +120,6 @@ export default function ProfileClinic() {
 
         return () => clearTimeout(timer)
     }, [popUpMessage])
-
-
 
     return (
         <main className="flex min-h-screen">
@@ -296,16 +311,9 @@ export default function ProfileClinic() {
 
                         {
                             isOwner && (
-                                <section className="mt-4 flex flex-col gap-4">
-                                    <h1 className="font-bold text-lg">Comentários</h1>
-                                    <div
-                                        className="flex flex-col gap-2"
-                                    >
-                                        <CommentsForClinic />
-                                        <CommentsForClinic />
-                                        <CommentsForClinic />
-                                    </div>
-                                </section>
+                                <CommentsClinic
+                                    idClinic={infoClinic.storedIdClinica}
+                                />
                             )
                         }
                     </section>
@@ -330,8 +338,10 @@ export default function ProfileClinic() {
                                             idClinic={infoClinic.storedIdClinica}
                                             editAboutUs={editAboutUs}
                                             stateEdit={stateEdit}
-                                            />
-                                        <CommentsClinic/>
+                                        />
+                                        <CommentsClinic
+                                            idClinic={infoClinic.storedIdClinica}
+                                        />
                                     </>
                                 )
                         }
@@ -370,7 +380,7 @@ function SectionScoreClinic() {
     )
 }
 
-function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0}) {
+function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0 }) {
     const [open, setOpen] = useState(false)
     const [medics, setMedics] = useState([])
     const [infoMedicSelect, setInfoMedicSelect] = useState()

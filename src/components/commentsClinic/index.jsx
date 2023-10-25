@@ -1,60 +1,122 @@
 import { Star } from "@phosphor-icons/react";
-import { memo, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
-function CommentsClinic() {
+function CommentsClinic({ idClinic }) {
+    const isOwner = (Cookies.get().jwtTokenClinic) && true
     const [valueTextArea, setValueTextArea] = useState("");
+    const [comments, setComments] = useState([])
+    let token
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (comments.length === 0) {
+            token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
+            isOwner
+                ? (
+                    axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                        .then(r => {
+                            setComments(r.data.comments)
+                            setLoading(false);
+                        })
+                        .catch(err => console.log(err))
+                )
+                : (
+
+                    axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                        .then(r => {
+                            setComments(r.data.comments)
+                            setLoading(false);
+                        })
+                        .catch(err => console.log(err))
+                )
+        }
+    }, [comments])
+
     return (
-        <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
+        <section
+            className={`${isOwner ? "w-full mt-4" : "w-96 px-4 py-8"} bg-white rounded-2xl flex flex-col gap-5 h-max`}
+        >
             <h2 className="font-bold text-lg">Comentários</h2>
             <div
-                className="flex flex-col gap-2 h-96 overflow-y-auto"
+                className="flex flex-col gap-2 max-h-[24rem] overflow-y-auto"
             >
-                <BoxComments />
-                <BoxComments />
-                <BoxComments />
-                <BoxComments />
-                <BoxComments />
+                {
+                    loading ? (
+                        <p>Carregando comentários...</p>
+                    ) : (
+                        comments.length === 0 ? (
+                            <p
+                                className="text-zinc-500 text-sm font-lato"
+                            >
+                                Sem comentários
+                            </p>
+                        ) : (
+                            comments.map((comment) => (
+                                <BoxComments
+                                    imgTutor={comment.imageTutor}
+                                    msg={comment.comment}
+                                    nameTutor={comment.nameTutor}
+                                    date={comment.publishedAt}
+                                />
+                            ))
+                        )
+                    )
+                }
             </div>
-            <div
-                className="mt-6"
-            >
-                <div className="w-full relative">
-                    <textarea
-                        className="bg-[#F5FFFE] w-full h-24 border border-primary rounded-lg resize-none p-2 focus:border-primary focus-visible:outline-none"
-                        placeholder="Fazer um comentário"
-                        onInput={(e) => {
-                            const count = e.target.value.length;
-                            count <= 300 && setValueTextArea(e.target.value);
-                        }}
-                        value={valueTextArea}
-                    />
-                    <span className="absolute right-2 bottom-2 font-lato text-zinc-400">
-                        {valueTextArea.length}/300
-                    </span>
-                </div>
-                <div className="flex gap-4 justify-between items-center mt-3">
+            {
+                !isOwner && (
                     <div
-                        className="flex gap-1"
+                        className="mt-6"
                     >
-                        <Star color="#22B77E" />
-                        <Star color="#22B77E" />
-                        <Star color="#22B77E" />
-                        <Star color="#22B77E" />
-                        <Star color="#22B77E" />
+                        <div className="w-full relative">
+                            <textarea
+                                className="bg-[#F5FFFE] w-full h-24 border border-primary rounded-lg resize-none p-2 focus:border-primary focus-visible:outline-none"
+                                placeholder="Fazer um comentário"
+                                onInput={(e) => {
+                                    const count = e.target.value.length;
+                                    count <= 300 && setValueTextArea(e.target.value);
+                                }}
+                                value={valueTextArea}
+                            />
+                            <span className="absolute right-2 bottom-2 font-lato text-zinc-400">
+                                {valueTextArea.length}/300
+                            </span>
+                        </div>
+                        <div className="flex gap-4 justify-between items-center mt-3">
+                            <div
+                                className="flex gap-1"
+                            >
+                                <Star color="#22B77E" />
+                                <Star color="#22B77E" />
+                                <Star color="#22B77E" />
+                                <Star color="#22B77E" />
+                                <Star color="#22B77E" />
+                            </div>
+                            <button
+                                title="publicar comentário"
+                                className="bg-primary rounded-lg text-white px-6 py-1 hover:bg-primary/80"
+                            >
+                                Publicar
+                            </button>
+                        </div>
                     </div>
-                    <button
-                        title="publicar comentário"
-                        className="bg-primary rounded-lg text-white px-6 py-1 hover:bg-primary/80"
-                    >
-                        Publicar
-                    </button>
-                </div>
-            </div>
+                )
+            }
         </section>
     )
 }
 
-function BoxComments() {
+function BoxComments({ nameTutor, imgTutor, msg, date }) {
     return (
         <div
             className="p-2 rounded bg-[#F5FFFE] flex gap-3"
@@ -63,8 +125,8 @@ function BoxComments() {
                 className="min-w-[2rem] h-8 rounded-full overflow-hidden border border-primary"
             >
                 <img
-                    src="https://github.com/rom013.png"
-                    alt=""
+                    src={`${import.meta.env.VITE_URL}/files/${imgTutor}`}
+                    alt={`@${nameTutor}`}
                     draggable={false}
                     className="w-full h-full object-cover"
                 />
@@ -76,16 +138,16 @@ function BoxComments() {
                 <span
                     className="font-lato font-bold capitalize"
                 >
-                    rom013
+                    {nameTutor}
                 </span>
                 <p
                     className="leading-relaxed font-lato text-sm"
                 >
-                    Belo atendimentoBelo atendimentoBelo atendimentoBelo atendimentoBelo atendimentoBelo atendimentoBelo atendimentoBelo atendimento
+                    {msg}
                 </p>
             </div>
         </div>
     )
 }
 
-export default memo(CommentsClinic)
+export default CommentsClinic
