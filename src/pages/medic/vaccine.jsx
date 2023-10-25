@@ -19,160 +19,17 @@ export default function Vaccine() {
   const location = useLocation();
   const { idPet } = location.state.pet;
 
-  const table = [
-    [
-      //Caramelo (pets[0])
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2021-03-24",
-          returnVaccine: "2022-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2022-03-24",
-          returnVaccine: "2023-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-    ],
-    [
-      //Oreo (pets[1])
-      [
-        {
-          vaccineName: "V8",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-    ],
-    [
-      //Flor (pets[2])
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2021-03-24",
-          returnVaccine: "2022-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2022-03-24",
-          returnVaccine: "2023-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-    ],
-    [
-      //Pantera (pets[3])
-      [
-        {
-          vaccineName: "Antirrábica",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2020-03-24",
-          returnVaccine: "2021-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2021-03-24",
-          returnVaccine: "2022-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-      [
-        {
-          vaccineName: "Viratec 10 CVL",
-          dateVaccine: "2022-03-24",
-          returnVaccine: "2023-03-24",
-          vetAplication: "Vanessa Santos",
-        },
-      ],
-    ],
-  ];
+  const requestVaccine = {
+    method: "GET",
+    url: `${import.meta.env.VITE_URL}/get-vaccine`,
+    headers: {
+      Authorization: "Bearer " + jwtTokenMedic,
+    },
+  };
 
-  //Lista Vermes
+  const [tableVaccine, setTableVaccine] = useState([]);
 
-  const request = {
+  const request_vermifuge = {
     method: "GET",
     url: `${import.meta.env.VITE_URL}/add-new-vermifuge`,
     headers: {
@@ -183,25 +40,37 @@ export default function Vaccine() {
   const [tableVermifugo, setTableVermifugo] = useState([]);
 
   useEffect(() => {
-    axios(request)
+    axios(request_vermifuge)
       .then((e) => {
-        // console.log(e);
-        // console.log(e.data.results);
         setTableVermifugo(
           e.data.results.map((item) => {
-            console.log(e);
             return {
               dateVermifugo: item.dt_aplicacao.slice(0, 10),
               nameVermifugo: item.nm_vermifugo,
             };
           })
         );
-        // console.log(tableVermifugo);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [openVermifuge]);
+    axios(requestVaccine)
+      .then((e) => {
+        setTableVaccine(
+          e.data.results.map((item) => {
+            return {
+              nameVaccine: item.nm_vacina,
+              dateAplicacao: item.dt_aplicacao.slice(0, 10),
+              dateRetorno: item.dt_retorno.slice(0, 10),
+              nameVet: "Fernando Boiola",
+            };
+          })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [openVermifuge, openVaccine]);
 
   const navigate = useNavigate();
   return (
@@ -243,19 +112,13 @@ export default function Vaccine() {
                   </tr>
                 </thead>
                 <tbody className="second">
-                  {table[positioPet].map((e) => {
+                {tableVaccine.map((e, i) => {
                     return (
-                      <tr className="border-b border-black">
-                        {e.map((f) => {
-                          return (
-                            <>
-                              <td>{f.vaccineName}</td>
-                              <td>{f.dateVaccine}</td>
-                              <td>{f.returnVaccine}</td>
-                              <td>{f.vetAplication}</td>
-                            </>
-                          );
-                        })}
+                      <tr key={i} className="border-b border-black">
+                        <td className="py-1">{e.nameVaccine}</td>
+                        <td className="py-1">{e.dateAplicacao}</td>
+                        <td className="py-1">{e.dateRetorno}</td>
+                        <td className="py-1">{e.nameVet}</td>
                       </tr>
                     );
                   })}

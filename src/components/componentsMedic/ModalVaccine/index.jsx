@@ -12,12 +12,14 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
     vacina: vacina,
     id_pet: id,
     id_medic: "1",
+    id_clinic: "1",
     dt_retorno: retorno,
   };
   const handleSubmit = async () => {
+    console.log(vacina);
     try {
       axios
-        .post(`${import.meta.env.VITE_URL}/vermifuge`, data, {
+        .post(`${import.meta.env.VITE_URL}/vaccine`, data, {
           headers: {
             Authorization: "Bearer " + jwtTokenMedic,
           },
@@ -46,32 +48,27 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
           <div className="flex pt-6 flex-col gap-5">
             <div className="flex flex-col gap-1">
               <p className="text-xs">Proteção</p>
-              <input
-                autoFocus
-                type="text"
+              <select
                 value={vacina}
                 onChange={(e) => setVacina(e.target.value)}
-                name="vacina"
-                className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
-              />
-              {/* <select
-                name=""
-                id=""
                 className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary focus-visible:outline-none hover:border-primary"
               >
-                <option value="">Antirrábica</option>
-                <option value="">Viratec 10 CVL</option>
-                <option value="">Giárdia</option>
-                <option value="">Leishmaniose</option>
-                <option value="">Gripe canina</option>
-                <option value="">Polivalente</option>
-              </select> */}
+                <option value="Antirrábica">Antirrábica</option>
+                <option value="Viratec 10 CVL">Viratec 10 CVL</option>
+                <option value="Giárdia">Giárdia</option>
+                <option value="Leishmaniose">Leishmaniose</option>
+                <option value="Gripe canina">Gripe canina</option>
+                <option value="Polivalente">Polivalente</option>
+              </select>
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-xs">Data de Retorno</p>
               <input
                 value={retorno}
-                onChange={(e) => setRetorno(e.target.value)}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setRetorno(e.target.value);
+                }}
                 type="date"
                 className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
               />
@@ -79,7 +76,7 @@ export function ModalVaccine({ isOpenVaccine, setOpenVaccine, id }) {
           </div>
           <div className="flex flex-row place-content-end pt-6">
             <button
-              onClick={() => setOpenVaccine(!isOpenVaccine)}
+              onClick={handleSubmit}
               className="flex items-center bg-[#22937E] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
             >
               <FloppyDisk size={24} />
