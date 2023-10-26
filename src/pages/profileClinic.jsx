@@ -1,12 +1,11 @@
 import { Header } from "../components/header/Header";
-import { NavBar, NavbarClinic, NavbarTutor } from "../components/Navbar";
+import { NavbarClinic, NavbarTutor } from "../components/Navbar";
 import { ModalSeeMedic } from "../components/ClinicPerfilComponents/ModalSeeMedic";
-import { CommentsForClinic } from "../components/ClinicPerfilComponents/CommentsForClinic";
 import { ModalAddMedic } from "../components/ClinicPerfilComponents/ModalAddMedic";
 import ClientsPerfil, { SectionScoreClinic, VaccinePets } from "../components/cardsAndBoxes/cardClinicProfile";
 import MedicForClinic from "../components/ClinicPerfilComponents/MedicForClinic";
 
-import { PlusCircle, Star } from "@phosphor-icons/react";
+import { PlusCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -28,7 +27,6 @@ export default function ProfileClinic() {
     const [stateEdit, setStateEdit] = useState(false)
     const [editAboutUs, setEditAboutUs] = useState(false)
     const [textAboutUs, setTextAboutUs] = useState(null)
-    const [comments, setComments] = useState([])
     const [popUpMessage, setPopUpMessage] = useState({
         active: false,
         message: null,
@@ -336,53 +334,6 @@ export default function ProfileClinic() {
         </main>
     )
 }
-
-// function SectionScoreClinic({ average }) {
-//     const [ star, setStar ] = useState([""])
-
-//     useEffect(()=>{
-//         addStarFill(average)
-//         // addStarNoFill()
-//     },[average])
-    
-//     function addStarFill(value){
-//         const stars = []
-//         for (let i = 0; i < parseInt(value); i++) {
-//             stars.push({fill: true})
-//         }
-//         for (let i = 0; i < 5 - parseInt(value); i++) {
-//             stars.push({fill: false})
-//         }
-//         setStar(stars)
-//     }
-
-//     return (
-//         <section className="w-96 bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-max border-l-4 border-secundary">
-//             <h2 className="font-bold text-lg">
-//                 Avaliação
-//             </h2>
-
-//             <div
-//                 className="flex gap-4 items-center"
-//             >
-//                 <span
-//                     className="text-sm font-lato font-semibold"
-//                 >
-//                     {average}
-//                 </span>
-//                 <div
-//                     className="flex items-center gap-2"
-//                 >
-//                     {
-//                         star.map(s => {
-//                             return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
-//                         })
-//                     }
-//                 </div>
-//             </div>
-//         </section>
-//     )
-// }
 
 function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0 }) {
     const [open, setOpen] = useState(false)
