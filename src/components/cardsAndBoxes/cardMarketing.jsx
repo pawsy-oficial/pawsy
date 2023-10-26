@@ -29,7 +29,7 @@ export default function Post({ content, onDeletePost }) {
 	}
 
 	return (
-		<div className="w-[69rem] h-[18rem] bg-white rounded-lg gap-6 flex p-6">
+		<div className="w-full h-[18rem] bg-white rounded-lg gap-6 flex p-6">
 			<div className="">
 				<img src={photoMarketing} alt="" />
 			</div>

@@ -20,11 +20,10 @@ function InputFile() {
     }
 
     return (
-        <form
-            action=""
-            className="relative flex flex-col text-center py-[0.4rem]"
+        <section
+            className="flex flex-col justify-center"
         >
-            <div className="bg-gray-white border border-primary rounded-lg w-[17.313rem] h-64">
+            <div className="bg-gray-white border-2 self-center border-primary rounded-lg w-64 h-64">
                 <label
                     className="justify-center flex items-center h-full cursor-pointer"
                     htmlFor="inputFile"
@@ -48,14 +47,6 @@ function InputFile() {
                             )
                     }
                 </label>
-                <div className="absolute right-0 py-[2rem]">
-                    <button
-                        className="bg-[#04AD34] hover:bg-[#12be18] h-10 w-28 rounded-lg text-white flex flex-row items-center justify-center gap-3"
-                        type="submit"
-                    >
-                        Publicar <PaperPlaneTilt />
-                    </button>
-                </div>
                 <input
                     className="hidden"
                     type="file"
@@ -64,8 +55,7 @@ function InputFile() {
                     id="inputFile"
                 />
             </div>
-            <p className="text-[#909090] text-xs ">800 x 800</p>
-        </form>
+        </section>
     )
 }
 
