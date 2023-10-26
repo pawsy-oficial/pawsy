@@ -7,7 +7,6 @@ import Revenues from "./pages/tutor/Revenues";
 import WellBeing from "./pages/tutor/WellCloser";
 import ScheduleTutor from "./pages/tutor/ScheduleTutor";
 import Clinic from "./pages/clinic/Clinic";
-import Perfil from "./pages/clinic/Perfil";
 import Schedule from "./pages/clinic/Schedule";
 import Marketing from "./pages/clinic/Marketing";
 import Patient from "./pages/clinic/Patients";

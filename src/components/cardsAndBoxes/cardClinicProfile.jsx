@@ -3,18 +3,18 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { memo, useEffect, useState } from 'react';
 
-function ClientsPerfil({idClinc}) {
+function ClientsPerfil({ idClinc }) {
     const [clientClinic, setClientClinic] = useState([])
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/countPatients/${idClinc}`, {
-            headers:{
+            headers: {
                 Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
             }
         }).then(e => setClientClinic(e.data.client)).catch(err => console.log(err))
-    },[])
-    
-    return(
-        <div className="w-64 bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
+    }, [])
+
+    return (
+        <div className="w-full max-w-[24rem] bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
             <h4 className="p-3 text-lg font-medium">
                 Clientes
             </h4>
@@ -33,9 +33,9 @@ function ClientsPerfil({idClinc}) {
 }
 
 export function VaccinePets() {
-    const clients = ['69','20'];
-    return(
-        <div className="w-64 bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
+    const clients = ['69', '20'];
+    return (
+        <div className="w-full max-w-[24rem] bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
             <h4 className="p-3 text-lg font-medium">
                 PetS Vacinados
             </h4>
@@ -49,21 +49,65 @@ export function VaccinePets() {
     )
 }
 
-export function Avaliation() {
-    return(
-        <div className="w-64 bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
-            <h4 className="p-3 text-lg font-medium">
+export function SectionScoreClinic({ idClinic }) {
+    const [star, setStar] = useState([""])
+    const [average, setAverage] = useState(0)
+
+    let token
+    useEffect(() => {
+        console.log(idClinic);
+        token = Cookies.get("jwtTokenClinic") || Cookies.get("jwtTokenTutor")
+        axios.get(`${import.meta.env.VITE_URL}/comment/${idClinic}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(r => {
+                setAverage(r.data.average.average ?? 0)
+                addStarFill(r.data.average.average ?? 0)
+                // setLoading(false);
+            })
+            .catch(err => console.log(err))
+    }, [idClinic])
+
+    function addStarFill(value) {
+        const stars = []
+        for (let i = 0; i < parseInt(value); i++) {
+            stars.push({ fill: true })
+        }
+        for (let i = 0; i < 5 - parseInt(value); i++) {
+            stars.push({ fill: false })
+        }
+        setStar(stars)
+    }
+
+    return (
+        <section className="w-full max-w-[24rem] bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-full border-l-4 border-secundary">
+            <h2 className="font-bold text-lg">
                 Avaliação
-            </h4>
-            <div className="flex items-center">
-                <p className=" pl-3 text-2xl">5</p>
-                <Star className="pl-3" size={34}/>
-                <Star size={22}/>
-                <Star size={22}/>
-                <Star size={22}/>
-                <Star size={22}/>
+            </h2>
+
+            <div
+                className="flex gap-4 items-center"
+            >
+                <span
+                    className="text-sm font-lato font-semibold"
+                >
+                    {
+                        parseFloat(average)
+                    }
+                </span>
+                <div
+                    className="flex items-center gap-2"
+                >
+                    {
+                        star.map(s => {
+                            return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
+                        })
+                    }
+                </div>
             </div>
-        </div>
+        </section>
     )
 }
 

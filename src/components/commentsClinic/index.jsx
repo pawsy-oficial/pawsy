@@ -57,8 +57,8 @@ function CommentsClinic({ idClinic }) {
             idClinic,
             idTutor: 1
         }
-        
-        dataComments.textComment.length > 0 
+        console.log(dataComments.textComment);
+        valueTextArea.length > 0 
         ? (
             axios.post(`${import.meta.env.VITE_URL}/comment`, dataComments, {
                 headers: {
@@ -68,6 +68,7 @@ function CommentsClinic({ idClinic }) {
             .then(res => {
                 setAvaliation(1)
                 setValueTextArea("")
+                dataComments.textComment = ""
                 setError({
                     active: false,
                     msg: ""

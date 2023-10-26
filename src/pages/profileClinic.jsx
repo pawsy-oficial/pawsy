@@ -3,7 +3,7 @@ import { NavBar, NavbarClinic, NavbarTutor } from "../components/Navbar";
 import { ModalSeeMedic } from "../components/ClinicPerfilComponents/ModalSeeMedic";
 import { CommentsForClinic } from "../components/ClinicPerfilComponents/CommentsForClinic";
 import { ModalAddMedic } from "../components/ClinicPerfilComponents/ModalAddMedic";
-import ClientsPerfil, { Avaliation, VaccinePets } from "../components/cardsAndBoxes/cardClinicProfile";
+import ClientsPerfil, { SectionScoreClinic, VaccinePets } from "../components/cardsAndBoxes/cardClinicProfile";
 import MedicForClinic from "../components/ClinicPerfilComponents/MedicForClinic";
 
 import { PlusCircle, Star } from "@phosphor-icons/react";
@@ -102,6 +102,7 @@ export default function ProfileClinic() {
         return () => clearTimeout(timer)
     }, [popUpMessage])
 
+
     return (
         <main className="flex min-h-screen">
             {
@@ -115,10 +116,10 @@ export default function ProfileClinic() {
                         <main className="pl-10 pr-16 py-8 flex gap-5">
                             {
                                 infoClinic.storedIdClinica && (
-                                    <div className="flex gap-5">
+                                    <div className="flex gap-5 w-full justify-between">
                                         <ClientsPerfil idClinc={infoClinic.storedIdClinica} />
                                         <VaccinePets />
-                                        <Avaliation />
+                                        <SectionScoreClinic idClinic={infoClinic.storedIdClinica} />
                                     </div>
                                 )
                             }
@@ -311,7 +312,9 @@ export default function ProfileClinic() {
                                 />
                                 : (
                                     <>
-                                        <SectionScoreClinic />
+                                        <SectionScoreClinic
+                                            idClinic={infoClinic.storedIdClinica}
+                                        />
                                         <SectionMedicsClinic
                                             see={see}
                                             setSee={setSee}
@@ -334,32 +337,52 @@ export default function ProfileClinic() {
     )
 }
 
-function SectionScoreClinic() {
-    return (
-        <section className="w-96 bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-max border-l-4 border-secundary">
-            <h2 className="font-bold text-lg">Médicos veterinários</h2>
+// function SectionScoreClinic({ average }) {
+//     const [ star, setStar ] = useState([""])
 
-            <div
-                className="flex gap-4 items-center"
-            >
-                <span
-                    className="text-sm font-lato font-semibold"
-                >
-                    4.7
-                </span>
-                <div
-                    className="flex items-center gap-2"
-                >
-                    <Star weight="fill" color="#FFA800" size={20} />
-                    <Star weight="fill" color="#FFA800" size={20} />
-                    <Star weight="fill" color="#FFA800" size={20} />
-                    <Star color="#FFA800" size={20} />
-                    <Star color="#FFA800" size={20} />
-                </div>
-            </div>
-        </section>
-    )
-}
+//     useEffect(()=>{
+//         addStarFill(average)
+//         // addStarNoFill()
+//     },[average])
+    
+//     function addStarFill(value){
+//         const stars = []
+//         for (let i = 0; i < parseInt(value); i++) {
+//             stars.push({fill: true})
+//         }
+//         for (let i = 0; i < 5 - parseInt(value); i++) {
+//             stars.push({fill: false})
+//         }
+//         setStar(stars)
+//     }
+
+//     return (
+//         <section className="w-96 bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-max border-l-4 border-secundary">
+//             <h2 className="font-bold text-lg">
+//                 Avaliação
+//             </h2>
+
+//             <div
+//                 className="flex gap-4 items-center"
+//             >
+//                 <span
+//                     className="text-sm font-lato font-semibold"
+//                 >
+//                     {average}
+//                 </span>
+//                 <div
+//                     className="flex items-center gap-2"
+//                 >
+//                     {
+//                         star.map(s => {
+//                             return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
+//                         })
+//                     }
+//                 </div>
+//             </div>
+//         </section>
+//     )
+// }
 
 function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0 }) {
     const [open, setOpen] = useState(false)
