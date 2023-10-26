@@ -1,10 +1,10 @@
 import photoMarketing from "../../img/photoMarketing.png";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
-export default function Post({ content, onDeletePost }) {
+function Post({ content, onDeletePost }) {
 	const notify = (message) => {
 		toast.success("Ação realizada com sucesso", {
 			position: "top-center",
@@ -48,9 +48,6 @@ export default function Post({ content, onDeletePost }) {
 					<p>Campanha de vacinação</p>
 					<p>15 dias</p>
 				</div>
-				{
-					console.log('ddddd')
-				}
 				<div className="items-end flex gap-6">
 					<button
 						title="Deletar Post"
@@ -86,3 +83,5 @@ export default function Post({ content, onDeletePost }) {
 		</div>
 	);
 }
+
+export default memo(Post)

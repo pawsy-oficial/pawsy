@@ -4,11 +4,20 @@ import { NavbarClinic } from "../../components/Navbar";
 import { useState } from "react";
 import InputFile from "../../components/inputFile/inputFile";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
+import { useForm } from "react-hook-form";
 
 export default function Marketing() {
 	const [valueTextArea, setValueTextArea] = useState("");
 	const [valueInput, setValueInput] = useState("");
 	const [selectedOption, setSelectedOption] = useState("");
+
+	const { handleSubmit, register } = useForm({
+		mode: "onSubmit"
+	})
+
+	const onSubmit = (data)=>{
+		console.log(data);
+	}
 
 	const handleOptionChange = (event) => {
 		setSelectedOption(event.target.value);
@@ -32,7 +41,7 @@ export default function Marketing() {
 						</h2>
 
 						<form
-							action=""
+							onSubmit={handleSubmit(onSubmit)}
 							className="border border-primary rounded-lg flex flex-col gap-2 p-4 bg-white w-full"
 						>
 							<div
@@ -54,6 +63,7 @@ export default function Marketing() {
 												}}
 												value={valueInput}
 												type="text"
+												{...register("title")}
 											/>
 											<span className="absolute right-2 bottom-1 font-lato text-zinc-400">
 												{valueInput.length}/64
@@ -75,7 +85,8 @@ export default function Marketing() {
 													count <= 300 && setValueTextArea(e.target.value);
 												}}
 												value={valueTextArea}
-											></textarea>
+												{...register("description")}
+											/>
 											<span className="absolute right-2 bottom-2 font-lato text-zinc-400">
 												{valueTextArea.length}/300
 											</span>
@@ -98,8 +109,7 @@ export default function Marketing() {
 												name="options"
 												value="option1"
 												id="option1"
-												checked={selectedOption === "option1"}
-												onChange={handleOptionChange}
+												{...register("typeAd")}
 											/>
 											<label className="text-xs cursor-pointer" htmlFor="option1">
 												Campanha de vacinação
@@ -113,8 +123,7 @@ export default function Marketing() {
 												name="options"
 												value="option2"
 												id="option2"
-												checked={selectedOption === "option2"}
-												onChange={handleOptionChange}
+												{...register("typeAd")}
 											/>
 											<label className="text-xs cursor-pointer" htmlFor="option2">
 												Campanha de castração
@@ -128,8 +137,7 @@ export default function Marketing() {
 												name="options"
 												value="option3"
 												id="option3"
-												checked={selectedOption === "option3"}
-												onChange={handleOptionChange}
+												{...register("typeAd")}
 											/>
 											<label className="text-xs cursor-pointer" htmlFor="option3">
 												Doação
@@ -143,8 +151,7 @@ export default function Marketing() {
 												name="options"
 												value="option4"
 												id="option4"
-												checked={selectedOption === "option4"}
-												onChange={handleOptionChange}
+												{...register("typeAd")}
 											/>
 											<label className="text-xs cursor-pointer" htmlFor="option4">
 												Promoção
@@ -159,6 +166,7 @@ export default function Marketing() {
 												className="bg-gray-white font-bold border border-primary focus:border-primary focus:outline-primary rounded-lg w-[3.5rem] h-[3rem] text-center text-lg"
 												name="days"
 												id="days"
+												{...register("dateLimit")}
 											>
 												{/* <option value="" disabled selected defaultValue=""></option> */}
 												<option value="5">5</option>
