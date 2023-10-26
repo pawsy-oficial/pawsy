@@ -4,8 +4,9 @@ import Cookies from "js-cookie";
 import { memo, useEffect, useState } from "react";
 import style from "./style.module.css"
 import { useForm } from "react-hook-form";
+import dayjs from "dayjs";
 
-function CommentsClinic({ idClinic }) {
+function CommentsClinic({ idClinic, temp }) {
     const isOwner = (Cookies.get().jwtTokenClinic) && true
     const [valueTextArea, setValueTextArea] = useState("");
     const [comments, setComments] = useState([])
@@ -16,6 +17,8 @@ function CommentsClinic({ idClinic }) {
         active: false,
         msg: ""
     })
+    
+    const [ idTutor, setIdTutor ] = useState(0)
 
     useEffect(()=>{
         isOwner
@@ -40,7 +43,15 @@ function CommentsClinic({ idClinic }) {
                 })
                     .then(r => {
                         setComments(r.data.comments)
-                        setLoading(false);
+
+                        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }).then(res => {
+                            setIdTutor(res.data.storedIdTutor);
+                            setLoading(false);
+                        }).catch(err => console.log(err))
                     })
                     .catch(err => console.log(err))
             )
@@ -55,9 +66,9 @@ function CommentsClinic({ idClinic }) {
             textComment: data.comment,
             scoreEvaluation: avaliation,
             idClinic,
-            idTutor: 1
+            idTutor: idTutor
         }
-        console.log(dataComments.textComment);
+        
         valueTextArea.length > 0 
         ? (
             axios.post(`${import.meta.env.VITE_URL}/comment`, dataComments, {
@@ -73,6 +84,7 @@ function CommentsClinic({ idClinic }) {
                     active: false,
                     msg: ""
                 })
+                temp("")
             })
             .catch(err => {
                 setError({
@@ -170,27 +182,43 @@ function CommentsClinic({ idClinic }) {
 function BoxComments({ nameTutor, imgTutor, msg, date }) {
     return (
         <div
-            className="p-2 rounded bg-[#F5FFFE] flex gap-3"
+            className="p-2 rounded bg-[#F5FFFE] flex flex-col gap-3"
         >
             <div
-                className="min-w-[2rem] h-8 rounded-full overflow-hidden border border-primary"
+                className="flex justify-between gap-2"
             >
-                <img
-                    src={`${import.meta.env.VITE_URL}/files/${imgTutor}`}
-                    alt={`@${nameTutor}`}
-                    draggable={false}
-                    className="w-full h-full object-cover"
-                />
+                <div
+                    className="flex gap-2 items-center"
+                >
+                    <div
+                        className="max-w-[2rem] w-full h-8 rounded-full overflow-hidden border border-primary"
+                    >
+                        <img
+                            src={`${import.meta.env.VITE_URL}/files/${imgTutor}`}
+                            alt={`@${nameTutor}`}
+                            draggable={false}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <span
+                        className="font-lato font-bold capitalize "
+                    >
+                        {nameTutor}
+                    </span>
+                </div>
+                <span
+                    className="text-zinc-500 text-sm"
+                >
+                    {
+                        dayjs(date).format("DD/MM/YYYY")
+                    }
+                </span>
             </div>
 
             <div
                 className="flex flex-col gap-2"
             >
-                <span
-                    className="font-lato font-bold capitalize"
-                >
-                    {nameTutor}
-                </span>
+                
                 <p
                     className="leading-relaxed font-lato text-sm"
                 >

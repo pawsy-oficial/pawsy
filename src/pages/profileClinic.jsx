@@ -33,6 +33,8 @@ export default function ProfileClinic() {
         messageError: false
     })
 
+    const [ temp, setTemp ] = useState() // state temporario, depois jogar fora essa porcaria :)
+
     let token
 
     useEffect(() => {
@@ -322,6 +324,7 @@ export default function ProfileClinic() {
                                             stateEdit={stateEdit}
                                         />
                                         <CommentsClinic
+                                            temp={setTemp}
                                             idClinic={infoClinic.storedIdClinica}
                                         />
                                     </>
