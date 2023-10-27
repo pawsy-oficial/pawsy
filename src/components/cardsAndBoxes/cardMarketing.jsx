@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
 import { memo, useState } from "react";
 
-function PostAd({ title, description, limiteDate, limit, typeAd, image }) {
+function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, loading }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -60,7 +60,12 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image }) {
 					</button>
 				</div>
 			</div>
-			<ModalDeletePost isOpen={open} setOpen={setOpen} />
+			<ModalDeletePost 
+				isOpen={open} 
+				setOpen={setOpen} 
+				idPost={idPost}
+				loading={loading}
+			/>
 		</div>
 	);
 }

@@ -1,5 +1,24 @@
-export default function ModalDeletePost({ isOpen, setOpen }) {
+import axios from "axios";
+import Cookies from "js-cookie";
+
+export default function ModalDeletePost({ isOpen, setOpen, idPost: idAd, loading }) {
 	isOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto"
+	
+	function deletePost(){
+		loading(true)
+		axios.delete(`${import.meta.env.VITE_URL}/ads/${idAd}`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+			}
+		})
+		.then(res => {
+			console.log(res)
+			setOpen(!isOpen)
+			loading(false)
+		})
+		.catch(err => console.log(err))
+	}
+
 	return (
 		<>
 			{
@@ -15,9 +34,9 @@ export default function ModalDeletePost({ isOpen, setOpen }) {
 							</div>
 							<div className="flex flex-row justify-end pt-6 gap-4">
 								<button
-									onClick={() => setOpen(!isOpen)}
+									onClick={deletePost}
 									className="flex items-center border text-emerald-600 font-bold border-primary hover:bg-primary hover:text-white px-6 py-1 justify-center rounded-lg"
-								>
+									>
 									Confirmar
 								</button>
 								<button

@@ -32,6 +32,7 @@ export default function Marketing() {
 	const [optionsTypeAds, setOptionsTypeAds] = useState([])
 	const [idClinic, setIdClinic] = useState(null)
 	const [ads, setAds] = useState([])
+	const [loading, setLoading] = useState(false)
 
 	/* Image section */
 
@@ -61,6 +62,8 @@ export default function Marketing() {
 	const { errors } = formState
 
 	const onSubmit = (data) => {
+		setLoading(true)
+
 		const token = Cookies.get("jwtTokenClinic")
 		const time = new Date().getTime()
 		const urlImageProfile = `${time}_pawsy_${selectImage.name}`
@@ -85,6 +88,7 @@ export default function Marketing() {
 					.then(() => {
 						console.log(res.data.message)
 						reset()
+						setLoading(false)
 					})
 					.catch(err => console.log(err))
 			})
@@ -114,7 +118,7 @@ export default function Marketing() {
 			.then(e => setOptionsTypeAds(e.data.types))
 			.catch(err => console.error(err))
 
-	}, [])
+	}, [loading])
 
 	/* end section forms */
 
@@ -322,6 +326,8 @@ export default function Marketing() {
 												limiteDate={ad.tmp_final}
 												typeAd={ad.typeAd}
 												limit={5}
+												idPost={ad.idPost}
+												loading={setLoading}
 											/>
 										)
 									})
