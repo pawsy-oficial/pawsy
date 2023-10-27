@@ -1,27 +1,55 @@
 import Post from "../../components/cardsAndBoxes/cardMarketing";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputFile from "../../components/inputFile/inputFile";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
 
 export default function Marketing() {
 	const [valueTextArea, setValueTextArea] = useState("");
 	const [valueInput, setValueInput] = useState("");
-	const [selectedOption, setSelectedOption] = useState("");
+	const [optionsTypeAds, setOptionsTypeAds] = useState([])
 
-	const { handleSubmit, register } = useForm({
+	/* Image section */
+
+	const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+
+	useEffect(() => {
+        if (selectImage) {
+            console.log(selectImage);
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+                console.log("A imagem não atende os requisitos ");
+            }
+            else {
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    }, [selectImage])
+
+	/* end Image section */
+
+
+	const { handleSubmit, register, control } = useForm({
 		mode: "onSubmit"
 	})
 
-	const onSubmit = (data)=>{
-		console.log(data);
+	const onSubmit = (data) => {
+		const time = new Date().getTime()
+        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+		data.image = urlImageProfile
+		
+
+		
 	}
 
-	const handleOptionChange = (event) => {
-		setSelectedOption(event.target.value);
-	};
+	useEffect(() => {
+		axios.get(`${import.meta.env.VITE_URL}/getAllTypeAds`)
+			.then(e => setOptionsTypeAds(e.data.types))
+			.catch(err => console.error(err))
+	}, [])
 
 	return (
 		<main className="flex min-h-screen">
@@ -96,71 +124,32 @@ export default function Marketing() {
 
 								<section className="flex flex-col gap-6">
 									<div className="flex flex-col gap-2">
-										<p
+										<h3
 											className="text-lg"
 										>
 											Tipo do anúncio
-										</p>
-
-										<div className="flex items-center gap-2">
-											<input
-												className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
-												type="radio"
-												name="options"
-												value="option1"
-												id="option1"
-												{...register("typeAd")}
-											/>
-											<label className="text-xs cursor-pointer" htmlFor="option1">
-												Campanha de vacinação
-											</label>
-										</div>
-
-										<div className="flex items-center gap-2">
-											<input
-												className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
-												type="radio"
-												name="options"
-												value="option2"
-												id="option2"
-												{...register("typeAd")}
-											/>
-											<label className="text-xs cursor-pointer" htmlFor="option2">
-												Campanha de castração
-											</label>
-										</div>
-
-										<div className="flex items-center gap-2">
-											<input
-												className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
-												type="radio"
-												name="options"
-												value="option3"
-												id="option3"
-												{...register("typeAd")}
-											/>
-											<label className="text-xs cursor-pointer" htmlFor="option3">
-												Doação
-											</label>
-										</div>
-
-										<div className="flex items-center gap-2">
-											<input
-												className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
-												type="radio"
-												name="options"
-												value="option4"
-												id="option4"
-												{...register("typeAd")}
-											/>
-											<label className="text-xs cursor-pointer" htmlFor="option4">
-												Promoção
-											</label>
-										</div>
+										</h3>
+										{
+											optionsTypeAds.map(optionsType => {
+												return(
+													<label className="flex items-center gap-2">
+														<input
+															className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
+															type="radio"
+															value={optionsType.id_anuncio}
+															{...register("typeAd")}
+														/>
+														<span className="text-xs cursor-pointer">
+															{optionsType.nm_anuncio}
+														</span>
+													</label>
+												)
+											})
+										}
 									</div>
 
 									<div className="flex flex-col gap-2">
-										<p className="text-lg">Período do anúncio</p>
+										<h3 className="text-lg">Período do anúncio</h3>
 										<div className="flex items-center gap-2">
 											<select
 												className="bg-gray-white font-bold border border-primary focus:border-primary focus:outline-primary rounded-lg w-[3.5rem] h-[3rem] text-center text-lg"
@@ -176,12 +165,17 @@ export default function Marketing() {
 												<option value="25">25</option>
 												<option value="30">30</option>
 											</select>
-											<p className="text-lg">Dias</p>
+											<span className="text-lg">Dias</span>
 										</div>
 									</div>
 								</section>
 
-								<InputFile />
+								<InputFile 
+									Controller={Controller} 
+									control={control}
+									setSelectImage={setSelectImage}
+									urlImage={urlImage}
+								/>
 							</div>
 							<div
 								className="flex justify-end w-full"
