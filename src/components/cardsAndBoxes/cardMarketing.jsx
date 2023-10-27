@@ -1,54 +1,46 @@
-import photoMarketing from "../../img/photoMarketing.png";
+import dayjs from "dayjs";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
 import { memo, useState } from "react";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
 
-function Post({ content, onDeletePost }) {
-	const notify = (message) => {
-		toast.success("Ação realizada com sucesso", {
-			position: "top-center",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-	};
-
+function PostAd({ title, description, limiteDate, limit, typeAd, image }) {
 	const [open, setOpen] = useState(false);
 
-	function handleDeletePost() {
-		onDeletePost(content);
-	}
-
-	function handleDeleteComment() {
-		onDeleteComment(content);
-	}
-
 	return (
-		<div className="w-full h-[18rem] bg-white rounded-lg gap-6 flex p-6">
-			<div className="">
-				<img src={photoMarketing} alt="" />
+		<div className="w-full bg-white rounded-lg gap-6 flex p-6">
+			<div className="min-w-[15rem] max-w-[15rem] h-60 overflow-hidden rounded-lg border-2 border-secundary">
+				<img 
+					src={`${import.meta.env.VITE_URL}/files/${image}`} 
+					alt={title}
+					className="w-full h-full object-cover"
+					draggable={false}
+				/>
 			</div>
 
-			<div className="w-[48.75rem] flex">
+			<div className="w-full flex flex-col gap-2 justify-between">
 				<div className="flex flex-col gap-6">
-					<h1 className="text-2xl font-bold">
-						“Dia D” de vacinação contra a raiva animal
-					</h1>
-					<p className="text-xs">
-						A Superintendência de Vigilância em Saúde, por meio da Unidade de
-						Vigilância das Zoonoses comunica que no próximo dia 04 de dezembro
-						(SÁBADO) será realizado o “Dia D” de vacinação contra a raiva
-						animal.
+					<h3 className="text-2xl font-bold capitalize">
+						{title}
+					</h3>
+					<p className="text-sm">
+						{description}
 					</p>
-					<p>Campanha de vacinação</p>
-					<p>15 dias</p>
+					<p>
+						{typeAd}
+					</p>
+					<div
+						className="flex flex-col gap-1"
+					>
+						<p>
+							{limit} dias
+						</p>
+						<small
+							className="text-zinc-500"
+						>
+							{dayjs(limiteDate).format("DD/MM/YYYY")}
+						</small>
+					</div>
 				</div>
-				<div className="items-end flex gap-6">
+				<div className="flex justify-end gap-6">
 					<button
 						title="Deletar Post"
 						onClick={() => setOpen(!open)}
@@ -57,22 +49,10 @@ function Post({ content, onDeletePost }) {
 					>
 						Apagar
 					</button>
-					<ModalDeletePost isOpen={open} setOpen={setOpen} />
-					<ToastContainer
-						position="top-center"
-						autoClose={5000}
-						hideProgressBar={false}
-						newestOnTop={false}
-						closeOnClick
-						rtl={false}
-						pauseOnFocusLoss
-						draggable
-						pauseOnHover
-						theme="colored"
-					/>
+
 					<button
 						title="Editar Post"
-						onClick={handleDeleteComment}
+						// onClick={handleDeleteComment}
 						type="submit"
 						className="bg-[#1F9EAB] hover:bg-[#2797a3] w-[6.813rem] h-[2.188rem] rounded-lg text-white"
 					>
@@ -80,8 +60,9 @@ function Post({ content, onDeletePost }) {
 					</button>
 				</div>
 			</div>
+			<ModalDeletePost isOpen={open} setOpen={setOpen} />
 		</div>
 	);
 }
 
-export default memo(Post)
+export default memo(PostAd)

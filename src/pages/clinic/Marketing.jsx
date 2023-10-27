@@ -1,4 +1,4 @@
-import Post from "../../components/cardsAndBoxes/cardMarketing";
+import PostAd from "../../components/cardsAndBoxes/cardMarketing";
 import { Header } from "../../components/header/Header";
 import { NavbarClinic } from "../../components/Navbar";
 import { useEffect, useState } from "react";
@@ -31,6 +31,7 @@ export default function Marketing() {
 	const [valueInput, setValueInput] = useState("");
 	const [optionsTypeAds, setOptionsTypeAds] = useState([])
 	const [idClinic, setIdClinic] = useState(null)
+	const [ads, setAds] = useState([])
 
 	/* Image section */
 
@@ -71,11 +72,23 @@ export default function Marketing() {
 				Authorization: `Bearer ${token}`
 			}
 		})
-		.then(res => {
-			console.log(res.data.message)
-			reset()
-		})
-		.catch(err => console.error(err))
+			.then(res => {
+				let form = new FormData();
+				form.append("name", urlImageProfile);
+				form.append('file', selectImage, selectImage.name);
+
+				axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+					.then(() => {
+						console.log(res.data.message)
+						reset()
+					})
+					.catch(err => console.log(err))
+			})
+			.catch(err => console.error(err))
 	}
 
 	useEffect(() => {
@@ -85,15 +98,26 @@ export default function Marketing() {
 				Authorization: `Bearer ${token}`
 			}
 		})
-		.then(res => setIdClinic(res.data.storedIdClinica))
-		.catch(err => console.error(err))
+			.then(res => {
+				setIdClinic(res.data.storedIdClinica)
+
+				axios.get(`${import.meta.env.VITE_URL}/getAllAds/${res.data.storedIdClinica}`)
+					.then(e => {
+						// console.log(e.data.Ads);
+						setAds(e.data.Ads)
+					})
+					.catch(err => console.log(err))
+			})
+			.catch(err => console.error(err))
 
 		axios.get(`${import.meta.env.VITE_URL}/getAllTypeAds`)
 			.then(e => setOptionsTypeAds(e.data.types))
 			.catch(err => console.error(err))
+
 	}, [])
 
 	/* end section forms */
+
 	return (
 		<main className="flex min-h-screen">
 			<NavbarClinic page={0} />
@@ -285,8 +309,24 @@ export default function Marketing() {
 							Últimos anúncios
 						</h2>
 						<div className="flex flex-col gap-12">
-							<Post />
-							<Post />
+							{
+								ads.length === 0 
+								? <p className="text-zinc-500 text-base text-center block w-full">Não há anúncios criados</p>
+								: (
+									ads.map(ad => {
+										return (
+											<PostAd
+												title={ad.title}
+												description={ad.description}
+												image={ad.urlImage}
+												limiteDate={ad.tmp_final}
+												typeAd={ad.typeAd}
+												limit={5}
+											/>
+										)
+									})
+								)
+							}
 						</div>
 					</section>
 				</main>
