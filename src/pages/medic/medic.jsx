@@ -70,7 +70,13 @@ export default function Medic() {
           {
             clinicsMedic.map((clinic, i) => {
               return (
-                <CardClinics key={i} img={clinic.url_imagem} nameClinic={clinic.nm_clinica} openOrClose={clinic.status_loja} />
+                <CardClinics 
+                  key={i} 
+                  img={clinic.url_imagem} 
+                  nameClinic={clinic.nm_clinica} 
+                  openOrClose={clinic.status_loja}
+                  idClinic={clinic.id_clinica}
+                />
               )
             })
           }
