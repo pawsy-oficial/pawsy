@@ -10,19 +10,19 @@ export default function ModalDeletePost({ isOpen, setOpen }) {
 							<h2 className="text-2xl font-bold">AVISO</h2>
 							<div className="flex pt-6 flex-col gap-1">
 								<p className="text-sm">
-									Antes de excluir o anúncio, certifique-se de que não precisa mais dele. Uma vez excluído, o item não poderá ser recuperado.
+									Antes de excluir o anúncio, certifique-se de que não precisa mais dele. Uma vez excluído, <strong> o item não poderá ser recuperado</strong>.
 								</p>
 							</div>
 							<div className="flex flex-row justify-end pt-6 gap-4">
 								<button
 									onClick={() => setOpen(!isOpen)}
-									className="flex items-center bg-[#04AD34] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
+									className="flex items-center border text-emerald-600 font-bold border-primary hover:bg-primary hover:text-white px-6 py-1 justify-center rounded-lg"
 								>
 									Confirmar
 								</button>
 								<button
 									onClick={() => setOpen(!isOpen)}
-									className="flex items-center bg-[#DC3545] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
+									className="flex items-center bg-red-error text-white font-bold px-6 py-1 justify-center rounded-lg"
 								>
 									Cancelar
 								</button>
