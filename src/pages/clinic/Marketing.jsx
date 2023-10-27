@@ -6,51 +6,94 @@ import InputFile from "../../components/inputFile/inputFile";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import * as Yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import Cookies from "js-cookie";
+
+const schema = Yup.object({
+	title: Yup.string().required("Campo obrigatório").max(64, "Limite atingido").min(5, "Deve ter no mínimo 5 caracteres"),
+	limitTime: Yup.string().required("Opções obrigatórias").oneOf(['5', '10', '15', '20', '25', '30'], "As opções devem ser entre 5 e 30 dias"),
+	description: Yup.string().required("Campo obrigatório").max(300, "Limite atingido").min(5, "Deve ter no mínimo 5 caracteres"),
+	idAD: Yup.string().required("Opções obrigatórias"),
+	urlImage: Yup.mixed().required("Campo obrigatório").test(
+		"fileSize",
+		"O arquivo é muito grande",
+		value => !value || (value && value.size <= 5242879))
+		.test(
+			"fileType",
+			"Tipo de arquivo não suportado",
+			value => !value || (value && ["image/png", "image/jpeg"].includes(value.type))
+		)
+})
 
 export default function Marketing() {
 	const [valueTextArea, setValueTextArea] = useState("");
 	const [valueInput, setValueInput] = useState("");
 	const [optionsTypeAds, setOptionsTypeAds] = useState([])
+	const [idClinic, setIdClinic] = useState(null)
 
 	/* Image section */
 
 	const [selectImage, setSelectImage] = useState(null)
-    const [urlImage, setUrlImage] = useState(null)
+	const [urlImage, setUrlImage] = useState(null)
 
 	useEffect(() => {
-        if (selectImage) {
-            console.log(selectImage);
-            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
-                console.log("A imagem não atende os requisitos ");
-            }
-            else {
-                setUrlImage(URL.createObjectURL(selectImage))
-            }
-        }
-    }, [selectImage])
+		if (selectImage) {
+			if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+				console.log("A imagem não atende os requisitos ");
+			}
+			else {
+				setUrlImage(URL.createObjectURL(selectImage))
+			}
+		}
+	}, [selectImage])
 
 	/* end Image section */
 
+	/* section forms */
 
-	const { handleSubmit, register, control } = useForm({
-		mode: "onSubmit"
+	const { handleSubmit, register, control, formState, reset } = useForm({
+		mode: "onSubmit",
+		resolver: yupResolver(schema)
 	})
 
-	const onSubmit = (data) => {
-		const time = new Date().getTime()
-        const urlImageProfile = `${time}_pawsy_${selectImage.name}`
-		data.image = urlImageProfile
-		
+	const { errors } = formState
 
-		
+	const onSubmit = (data) => {
+		const token = Cookies.get("jwtTokenClinic")
+		const time = new Date().getTime()
+		const urlImageProfile = `${time}_pawsy_${selectImage.name}`
+		data.urlImage = urlImageProfile
+		data["idClinic"] = idClinic
+
+		axios.post(`${import.meta.env.VITE_URL}/ads`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then(res => {
+			console.log(res.data.message)
+			reset()
+		})
+		.catch(err => console.error(err))
 	}
 
 	useEffect(() => {
+		const token = Cookies.get("jwtTokenClinic")
+		axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then(res => setIdClinic(res.data.storedIdClinica))
+		.catch(err => console.error(err))
+
 		axios.get(`${import.meta.env.VITE_URL}/getAllTypeAds`)
 			.then(e => setOptionsTypeAds(e.data.types))
 			.catch(err => console.error(err))
 	}, [])
 
+	/* end section forms */
 	return (
 		<main className="flex min-h-screen">
 			<NavbarClinic page={0} />
@@ -97,6 +140,14 @@ export default function Marketing() {
 												{valueInput.length}/64
 											</span>
 										</div>
+										{
+											errors.title &&
+											<span
+												className="text-red-error text-sm "
+											>
+												{errors.title.message}*
+											</span>
+										}
 									</label>
 
 									<label
@@ -119,6 +170,14 @@ export default function Marketing() {
 												{valueTextArea.length}/300
 											</span>
 										</div>
+										{
+											errors.description &&
+											<span
+												className="text-red-error text-sm "
+											>
+												{errors.description.message}*
+											</span>
+										}
 									</label>
 								</section>
 
@@ -130,14 +189,22 @@ export default function Marketing() {
 											Tipo do anúncio
 										</h3>
 										{
+											errors.idAD &&
+											<span
+												className="text-red-error text-sm "
+											>
+												{errors.idAD.message}*
+											</span>
+										}
+										{
 											optionsTypeAds.map(optionsType => {
-												return(
+												return (
 													<label className="flex items-center gap-2">
 														<input
 															className="w-4 h-[0.85rem] accent-green-600 cursor-pointer"
 															type="radio"
 															value={optionsType.id_anuncio}
-															{...register("typeAd")}
+															{...register("idAD")}
 														/>
 														<span className="text-xs cursor-pointer">
 															{optionsType.nm_anuncio}
@@ -155,7 +222,7 @@ export default function Marketing() {
 												className="bg-gray-white font-bold border border-primary focus:border-primary focus:outline-primary rounded-lg w-[3.5rem] h-[3rem] text-center text-lg"
 												name="days"
 												id="days"
-												{...register("dateLimit")}
+												{...register("limitTime")}
 											>
 												{/* <option value="" disabled selected defaultValue=""></option> */}
 												<option value="5">5</option>
@@ -167,15 +234,34 @@ export default function Marketing() {
 											</select>
 											<span className="text-lg">Dias</span>
 										</div>
+										{
+											errors.limitTime &&
+											<span
+												className="text-red-error text-sm "
+											>
+												{errors.limitTime.message}*
+											</span>
+										}
 									</div>
 								</section>
-
-								<InputFile 
-									Controller={Controller} 
-									control={control}
-									setSelectImage={setSelectImage}
-									urlImage={urlImage}
-								/>
+								<section
+									className="flex flex-col justify-center"
+								>
+									<InputFile
+										Controller={Controller}
+										control={control}
+										setSelectImage={setSelectImage}
+										urlImage={urlImage}
+									/>
+									{
+										errors.image &&
+										<span
+											className="text-red-error text-sm "
+										>
+											{errors.image.message}*
+										</span>
+									}
+								</section>
 							</div>
 							<div
 								className="flex justify-end w-full"
