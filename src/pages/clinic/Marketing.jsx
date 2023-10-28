@@ -328,6 +328,7 @@ export default function Marketing() {
 												limit={5}
 												idPost={ad.idPost}
 												loading={setLoading}
+												typeAds={optionsTypeAds}
 											/>
 										)
 									})
