@@ -325,7 +325,7 @@ export default function Marketing() {
 												image={ad.urlImage}
 												limiteDate={ad.tmp_final}
 												typeAd={ad.typeAd}
-												limit={5}
+												limit={ad.limitDay}
 												idPost={ad.idPost}
 												loading={setLoading}
 												typeAds={optionsTypeAds}

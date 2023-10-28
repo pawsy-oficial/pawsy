@@ -1,8 +1,12 @@
 import dayjs from "dayjs";
 import ModalDeletePost from "../componentsClinic/modalDeletePost";
 import { memo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { Camera, Trash } from "@phosphor-icons/react";
 import axios from "axios";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("jwtTokenClinic")
 
 function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, loading, typeAds }) {
 	const [open, setOpen] = useState(false);
@@ -21,8 +25,7 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 						limit={limit}
 						limiteDate={limiteDate}
 						loading={loading}
-						open={open}
-						setOpen={setOpen}
+						
 						title={title}
 						typeAd={typeAd}
 						editPost={editPost}
@@ -34,14 +37,14 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 						idPost={idPost}
 						image={image}
 						limit={limit}
-						limiteDate={limiteDate}
-						loading={loading}
-						open={open}
-						setOpen={setOpen}
 						title={title}
 						typeAd={typeAd}
 						editPost={editPost}
 						setEditPost={setEditPost}
+						limiteDate={limiteDate}
+						setOpen={setOpen}
+						open={open}
+						loading={loading}
 					/>
 			}
 		</section>
@@ -90,9 +93,14 @@ function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost
 						title="Deletar Post"
 						onClick={() => setOpen(!open)}
 						type="submit"
-						className="bg-[#DC3545] hover:bg-[#c7303f] w-[7.438rem] h-[2.188rem] rounded-lg text-white"
+						className="flex gap-2 items-center"
 					>
-						Apagar
+						<span>
+							<Trash 
+								size={20} 
+								className="hover:fill-red-error transition-colors duration-500"
+							/>
+						</span>
 					</button>
 
 					<button
@@ -115,20 +123,76 @@ function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost
 	)
 }
 
-function FormEditPost({ title, description, limiteDate, limit, typeAd, image, idPost, loading, setOpen, open, setEditPost, editPost, typeAds }) {
+function FormEditPost({ title, description, limit, typeAd, image, idPost, setEditPost, editPost, typeAds, loading }) {
 
 	const [valueTitle, setValueTitle] = useState(`${title}`)
 	const [valueDescription, setValueDescription] = useState(`${description}`)
 	const [optionSelectedLimit, setOptionSelectedLimit] = useState(`${limit}`)
+	const [selectImage, setSelectImage] = useState(null)
+	const [urlImage, setUrlImage] = useState(null)
 
-	const { handleSubmit, register } = useForm({
+	const { handleSubmit, register, control } = useForm({
 		mode: "onSubmit"
 	})
 
 	const onChange = (data) => {
-		data["idAD"] = idPost
+		const currentTime = new Date().getTime()
+		let nameFile
+		(selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = image
+
+		data["idPost"] = idPost
+		data.urlImage = nameFile
 		console.log(data);
+
+		axios.put(`${import.meta.env.VITE_URL}/ads`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+			.then(res => {
+				loading(true)
+				console.log(res);
+				selectImage
+					? uploadImage(nameFile, selectImage)
+					: (
+						loading(false),
+						setEditPost(false)
+					)
+			})
+			.catch(err => console.log(err))
 	}
+
+
+	// section image
+
+	useEffect(() => {
+		if (selectImage) {
+			if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+				console.log("A imagem não atende os requisitos ");
+			}
+			else {
+				setUrlImage(URL.createObjectURL(selectImage))
+			}
+		}
+	}, [selectImage])
+
+	function uploadImage(nameFile, selectImage) {
+		let form = new FormData();
+		form.append("name", nameFile)
+		form.append('file', selectImage, selectImage.name)
+		axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		})
+			.then(() => {
+				loading(false)
+				setEditPost(false)
+			}).catch(err => {
+				console.error(err)
+			})
+	}
+	// end section image
 
 	return (
 		<form
@@ -136,12 +200,37 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 			onSubmit={handleSubmit(onChange)}
 		>
 			<div className="min-w-[15rem] max-w-[15rem] h-60 overflow-hidden rounded-lg border-2 border-secundary">
-				<img
-					src={`${import.meta.env.VITE_URL}/files/${image}`}
-					alt={title}
-					className="w-full h-full object-cover"
-					draggable={false}
-				/>
+				<label
+					className={`w-full h-full relative sm:w-40 group sm:h-40 overflow-hidden bg-primary/20 cursor-pointer`}
+				>
+					<img
+						src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${image}`}
+						alt={title}
+						className="h-full w-full object-cover group-hover:brightness-50 transition-all"
+						draggable={false}
+					/>
+					<Controller
+						name="urlImage"
+						control={control}
+						render={({ field }) => (
+							<input
+								type="file"
+								multiple={false}
+								className="hidden"
+								onChange={event => {
+									field.onChange(event.target.files[0]);
+									setSelectImage(event.target.files[0]);
+								}}
+								accept="image/png, image/jpg, image/jpeg"
+							/>
+						)}
+					/>
+					<Camera
+						className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all"
+						color="#ffffff"
+						size={32}
+					/>
+				</label>
 			</div>
 
 			<div className="w-full flex flex-col gap-2 justify-between">
@@ -154,7 +243,8 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 							value={valueTitle}
 							{...register("title", {
 								onChange: e => {
-									setValueTitle(e.target.value)
+									const count = e.target.value.length;
+									count <= 64 && setValueTitle(e.target.value);
 								}
 							})}
 							placeholder="Título da postagem"
@@ -163,7 +253,7 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 						<span
 							className="text-zinc-500 text-sm font-lato"
 						>
-							0/64
+							{valueTitle.length}/64
 						</span>
 					</div>
 					<div
@@ -174,7 +264,8 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 							value={valueDescription}
 							{...register("description", {
 								onChange: e => {
-									setValueDescription(e.target.value)
+									const count = e.target.value.length;
+									count <= 300 && setValueDescription(e.target.value);
 								}
 							})}
 							placeholder="Descrição da postagem"
@@ -183,7 +274,7 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 						<span
 							className="text-zinc-500 text-sm font-lato"
 						>
-							0/300
+							{valueDescription.length}/300
 						</span>
 					</div>
 					<div
@@ -253,7 +344,6 @@ function FormEditPost({ title, description, limiteDate, limit, typeAd, image, id
 
 					<button
 						title="Aceitar a edição do Post"
-						// onClick={() => setEditPost(!editPost)}
 						type="submit"
 						className="bg-primary hover:bg-[#38ab7b] w-[6.813rem] h-[2.188rem] rounded-lg text-white font-bold"
 					>
