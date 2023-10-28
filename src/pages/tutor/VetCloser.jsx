@@ -255,7 +255,7 @@ export default function VetCloser() {
 		if (e.targetType == "pushpin") {
 			var pin = e.target;
 			console.log(pin.metadata);
-			var html =	`
+			var html = `
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
 						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10">
@@ -303,10 +303,9 @@ export default function VetCloser() {
 	const [clinicInfoPreview, setClinicInfoPreview] = useState([])
 	useEffect(() => {
 		clinicCloser.forEach(id => {
-			console.log("1");
 			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
 				.then(res => {
-					console.log("ddd");
+					console.log(res.data);
 					setClinicInfoPreview(oldInfos => [...oldInfos, res.data])
 				})
 				.catch(err => console.log(err))
@@ -340,7 +339,20 @@ export default function VetCloser() {
 						<div className="flex flex-row gap-4 overflow-x-auto pb-3 mt-6">
 							{
 								clinicInfoPreview.map(
-									clinicInfo => <CardsVetCloser nameClinic={clinicInfo.Nome} clinicOpenOrClose={"Aberto"} address={clinicInfo.Endereço} distanceFromTheClinic={"1.5 km"} img={clinicInfo.Imagem} assessment={"4,0"} id={clinicInfo.Id} />
+									clinicInfo => {
+										console.log(clinicInfo);
+										return(
+											<CardsVetCloser 
+												nameClinic={clinicInfo.Nome} 
+												address={clinicInfo.Endereco} 
+												img={clinicInfo.Imagem} 
+												id={clinicInfo.Id} 
+												clinicOpenOrClose={"Aberto"} 
+												distanceFromTheClinic={"1.5 km"} 
+												assessment={"4,0"} 
+											/>
+										)
+									}
 								)
 							}
 						</div>
