@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 
 const token = Cookies.get("jwtTokenClinic")
 
-function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, loading, typeAds }) {
+function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, loading, typeAds, isOwner }) {
 	const [open, setOpen] = useState(false);
 	const [editPost, setEditPost] = useState(false)
 
@@ -17,7 +17,7 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 			className="w-full bg-white rounded-lg gap-6 flex p-6"
 		>
 			{
-				editPost
+				editPost && isOwner
 					? <FormEditPost
 						description={description}
 						idPost={idPost}
@@ -25,7 +25,6 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 						limit={limit}
 						limiteDate={limiteDate}
 						loading={loading}
-						
 						title={title}
 						typeAd={typeAd}
 						editPost={editPost}
@@ -45,6 +44,7 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 						setOpen={setOpen}
 						open={open}
 						loading={loading}
+						isOwner={isOwner}
 					/>
 			}
 		</section>
@@ -52,10 +52,12 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 }
 
 
-function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost, loading, setOpen, open, setEditPost, editPost }) {
+function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost, loading, setOpen, open, setEditPost, editPost, isOwner }) {
 	return (
 		<>
-			<div className="min-w-[15rem] max-w-[15rem] h-60 overflow-hidden rounded-lg border-2 border-secundary">
+			<div 
+				className={`${isOwner ? "min-w-[15rem] max-w-[15rem] h-60" : "min-w-[7rem] h-28"} overflow-hidden rounded-lg border-2 border-secundary`}
+			>
 				<img
 					src={`${import.meta.env.VITE_URL}/files/${image}`}
 					alt={title}
@@ -88,30 +90,34 @@ function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost
 						</small>
 					</div>
 				</div>
-				<div className="flex justify-end gap-6">
-					<button
-						title="Deletar Post"
-						onClick={() => setOpen(!open)}
-						type="submit"
-						className="flex gap-2 items-center"
-					>
-						<span>
-							<Trash 
-								size={20} 
-								className="hover:fill-red-error transition-colors duration-500"
-							/>
-						</span>
-					</button>
+				{
+					isOwner && (
+						<div className="flex justify-end gap-6">
+							<button
+								title="Deletar Post"
+								onClick={() => setOpen(!open)}
+								type="submit"
+								className="flex gap-2 items-center"
+							>
+								<span>
+									<Trash 
+										size={20} 
+										className="hover:fill-red-error transition-colors duration-500"
+									/>
+								</span>
+							</button>
 
-					<button
-						title="Editar Post"
-						onClick={() => setEditPost(!editPost)}
-						type="submit"
-						className="bg-[#1F9EAB] hover:bg-[#2797a3] w-[6.813rem] h-[2.188rem] rounded-lg text-white"
-					>
-						Editar
-					</button>
-				</div>
+							<button
+								title="Editar Post"
+								onClick={() => setEditPost(!editPost)}
+								type="submit"
+								className="bg-[#1F9EAB] hover:bg-[#2797a3] w-[6.813rem] h-[2.188rem] rounded-lg text-white"
+							>
+								Editar
+							</button>
+						</div>
+					)
+				}
 			</div>
 			<ModalDeletePost
 				isOpen={open}

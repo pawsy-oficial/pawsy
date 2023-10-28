@@ -4,7 +4,7 @@ import { ModalSeeMedic } from "../components/ClinicPerfilComponents/ModalSeeMedi
 import { ModalAddMedic } from "../components/ClinicPerfilComponents/ModalAddMedic";
 import ClientsPerfil, { SectionScoreClinic, VaccinePets } from "../components/cardsAndBoxes/cardClinicProfile";
 import MedicForClinic from "../components/ClinicPerfilComponents/MedicForClinic";
-
+import PostAd from "../components/cardsAndBoxes/cardMarketing";
 import { PlusCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -27,13 +27,12 @@ export default function ProfileClinic() {
     const [stateEdit, setStateEdit] = useState(false)
     const [editAboutUs, setEditAboutUs] = useState(false)
     const [textAboutUs, setTextAboutUs] = useState(null)
+    const [adsPosts, setAdsPosts] = useState([])
     const [popUpMessage, setPopUpMessage] = useState({
         active: false,
         message: null,
         messageError: false
     })
-
-    const [ temp, setTemp ] = useState() // state temporario, depois jogar fora essa porcaria :)
 
     let token
 
@@ -102,6 +101,35 @@ export default function ProfileClinic() {
         return () => clearTimeout(timer)
     }, [popUpMessage])
 
+
+    // eu tenho q achar alguma forma de deixar esse código menos verboso
+    useEffect(() => {
+        isOwner
+            ? (
+                axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then(e => {
+                    axios.get(`${import.meta.env.VITE_URL}/getAllAds/${e.data.storedIdClinica}`)
+                        .then(e => setAdsPosts(e.data.Ads))
+                        .catch(err => console.log(err))
+                })
+            ) : (
+                axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then(e => {
+                    axios.get(`${import.meta.env.VITE_URL}/getAllAds/${location.state.id}`)
+                        .then(e => {
+                            console.log(e);
+                            setAdsPosts(e.data.Ads)
+                        })
+                        .catch(err => console.log(err))
+                })
+            )
+    }, [])
 
     return (
         <main className="flex min-h-screen">
@@ -276,19 +304,43 @@ export default function ProfileClinic() {
                             <h2 className="font-bold text-lg pb-2">
                                 Anúncios
                             </h2>
-                            {
-                                isOwner
-                                    ? (
-                                        <p className="text-sm font-normal">
-                                            Você não criou nenhum anúncio <a className="text-[#22937E] underline" href="">criar anúncio</a>
-                                        </p>
-                                    )
-                                    : (
-                                        <p className="text-sm font-normal">
-                                            Essa clínica não possui anúncios
-                                        </p>
-                                    )
-                            }
+
+                            <div>
+                                {
+                                    adsPosts.length != 0
+                                        ? (
+                                            adsPosts.map(ad => {
+                                                return (
+                                                    <PostAd
+                                                        title={ad.title}
+                                                        description={ad.description}
+                                                        image={ad.urlImage}
+                                                        limit={ad.limitDay}
+                                                        typeAd={ad.typeAd}
+                                                        isOwner={false}
+                                                    />
+                                                )
+                                            })
+                                        ) : (
+                                            isOwner
+                                                ? (
+                                                    <p className="text-sm font-normal">
+                                                        Você não criou nenhum anúncio {" "}
+                                                        <a 
+                                                            className="text-[#22937E] underline cursor-pointer" 
+                                                            onClick={()=>navigate("/marketing")}
+                                                        >
+                                                            criar anúncio
+                                                        </a>
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-sm font-normal">
+                                                        Essa clínica não possui anúncios
+                                                    </p>
+                                                )
+                                        )
+                                }
+                            </div>
                         </div>
 
                         {
@@ -324,7 +376,6 @@ export default function ProfileClinic() {
                                             stateEdit={stateEdit}
                                         />
                                         <CommentsClinic
-                                            temp={setTemp}
                                             idClinic={infoClinic.storedIdClinica}
                                         />
                                     </>

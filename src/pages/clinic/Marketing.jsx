@@ -329,6 +329,7 @@ export default function Marketing() {
 												idPost={ad.idPost}
 												loading={setLoading}
 												typeAds={optionsTypeAds}
+												isOwner={true}
 											/>
 										)
 									})

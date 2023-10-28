@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoutes";
 import Tutor from "./pages/tutor/Tutor";
 import VaccinePage from "./pages/tutor/Vaccine";
@@ -6,7 +6,7 @@ import VetCloser from "./pages/tutor/VetCloser";
 import Revenues from "./pages/tutor/Revenues";
 import WellBeing from "./pages/tutor/WellCloser";
 import ScheduleTutor from "./pages/tutor/ScheduleTutor";
-import Clinic from "./pages/clinic/Clinic";
+// import Clinic from "./pages/clinic/Clinic";
 import Schedule from "./pages/clinic/Schedule";
 import Marketing from "./pages/clinic/Marketing";
 import Patient from "./pages/clinic/Patients";
@@ -58,14 +58,6 @@ import AboutUs from "./pages/landinPage/aboutUs";
 import Features from "./pages/landinPage/features";
 import PageNotFound from "./pages/pageNotFound";
 import ProfileClinic from "./pages/profileClinic";
-
-const PrivateRouter = ({ user, children }) => {
-	// console.log(user);
-	if (!user) {
-		return <Navigate to={"/"} replace />;
-	}
-	return children;
-};
 
 export default function Router() {
 	return (
