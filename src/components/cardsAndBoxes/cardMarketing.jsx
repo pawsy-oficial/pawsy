@@ -6,8 +6,6 @@ import { Camera, Trash } from "@phosphor-icons/react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const token = Cookies.get("jwtTokenClinic")
-
 function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, loading, typeAds, isOwner }) {
 	const [open, setOpen] = useState(false);
 	const [editPost, setEditPost] = useState(false)
@@ -130,7 +128,7 @@ function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost
 }
 
 function FormEditPost({ title, description, limit, typeAd, image, idPost, setEditPost, editPost, typeAds, loading }) {
-
+	const token = Cookies.get("jwtTokenClinic")
 	const [valueTitle, setValueTitle] = useState(`${title}`)
 	const [valueDescription, setValueDescription] = useState(`${description}`)
 	const [optionSelectedLimit, setOptionSelectedLimit] = useState(`${limit}`)
