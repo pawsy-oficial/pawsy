@@ -83,7 +83,7 @@ export function SectionScoreClinic({ idClinic }) {
 
     return (
         <section className="w-full max-w-[24rem] bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-full max-h-fit border-l-4 border-secundary">
-            <h2 className="font-bold text-lg">
+            <h2 className="text-lg">
                 Avaliação
             </h2>
 

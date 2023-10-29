@@ -6,7 +6,7 @@ import style from "./style.module.css"
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 
-function CommentsClinic({ idClinic, temp }) {
+function CommentsClinic({ idClinic }) {
     const isOwner = (Cookies.get().jwtTokenClinic) && true
     const [valueTextArea, setValueTextArea] = useState("");
     const [comments, setComments] = useState([])
@@ -19,6 +19,7 @@ function CommentsClinic({ idClinic, temp }) {
     })
     
     const [ idTutor, setIdTutor ] = useState(0)
+    const [temp, setTemp] = useState() /// temporario 
 
     useEffect(()=>{
         isOwner
@@ -55,7 +56,7 @@ function CommentsClinic({ idClinic, temp }) {
                     })
                     .catch(err => console.log(err))
             )
-    },[idClinic])
+    },[idClinic, temp])
 
     const { handleSubmit, register } = useForm({
         mode: "onSubmit"
@@ -84,7 +85,7 @@ function CommentsClinic({ idClinic, temp }) {
                     active: false,
                     msg: ""
                 })
-                temp("")
+                setTemp("")
             })
             .catch(err => {
                 setError({

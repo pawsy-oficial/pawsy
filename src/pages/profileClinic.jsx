@@ -347,6 +347,7 @@ export default function ProfileClinic() {
                             isOwner && (
                                 <CommentsClinic
                                     idClinic={infoClinic.storedIdClinica}
+                                    // temp={setTemp}
                                 />
                             )
                         }
@@ -377,6 +378,7 @@ export default function ProfileClinic() {
                                         />
                                         <CommentsClinic
                                             idClinic={infoClinic.storedIdClinica}
+                                            // temp={setTemp}
                                         />
                                     </>
                                 )
