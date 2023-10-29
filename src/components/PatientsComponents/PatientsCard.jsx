@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X } from '@phosphor-icons/react';
 
-export function PatientsCard({ pet, donosP, id, image }) {
+export function PatientsCard({ pet, donosP, id, image, gender }) {
 	const [see, setSee] = useState(false)
 
 	return (
@@ -34,6 +34,10 @@ export function PatientsCard({ pet, donosP, id, image }) {
 					<p className="text-lg capitalize font-semibold">
 						<span className='text-zinc-500 text-xs !font-normal'>Tutor: </span>
 						{donosP}
+					</p>
+					<p className="text-lg capitalize font-semibold">
+						<span className='text-zinc-500 text-xs !font-normal'>Sexo: </span>
+						{gender}
 					</p>
 				</div>
 			</button>

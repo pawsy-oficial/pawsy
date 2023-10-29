@@ -10,6 +10,8 @@ import Cookies from "js-cookie";
 export default function Patient() {
 	const [open, setOpen] = useState(false)
 	const [ patients, setPatients ] = useState([])
+	const [ namePatient, setNamePatient ] = useState("")
+	const [ gender, setGender ] = useState("")
 
 	let idClinic
 
@@ -26,13 +28,23 @@ export default function Patient() {
 					headers:{
 						Authorization: `Bearer ${tokenClinic}`
 					}
-				}).then(e => setPatients(e.data.result))
+				}).then(e => {
+					setPatients(e.data.result)
+				})
 				.catch(err => console.log(err))
             })
             .catch(err => {
                 console.log(err)
             })
 	},[open])
+
+	const filterPatientes = patients.filter(patient => (
+		(
+			gender.length == 0
+				? patient.namePet.startsWith(namePatient.toLowerCase()) 
+				: patient.nm_sexo == gender && patient.namePet.startsWith(namePatient.toLowerCase())
+		) 
+	) ?? [])
 
 	return (
 		<main className="flex min-h-screen">
@@ -58,6 +70,7 @@ export default function Patient() {
 									id="male"
 									htmlFor="mal"
 									className="flex py-1 px-2 rounded-lg cursor-pointer gap-1 border-2 border-transparent hover:border-[#8fB5FF]"
+									onClick={()=>setGender("macho")}
 								>
 									<span>Macho</span>
 									<GenderMale color="#8FB5FF" size="24px" />
@@ -68,15 +81,27 @@ export default function Patient() {
 									id="female"
 									htmlFor="fem"
 									className="flex py-1 px-2 rounded-lg cursor-pointer gap-1 border-2 border-transparent hover:border-[#FF8FCB]"
+									onClick={()=>setGender("fêmea")}
 								>
 									<span>Fêmea</span> 
 									<GenderFemale color="#FF8FCB" size="24px" />
 								</label>
 							</div>
 
-							<div className="flex gap-1 border-primary border rounded-lg py-1 px-4 h-8  bg-[#F5FFFE]">
-								<input type="text" name="" id="" className="bg-[#F5FFFE]" placeholder="Pesquisa" />
-								<button><MagnifyingGlass /></button>
+							<div 
+								className="flex gap-1 border-primary border rounded-lg py-1 px-4 h-8  bg-[#F5FFFE]"
+							>
+								<input 
+									type="text"
+									className="bg-[#F5FFFE]" 
+									placeholder="Pesquisa" 
+									title="pesquise pelo nome do paciente"
+									value={namePatient}
+									onChange={e=> {
+										setNamePatient(e.target.value)
+									}}
+								/>
+								<MagnifyingGlass />
 							</div>
 						</div>
 
@@ -84,8 +109,16 @@ export default function Patient() {
 							{
 								patients.length == 0 
 								? <p className="text-zinc-500">A clínica não possui pacientes cadastrados</p>
-								: patients.map(patient => {
-									return <PatientsCard donosP={patient.nameTutor} id={patient.id} pet={patient.namePet} image={patient.imagePet} />
+								: filterPatientes.map(patient => {
+									return (
+										<PatientsCard 
+											donosP={patient.nameTutor} 
+											id={patient.id} 
+											pet={patient.namePet} 
+											image={patient.imagePet} 
+											gender={patient.nm_sexo}
+										/>
+									)
 								})
 							}
 						</section>
