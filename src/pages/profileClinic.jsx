@@ -305,7 +305,9 @@ export default function ProfileClinic() {
                                 Anúncios
                             </h2>
 
-                            <div>
+                            <div
+                                className="flex flex-col gap-6"
+                            >
                                 {
                                     adsPosts.length != 0
                                         ? (

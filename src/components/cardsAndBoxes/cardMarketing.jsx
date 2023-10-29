@@ -14,7 +14,7 @@ function PostAd({ title, description, limiteDate, limit, typeAd, image, idPost, 
 
 	return (
 		<section
-			className="w-full bg-white rounded-lg gap-6 flex p-6"
+			className={`w-full bg-white rounded-lg gap-6 flex ${isOwner ? "p-6" : "py-1"}`}
 		>
 			{
 				editPost && isOwner
@@ -56,7 +56,7 @@ function InfoPost({ title, description, limiteDate, limit, typeAd, image, idPost
 	return (
 		<>
 			<div 
-				className={`${isOwner ? "min-w-[15rem] max-w-[15rem] h-60" : "min-w-[7rem] h-28"} overflow-hidden rounded-lg border-2 border-secundary`}
+				className={`${isOwner ? "min-w-[15rem] max-w-[15rem] h-60" : "min-w-[7rem] max-w-[7rem] h-28"} overflow-hidden rounded-lg border-2 border-secundary`}
 			>
 				<img
 					src={`${import.meta.env.VITE_URL}/files/${image}`}
