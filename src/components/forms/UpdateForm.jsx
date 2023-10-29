@@ -169,6 +169,8 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             {...register("birthday", {
                                 onChange: e => setBirthday(e.target.value)
                             })}
+                            max={dayjs().format("YYYY-MM-DD")}
+                            min={dayjs().subtract(25, "years").format("YYYY-MM-DD")}
                         />
                     </li>
                     <li>

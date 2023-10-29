@@ -104,7 +104,14 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                                             <ul className="flex flex-col gap-2">
                                                 <li>
                                                     <span className="font-bold text-xs sm:text-lg">Idade: </span>
-                                                    <span className="text-sm sm:text-base">{dayjs(myPet[showPet].dt_nascimento).format("DD/MM/YYYY")}</span>
+                                                    <span 
+                                                        className="text-sm sm:text-base"
+                                                    >
+                                                        {
+                                                            dayjs().diff(myPet[showPet].dt_nascimento, "year")
+                                                        }
+                                                        {" "} ano(s)
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <span className="font-bold text-xs sm:text-lg">Raça: </span>
