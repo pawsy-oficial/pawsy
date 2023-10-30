@@ -393,11 +393,15 @@ export default function ProfileClinic() {
     )
 }
 
-function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdit, idClinic = 0 }) {
+function SectionMedicsClinic({  tutor = false, editAboutUs, stateEdit, idClinic = 0 }) {
     const [open, setOpen] = useState(false)
+    const [see, setSee] = useState(false)
     const [medics, setMedics] = useState([])
     const [infoMedicSelect, setInfoMedicSelect] = useState()
+    const token = Cookies.get("jwtTokenClinic")
+    
     useEffect(() => {
+        setMedics([]) // nn sei pq mas assim atualiza :)
         tutor
             ? (
                 axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${idClinic}&all=true`)
@@ -410,7 +414,7 @@ function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdi
             : (
                 axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+                        Authorization: `Bearer ${token}`
                     }
                 })
                     .then(e => {
@@ -425,7 +429,7 @@ function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdi
                     })
             )
 
-    }, [idClinic])
+    }, [idClinic, open, see])
 
     return (
         <section className="w-96 bg-white px-4 py-8 rounded-2xl flex flex-col gap-5 h-max">
@@ -439,7 +443,6 @@ function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdi
                             <button
                                 key={key}
                                 onClick={() => {
-                                    console.log(medic);
                                     setInfoMedicSelect(medic)
                                     setSee(!see)
                                 }}
@@ -452,7 +455,14 @@ function SectionMedicsClinic({ see, setSee, tutor = false, editAboutUs, stateEdi
                     })
                 }
                 {
-                    see && <ModalSeeMedic isSee={see} setSee={setSee} infoMedic={infoMedicSelect} tutor={tutor} />
+                    see && <ModalSeeMedic 
+                            isSee={see} 
+                            setSee={setSee} 
+                            infoMedic={infoMedicSelect} 
+                            tutor={tutor} 
+                            idClinic={idClinic}
+                            token={token}
+                        />
                 }
             </div>
             {

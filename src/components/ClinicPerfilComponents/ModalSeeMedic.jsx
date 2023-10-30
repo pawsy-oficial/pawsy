@@ -1,7 +1,19 @@
 import { X } from '@phosphor-icons/react';
+import axios from 'axios';
 import dayjs from 'dayjs';
 
-export function ModalSeeMedic({isSee, setSee, infoMedic, tutor = false}) {
+export function ModalSeeMedic({isSee, setSee, infoMedic, tutor = false, idClinic, idMedic, token}) {
+
+	function handleRemoveMedic(){
+		axios.delete(`${import.meta.env.VITE_URL}/integrar-medico-clinica/${idClinic}/${infoMedic.idMedico}`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}).then(e => {
+			setSee(!isSee)
+		})
+		.catch(err => {console.log(err)})
+	}
 
 	return (
 			<div className="fixed top-0 bottom-0 left-0 right-0 bg-primary/30 z-50 flex justify-center items-center">
@@ -50,8 +62,8 @@ export function ModalSeeMedic({isSee, setSee, infoMedic, tutor = false}) {
 						{
 							!tutor && (
 								<div className="flex justify-end">
-									<button onClick={() => setSee(!isSee)} type="" className="py-1 px-5 bg-red-error rounded-lg">
-										<p className="text-base font-semibold text-white">Apagar</p>
+									<button onClick={handleRemoveMedic} type="" className="py-1 px-5 bg-red-error rounded-lg">
+										<p className="text-base font-semibold text-white">Remover</p>
 									</button>
 								</div>
 							)
