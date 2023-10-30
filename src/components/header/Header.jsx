@@ -88,12 +88,12 @@ export function Header({ userType }) {
 
 							{
 								windowScreen.width < 1020
-									? (
+									&& (
 										<button onClick={() => setSearchState(!searchState)}>
 											<MagnifyingGlass size={24} />
 										</button>
 									)
-									: <Notification />
+									// : <Notification />
 							}
 
 						</div>
