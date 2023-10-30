@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { X } from '@phosphor-icons/react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-export function PatientsCard({ pet, donosP, id, image, gender }) {
-	const [see, setSee] = useState(false)
-
+export function PatientsCard({ pet, donosP, id, image, gender, idClinic, setSee, see }) {
 	return (
 		<>
-
 			<ModalSeePatient
 				See={see}
 				setSee={setSee}
@@ -14,6 +13,7 @@ export function PatientsCard({ pet, donosP, id, image, gender }) {
 				donos={donosP}
 				id={id}
 				image={image}
+				idClinic={idClinic}
 			/>
 			<button
 				onClick={() => setSee(!see)}
@@ -46,7 +46,25 @@ export function PatientsCard({ pet, donosP, id, image, gender }) {
 }
 
 
-function ModalSeePatient({ See, setSee, donos, id, pet, isSee, image }) {
+function ModalSeePatient({ See, setSee, donos, id, pet, image }) {
+	function handleRemovePatient() {
+		axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+            }
+		}).then(e => {
+			axios.delete(`${import.meta.env.VITE_URL}/patient/${e.data.storedIdClinica}/${id}`, {
+				headers: {
+					Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+				}
+			})
+				.then(e => {
+					setSee(!See)
+				})
+				.catch(err => console.log(err))
+		})
+	}
+
 	if (See) {
 		return (
 			<section
@@ -58,11 +76,12 @@ function ModalSeePatient({ See, setSee, donos, id, pet, isSee, image }) {
 				}}
 			>
 				<div className="bg-white rounded-lg p-4 min-w-fit w-96 relative flex flex-col gap-6">
-					<div className='absolute right-4'>
-						<button onClick={() => setSee(!See)}>
-							<X size={28} />
-						</button>
-					</div>
+					<button
+						onClick={() => setSee(!See)}
+						className='absolute right-4'
+					>
+						<X size={28} />
+					</button>
 					<div className="flex gap-6">
 						<div
 							className='flex flex-col gap-3'
@@ -98,14 +117,16 @@ function ModalSeePatient({ See, setSee, donos, id, pet, isSee, image }) {
 						<span
 							className='text-zinc-400'
 						>
-							#{id}
+							#{
+								id.toString().padStart(4, '0')
+							}
 						</span>
 						<button
-							onClick={() => setSee(!isSee)}
-							type=""
-							className="px-3 py-1 bg-red-error rounded-lg"
+							onClick={handleRemovePatient}
+							type="button"
+							className="px-3 py-1 bg-red-error rounded-lg text-base text-white"
 						>
-							<p className="text-base text-white">Apagar</p>
+							Remover
 						</button>
 					</div>
 				</div>

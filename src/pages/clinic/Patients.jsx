@@ -8,10 +8,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export default function Patient() {
-	const [open, setOpen] = useState(false)
+	const [ open, setOpen ] = useState(false)
 	const [ patients, setPatients ] = useState([])
 	const [ namePatient, setNamePatient ] = useState("")
 	const [ gender, setGender ] = useState("")
+	const [see, setSee] = useState(false)
 
 	let idClinic
 
@@ -36,7 +37,7 @@ export default function Patient() {
             .catch(err => {
                 console.log(err)
             })
-	},[open])
+	},[open, see])
 
 	const filterPatientes = patients.filter(patient => (
 		(
@@ -117,6 +118,9 @@ export default function Patient() {
 											pet={patient.namePet} 
 											image={patient.imagePet} 
 											gender={patient.nm_sexo}
+											idClinic={idClinic}
+											see={see}
+											setSee={setSee}
 										/>
 									)
 								})
