@@ -14,6 +14,8 @@ export default function Medic() {
 
   const [infoMedic, setInfoMedic] = useState([]);
 
+  const [idMedic, setIdMedic] = useState(null)
+
   const [clinicsMedic, setClinicsMedic] = useState([]);
 
   const [openOrClose, setOpenOrClose] = useState(false);
@@ -36,6 +38,7 @@ export default function Medic() {
       }
     }).then(res =>{
       setInfoMedic(res.data)
+      setIdMedic(res.data.storedIdMedic)
     })
 
     axios.get(`${import.meta.env.VITE_URL}/clinicsMedic`, {
@@ -76,6 +79,7 @@ export default function Medic() {
                   nameClinic={clinic.nm_clinica} 
                   openOrClose={clinic.status_loja}
                   idClinic={clinic.id_clinica}
+                  idMedic={idMedic}
                 />
               )
             })

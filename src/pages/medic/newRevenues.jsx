@@ -13,7 +13,7 @@ export default function NewRevenues() {
       <div className="flex flex-col mx-auto mt-6">
         <a
           className="flex items-center pl-96 text-sm cursor-pointer"
-          onClick={() => navigate("/receitas-medicas")}
+          onClick={() => history.back()}
         >
           <CaretLeft color="#22B77E" />
           Voltar

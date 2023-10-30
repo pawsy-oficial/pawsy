@@ -14,7 +14,7 @@ export default function ViewPatient() {
 
 	const navigate = useNavigate();
 	const location = useLocation()
-	const { pet } = location.state
+	const { pet, medic } = location.state
 
 	const [viewType, setViewType] = useState("none");
 
@@ -30,7 +30,7 @@ export default function ViewPatient() {
 	//         setPetInfo(res.data.results)
 	//       })
 	// }, []);
-	console.log({ pet });
+	console.log({ pet, medic });
 
 	return (
 		<>
@@ -101,7 +101,7 @@ export default function ViewPatient() {
 							Receitas médicas
 						</button>
 						<button
-							onClick={() => navigate("/vacinas-e-vermifugacao", {state: {pet}})}
+							onClick={() => navigate("/vacinas-e-vermifugacao", {state: {pet, medic}})}
 							className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
 						>
 							Vacinas e vermifugação

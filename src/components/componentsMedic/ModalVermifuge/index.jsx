@@ -47,8 +47,8 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
   };
   if (isOpenVermifuge) {
     return (
-      <div className={style.background}>
-        <form onSubmit={(e) => e.preventDefault()} className={style.modal}>
+      <div className="fixed inset-0 bg-primary/40 flex justify-center items-center">
+        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col fixed bg-white p-6 rounded-lg min-w-[22rem]">
           <button
             onClick={() => setOpenVermifuge(false)}
             className="absolute left-80"

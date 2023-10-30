@@ -7,7 +7,8 @@ export default function CardClinics(props){
         img: props.img,
         nameClinic: props.nameClinic,
         OpenClose: props.openOrClose,
-        idClinic: props.idClinic
+        idClinic: props.idClinic,
+        idMedic: props.idMedic
     }
 
     return(
