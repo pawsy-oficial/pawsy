@@ -8,6 +8,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ViewRevenues from "../../components/componentsMedic/viewPatientsComponents/ViewRevenues";
 import ViewVaccines from "../../components/componentsMedic/viewPatientsComponents/ViewVaccines";
+import dayjs from "dayjs";
 
 export default function ViewPatient() {
 	const [open, setOpen] = useState(false);
@@ -17,20 +18,6 @@ export default function ViewPatient() {
 	const { pet, medic } = location.state
 
 	const [viewType, setViewType] = useState("none");
-
-	//   const [petInfo, setPetInfo] = useState([]);
-
-	//   useEffect(() => {
-	//     const tokenMedic = Cookies.get("jwtTokenMedic")
-	//     axios.get(`${import.meta.env.VITE_URL}/pets/:petId`, {
-	//         headers: {
-	//           Authorization: `Bearer ${tokenMedic}`
-	//         }
-	//       }).then(res =>{
-	//         setPetInfo(res.data.results)
-	//       })
-	// }, []);
-	console.log({ pet, medic });
 
 	return (
 		<>
@@ -84,7 +71,7 @@ export default function ViewPatient() {
 							<h1 className="uppercase font-bold text-4xl flex items-center gap-2 mb-4">
 								{pet.namePet} <GenderMale color="#1BA8C4" />
 							</h1>
-							<h2 className="font-semibold text-base">Idade: {pet.idade}</h2>
+							<h2 className="font-semibold text-base">Idade: {dayjs().format(pet.idade)}</h2>
 							<h3 className="font-semibold text-base">Raça: {pet.raca}</h3>
 							{/* <h4 className="font-semibold text-base">
                 Bem-estar: {pet.bemestar}
@@ -101,7 +88,7 @@ export default function ViewPatient() {
 							Receitas médicas
 						</button>
 						<button
-							onClick={() => navigate("/vacinas-e-vermifugacao", {state: {pet, medic}})}
+							onClick={() => navigate("/vacinas-e-vermifugacao", { state: { pet, medic } })}
 							className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
 						>
 							Vacinas e vermifugação
