@@ -165,6 +165,7 @@ function ProfileModal({ userType }) {
 
 function ModalProfile({ info, userType, setShowModal, showModal }) {
     const [select, setSelect] = useState("")
+    const [edit, setEdit] = useState(false)
 
     const typeOptons = [
         {
@@ -196,8 +197,22 @@ function ModalProfile({ info, userType, setShowModal, showModal }) {
         }
     }
 
-    function handleDeleteAcount(){
+    function handleDeleteAcount() {
         console.log("Deletar conta");
+    }
+
+    // form
+
+    const [lastName, setLastName] = useState(info.lastName)
+    const [name, setName] = useState(info.name)
+
+    const { handleSubmit, register } = useForm({
+        mode: "onSubmit"
+    })
+
+    const onSubmit = (data) => {
+        console.log(data)
+        console.log(edit)
     }
 
     return (
@@ -221,26 +236,64 @@ function ModalProfile({ info, userType, setShowModal, showModal }) {
                     >
                         <form
                             className='flex flex-col gap-1 items-center'
+                            onSubmit={handleSubmit(onSubmit)}
                         >
-                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
-                                <img
-                                    className="object-cover h-full w-full"
-                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
-                                    alt="imagem de perfil @user"
-                                    draggable={false}
-                                />
-                            </div>
-                            <strong className='capitalize'>
-                                {info.name}{" "}{info.lastName}
-                            </strong>
+                            {
+                                !edit
+                                    ? (
+                                        <>
+                                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
+                                                <img
+                                                    className="object-cover h-full w-full"
+                                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                                    alt="imagem de perfil @user"
+                                                    draggable={false}
+                                                />
+                                            </div>
+                                            <div
+                                                className='flex flex-col gap-1'
+                                            >
+                                                <input
+                                                    className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
+                                                    type="text"
+                                                    value={name}
+                                                    {...register("name", {
+                                                        onChange: e => setName(e.target.value)
+                                                    })}
+                                                />
+                                                <input
+                                                    className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
+                                                    type="text"
+                                                    value={lastName}
+                                                    {...register("lastName", {
+                                                        onChange: e => setLastName(e.target.value)
+                                                    })}
+                                                />
+                                            </div>
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
+                                                <img
+                                                    className="object-cover h-full w-full"
+                                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                                    alt="imagem de perfil @user"
+                                                    draggable={false}
+                                                />
+                                            </div>
+                                            <strong className='capitalize'>
+                                                {info.name}{" "}{info.lastName}
+                                            </strong>
+                                        </>
+                                    )
+                            }
                             <button
                                 className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                // onClick={()=>setEdit(!edit)}
+                                type={edit ? "submit" : "button"}
+                                onClick={() => setEdit(!edit)}
                             >
                                 <Pen size={16} />
-                                {/* {
-                                    edit && "Confirmar"
-                                } */}
                             </button>
                         </form>
 
