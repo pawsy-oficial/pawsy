@@ -17,7 +17,7 @@ function ModalDialogEditAddress({ setAddress }) {
     const [neighborhood, setNeighborhood] = useState('')
     const [state, setState] = useState('')
     const [street, setStreet] = useState('')
-
+    const [ showModal, setShowModal ] = useState(false)
     // const navigate = useNavigate()
 
     const { register, handleSubmit, formState, setValue, setError, control } = useForm({
@@ -100,8 +100,8 @@ function ModalDialogEditAddress({ setAddress }) {
         }
     }, [cep])
 
+    
     const { errors } = formState
-    const [ showModal, setShowModal ] = useState(false)
 
     const onSubmite = (data)=>{
         data.uf = selectUf

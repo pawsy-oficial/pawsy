@@ -1,18 +1,20 @@
 import * as Popover from '@radix-ui/react-popover';
-import { CaretDown, Gear, SignOut, Trash, UserCircle } from '@phosphor-icons/react';
+import { CaretDown, Gear, Pen, SignOut, Trash, UserCircle, XCircle } from '@phosphor-icons/react';
 // import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { memo, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useForm } from 'react-hook-form';
+import { InputFormRegisterCEP } from '../inputsComponents';
+import FormsAddresProfile from '../forms/FormsAddres';
 
 function ProfileModal({ userType }) {
     const [showModal, setShowModal] = useState({
         show: false,
         type: null
     })
-    const [img, setImg] = useState("")
-    const [ info, setInfo ] = useState({
+    const [info, setInfo] = useState({
         name: "",
         lastName: "",
         street: "",
@@ -21,7 +23,8 @@ function ProfileModal({ userType }) {
         neighborhood: "",
         email: "",
         cpf: "",
-        tell: ""
+        tell: "",
+        image: ""
     })
 
     let tutorToken
@@ -50,15 +53,18 @@ function ProfileModal({ userType }) {
                 setInfo({
                     cep: e.data.CEP,
                     city: e.data.Cidade,
-                    cpf: e.data.CPF ?? e.data.storedCRMVMedic,
+                    cpf: e.data.storedCPF ?? e.data.storedCRMVMedic,
                     email: e.data.storedEmailTutor ?? e.data.storedEmailMedic,
                     lastName: e.data.storedSBTutor, // falta medico
                     name: e.data.storedNameTutor ?? e.data.storedNameMedic,
                     neighborhood: e.data.Bairro,
+                    state: e.data.Estado,
+                    numberHome: e.data.Numero,
+                    complement: e.data.Complemento,
                     street: e.data.Rua,
-                    tell: e.data.storedCelTutor
+                    tell: e.data.storedCelTutor,
+                    image: e.data.storedImg
                 });
-                setImg(e.data.storedImg)
             }
         ).catch(
             err => console.log(err)
@@ -91,8 +97,8 @@ function ProfileModal({ userType }) {
                         <div className="rounded-full w-10 h-10 overflow-hidden border-2 border-primary">
                             <img
                                 className="object-cover h-full w-full"
-                                src={`${import.meta.env.VITE_URL}/files/${img}`}
-                                alt="imagem de perfil @user"
+                                src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                alt={`imagem de perfil @${info.name}`}
                                 draggable={false}
                             />
                         </div>
@@ -115,8 +121,8 @@ function ProfileModal({ userType }) {
                                             onClick={handleModalProfile}
                                         >
                                             <UserCircle size={24} color="#22B77E" />
-                                            <span 
-                                                className='text-sm'   
+                                            <span
+                                                className='text-sm'
                                             >Perfil</span>
                                         </button>
                                     </li>
@@ -143,207 +149,461 @@ function ProfileModal({ userType }) {
                 showModal.show && (
                     document.body.style.overflow = "hidden",
                     ReactDOM.createPortal(
-                        <section
-                            className='fixed z-[300] inset-0 bg-primary/40 flex justify-center items-center'
-                            onClick={e => {
-                                e.target.localName == "section" && (
-                                    document.body.style.overflow = "auto",
-                                    setShowModal(!showModal)
-                                )
-                            }}
-                        >
-                            <main
-                                className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl  overflow-hidden'
-                            >
-                                <article
-                                    className='bg-emerald-50 py-8 flex flex-col justify-between'
-                                >
-                                    <div
-                                        className='flex flex-col gap-1 items-center'
-                                    >
-                                        <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
-                                            <img
-                                                className="object-cover h-full w-full"
-                                                src={`${import.meta.env.VITE_URL}/files/${img}`}
-                                                alt="imagem de perfil @user"
-                                                draggable={false}
-                                            />
-                                        </div>
-                                        <strong className='capitalize'>
-                                            {info.name}{" "}{info.lastName}
-                                        </strong>
-                                    </div>
-
-                                    <button
-                                        className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
-                                    >
-                                        <Trash  color='#DC3545' weight='bold' />
-                                        <span
-                                            className='text-red-error font-semibold'
-                                        >
-                                            APAGAR CONTA
-                                        </span>
-                                    </button>
-                                </article>
-
-                                <article
-                                    className='flex-1 py-8 pr-10 flex flex-col gap-10'
-                                >
-                                    <div>
-                                        <h3
-                                            className='text-zinc-900 font-bold mb-2'
-                                        >
-                                            Informações pessoais
-                                        </h3>
-                                        <ul
-                                            className='flex flex-col gap-2'
-                                        >
-                                            <li>
-                                                <label
-                                                    className='flex flex-col gap-1'
-                                                >
-                                                    <span 
-                                                        className='text-sm'   
-                                                    >
-                                                        {
-                                                            userType == "tutor" ? "CPF" : "CRMV"
-                                                        }
-                                                    </span>
-                                                    <input 
-                                                        type="text"
-                                                        value={info.cpf}
-                                                        className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                        disabled
-                                                    />
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label
-                                                    className='flex flex-col gap-1'
-                                                >
-                                                    <span 
-                                                        className='text-sm'   
-                                                    >
-                                                        Email
-                                                    </span>
-                                                    <input 
-                                                        type="text"
-                                                        value={info.email}
-                                                        className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                        disabled
-                                                    />
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label
-                                                    className='flex flex-col gap-1'
-                                                >
-                                                    <span 
-                                                        className='text-sm'   
-                                                    >
-                                                        Telefone
-                                                    </span>
-                                                    <input 
-                                                        type="text"
-                                                        value={info.tell}
-                                                        className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                        disabled
-                                                    />
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    {
-                                        userType == "tutor" && (
-                                            <div>
-                                                <h3
-                                                    className='text-zinc-900 font-bold mb-2'
-                                                >
-                                                    Endereço
-                                                </h3>
-                                                <ul
-                                                    className='flex flex-col gap-2'
-                                                >
-                                                    <li>
-                                                        <label
-                                                            className='flex flex-col gap-1'
-                                                        >
-                                                            <span 
-                                                                className='text-sm'   
-                                                            >
-                                                                CEP
-                                                            </span>
-                                                            <input 
-                                                                type="text"
-                                                                value={info.cep}
-                                                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                                disabled
-                                                            />
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label
-                                                            className='flex flex-col gap-1'
-                                                        >
-                                                            <span 
-                                                                className='text-sm'   
-                                                            >
-                                                                Endereço
-                                                            </span>
-                                                            <input 
-                                                                type="text"
-                                                                value={info.street}
-                                                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                                disabled
-                                                            />
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label
-                                                            className='flex flex-col gap-1'
-                                                        >
-                                                            <span 
-                                                                className='text-sm'   
-                                                            >
-                                                                Cidade
-                                                            </span>
-                                                            <input 
-                                                                type="text"
-                                                                value={info.city}
-                                                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                                disabled
-                                                            />
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label
-                                                            className='flex flex-col gap-1'
-                                                        >
-                                                            <span 
-                                                                className='text-sm'   
-                                                            >
-                                                                Bairro
-                                                            </span>
-                                                            <input 
-                                                                type="text"
-                                                                value={info.neighborhood}
-                                                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
-                                                                disabled
-                                                            />
-                                                        </label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        )
-                                    }
-                                </article>
-                            </main>
-                        </section>,
+                        <ModalProfile
+                            info={info}
+                            userType={userType}
+                            setShowModal={setShowModal}
+                            showModal={showModal}
+                        />,
                         document.body
                     )
                 )
             }
         </>
+    )
+}
+
+function ModalProfile({ info, userType, setShowModal, showModal }) {
+    const [select, setSelect] = useState("")
+
+    const typeOptons = [
+        {
+            option: "profile",
+            titleName: "Perfil"
+        },
+        {
+            option: "security",
+            titleName: "Segurança"
+        }
+    ]
+
+    function SelectOption() {
+        switch (select) {
+            case "profile":
+                return <InfoProfile
+                    info={info}
+                    userType={userType}
+                />
+            case "security":
+                return <div>
+                    <SecurityProfile />
+                </div>
+            default:
+                return <InfoProfile
+                    info={info}
+                    userType={userType}
+                />
+        }
+    }
+
+    function handleDeleteAcount(){
+        console.log("Deletar conta");
+    }
+
+    return (
+        <section
+            className='fixed z-[300] inset-0 bg-primary/40 flex justify-center items-center'
+            onClick={e => {
+                e.target.localName == "section" && (
+                    document.body.style.overflow = "auto",
+                    setShowModal(!showModal)
+                )
+            }}
+        >
+            <main
+                className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl min-h-[400px] overflow-hidden'
+            >
+                <article
+                    className='bg-emerald-50 py-8 flex flex-col justify-between'
+                >
+                    <div
+                        className='flex flex-col gap-8'
+                    >
+                        <form
+                            className='flex flex-col gap-1 items-center'
+                        >
+                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
+                                <img
+                                    className="object-cover h-full w-full"
+                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                    alt="imagem de perfil @user"
+                                    draggable={false}
+                                />
+                            </div>
+                            <strong className='capitalize'>
+                                {info.name}{" "}{info.lastName}
+                            </strong>
+                            <button
+                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                // onClick={()=>setEdit(!edit)}
+                            >
+                                <Pen size={16} />
+                                {/* {
+                                    edit && "Confirmar"
+                                } */}
+                            </button>
+                        </form>
+
+                        <ul
+                            className='flex flex-col gap-3'
+                        >
+                            {
+                                typeOptons.map(op => {
+                                    return (
+                                        <li
+                                            className='w-full'
+                                        >
+                                            <button
+                                                className={`px-4 py-1 w-full text-start`}
+                                                onClick={() => setSelect(op.option)}
+                                            >
+                                                {
+                                                    op.titleName
+                                                }
+                                            </button>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
+                    <button
+                        className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
+                        onClick={handleDeleteAcount}
+                    >
+                        <Trash color='#DC3545' weight='bold' />
+                        <span
+                            className='text-red-error font-semibold'
+                        >
+                            APAGAR CONTA
+                        </span>
+                    </button>
+                </article>
+
+                <article
+                    className='flex-1 py-8 pr-10 flex flex-col gap-10'
+                >
+                    <SelectOption />
+
+                </article>
+            </main>
+        </section>
+    )
+}
+
+function InfoProfile({ info, userType }) {
+    const [edit, setEdit] = useState(false)
+
+    return (
+        <>
+            <div>
+                <h3
+                    className='text-zinc-900 font-bold mb-2'
+                >
+                    Informações pessoais
+                </h3>
+                <ul
+                    className='flex flex-col gap-2'
+                >
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                {
+                                    userType == "tutor" ? "CPF" : "CRMV"
+                                }
+                            </span>
+                            <input
+                                type="text"
+                                value={info.cpf}
+                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                disabled
+                            />
+                        </label>
+                    </li>
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                Email
+                            </span>
+                            <input
+                                type="text"
+                                value={info.email}
+                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                disabled
+                            />
+                        </label>
+                    </li>
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                Telefone
+                            </span>
+                            <input
+                                type="text"
+                                value={info.tell}
+                                className='border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                disabled
+                            />
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            {
+                userType == "tutor" && (
+                    <>
+                        {
+                            edit
+                                ? <FormsAddresProfile
+                                    edit={edit}
+                                    setEdit={setEdit}
+                                />
+                                : (
+                                    <section>
+                                        <div
+                                            className='flex gap-2 items-center mb-2'
+                                        >
+                                            <h3
+                                                className='text-zinc-900 font-bold'
+                                            >
+                                                Endereço
+                                            </h3>
+                                            <button
+                                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                                onClick={() => setEdit(!edit)}
+                                                type='submit'
+                                            >
+                                                <Pen size={16} />
+                                                {
+                                                    edit && "Confirmar"
+                                                }
+                                            </button>
+                                        </div>
+
+                                        <div
+                                            className='flex gap-8 mt-4'
+                                        >
+
+                                            <label
+                                                className='flex flex-col gap-1 w-full'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    CEP
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.cep}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                            <label
+                                                className='flex flex-col gap-1 w-full'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Cidade
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.city}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                            <label
+                                                className='w-full flex flex-col gap-1'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Estado
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.state}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                        </div>
+                                        <div
+                                            className='flex gap-8 mt-4'
+                                        >
+                                            <label
+                                                className='flex flex-col gap-1 w-full'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Endereço
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.street}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                            <label
+                                                className='flex flex-col gap-1 w-40'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Número
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.numberHome}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                        </div>
+                                        <div
+                                            className='flex gap-8 mt-4'
+                                        >
+
+                                            <label
+                                                className='flex flex-col gap-1 w-full'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Complemento
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.complement}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                            <label
+                                                className='w-full flex flex-col gap-1'
+                                            >
+                                                <span
+                                                    className='text-sm'
+                                                >
+                                                    Bairro
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={info.neighborhood}
+                                                    className='w-full border border-primary px-4 py-2 disabled:cursor-not-allowed text-zinc-800 rounded'
+                                                    disabled
+                                                />
+                                            </label>
+                                        </div>
+                                    </section>
+                                )
+                        }
+                    </>
+
+                )
+            }
+        </>
+    )
+}
+
+function SecurityProfile() {
+    const { register, handleSubmit } = useForm({
+        mode: "onSubmit"
+    })
+
+    const onSubmit = (data) => {
+        console.log(data);
+    }
+
+    return (
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <h3
+                className='text-zinc-900 font-bold mb-2'
+            >
+                Trocar senha
+            </h3>
+
+            <ul
+                className='flex flex-col gap-2'
+            >
+                <li>
+                    <label
+                        className='flex flex-col gap-1'
+                    >
+                        <span
+                            className='text-sm'
+                        >
+                            Senha atual
+                        </span>
+                        <input
+                            type="password"
+                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                            {...register("currentPass")}
+                        />
+                    </label>
+                </li>
+                <li>
+                    <label
+                        className='flex flex-col gap-1'
+                    >
+                        <span
+                            className='text-sm'
+                        >
+                            Nova senha
+                        </span>
+                        <input
+                            type="password"
+                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                            {...register("newPass")}
+                        />
+                    </label>
+                </li>
+                <li>
+                    <label
+                        className='flex flex-col gap-1'
+                    >
+                        <span
+                            className='text-sm'
+                        >
+                            Confirmar nova senha
+                        </span>
+                        <input
+                            type="password"
+                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                            {...register("confirmNewPass")}
+                        />
+                    </label>
+                </li>
+            </ul>
+
+            <div
+                className='w-full flex justify-end mt-8'
+            >
+                <button
+                    type="submit"
+                    className='py-1 px-4 bg-primary hover:bg-primary/80 rounded-lg text-white font-bold'
+                >
+                    Alterar
+                </button>
+            </div>
+        </form>
     )
 }
 
