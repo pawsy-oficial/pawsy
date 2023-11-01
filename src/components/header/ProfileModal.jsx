@@ -1,11 +1,11 @@
 import * as Popover from '@radix-ui/react-popover';
-import { CaretDown, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
+import { Camera, CaretDown, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
 // import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { memo, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import FormsAddresProfile from '../forms/FormsAddres';
 import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -217,7 +217,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     }
 
     function handleDeleteAcount() {
-        if(info.typeUser == "Tutor"){
+        if (info.typeUser == "Tutor") {
             axios.delete(`${import.meta.env.VITE_URL}/tutor/${info.idTutor}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -228,9 +228,9 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                 Cookies.remove("jwtTokenTutor")
                 window.location.reload()
             })
-            .catch(err => console.log(err))
+                .catch(err => console.log(err))
         }
-        else if(info.typeUser == "Medico"){
+        else if (info.typeUser == "Medico") {
             console.log("aaaaapaga");
         }
 
@@ -242,8 +242,10 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
 
     const [lastName, setLastName] = useState(info.lastName)
     const [name, setName] = useState(info.name)
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
 
-    const { handleSubmit, register, formState } = useForm({
+    const { handleSubmit, register, formState, control } = useForm({
         mode: "onSubmit",
         resolver: yupResolver(schemaNameUser)
     })
@@ -253,33 +255,43 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     const [p, setP] = useState(false)
     const onSubmit = (data) => {
         if (p) {
+            const currentTime = new Date().getTime()
+            let nameFile
+            (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = image
+            data.urlImage = nameFile
+
             if (info.typeUser == "Tutor") {
                 data.idTutor = info.idTutor
-                data.urlImage = "2131321_pawsy_12313.png"
 
                 axios.put(`${import.meta.env.VITE_URL}/tutor`, data, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }).then(res => {
-                    console.log(res, data);
-                    setEdit(!edit)
-                    setP(!p)
+                    // console.log(res, data);
+                    selectImage
+                        ? uploadImage(nameFile, selectImage)
+                        : (
+                            setEdit(!edit),
+                            setP(!p)
+                        )
                 }).catch(err => console.log(err))
             }
             else if (info.typeUser == "Medico") {
                 data.idMedic = info.idTutor
-                data.urlImage = "2131321_pawsy_12313.png"
-                console.log(data);
+                // console.log(data);
 
                 axios.put(`${import.meta.env.VITE_URL}/medic`, data, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }).then(res => {
-                    console.log(res.data);
-                    setEdit(!edit)
-                    setP(!p)
+                    selectImage
+                        ? uploadImage(nameFile, selectImage)
+                        : (
+                            setEdit(!edit),
+                            setP(!p)
+                        )
                 })
                     .catch(err => console.log(err))
 
@@ -287,6 +299,39 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
 
         }
     }
+
+    // section image
+   
+
+    useEffect(() => {
+        if (selectImage) {
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+                console.log("A imagem não atende os requisitos ");
+            }
+            else {
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    }, [selectImage])
+
+    function uploadImage(nameFile, selectImage) {
+        let form = new FormData();
+        form.append("name", nameFile)
+        form.append('file', selectImage, selectImage.name)
+        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(() => {
+                // loading(false)
+                setEdit(!edit)
+                setP(!p)
+            }).catch(err => {
+                console.error(err)
+            })
+    }
+    // end section image
 
     return (
         <>
@@ -317,12 +362,37 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                         ? (
                                             <>
                                                 <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
-                                                    <img
-                                                        className="object-cover h-full w-full"
-                                                        src={`${import.meta.env.VITE_URL}/files/${info.image}`}
-                                                        alt="imagem de perfil @user"
-                                                        draggable={false}
-                                                    />
+                                                    <label
+                                                        className={`w-full h-full relative sm:w-40 group sm:h-40 overflow-hidden bg-primary/20 cursor-pointer`}
+                                                    >
+                                                        <img
+                                                            src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${info.image}`}
+                                                            alt={`imagem de perfil @${name}`}
+                                                            className="h-full w-full object-cover group-hover:brightness-50 transition-all"
+                                                            draggable={false}
+                                                        />
+                                                        <Controller
+                                                            name="urlImage"
+                                                            control={control}
+                                                            render={({ field }) => (
+                                                                <input
+                                                                    type="file"
+                                                                    multiple={false}
+                                                                    className="hidden"
+                                                                    onChange={event => {
+                                                                        field.onChange(event.target.files[0]);
+                                                                        setSelectImage(event.target.files[0]);
+                                                                    }}
+                                                                    accept="image/png, image/jpg, image/jpeg"
+                                                                />
+                                                            )}
+                                                        />
+                                                        <Camera
+                                                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all"
+                                                            color="#ffffff"
+                                                            size={32}
+                                                        />
+                                                    </label>
                                                 </div>
                                                 <div
                                                     className='flex flex-col gap-1'
@@ -362,7 +432,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                                     <img
                                                         className="object-cover h-full w-full"
                                                         src={`${import.meta.env.VITE_URL}/files/${info.image}`}
-                                                        alt="imagem de perfil @user"
+                                                        alt={`imagem de perfil @${name}`}
                                                         draggable={false}
                                                     />
                                                 </div>
@@ -421,7 +491,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                         </div>
                         <button
                             className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
-                            onClick={()=>setShowModalAlert(true)}
+                            onClick={() => setShowModalAlert(true)}
                         >
                             <Trash color='#DC3545' weight='bold' size={16} />
                             <span
@@ -471,7 +541,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                             >
                                 <button
                                     className='bg-primary rounded-lg text-white font-bold px-4 py-1'
-                                    onClick={()=>setShowModalAlert(false)}
+                                    onClick={() => setShowModalAlert(false)}
                                 >
                                     Cancelar
                                 </button>

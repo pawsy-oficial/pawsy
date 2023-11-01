@@ -293,7 +293,7 @@ export default function ProfileClinic() {
                                         <p className="text-sm font-normal text-limit max-w-3xl">
                                             {
                                                 !infoClinic.storedDescriptionClinica || infoClinic.storedDescriptionClinica.length == 0
-                                                    ? `${isOwner ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : "..."}`
+                                                    ? `${isOwner ? "A sua clínica ainda não possui uma descrição, crie uma agora mesmo!" : "A clínica não possui uma descrição"}`
                                                     : infoClinic.storedDescriptionClinica
                                             }
                                         </p>
