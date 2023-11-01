@@ -17,7 +17,7 @@ const schema = Yup.object({
     uf: Yup.string().required("Selecione um estado")
 })
 
-function FormsAddresProfile({edit, setEdit}) {
+function FormsAddresProfile({edit, setEdit, info}) {
 
     const { register, handleSubmit, formState, setValue, setError } = useForm({
         resolver: yupResolver(schema),
@@ -122,9 +122,9 @@ function FormsAddresProfile({edit, setEdit}) {
         axios.get(urlGeocode)
             .then((e) => {
                 const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
-
+                
                 data.uf = selectUf
-                data.idTutor = 1
+                data.idTutor = info.idTutor
                 data.latitude = latitude
                 data.longitude = longitude
 

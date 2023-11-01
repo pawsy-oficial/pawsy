@@ -52,6 +52,7 @@ function ProfileModal({ userType }) {
         }).then(
             e => {
                 setInfo({
+                    idTutor: e.data.storedIdTutor,
                     cep: e.data.CEP,
                     city: e.data.Cidade,
                     cpf: e.data.storedCPF ?? e.data.storedCRMVMedic,
@@ -331,7 +332,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                         className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
                         onClick={handleDeleteAcount}
                     >
-                        <Trash color='#DC3545' weight='bold' />
+                        <Trash color='#DC3545' weight='bold' size={16} />
                         <span
                             className='text-red-error font-semibold'
                         >
@@ -427,6 +428,7 @@ function InfoProfile({ info, userType, edit, setEdit }) {
                                 ? <FormsAddresProfile
                                     edit={edit}
                                     setEdit={setEdit}
+                                    info={info}
                                 />
                                 : (
                                     <section>
