@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import { Camera, CaretDown, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
+import { Camera, CaretDown, CloudSlash, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
 // import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -201,6 +201,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                     userType={userType}
                     edit={editAddress}
                     setEdit={setEditAddress}
+                    setShowModalAlert={setShowModalAlert}
                 />
             case "security":
                 return <div>
@@ -212,6 +213,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                     userType={userType}
                     edit={editAddress}
                     setEdit={setEditAddress}
+                    setShowModalAlert={setShowModalAlert}
                 />
         }
     }
@@ -231,7 +233,17 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                 .catch(err => console.log(err))
         }
         else if (info.typeUser == "Medico") {
-            console.log("aaaaapaga");
+            axios.delete(`${import.meta.env.VITE_URL}/medic/${info.idTutor}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                console.log(res);
+
+                Cookies.remove("jwtTokenMedic")
+                window.location.reload()
+            })
+                .catch(err => console.log(err))
         }
 
 
@@ -257,7 +269,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
         if (p) {
             const currentTime = new Date().getTime()
             let nameFile
-            (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = image
+            (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = info.image
             data.urlImage = nameFile
 
             if (info.typeUser == "Tutor") {
@@ -301,7 +313,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     }
 
     // section image
-   
+
 
     useEffect(() => {
         if (selectImage) {
@@ -348,7 +360,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                     className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl min-h-[400px] overflow-hidden'
                 >
                     <article
-                        className='bg-emerald-50 py-8 flex flex-col justify-between max-w-[180px]'
+                        className='bg-emerald-50 py-8 px-2 flex flex-col justify-between max-w-[180px]'
                     >
                         <div
                             className='flex flex-col gap-8'
@@ -489,17 +501,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                 }
                             </ul>
                         </div>
-                        <button
-                            className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
-                            onClick={() => setShowModalAlert(true)}
-                        >
-                            <Trash color='#DC3545' weight='bold' size={16} />
-                            <span
-                                className='text-red-error font-semibold'
-                            >
-                                APAGAR CONTA
-                            </span>
-                        </button>
+
                     </article>
 
                     <article
@@ -532,7 +534,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                             <p
                                 className='text-center'
                             >
-                                Se você excluir sua conta, perderá todos os seus dados <strong>permanentemente</strong>. Esta ação é <strong>irreversível</strong>, por favor, pense duas vezes antes de fazer isto.
+                                Você está prestes a desativar a sua conta. Ao fazer isso, você não poderá mais acessar os seus dados, mensagens, contatos e serviços associados a esta conta. Tem certeza de que deseja continuar?
                             </p>
 
 
@@ -549,7 +551,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                     className='border-2 border-red-error rounded-lg text-red-error font-bold px-4 py-1 hover:bg-red-error hover:text-white'
                                     onClick={handleDeleteAcount}
                                 >
-                                    Excluir permanentemente
+                                    Desativar
                                 </button>
                             </div>
                         </main>
@@ -561,7 +563,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     )
 }
 
-function InfoProfile({ info, userType, edit, setEdit }) {
+function InfoProfile({ info, userType, edit, setEdit, setShowModalAlert }) {
 
     return (
         <>
@@ -787,6 +789,25 @@ function InfoProfile({ info, userType, edit, setEdit }) {
 
                 )
             }
+            <ul
+                className='w-full'
+            >
+                <li
+                    className=''
+                >
+                    <button
+                        className='flex gap-2 items-center'
+                        onClick={() => setShowModalAlert(true)}
+                    >
+                        <CloudSlash color='#DC3545' weight='bold' size={16} />
+                        <span
+                            className='text-red-error font-semibold'
+                        >
+                            DESATIVAR CONTA
+                        </span>
+                    </button>
+                </li>
+            </ul>
         </>
     )
 }
