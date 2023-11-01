@@ -3,11 +3,24 @@ import { InputFormRegisterCEP } from "../inputsComponents";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import * as Yup from 'yup'
+import { yupResolver } from "@hookform/resolvers/yup";
+import Cookies from "js-cookie";
+
+const schema = Yup.object({
+    cep: Yup.string().required("Campo obrigatório").length(9, "CEP deve possuir 8 dígitos"),
+    city: Yup.string().required("Campo obrigatório"),
+    street: Yup.string().required("Campo obrigatório"),
+    numberHome: Yup.number().typeError('Deve ser um número').positive("Deve ser um número positivo").integer("Deve ser um número inteiro").required("Campo obrigatório"),
+    complement: Yup.string(),
+    neighborhood: Yup.string().required("Campo obrigatório"),
+    uf: Yup.string().required("Selecione um estado")
+})
 
 function FormsAddresProfile({edit, setEdit}) {
 
     const { register, handleSubmit, formState, setValue, setError } = useForm({
-        // resolver: yupResolver(schema),
+        resolver: yupResolver(schema),
         mode: "all"
     })
 
@@ -25,6 +38,8 @@ function FormsAddresProfile({edit, setEdit}) {
 
     const [uf, setUf] = useState([])
     const [selectUf, setSelectUf] = useState("")
+
+    const token = Cookies.get("jwtTokenTutor")
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/uf`)
@@ -97,16 +112,40 @@ function FormsAddresProfile({edit, setEdit}) {
 
     const { errors } = formState
 
-    const onSubmite = (data) => {
-        data.uf = selectUf
-        console.log(data);
-        setEdit(!edit)
+    const onSubmit = (data) => {
+
+        const streetFormat = data.street.replace(/ /g, "%20")
+        const cityFormat = data.city.replace(/ /g, "%20")
+        const neighborhoodFormat = data.neighborhood.replace(/ /g, "%20")
+        const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
+
+        axios.get(urlGeocode)
+            .then((e) => {
+                const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
+
+                data.uf = selectUf
+                data.idTutor = 1
+                data.latitude = latitude
+                data.longitude = longitude
+
+                axios.put(`${import.meta.env.VITE_URL}/tutorAddress`, data, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then(res=>{
+                    // console.log(res);
+                    setEdit(!edit)
+                })
+                .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+
     }
 
     return (
         <form
             className=''
-            onSubmit={handleSubmit(onSubmite)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <div
                 className='flex gap-2 items-center'

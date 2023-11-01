@@ -26,6 +26,7 @@ function ProfileModal({ userType }) {
         tell: "",
         image: ""
     })
+    const [edit, setEdit] = useState(false)
 
     let tutorToken
     let url
@@ -69,7 +70,7 @@ function ProfileModal({ userType }) {
         ).catch(
             err => console.log(err)
         )
-    }, [])
+    }, [edit])
 
     const handleModalProfile = () => {
         setShowModal({
@@ -154,6 +155,8 @@ function ProfileModal({ userType }) {
                             userType={userType}
                             setShowModal={setShowModal}
                             showModal={showModal}
+                            editAddress={edit}
+                            setEditAddress={setEdit}
                         />,
                         document.body
                     )
@@ -163,9 +166,9 @@ function ProfileModal({ userType }) {
     )
 }
 
-function ModalProfile({ info, userType, setShowModal, showModal }) {
+function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress, editAddress }) {
     const [select, setSelect] = useState("")
-    const [edit, setEdit] = useState(false)
+    const [edit, setEdit] = useState(true)
 
     const typeOptons = [
         {
@@ -184,6 +187,8 @@ function ModalProfile({ info, userType, setShowModal, showModal }) {
                 return <InfoProfile
                     info={info}
                     userType={userType}
+                    edit={editAddress}
+                    setEdit={setEditAddress}
                 />
             case "security":
                 return <div>
@@ -193,6 +198,8 @@ function ModalProfile({ info, userType, setShowModal, showModal }) {
                 return <InfoProfile
                     info={info}
                     userType={userType}
+                    edit={editAddress}
+                    setEdit={setEditAddress}
                 />
         }
     }
@@ -344,8 +351,7 @@ function ModalProfile({ info, userType, setShowModal, showModal }) {
     )
 }
 
-function InfoProfile({ info, userType }) {
-    const [edit, setEdit] = useState(false)
+function InfoProfile({ info, userType, edit, setEdit }) {
 
     return (
         <>
