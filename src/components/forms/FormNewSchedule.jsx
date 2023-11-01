@@ -8,7 +8,8 @@ import Restriction from "./schedule/Restriction";
 
 function FormNewSchedule({ alterPage }) {
     const [veterinaryName, setVeterinaryName] = useState([]);
-    const [clinicId, setClinicId] = useState(null); // State para armazenar o ID da clínica
+    const [clinicId, setClinicId] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/profileClinic`, {
@@ -17,9 +18,7 @@ function FormNewSchedule({ alterPage }) {
             }
         }).then(res => {
             setClinicId(res.data.storedIdClinica);
-            console.log(clinicId)
-        })
-        .catch(err => console.log(err));
+        }).catch(err => console.log(err));
 
         axios.get(`${import.meta.env.VITE_URL}/get-medicosIntegrados?idClinica=${clinicId}&all=true`, {
             headers: {
@@ -27,8 +26,7 @@ function FormNewSchedule({ alterPage }) {
             }
         }).then(response => {
             setVeterinaryName(response.data);
-        })
-        .catch(err => console.log(err));
+        }).catch(err => console.log(err));
 
     }, [clinicId]);
 
@@ -51,27 +49,29 @@ function FormNewSchedule({ alterPage }) {
     });
 
     const onSubmit = async (data) => {
-    try {
-        data.idClinic = clinicId;
-        const response = await axios.post(
-            `${import.meta.env.VITE_URL}/agenda-register`,
-            data,
-            {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+        try {
+            data.idClinic = clinicId;
+            const response = await axios.post(
+                `${import.meta.env.VITE_URL}/agenda-register`,
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get("jwtTokenClinic")}`
+                    }
                 }
+            );
+            if (response.status === 200) {
+                console.log("Agenda criada com sucesso!");
+                location.reload();
             }
-        );
-        if (response.status === 200) {
-            console.log("Agenda criada com sucesso!");
-            location.reload();
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                setErrorMessage(error.response.data.message);
+            } else {
+                console.log("Erro ao criar a agenda:", error);
+            }
         }
-    } catch (error) {
-        console.log(data)
-        console.log("Erro ao criar a agenda:", error);
     }
-}
-
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl">
@@ -81,6 +81,8 @@ function FormNewSchedule({ alterPage }) {
             </div>
             <h1 className="font-sora font-bold text-[32px]">Nova agenda</h1>
 
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
             <TitleSectionForm
                 title={"Nome da agenda"}
                 description={"Informe o nome que deseja para esta agenda."}
@@ -88,7 +90,7 @@ function FormNewSchedule({ alterPage }) {
             <input
                 type="text"
                 placeholder="Nome da agenda"
-                {...register("agenda-name")}
+                {...register("agenda-name", { required: true })}
                 className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary w-full"
             />
 
@@ -109,7 +111,7 @@ function FormNewSchedule({ alterPage }) {
                             type="date"
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                             placeholder="__/__/____"
-                            {...register("open-date")}
+                            {...register("open-date", { required: true })}
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -118,7 +120,7 @@ function FormNewSchedule({ alterPage }) {
                             type="date"
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                             placeholder="__/__/____"
-                            {...register("close-date")}
+                            {...register("close-date", { required: true })}
                         />
                     </div>
                 </div>
@@ -139,7 +141,7 @@ function FormNewSchedule({ alterPage }) {
                             fieldsRestriction.length > 0 && (
                                 <strong className="text-base font-lato font-normal">
                                     {
-                                        fieldsRestriction.length == 1 ? "Data da restrição" : "Data das restrições"
+                                        fieldsRestriction.length === 1 ? "Data da restrição" : "Data das restrições"
                                     }
                                 </strong>
                             )
@@ -181,7 +183,7 @@ function FormNewSchedule({ alterPage }) {
                     })
                 }
                 {
-                    fieldsAvailable.length == 0 && (
+                    fieldsAvailable.length === 0 && (
                         <span
                             className="text-zinc-400 text-center"
                         >

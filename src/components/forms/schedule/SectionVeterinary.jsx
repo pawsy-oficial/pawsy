@@ -18,9 +18,9 @@ function SectionAddVeterinary({ names, remove, index, register, control, setValu
                     <strong className="text-base font-lato font-normal">Veterinário</strong>
                     <select
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px] focus:outline-primary capitalize"
-                        {...register(`Available.${index}.medicoId`)}  // Renomeando para medicoId para ser mais claro
+                        {...register(`Available.${index}.medicoId`)}
                         onChange={e => handleVeterinarioChange(e.target.value)}
-                    >
+                    >   <option></option>
                         {names.map(e => (
                             <option value={e.idMedico}>
                                 {e.nomeMedico}

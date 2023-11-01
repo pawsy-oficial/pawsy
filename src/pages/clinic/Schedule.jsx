@@ -8,6 +8,8 @@ import { InputDropDown } from "../../components/inputsComponents";
 import HomeSchedule from "../../components/componentsClinic/homeSchedule/HomeSchedule";
 import { PatientContainerSchedule } from "../../components/componentsClinic/patientContainer/PatientContainer";
 import FormNewSchedule from "../../components/forms/FormNewSchedule";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 
 
@@ -77,8 +79,35 @@ export default function Schedule() {
 
 
 
-function AllSchenduleComponent({alterPage, activeMenu}){
-    const years = [2020, 2021, 2022, 2023]
+function AllSchenduleComponent({alterPage, activeMenu}) {
+    const years = [2023];
+
+    const [allSchendules, setAllSchendules] = useState([]);
+
+    useEffect(() => {
+        const getId = async () => {
+            const jwtTokenClinic = Cookies.get('jwtTokenClinic');
+            try {
+                const responseClinic = await axios.get(import.meta.env.VITE_URL + '/profileClinic', {
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtTokenClinic
+                    }
+                });
+
+                const cd_clinica = responseClinic.data.storedIdClinica;
+
+                axios.get(`${import.meta.env.VITE_URL}/list-schedules/${cd_clinica}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtTokenClinic
+                    }
+                }).then(e => setAllSchendules(e.data)).catch(err => console.log(err));
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getId();
+    }, []);
 
     return(
         <section className="w-full flex flex-col gap-10 items-start">
@@ -106,11 +135,19 @@ function AllSchenduleComponent({alterPage, activeMenu}){
             </div>
 
             <div className="grid grid-cols-3 gap-6 w-full">
-                <ContainerMonthSchedule month={"Janeiro"}/>       
-                <ContainerMonthSchedule month={"Fevereiro"}/>       
-                <ContainerMonthSchedule month={"Abril"}/>       
-                <ContainerMonthSchedule month={"Junho"}/>       
-                <ContainerMonthSchedule month={"Julho"}/>       
+                {
+                    allSchendules.length == 0 
+                    ? <p className="text-zinc-500">A clínica não possui agendas cadastrados</p>
+                    : allSchendules.map(ag => {
+                        return <ContainerMonthSchedule 
+                        idAgenda={ag.idAgenda} 
+                        idClinica={ag.idClinica} 
+                        abertura={ag.dtAbertura} 
+                        fechamento={ag.dtFechamento} 
+                        nome={ag.nmAgenda} 
+                        obs={ag.obs}/>   
+                    })
+                }
             </div>
         </section>
     )

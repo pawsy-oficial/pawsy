@@ -20,6 +20,20 @@ function Switch({ state, defaultState }) {
     )
 }
 
+function SwitchClinic({ state, onChange }) {
+    return (
+        <>
+            <label
+                className={`p-1 ${state ? "bg-primary" : "bg-zinc-200"} rounded-full relative w-16 md:w-10 cursor-pointer`}
+            >
+                <input type="checkbox" className="hidden" onChange={onChange} checked={state} />
+                <div className={`md:w-4 md:h-4 w-6 h-6 rounded-full bg-white relative duration-500 ${state ? "md:left-[calc(100%-16px)] left-[calc(100%-24px)]" : "left-0"}`} />
+            </label>
+        </>
+    );
+}
+
+
 import styles from "./style.module.css"
 
 function InputDropDown({ listData, register, index }) {
@@ -86,8 +100,10 @@ const memoInputFormRegisterCEP = memo(InputFormRegisterCEP)
 const memoInputFormRegister = memo(InputFormRegister)
 const memoInputDropDown = memo(InputDropDown)
 const memoSwitch = memo(Switch)
+const memoSwitchClinic = memo(SwitchClinic)
 
 export { memoInputFormRegisterCEP as InputFormRegisterCEP }
 export { memoInputDropDown as InputDropDown }
 export { memoSwitch as Switch }
+export { memoSwitchClinic as SwitchClinic }
 export { memoInputFormRegister as InputFormRegister }
