@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import { CaretDown, Gear, Pen, SignOut, Trash, UserCircle, XCircle } from '@phosphor-icons/react';
+import { CaretDown, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
 // import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -59,14 +59,14 @@ function ProfileModal({ userType }) {
                     city: e.data.Cidade,
                     cpf: e.data.storedCPF ?? e.data.storedCRMVMedic,
                     email: e.data.storedEmailTutor ?? e.data.storedEmailMedic,
-                    lastName: e.data.storedSBTutor, // falta medico
+                    lastName: e.data.storedSBTutor ?? e.data.storedLastName,
                     name: e.data.storedNameTutor ?? e.data.storedNameMedic,
                     neighborhood: e.data.Bairro,
                     state: e.data.Estado,
                     numberHome: e.data.Numero,
                     complement: e.data.Complemento,
                     street: e.data.Rua,
-                    tell: e.data.storedCelTutor,
+                    tell: e.data.storedCelTutor ?? e.data.storedCel,
                     image: e.data.storedImg,
                     typeUser: e.data.storedType
                 });
@@ -180,7 +180,7 @@ const schemaNameUser = Yup.object({
 
 function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress, editAddress, token, edit, setEdit }) {
     const [select, setSelect] = useState("")
-    
+    const [showModalAlert, setShowModalAlert] = useState(false)
 
     const typeOptons = [
         {
@@ -217,7 +217,25 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     }
 
     function handleDeleteAcount() {
-        console.log("Deletar conta");
+        if(info.typeUser == "Tutor"){
+            axios.delete(`${import.meta.env.VITE_URL}/tutor/${info.idTutor}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                console.log(res);
+
+                Cookies.remove("jwtTokenTutor")
+                window.location.reload()
+            })
+            .catch(err => console.log(err))
+        }
+        else if(info.typeUser == "Medico"){
+            console.log("aaaaapaga");
+        }
+
+
+
     }
 
     // form
@@ -234,11 +252,11 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
 
     const [p, setP] = useState(false)
     const onSubmit = (data) => {
-        if(p) {
-            if(info.typeUser == "Tutor"){
+        if (p) {
+            if (info.typeUser == "Tutor") {
                 data.idTutor = info.idTutor
                 data.urlImage = "2131321_pawsy_12313.png"
-                
+
                 axios.put(`${import.meta.env.VITE_URL}/tutor`, data, {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -249,169 +267,227 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                     setP(!p)
                 }).catch(err => console.log(err))
             }
-            else if(info.typeUser == "Medico"){
-                data.idTutor = info.idTutor
+            else if (info.typeUser == "Medico") {
+                data.idMedic = info.idTutor
                 data.urlImage = "2131321_pawsy_12313.png"
                 console.log(data);
 
-                setEdit(!edit)
-                setP(!p)
+                axios.put(`${import.meta.env.VITE_URL}/medic`, data, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then(res => {
+                    console.log(res.data);
+                    setEdit(!edit)
+                    setP(!p)
+                })
+                    .catch(err => console.log(err))
+
             }
 
         }
     }
 
     return (
-        <section
-            className='fixed z-[300] inset-0 bg-primary/40 flex justify-center items-center'
-            onClick={e => {
-                e.target.localName == "section" && (
-                    document.body.style.overflow = "auto",
-                    setShowModal(!showModal)
-                )
-            }}
-        >
-            <main
-                className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl min-h-[400px] overflow-hidden'
+        <>
+            <section
+                className='fixed z-[300] inset-0 bg-primary/40 flex justify-center items-center'
+                onClick={e => {
+                    e.target.localName == "section" && (
+                        document.body.style.overflow = "auto",
+                        setShowModal(!showModal)
+                    )
+                }}
             >
-                <article
-                    className='bg-emerald-50 py-8 flex flex-col justify-between max-w-[180px]'
+                <main
+                    className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl min-h-[400px] overflow-hidden'
                 >
-                    <div
-                        className='flex flex-col gap-8'
+                    <article
+                        className='bg-emerald-50 py-8 flex flex-col justify-between max-w-[180px]'
                     >
-                        <form
-                            className='flex flex-col gap-1 items-center'
-                            onSubmit={handleSubmit(onSubmit)}
+                        <div
+                            className='flex flex-col gap-8'
                         >
-                            {
-                                !edit
-                                    ? (
-                                        <>
-                                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
-                                                <img
-                                                    className="object-cover h-full w-full"
-                                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
-                                                    alt="imagem de perfil @user"
-                                                    draggable={false}
-                                                />
-                                            </div>
-                                            <div
-                                                className='flex flex-col gap-1'
-                                            >
-                                                <input
-                                                    className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
-                                                    type="text"
-                                                    value={name}
-                                                    {...register("name", {
-                                                        onChange: e => setName(e.target.value)
-                                                    })}
-                                                />
-                                                {
-                                                    errors.name && (
-                                                        <span className='capitalize' >{errors.name.message}</span>
-                                                    )
-                                                }
-                                                <input
-                                                    className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
-                                                    type="text"
-                                                    value={lastName}
-                                                    {...register("lastName", {
-                                                        onChange: e => setLastName(e.target.value)
-                                                    })}
-                                                />
-                                                {
-                                                    errors.lastName && (
-                                                        <span className='capitalize'>{errors.lastName.message}</span>
-                                                    )
-                                                }
-                                            </div>
-                                        </>
-                                    )
-                                    : (
-                                        <>
-                                            <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
-                                                <img
-                                                    className="object-cover h-full w-full"
-                                                    src={`${import.meta.env.VITE_URL}/files/${info.image}`}
-                                                    alt="imagem de perfil @user"
-                                                    draggable={false}
-                                                />
-                                            </div>
-                                            <strong className='capitalize w-full text-limit px-4 text-center'>
-                                                {info.name}{" "}{info.lastName}
-                                            </strong>
-                                        </>
-                                    )
-                            }
-                            {
-                                edit
-                                    ? (
-                                        <button
-                                            className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                            type={"button"}
-                                            onClick={() => {
-                                                edit && setEdit(!edit)
-                                            }}
-                                        >
-                                            <Pen size={16} />
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                            type={"subimit"}
-                                            onClick={() => setP(!p)}
-                                        >
-                                            <Pen size={16} /> Confirmar
-                                        </button>
-                                    )
-                            }
-                        </form>
-
-                        <ul
-                            className='flex flex-col gap-3'
-                        >
-                            {
-                                typeOptons.map(op => {
-                                    return (
-                                        <li
-                                            className='w-full'
-                                        >
+                            <form
+                                className='flex flex-col gap-1 items-center'
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
+                                {
+                                    !edit
+                                        ? (
+                                            <>
+                                                <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
+                                                    <img
+                                                        className="object-cover h-full w-full"
+                                                        src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                                        alt="imagem de perfil @user"
+                                                        draggable={false}
+                                                    />
+                                                </div>
+                                                <div
+                                                    className='flex flex-col gap-1'
+                                                >
+                                                    <input
+                                                        className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
+                                                        type="text"
+                                                        value={name}
+                                                        {...register("name", {
+                                                            onChange: e => setName(e.target.value)
+                                                        })}
+                                                    />
+                                                    {
+                                                        errors.name && (
+                                                            <span className='capitalize' >{errors.name.message}</span>
+                                                        )
+                                                    }
+                                                    <input
+                                                        className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
+                                                        type="text"
+                                                        value={lastName}
+                                                        {...register("lastName", {
+                                                            onChange: e => setLastName(e.target.value)
+                                                        })}
+                                                    />
+                                                    {
+                                                        errors.lastName && (
+                                                            <span className='capitalize'>{errors.lastName.message}</span>
+                                                        )
+                                                    }
+                                                </div>
+                                            </>
+                                        )
+                                        : (
+                                            <>
+                                                <div className="rounded-full w-32 h-32 overflow-hidden border-4 border-secundary">
+                                                    <img
+                                                        className="object-cover h-full w-full"
+                                                        src={`${import.meta.env.VITE_URL}/files/${info.image}`}
+                                                        alt="imagem de perfil @user"
+                                                        draggable={false}
+                                                    />
+                                                </div>
+                                                <strong className='capitalize w-full text-limit px-4 text-center'>
+                                                    {info.name}{" "}{info.lastName}
+                                                </strong>
+                                            </>
+                                        )
+                                }
+                                {
+                                    edit
+                                        ? (
                                             <button
-                                                className={`px-4 py-1 w-full text-start`}
-                                                onClick={() => setSelect(op.option)}
+                                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                                type={"button"}
+                                                onClick={() => {
+                                                    edit && setEdit(!edit)
+                                                }}
                                             >
-                                                {
-                                                    op.titleName
-                                                }
+                                                <Pen size={16} />
                                             </button>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                    <button
-                        className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
-                        onClick={handleDeleteAcount}
-                    >
-                        <Trash color='#DC3545' weight='bold' size={16} />
-                        <span
-                            className='text-red-error font-semibold'
+                                        ) : (
+                                            <button
+                                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                                type={"subimit"}
+                                                onClick={() => setP(!p)}
+                                            >
+                                                <Pen size={16} /> Confirmar
+                                            </button>
+                                        )
+                                }
+                            </form>
+
+                            <ul
+                                className='flex flex-col gap-3'
+                            >
+                                {
+                                    typeOptons.map(op => {
+                                        return (
+                                            <li
+                                                className='w-full'
+                                            >
+                                                <button
+                                                    className={`px-4 py-1 w-full text-start`}
+                                                    onClick={() => setSelect(op.option)}
+                                                >
+                                                    {
+                                                        op.titleName
+                                                    }
+                                                </button>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
+                        <button
+                            className='flex gap-2 w-full py-1 hover:bg-red-200 items-center px-4'
+                            onClick={()=>setShowModalAlert(true)}
                         >
-                            APAGAR CONTA
-                        </span>
-                    </button>
-                </article>
+                            <Trash color='#DC3545' weight='bold' size={16} />
+                            <span
+                                className='text-red-error font-semibold'
+                            >
+                                APAGAR CONTA
+                            </span>
+                        </button>
+                    </article>
 
-                <article
-                    className='flex-1 py-8 pr-10 flex flex-col gap-10'
-                >
-                    <SelectOption />
+                    <article
+                        className='flex-1 py-8 pr-10 flex flex-col gap-10'
+                    >
+                        <SelectOption />
 
-                </article>
-            </main>
-        </section>
+                    </article>
+                </main>
+            </section>
+
+            {
+                showModalAlert && ReactDOM.createPortal(
+                    <section
+                        className='fixed inset-0 bg-red-error/60 z-[800] flex justify-center items-center backdrop-blur-sm'
+                    >
+                        <main
+                            className='flex flex-col items-center gap-5 bg-white rounded-2xl w-1/2 max-w-2xl p-6'
+                        >
+                            <div
+                                className='flex flex-col items-center'
+                            >
+                                <Warning color='#dc3545' size={64} />
+                                <h2
+                                    className='font-bold text-3xl'
+                                >
+                                    Atenção!
+                                </h2>
+                            </div>
+                            <p
+                                className='text-center'
+                            >
+                                Se você excluir sua conta, perderá todos os seus dados permanentemente. Esta ação é irreversível e não poderá ser desfeita. Por favor, pense duas vezes antes de fazer isso.
+                            </p>
+
+
+                            <div
+                                className='flex gap-6 justify-center'
+                            >
+                                <button
+                                    className='bg-primary rounded-lg text-white font-bold px-4 py-1'
+                                    onClick={()=>setShowModalAlert(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    className='border-2 border-red-error rounded-lg text-red-error font-bold px-4 py-1 hover:bg-red-error hover:text-white'
+                                    onClick={handleDeleteAcount}
+                                >
+                                    Excluir permanentemente
+                                </button>
+                            </div>
+                        </main>
+                    </section>,
+                    document.body
+                )
+            }
+        </>
     )
 }
 
