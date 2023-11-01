@@ -18,7 +18,10 @@ export default function LoginFormTutor() {
         resolver: yupResolver(schema),
     });
 
-    const [loginError, setLoginError] = useState(null);
+    const [loginError, setLoginError] = useState({
+        msg: null,
+        status: null
+    });
 
     const onSubmit = async (data) => {
         try {
@@ -39,11 +42,24 @@ export default function LoginFormTutor() {
             navigate('/tutor');
         } catch (error) {
             console.error("Erro na chamada API:", error);
-
             if (error.response && error.response.status === 400) {
-                setLoginError('E-mail ou senha estão incorretas');
-            } else {
-                setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                setLoginError({
+                    msg: 'E-mail ou senha estão incorretas',
+                    status: 400
+                })
+            } 
+            else {
+                if(error.response && error.response.status === 401){
+                    setLoginError({
+                        msg: 'Conta desativada',
+                        status: 401
+                    });
+                }
+                else{
+                    setLoginError({
+                        msg: 'Erro ao tentar fazer login. Tente novamente mais tarde.'
+                    });
+                }
             }
         }
     };
@@ -55,7 +71,12 @@ export default function LoginFormTutor() {
         >
             <h2 className="font-sora font-bold text-[32px]">Login</h2>
 
-            {loginError && <p className="text-red-500 mb-4">{loginError}</p>}
+            {
+                loginError.status == 400 && <p className="text-red-500">{loginError.msg}</p>
+            }
+            {
+                loginError.status == 401 && <p className="text-red-500">{loginError.msg}</p>
+            }
 
             <div className="flex flex-col gap-4 mt-8">
                 <div className="w-full">
