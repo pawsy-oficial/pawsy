@@ -54,7 +54,7 @@ function ProfileModal({ userType }) {
         }).then(
             e => {
                 setInfo({
-                    idTutor: e.data.storedIdTutor,
+                    idTutor: e.data.storedIdTutor ?? e.data.storedIdMedic,
                     cep: e.data.CEP,
                     city: e.data.Cidade,
                     cpf: e.data.storedCPF ?? e.data.storedCRMVMedic,
@@ -67,7 +67,8 @@ function ProfileModal({ userType }) {
                     complement: e.data.Complemento,
                     street: e.data.Rua,
                     tell: e.data.storedCelTutor,
-                    image: e.data.storedImg
+                    image: e.data.storedImg,
+                    typeUser: e.data.storedType
                 });
             }
         ).catch(
@@ -234,17 +235,28 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     const [p, setP] = useState(false)
     const onSubmit = (data) => {
         if(p) {
-            data.idTutor = info.idTutor
-            data.urlImage = "2131321_pawsy_12313.png"
+            if(info.typeUser == "Tutor"){
+                data.idTutor = info.idTutor
+                data.urlImage = "2131321_pawsy_12313.png"
+                
+                axios.put(`${import.meta.env.VITE_URL}/tutor`, data, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then(res => {
+                    console.log(res, data);
+                    setEdit(!edit)
+                    setP(!p)
+                }).catch(err => console.log(err))
+            }
+            else if(info.typeUser == "Medico"){
+                data.idTutor = info.idTutor
+                data.urlImage = "2131321_pawsy_12313.png"
+                console.log(data);
 
-            axios.put(`${import.meta.env.VITE_URL}/tutor`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }).then(res => {
                 setEdit(!edit)
                 setP(!p)
-            }).catch(err => console.log(err))
+            }
 
         }
     }
