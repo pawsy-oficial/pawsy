@@ -6,8 +6,9 @@ import axios from 'axios';
 import { memo, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useForm } from 'react-hook-form';
-import { InputFormRegisterCEP } from '../inputsComponents';
 import FormsAddresProfile from '../forms/FormsAddres';
+import * as Yup from "yup"
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function ProfileModal({ userType }) {
     const [showModal, setShowModal] = useState({
@@ -27,6 +28,7 @@ function ProfileModal({ userType }) {
         image: ""
     })
     const [edit, setEdit] = useState(false)
+    const [editProfile, setEditProfile] = useState(true)
 
     let tutorToken
     let url
@@ -71,7 +73,7 @@ function ProfileModal({ userType }) {
         ).catch(
             err => console.log(err)
         )
-    }, [edit])
+    }, [edit, editProfile])
 
     const handleModalProfile = () => {
         setShowModal({
@@ -158,6 +160,9 @@ function ProfileModal({ userType }) {
                             showModal={showModal}
                             editAddress={edit}
                             setEditAddress={setEdit}
+                            token={tutorToken}
+                            edit={editProfile}
+                            setEdit={setEditProfile}
                         />,
                         document.body
                     )
@@ -167,9 +172,14 @@ function ProfileModal({ userType }) {
     )
 }
 
-function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress, editAddress }) {
+const schemaNameUser = Yup.object({
+    name: Yup.string().required("campo obrigatório").min(2, "minimo 2 caracteres").max(24, "limite atingido"),
+    lastName: Yup.string().required("campo obrigatório").min(2, "minimo 2 caracteres").max(24, "limite atingido")
+})
+
+function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress, editAddress, token, edit, setEdit }) {
     const [select, setSelect] = useState("")
-    const [edit, setEdit] = useState(true)
+    
 
     const typeOptons = [
         {
@@ -214,13 +224,29 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
     const [lastName, setLastName] = useState(info.lastName)
     const [name, setName] = useState(info.name)
 
-    const { handleSubmit, register } = useForm({
-        mode: "onSubmit"
+    const { handleSubmit, register, formState } = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(schemaNameUser)
     })
 
+    const { errors } = formState
+
+    const [p, setP] = useState(false)
     const onSubmit = (data) => {
-        console.log(data)
-        console.log(edit)
+        if(p) {
+            data.idTutor = info.idTutor
+            data.urlImage = "2131321_pawsy_12313.png"
+
+            axios.put(`${import.meta.env.VITE_URL}/tutor`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                setEdit(!edit)
+                setP(!p)
+            }).catch(err => console.log(err))
+
+        }
     }
 
     return (
@@ -237,7 +263,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                 className='flex gap-5 bg-white rounded-2xl w-1/2 max-w-2xl min-h-[400px] overflow-hidden'
             >
                 <article
-                    className='bg-emerald-50 py-8 flex flex-col justify-between'
+                    className='bg-emerald-50 py-8 flex flex-col justify-between max-w-[180px]'
                 >
                     <div
                         className='flex flex-col gap-8'
@@ -269,6 +295,11 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                                         onChange: e => setName(e.target.value)
                                                     })}
                                                 />
+                                                {
+                                                    errors.name && (
+                                                        <span className='capitalize' >{errors.name.message}</span>
+                                                    )
+                                                }
                                                 <input
                                                     className='border border-primary rounded-lg px-2 py-1 max-w-[120px] mx-auto'
                                                     type="text"
@@ -277,6 +308,11 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                                         onChange: e => setLastName(e.target.value)
                                                     })}
                                                 />
+                                                {
+                                                    errors.lastName && (
+                                                        <span className='capitalize'>{errors.lastName.message}</span>
+                                                    )
+                                                }
                                             </div>
                                         </>
                                     )
@@ -290,19 +326,34 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                                     draggable={false}
                                                 />
                                             </div>
-                                            <strong className='capitalize'>
+                                            <strong className='capitalize w-full text-limit px-4 text-center'>
                                                 {info.name}{" "}{info.lastName}
                                             </strong>
                                         </>
                                     )
                             }
-                            <button
-                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                type={edit ? "submit" : "button"}
-                                onClick={() => setEdit(!edit)}
-                            >
-                                <Pen size={16} />
-                            </button>
+                            {
+                                edit
+                                    ? (
+                                        <button
+                                            className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                            type={"button"}
+                                            onClick={() => {
+                                                edit && setEdit(!edit)
+                                            }}
+                                        >
+                                            <Pen size={16} />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                            type={"subimit"}
+                                            onClick={() => setP(!p)}
+                                        >
+                                            <Pen size={16} /> Confirmar
+                                        </button>
+                                    )
+                            }
                         </form>
 
                         <ul
