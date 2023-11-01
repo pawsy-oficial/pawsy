@@ -143,9 +143,9 @@ function FormEditPost({ title, description, limit, typeAd, image, idPost, setEdi
 		const currentTime = new Date().getTime()
 		let nameFile
 		(selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = image
+		data.urlImage = nameFile
 
 		data["idPost"] = idPost
-		data.urlImage = nameFile
 		console.log(data);
 
 		axios.put(`${import.meta.env.VITE_URL}/ads`, data, {
@@ -155,7 +155,7 @@ function FormEditPost({ title, description, limit, typeAd, image, idPost, setEdi
 		})
 			.then(res => {
 				loading(true)
-				console.log(res);
+				//console.log(res);
 				selectImage
 					? uploadImage(nameFile, selectImage)
 					: (
