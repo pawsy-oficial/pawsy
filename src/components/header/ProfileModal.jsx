@@ -532,7 +532,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                             <p
                                 className='text-center'
                             >
-                                Se você excluir sua conta, perderá todos os seus dados permanentemente. Esta ação é irreversível e não poderá ser desfeita. Por favor, pense duas vezes antes de fazer isso.
+                                Se você excluir sua conta, perderá todos os seus dados <strong>permanentemente</strong>. Esta ação é <strong>irreversível</strong>, por favor, pense duas vezes antes de fazer isto.
                             </p>
 
 
