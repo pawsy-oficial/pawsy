@@ -54,13 +54,13 @@ function ProfileModal({ userType }) {
         }).then(
             e => {
                 setInfo({
-                    idTutor: e.data.storedIdTutor ?? e.data.storedIdMedic,
+                    idTutor: e.data.storedIdTutor ?? e.data.storedIdMedic ?? e.data.storedIdClinica,
                     cep: e.data.CEP,
                     city: e.data.Cidade,
                     cpf: e.data.storedCPF ?? e.data.storedCRMVMedic,
                     email: e.data.storedEmailTutor ?? e.data.storedEmailMedic,
                     lastName: e.data.storedSBTutor ?? e.data.storedLastName,
-                    name: e.data.storedNameTutor ?? e.data.storedNameMedic,
+                    name: e.data.storedNameTutor ?? e.data.storedNameMedic ?? e.data.storedNameClinica,
                     neighborhood: e.data.Bairro,
                     state: e.data.Estado,
                     numberHome: e.data.Numero,
@@ -116,7 +116,7 @@ function ProfileModal({ userType }) {
                         sideOffset={5}
                     >
                         <ul className="flex flex-col gap-3">
-                            {
+                            {/* {
                                 (userType == "tutor" || userType == "medico") && (
                                     <li
                                         className=' px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
@@ -128,15 +128,32 @@ function ProfileModal({ userType }) {
                                             <UserCircle size={24} color="#22B77E" />
                                             <span
                                                 className='text-sm'
-                                            >Perfil</span>
+                                            >
+                                                Perfil
+                                            </span>
                                         </button>
                                     </li>
                                 )
-                            }
-                            <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
+                            } */}
+                            <li
+                                className=' px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
+                            >
+                                <button
+                                    className='flex gap-3 items-center w-full h-full'
+                                    onClick={handleModalProfile}
+                                >
+                                    <UserCircle size={24} color="#22B77E" />
+                                    <span
+                                        className='text-sm'
+                                    >
+                                        Perfil
+                                    </span>
+                                </button>
+                            </li>
+                            {/* <li className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'>
                                 <Gear size={24} color="#22B77E" />
                                 <span>Configurações</span>
-                            </li>
+                            </li> */}
                             <li
                                 className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
                                 onClick={handleButtonClickSignOut}
@@ -205,7 +222,10 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                 />
             case "security":
                 return <div>
-                    <SecurityProfile />
+                    <SecurityProfile
+                        userType={userType}
+                        setShowModalAlert={setShowModalAlert}
+                    />
                 </div>
             default:
                 return <InfoProfile
@@ -241,6 +261,19 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                 console.log(res);
 
                 Cookies.remove("jwtTokenMedic")
+                window.location.reload()
+            })
+                .catch(err => console.log(err))
+        }
+        else if (info.typeUser == "Clinica") {
+            axios.delete(`${import.meta.env.VITE_URL}/clinic/${info.idTutor}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                console.log(res);
+
+                Cookies.remove("jwtTokenClinic")
                 window.location.reload()
             })
                 .catch(err => console.log(err))
@@ -344,7 +377,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
             })
     }
     // end section image
-
+    
     return (
         <>
             <section
@@ -455,26 +488,28 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                         )
                                 }
                                 {
-                                    edit
-                                        ? (
-                                            <button
-                                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                                type={"button"}
-                                                onClick={() => {
-                                                    edit && setEdit(!edit)
-                                                }}
-                                            >
-                                                <Pen size={16} />
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
-                                                type={"subimit"}
-                                                onClick={() => setP(!p)}
-                                            >
-                                                <Pen size={16} /> Confirmar
-                                            </button>
-                                        )
+                                    userType != "clinica" && (
+                                        edit
+                                            ? (
+                                                <button
+                                                    className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                                    type={"button"}
+                                                    onClick={() => {
+                                                        edit && setEdit(!edit)
+                                                    }}
+                                                >
+                                                    <Pen size={16} />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className='p-1 rounded-lg bg-primary text-white flex gap-2 items-center text-sm h-fit transition-all duration-1000'
+                                                    type={"subimit"}
+                                                    onClick={() => setP(!p)}
+                                                >
+                                                    <Pen size={16} /> Confirmar
+                                                </button>
+                                            )
+                                    )
                                 }
                             </form>
 
@@ -482,22 +517,25 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                                 className='flex flex-col gap-3'
                             >
                                 {
-                                    typeOptons.map(op => {
-                                        return (
-                                            <li
-                                                className='w-full'
-                                            >
-                                                <button
-                                                    className={`px-4 py-1 w-full text-start`}
-                                                    onClick={() => setSelect(op.option)}
+                                    userType != "clinica"
+                                    && (
+                                        typeOptons.map(op => {
+                                            return (
+                                                <li
+                                                    className='w-full'
                                                 >
-                                                    {
-                                                        op.titleName
-                                                    }
-                                                </button>
-                                            </li>
-                                        )
-                                    })
+                                                    <button
+                                                        className={`px-4 py-1 w-full text-start`}
+                                                        onClick={() => setSelect(op.option)}
+                                                    >
+                                                        {
+                                                            op.titleName
+                                                        }
+                                                    </button>
+                                                </li>
+                                            )
+                                        })
+                                    )
                                 }
                             </ul>
                         </div>
@@ -507,7 +545,9 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                     <article
                         className='flex-1 py-8 pr-10 flex flex-col gap-10'
                     >
-                        <SelectOption />
+                        {
+                            userType == "clinica" ? <SecurityProfile userType={userType} setShowModalAlert={setShowModalAlert} /> : <SelectOption />
+                        }
 
                     </article>
                 </main>
@@ -812,7 +852,7 @@ function InfoProfile({ info, userType, edit, setEdit, setShowModalAlert }) {
     )
 }
 
-function SecurityProfile() {
+function SecurityProfile({ userType, setShowModalAlert }) {
     const { register, handleSubmit } = useForm({
         mode: "onSubmit"
     })
@@ -822,79 +862,104 @@ function SecurityProfile() {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <h3
-                className='text-zinc-900 font-bold mb-2'
+        <>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
             >
-                Trocar senha
-            </h3>
-
-            <ul
-                className='flex flex-col gap-2'
-            >
-                <li>
-                    <label
-                        className='flex flex-col gap-1'
-                    >
-                        <span
-                            className='text-sm'
-                        >
-                            Senha atual
-                        </span>
-                        <input
-                            type="password"
-                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
-                            {...register("currentPass")}
-                        />
-                    </label>
-                </li>
-                <li>
-                    <label
-                        className='flex flex-col gap-1'
-                    >
-                        <span
-                            className='text-sm'
-                        >
-                            Nova senha
-                        </span>
-                        <input
-                            type="password"
-                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
-                            {...register("newPass")}
-                        />
-                    </label>
-                </li>
-                <li>
-                    <label
-                        className='flex flex-col gap-1'
-                    >
-                        <span
-                            className='text-sm'
-                        >
-                            Confirmar nova senha
-                        </span>
-                        <input
-                            type="password"
-                            className='border border-primary px-4 py-2 text-zinc-800 rounded'
-                            {...register("confirmNewPass")}
-                        />
-                    </label>
-                </li>
-            </ul>
-
-            <div
-                className='w-full flex justify-end mt-8'
-            >
-                <button
-                    type="submit"
-                    className='py-1 px-4 bg-primary hover:bg-primary/80 rounded-lg text-white font-bold'
+                <h3
+                    className='text-zinc-900 font-bold mb-2'
                 >
-                    Alterar
-                </button>
-            </div>
-        </form>
+                    Trocar senha
+                </h3>
+
+                <ul
+                    className='flex flex-col gap-2'
+                >
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                Senha atual
+                            </span>
+                            <input
+                                type="password"
+                                className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                                {...register("currentPass")}
+                            />
+                        </label>
+                    </li>
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                Nova senha
+                            </span>
+                            <input
+                                type="password"
+                                className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                                {...register("newPass")}
+                            />
+                        </label>
+                    </li>
+                    <li>
+                        <label
+                            className='flex flex-col gap-1'
+                        >
+                            <span
+                                className='text-sm'
+                            >
+                                Confirmar nova senha
+                            </span>
+                            <input
+                                type="password"
+                                className='border border-primary px-4 py-2 text-zinc-800 rounded'
+                                {...register("confirmNewPass")}
+                            />
+                        </label>
+                    </li>
+                </ul>
+
+                <div
+                    className='w-full flex justify-end mt-8'
+                >
+                    <button
+                        type="submit"
+                        className='py-1 px-4 bg-primary hover:bg-primary/80 rounded-lg text-white font-bold'
+                    >
+                        Alterar
+                    </button>
+                </div>
+            </form>
+            {
+                userType == "clinica" && (
+                    <ul
+                        className='w-full'
+                    >
+                        <li
+                            className=''
+                        >
+                            <button
+                                className='flex gap-2 items-center'
+                                onClick={() => setShowModalAlert(true)}
+                            >
+                                <CloudSlash color='#DC3545' weight='bold' size={16} />
+                                <span
+                                    className='text-red-error font-semibold'
+                                >
+                                    DESATIVAR CONTA
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                )
+            }
+        </>
     )
 }
 
