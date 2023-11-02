@@ -44,7 +44,7 @@ export default function SearchResult() {
                     <p className="font-lato text-lg">
                         Aqui estão os resultados para <span className="text-primary">{clinicName}</span>:
                     </p>
-                    <section className="flex gap-5">
+                    <section className="flex gap-5 flex-wrap w-full">
                         {
                             clinics.length == 0 
                                 ? <p className="text-sm text-zinc-400">OPS! A clínica que você procura não esta cadastrada na Pawsy</p> 

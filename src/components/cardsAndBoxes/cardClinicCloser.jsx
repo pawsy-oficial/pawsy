@@ -1,8 +1,9 @@
 import { memo } from "react"
 import { Star } from "@phosphor-icons/react"
 import { useNavigate } from "react-router-dom"
+import { SectionScoreClinic } from "./cardClinicProfile"
 
-function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTheClinic, assessment, id, img }) {
+function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, id, img }) {
     const navigate = useNavigate()
     return (
         <button
@@ -21,7 +22,7 @@ function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTh
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col items-start text-start">
                     <h1 className="text-2xl">{nameClinic}</h1>
                     <p className="text-xs text-[#409E44]">{clinicOpenOrClose}</p>
                 </div>
@@ -33,16 +34,12 @@ function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, distanceFromTh
                 {address}
             </a>
             <div className="flex flex-row justify-between gap-3">
-                <p className="flex">{distanceFromTheClinic}</p>
+                {/* <p className="flex">{distanceFromTheClinic}</p> */}
                 <div className="flex flex-row gap-4">
-                    <p>{assessment}</p>
-                    <div className="flex flex-row gap-1">
-                        <Star weight="fill" color="#ffeb3b" />
-                        <Star weight="fill" color="#ffeb3b" />
-                        <Star weight="fill" color="#ffeb3b" />
-                        <Star weight="fill" color="#ffeb3b" />
-                        <Star color="#ffeb3b" />
-                    </div>
+                    <SectionScoreClinic 
+                        idClinic={id}
+                        section={false}
+                    />
                 </div>
             </div>
         </button>

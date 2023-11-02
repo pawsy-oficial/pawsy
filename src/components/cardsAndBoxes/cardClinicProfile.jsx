@@ -49,7 +49,7 @@ export function VaccinePets() {
     )
 }
 
-export function SectionScoreClinic({ idClinic }) {
+export function SectionScoreClinic({ idClinic, section = true }) {
     const [star, setStar] = useState([""])
     const [average, setAverage] = useState(0)
 
@@ -82,32 +82,60 @@ export function SectionScoreClinic({ idClinic }) {
     }
 
     return (
-        <section className="w-full max-w-[24rem] bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-full max-h-fit border-l-4 border-secundary">
-            <h2 className="text-lg">
-                Avaliação
-            </h2>
-
-            <div
-                className="flex gap-4 items-center"
-            >
-                <span
-                    className="text-sm font-lato font-semibold"
-                >
-                    {
-                        parseFloat(average)
-                    }
-                </span>
-                <div
-                    className="flex items-center gap-2"
-                >
-                    {
-                        star.map(s => {
-                            return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
-                        })
-                    }
-                </div>
-            </div>
-        </section>
+        <>
+            {
+                section 
+                ? (
+                    <section className="w-full max-w-[24rem] bg-white px-4 py-3 rounded-r-lg flex flex-col gap-5 h-full max-h-fit border-l-4 border-secundary">
+                        <h2 className="text-lg">
+                            Avaliação
+                        </h2>
+            
+                        <div
+                            className="flex gap-4 items-center"
+                        >
+                            <span
+                                className="text-sm font-lato font-semibold"
+                            >
+                                {
+                                    parseFloat(average)
+                                }
+                            </span>
+                            <div
+                                className="flex items-center gap-2"
+                            >
+                                {
+                                    star.map(s => {
+                                        return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </section>
+                ) : (
+                    <div
+                            className="flex gap-4 items-center"
+                        >
+                            <span
+                                className="text-sm font-lato font-semibold"
+                            >
+                                {
+                                    parseFloat(average)
+                                }
+                            </span>
+                            <div
+                                className="flex items-center gap-2"
+                            >
+                                {
+                                    star.map(s => {
+                                        return <Star weight={`${s.fill ? "fill" : "regular"}`} color="#FFA800" size={20} />
+                                    })
+                                }
+                            </div>
+                        </div>
+                )
+            }
+        </>
     )
 }
 

@@ -237,7 +237,7 @@ export default function VetCloser() {
 
 				c.metadata = {
 					nameClinic: res.data.Nome,
-					address: res.data.Endereço,
+					address: res.data.Endereco,
 					image: res.data.Imagem,
 					id: idClinica
 				};
@@ -258,11 +258,11 @@ export default function VetCloser() {
 			var html = `
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
-						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10">
+						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10 border-2 border-secundary">
 							<img src="${import.meta.env.VITE_URL}/files/${pin.metadata.image}" class="h-full w-full object-cover">
 						</div>
 						<div class="flex flex-col">
-							<h3 class="text-2xl font-lato font-bold">
+							<h3 class="text-2xl font-lato font-bold capitalize">
 								${pin.metadata.nameClinic}
 							</h3>
 							<span class="text-green-600 text-xs">aberto</span>
@@ -272,19 +272,7 @@ export default function VetCloser() {
 						<p class="text-zinc-400 text-xs my-2">
 							${pin.metadata.address}
 						</p>
-						<div class="flex justify-between w-full items-center">
-							<span class="text-base font-semibold">1.4KM</span>    
-							<div class="flex gap-4 items-center">
-								<span class="text-xs">4,8</span>    
-								<div class="flex gap-1">
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-								</div>    
-							</div>    
-						</div>
+						
 					</div>
 				</div>
 			`;
@@ -348,8 +336,8 @@ export default function VetCloser() {
 												img={clinicInfo.Imagem} 
 												id={clinicInfo.Id} 
 												clinicOpenOrClose={"Aberto"} 
-												distanceFromTheClinic={"1.5 km"} 
-												assessment={"4,0"} 
+												// distanceFromTheClinic={"1.5 km"} 
+												// assessment={"4,0"}
 											/>
 										)
 									}
