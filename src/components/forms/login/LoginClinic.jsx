@@ -42,7 +42,12 @@ export default function LoginFormClinic() {
             if (error.response && error.response.status === 400) {
                 setLoginError('CNPJ ou senha estão incorretos');
             } else {
-                setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                if (error.response && error.response.status === 401) {
+                    setLoginError('Conta desativada');
+                }
+                else{
+                    setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                }
             }
         }
     };
