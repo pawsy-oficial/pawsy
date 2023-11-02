@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ArrowCounterClockwise } from "@phosphor-icons/react";
+import CardPostsAds from "../../components/cardsAndBoxes/cardPostAd";
 
 function waitForSpatialMath() {
 	return new Promise((resolve, reject) => {
@@ -295,6 +296,9 @@ export default function VetCloser() {
 				.then(res => {
 					console.log(res.data);
 					setClinicInfoPreview(oldInfos => [...oldInfos, res.data])
+
+					// criar uma rota para pegar todos os posts dessas clinicas
+
 				})
 				.catch(err => console.log(err))
 		})
@@ -306,7 +310,7 @@ export default function VetCloser() {
 			<section className="flex-1">
 				<Header userType="tutor" />
 
-				<main className="lg:max-w-5xl mx-auto px-5 my-8">
+				<main className="lg:max-w-5xl mx-auto px-5 my-8 mb-16">
 					<div className="flex justify-between items-center">
 						<h1 className="text-2xl">Veterinário mais próximo de você:</h1>
 						<button
@@ -345,8 +349,16 @@ export default function VetCloser() {
 							}
 						</div>
 					</div>
-					{/* <h2 className="">Ver mais</h2> */}
-					{/* <p className="text-[#909090] text-xs">Encontre mais clínicas veterinárias fora da sua área</p> */}
+					<h2 className="">Promoções próximas de você</h2>
+					
+					<section
+						className="w-full flex flex-wrap gap-5"
+					>
+						<CardPostsAds
+							// title={}
+						/>
+					</section>
+				
 				</main>
 			</section>
 		</main>
