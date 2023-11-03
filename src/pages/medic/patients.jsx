@@ -76,6 +76,7 @@ export default function PatientsForMedic() {
                                         // peso={patients.num_peso}
                                         idClinic={informacoes.idClinic}
                                         idMedic={informacoes.idMedic}
+                                        idTutor={patients.TutorId}
                                     />
                                 )
                             })

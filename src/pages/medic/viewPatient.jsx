@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import dono from "../../img/profilePerson.jpeg";
-import { ArrowUUpLeft, GenderMale, X } from "@phosphor-icons/react";
+import { ArrowUUpLeft, CaretLeft, GenderMale, X } from "@phosphor-icons/react";
 import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -18,111 +18,254 @@ export default function ViewPatient() {
 	const { pet, medic } = location.state
 
 
-	const [viewType, setViewType] = useState("none");
+	const [infoTutor, setInfoTutor] = useState({
+		image: "",
+		name: "",
+	})
+	const [petsTutor, setPetsTutor] = useState([])
+
+	useEffect(() => {
+		axios.get(`${import.meta.env.VITE_URL}/get-all-my-pets/${pet.idClinic}/${pet.idTutor}`)
+			.then(e => {
+				setInfoTutor({
+					image: e.data.results[0].url_imagem,
+					name: e.data.results[0].nm_tutor
+				})
+				setPetsTutor(e.data.results)
+				console.log(e.data.results);
+			})
+			.catch(err => console.log(err))
+	}, [])
+
+	console.log(pet);
 
 	return (
 		<>
-			<header>
-				<HeaderMedic />
-			</header>
-			<div className="flex">
+
+			<HeaderMedic />
+
+			<div className="max-w-7xl mx-auto w-full mt-3">
 				<button
 					onClick={() => history.back()}
-					className="px-80 flex items-center gap-2 -mb-5 mt-5"
+					className="flex gap-2 items-center text-base font-semibold"
 				>
-					<ArrowUUpLeft color="#22B77E" />
+					<CaretLeft color="#22B77E" />
 					Voltar
 				</button>
 			</div>
-			<main className="max-w-7xl mx-auto mt-8 bg-[#F5F7FB] flex justify-between">
-				<section className="bg-white p-6 rounded-xl w-3/4 flex justify-between">
-					<div className="flex gap-6 ">
-						<div className="flex flex-col items-center">
-							<img
-								src={`${import.meta.env.VITE_URL}/files/${pet.imagePet}`}
-								className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"
-							/>
-							<label className="mt-4 p-1 w-20 rounded-xl bg-[#1BA8C4] text-white text-center text-sm">
-								#{pet.idPet}
-							</label>
-							<div className="flex flex-col mt-6">
-								<h1 className="font-bold text-2xl mb-4">Observações</h1>
-								<h2 className="font-semibold text-base">
-									Alergia a medicamentos: {pet.alergia}
-								</h2>
-								<h3 className="font-semibold text-base">
-									Castrado(a): {pet.castrado}
-								</h3>
-								<h4 className="font-semibold text-base">
-									Comportamento: {pet.comportamento}
-								</h4>
-								<h5 className="font-semibold text-base">
-									Tratamento: {pet.tratamento}
-								</h5>
+			<main className="max-w-7xl mx-auto my-3 bg-[#F5F7FB] flex justify-between gap-5">
+				<section className="bg-white p-6 rounded-xl w-3/4 flex justify-between shadow-md">
+					<div className="flex flex-col gap-6 flex-1">
+						<section
+							className="flex gap-8 flex-1 justify-between"
+						>
+							<div
+								className="flex gap-5"
+							>
+								<div
+									className="flex flex-col gap-2 items-center"
+								>
+									<div
+										className="w-60 h-60 rounded-full border-4 border-secundary overflow-hidden"
+										role="img"
+									>
+										<img
+											src={`${import.meta.env.VITE_URL}/files/${pet.imagePet}`}
+											className="w-full h-full object-cover"
+											draggable={false}
+											alt={`Imagem de ${pet.petName}`}
+										/>
+									</div>
+
+									<span
+										className="py-1 px-6 rounded-full bg-secundary text-white text-center text-sm"
+										role="contentinfo"
+									>
+										#{
+											pet.idPet.toString().padStart(4, "0")
+										}
+									</span>
+								</div>
+								<div className="flex flex-col gap-2">
+									<strong className="uppercase font-bold text-4xl flex items-center gap-2 mb-4">
+										{pet.petName} <GenderMale color="#1BA8C4" />
+									</strong>
+									<strong
+										className="font-semibold text-base"
+									>
+										Idade:
+										<span
+											className="font-medium font-lato pl-2"
+										>
+											{
+												dayjs().diff(pet.year, "year")
+											} ano(s)
+										</span>
+									</strong>
+									<strong
+										className="font-semibold text-base"
+									>
+										Raça:
+										<span
+											className="font-medium font-lato pl-2"
+										>
+											{pet.breed}
+										</span>
+									</strong>
+									<strong
+										className="font-semibold text-base"
+									>
+										Status:
+										<span
+											className="font-medium font-lato pl-2"
+										>
+											saudavel
+										</span>
+									</strong>
+									<strong
+										className="font-semibold text-base"
+									>
+										Peso:
+										<span
+											className="font-medium font-lato pl-2"
+										>
+											20 kg
+										</span>
+									</strong>
+									<strong
+										className="font-semibold text-base"
+									>
+										Altura:
+										<span
+											className="font-medium font-lato pl-2"
+										>
+											40cm
+										</span>
+									</strong>
+								</div>
+							</div>
+
+							<div className="flex flex-col items-end gap-4">
+								<button
+									onClick={() => navigate("/receitas-medicas")}
+									className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
+								>
+									Receitas médicas
+								</button>
+								<button
+									onClick={() => navigate("/vacinas-e-vermifugacao", { state: { pet, medic } })}
+									className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
+								>
+									Vacinas e vermifugação
+								</button>
 								<button
 									onClick={() => setOpen(!open)}
-									className="mt-4 rounded-md text-white bg-[#22937E] p-1"
+									className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
 								>
-									Editar
+									Editar informações
 								</button>
 								<ModalEditObs isOpen={open} setOpen={setOpen} />
 							</div>
+						</section>
+
+						<div className="flex flex-col">
+							<div className="flex flex-col gap-4">
+								<h3 
+									className="font-bold text-2xl"
+								>
+									Observações
+								</h3>
+								<ul
+									className="flex flex-col gap-1"
+								>
+									<li className="font-semibold text-base">
+										Alergia a medicamentos: {pet.alergia}
+									</li>
+									<li className="font-semibold text-base">
+										Castrado(a): {pet.castrado}
+									</li>
+									<li className="font-semibold text-base">
+										Comportamento: {pet.comportamento}
+									</li>
+									<li className="font-semibold text-base">
+										Tratamento: {pet.tratamento}
+									</li>
+								</ul>
+							</div>
 						</div>
-						<div className="flex flex-col gap-2">
-							<h1 className="uppercase font-bold text-4xl flex items-center gap-2 mb-4">
-								{pet.namePet} <GenderMale color="#1BA8C4" />
-							</h1>
-							<h2 className="font-semibold text-base">Idade: {dayjs().format(pet.idade)}</h2>
-							<h3 className="font-semibold text-base">Raça: {pet.raca}</h3>
-							{/* <h4 className="font-semibold text-base">
-                Bem-estar: {pet.bemestar}
-              </h4> */}
-							{/* <h5 className="font-semibold text-base">Peso: {pet.peso}</h5>
-              <h6 className="font-semibold text-base">Altura: {pet.altura}</h6> */}
-						</div>
-					</div>
-					<div className="flex flex-col items-end gap-4 h-full justify-center">
-						<button
-							onClick={() => navigate("/receitas-medicas")}
-							className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
-						>
-							Receitas médicas
-						</button>
-						<button
-							onClick={() => navigate("/vacinas-e-vermifugacao", { state: { pet, medic } })}
-							className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
-						>
-							Vacinas e vermifugação
-						</button>
 					</div>
 				</section>
-				<section className="bg-white p-6 rounded-xl flex flex-col max-h-96">
-					<div>
-						<img
-							src={dono}
-							className="w-36 h-36 rounded-full border-4 border-primary"
-						/>
+
+				<article
+					className="bg-white p-6 rounded-xl flex flex-col flex-1 h-fit shadow-md"
+				>
+					<div
+						className="flex flex-col gap-3 items-center"
+					>
+						<div
+							className="w-36 h-36 rounded-full border-2 border-secundary overflow-hidden"
+						>
+							<img
+								src={`${import.meta.env.VITE_URL}/files/${infoTutor.image}`}
+								className="w-full h-full object-cover"
+								draggable={false}
+								alt={`Imagem do(a) ${infoTutor.name}`}
+							/>
+						</div>
+						<p
+							className="text-lg font-bold"
+						>
+							{
+								infoTutor.name
+							}
+						</p>
+
 					</div>
-					<div className="flex justify-center items-center">
-						<p className="text-center mt-5 text-lg font-bold">{pet.nameDono}</p>
-					</div>
-					<div className="flex gap-4 items-center mt-5">
-						<img
-							src={`${import.meta.env.VITE_URL}/files/${pet.imagePet}`}
-							className="w-10 h-10 rounded-full border-2 border-primary"
-						/>
-						<h2 className="font-semibold text-base">{pet.petName}</h2>
-					</div>
-				</section>
+
+					<section
+						className="flex flex-col gap-3 mt-6"
+					>
+						{
+							petsTutor.map(pet => {
+								return (
+									<button
+										title={`Ver os dados de ${pet.nm_pet}`}
+										className="flex gap-4 items-center hover:bg-secundary/10 transition-all duration-300 rounded-full"
+										type="button"
+									>
+										<div
+											className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden"
+										>
+											<img
+												src={`${import.meta.env.VITE_URL}/files/${pet.url_img}`}
+												className="w-full h-full object-cover"
+												draggable={false}
+												alt={`Imagem do(a) ${pet.nm_pet}`}
+											/>
+										</div>
+										<strong
+											className="font-semibold text-base capitalize"
+										>
+											{
+												pet.nm_pet
+											}
+										</strong>
+									</button>
+								)
+							})
+						}
+					</section>
+				</article>
 			</main>
-			<div className="flex justify-center w-full mt-10">
+
+			{/* <div className="flex justify-center w-full mt-10">
 				<section>
 					{viewType === "revenues" && (
 						<ViewRevenues setViewType={setViewType} />
 					)}
 					{viewType === "vaccine" && <ViewVaccines setViewType={setViewType} />}
 				</section>
-			</div>
+			</div> */}
 		</>
 	);
 }
