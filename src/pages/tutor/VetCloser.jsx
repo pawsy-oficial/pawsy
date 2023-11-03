@@ -255,7 +255,7 @@ export default function VetCloser() {
 	function pushpinClicked(e) {
 		if (e.targetType == "pushpin") {
 			var pin = e.target;
-			console.log(pin.metadata);
+			// console.log(pin.metadata);
 			var html = `
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
@@ -290,17 +290,25 @@ export default function VetCloser() {
 	}
 
 	const [clinicInfoPreview, setClinicInfoPreview] = useState([])
+	const [adsPreview, setAdsPreview] = useState([])
 	useEffect(() => {
 		clinicCloser.forEach(id => {
 			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
 				.then(res => {
-					console.log(res.data);
+					// console.log(res.data);
 					setClinicInfoPreview(oldInfos => [...oldInfos, res.data])
-
-					// criar uma rota para pegar todos os posts dessas clinicas
-
 				})
 				.catch(err => console.log(err))
+			// console.log(id);
+			axios.get(`${import.meta.env.VITE_URL}/getAllAds/${id}?filter=preview`)
+				.then(e => {
+					if(e.data.adsPreview.length > 0){
+						console.log(e.data.adsPreview);
+						setAdsPreview(oldAds => [...oldAds, e.data.adsPreview])
+					}
+				})
+				.catch(err => console.log(err))
+			// criar uma rota para pegar todos os posts dessas clinicas
 		})
 	}, [clinicCloser])
 
@@ -332,16 +340,16 @@ export default function VetCloser() {
 							{
 								clinicInfoPreview.map(
 									clinicInfo => {
-										console.log(clinicInfo);
-										return(
-											<CardsVetCloser 
-												nameClinic={clinicInfo.Nome} 
-												address={clinicInfo.Endereco} 
-												img={clinicInfo.Imagem} 
-												id={clinicInfo.Id} 
-												clinicOpenOrClose={"Aberto"} 
-												// distanceFromTheClinic={"1.5 km"} 
-												// assessment={"4,0"}
+										// console.log(clinicInfo);
+										return (
+											<CardsVetCloser
+												nameClinic={clinicInfo.Nome}
+												address={clinicInfo.Endereco}
+												img={clinicInfo.Imagem}
+												id={clinicInfo.Id}
+												clinicOpenOrClose={"Aberto"}
+											// distanceFromTheClinic={"1.5 km"} 
+											// assessment={"4,0"}
 											/>
 										)
 									}
@@ -349,16 +357,31 @@ export default function VetCloser() {
 							}
 						</div>
 					</div>
-					<h2 className="">Promoções próximas de você</h2>
-					
+					<h2 className="mt-8">Promoções próximas de você</h2>
+
 					<section
-						className="w-full flex flex-wrap gap-5"
+						className="w-full grid grid-cols-4 gap-5 mt-6"
 					>
-						<CardPostsAds
-							// title={}
-						/>
+						{
+							adsPreview.map(ad => {
+								return( 
+									ad.map(a => {
+										return (
+											<CardPostsAds
+												title={a.title}
+												description={a.description}
+												idClinic={a.idClinic}
+												imageClinicURL={a.urlImageClinic}
+												imageURL={a.imgPost}
+												nameClinic={a.nameClinic}
+											/>
+										)
+									})
+								)
+							})
+						}
 					</section>
-				
+
 				</main>
 			</section>
 		</main>
