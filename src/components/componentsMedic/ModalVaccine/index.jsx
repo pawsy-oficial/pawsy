@@ -3,18 +3,22 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
+import dayJs from "dayjs"
 
 export function ModalVaccine({
     isOpenVaccine,
     setOpenVaccine,
     idPet,
     idClinic,
+    animalType
 }) {
     
     const [ typeVaccine, setTypeVaccine ] = useState([])
 
+    animalType = animalType == "cachorro" ? "dog" : "cat"
+
     useEffect(()=>{
-        axios.get(`${import.meta.env.VITE_URL}/get-all-type-vaccines?breedType=dog`)
+        axios.get(`${import.meta.env.VITE_URL}/get-all-type-vaccines?breedType=${animalType}`)
         .then(result => {
             setTypeVaccine(result.data.result)
         })
@@ -93,6 +97,7 @@ export function ModalVaccine({
                                 <input
                                     {...register("return")}
                                     type="date"
+                                    min={dayJs().add(1, "month").format("YYYY-MM-DD")}
                                     className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
                                 />
                             </div>

@@ -21,8 +21,6 @@ export default function Vaccine() {
 	const location = useLocation();
 	const { idPet, idClinic, animalType  } = location.state.pet;
 
-	console.log(animalType);
-
 	useEffect(() => {
 		axios.get(`${import.meta.env.VITE_URL}/add-new-vermifuge`, {
 			headers: {
@@ -138,6 +136,7 @@ export default function Vaccine() {
 									setOpenVaccine={setOpenVaccine}
 									idPet={idPet}
 									idClinic={idClinic}
+									animalType={animalType}
 								/>
 							</div>
 						</div>
