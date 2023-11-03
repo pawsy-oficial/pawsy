@@ -20,7 +20,6 @@ export default function PatientsForMedic() {
                 Authorization: `Bearer ${tokenMedic}`
             }
         }).then(res => {
-            console.log(res.data.results);
             setClinicsPet(res.data.results)
         })
     }, []);
@@ -58,7 +57,6 @@ export default function PatientsForMedic() {
                     <div className="flex flex-col">
                         {
                             clinicsPet.map(patients => {
-                                console.log(patients);
                                 return (
                                     <CardPatients 
                                         animalType={patients.AnimalType}

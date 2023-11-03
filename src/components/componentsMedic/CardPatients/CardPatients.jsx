@@ -5,7 +5,6 @@ export default function CardPatients({petName, nameTutor, idPet, year, breed, im
     const pet = { petName, nameTutor, idPet, year, breed, animalType, idClinic, weight, imagePet}
     
     const medic = idMedic
-    console.log(pet);
     return(
         <button 
             onClick={() => navigate("/paciente", {state: { pet, medic }})}

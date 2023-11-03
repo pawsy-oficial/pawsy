@@ -22,7 +22,7 @@ export default function Vaccine() {
 	const { idPet, idClinic, animalType  } = location.state.pet;
 
 	useEffect(() => {
-		axios.get(`${import.meta.env.VITE_URL}/add-new-vermifuge`, {
+		axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idPet}`, {
 			headers: {
 				Authorization: "Bearer " + tokenMedic,
 			},

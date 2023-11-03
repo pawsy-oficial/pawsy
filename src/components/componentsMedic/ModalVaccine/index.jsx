@@ -47,7 +47,6 @@ export function ModalVaccine({
         axios
             .post(`${import.meta.env.VITE_URL}/vaccine`, dataForm)
             .then((e) => {
-                console.log(e);
                 setOpenVaccine(false);
             })
             .catch((e) => {

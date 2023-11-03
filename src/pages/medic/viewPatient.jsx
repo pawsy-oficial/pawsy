@@ -17,7 +17,6 @@ export default function ViewPatient() {
 	const location = useLocation()
 	const { pet, medic } = location.state
 
-	console.log(pet);
 
 	const [viewType, setViewType] = useState("none");
 
