@@ -6,7 +6,7 @@ function CardClinic({ title, image, nameClinic, description, idClinic }) {
 
     return (
         <button 
-            className="bg-white p-3 rounded-lg w-full max-w-sm lg:min-w-[256px] flex flex-col gap-4 hover:bg-emerald-100 transition-colors duration-300"
+            className="bg-white p-3 rounded-lg w-full max-w-sm lg:min-w-[256px] flex flex-col gap-4 hover:bg-emerald-100 transition-colors duration-300 shadow-md"
             title={`Conhecer mais sobre a ${nameClinic}`}
             onClick={()=>navigate("/clinica", { state: { id: idClinic } })}
         >

@@ -309,7 +309,7 @@ export default function VaccinePage() {
 	const [adsPosts, setAdsPosts] = useState([])
 
 	useEffect(() => {
-		axios.get(`${import.meta.env.VITE_URL}/getAllAds/1?filter=preview`)
+		axios.get(`${import.meta.env.VITE_URL}/getAllAds/all?filter=preview`)
 			.then(e => setAdsPosts(e.data.adsPreview))
 			.catch(err => console.log(err))
 	}, [])
