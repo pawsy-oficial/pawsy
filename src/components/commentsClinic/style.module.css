@@ -1,0 +1,4 @@
+.hover_effect_star:hover > svg, .hover_effect_star > input[type="radio"]:checked + svg,
+.hover_effect_star:hover ~ .hover_effect_star > svg {
+  fill: #22B77E;
+}

@@ -98,7 +98,7 @@ export function NavbarClinic() {
 	const pages = [
 		{
 			name: "Perfil",
-			pathname: "/clinica",
+			pathname: "/minha-clinica",
 		},
 		{
 			name: "Agenda",

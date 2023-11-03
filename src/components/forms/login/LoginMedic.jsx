@@ -18,26 +18,43 @@ export default function LoginFormMedic() {
         resolver: yupResolver(schema),
     });
 
-    const [loginError, setLoginError] = useState(null);
+    const [loginError, setLoginError] = useState({
+        msg: null,
+        status: null
+    });
 
     const onSubmit = async (data) => {
         try {
             const url = `${import.meta.env.VITE_URL}/loginMedic`;
             const response = await axios.post(url, data);
-            
+
             const allCookies = Cookies.get();
             for (let cookie in allCookies) {
                 Cookies.remove(cookie);
             }
 
-            Cookies.set('jwtTokenMedic', response.data.token, { expires: 1/3 });  // 8 horas
+            Cookies.set('jwtTokenMedic', response.data.token, { expires: 1 / 3 });  // 8 horas
 
-            navigate('/medico'); 
+            navigate('/medico');
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                setLoginError('E-mail ou senha estão incorretos');
-            } else {
-                setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                setLoginError({
+                    msg: 'E-mail ou senha estão incorretas',
+                    status: 400
+                })
+            }
+            else {
+                if (error.response && error.response.status === 401) {
+                    setLoginError({
+                        msg: 'Conta desativada',
+                        status: 401
+                    });
+                }
+                else {
+                    setLoginError({
+                        msg: 'Erro ao tentar fazer login. Tente novamente mais tarde.'
+                    });
+                }
             }
         }
     };
@@ -49,7 +66,12 @@ export default function LoginFormMedic() {
         >
             <h2 className="font-sora font-bold text-[32px]">Login</h2>
 
-            {loginError && <p className="text-red-500 mb-4">{loginError}</p>}
+            {
+                loginError.status == 400 && <p className="text-red-500">{loginError.msg}</p>
+            }
+            {
+                loginError.status == 401 && <p className="text-red-500">{loginError.msg}</p>
+            }
 
             <div className="flex flex-col gap-4 mt-8">
                 <div className="w-full">
@@ -78,7 +100,7 @@ export default function LoginFormMedic() {
                             {errors.password.message}
                         </small>
                     }
-                    <a 
+                    <a
                         className="text-primary underline text-xs cursor-pointer font-semibold"
                         onClick={() => navigate("/recuperar-senha", { state: { slug: "medico" } })}
                     >
@@ -88,17 +110,17 @@ export default function LoginFormMedic() {
             </div>
 
             <div className="w-full flex flex-col gap-3">
-                <button 
+                <button
                     type="submit"
                     className="w-full flex justify-center bg-[#304C52] text-white rounded-lg py-3 mt-8"
                 >
                     ENTRAR
                 </button>
-                <a 
+                <a
                     onClick={(event) => {
                         event.preventDefault();
                         navigate("/cadastro", { state: { slug: "veterinario" } });
-                    }} 
+                    }}
                     className="mx-auto cursor-pointer"
                 >
                     Criar uma nova conta

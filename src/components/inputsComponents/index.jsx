@@ -78,6 +78,7 @@ function InputFormRegister({ value, onChange, register, mask, type = "text", pla
         />
     )
 }
+
 // ${errors.cep && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}
 
 function InputFormRegisterCEP({ value, onChange, loading, register }){

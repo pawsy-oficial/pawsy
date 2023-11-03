@@ -37,12 +37,17 @@ export default function LoginFormClinic() {
             }
 
             Cookies.set('jwtTokenClinic', response.data.token, { expires: 1/3 }); // 8 horas
-            navigate('/clinica');
+            navigate('/minha-clinica');
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 setLoginError('CNPJ ou senha estão incorretos');
             } else {
-                setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                if (error.response && error.response.status === 401) {
+                    setLoginError('Conta desativada');
+                }
+                else{
+                    setLoginError('Erro ao tentar fazer login. Tente novamente mais tarde.');
+                }
             }
         }
     };

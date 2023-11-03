@@ -8,6 +8,7 @@ import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
 
 import dayjs from 'dayjs'
 import useCheckedPet from "../../hook/useCheckedPet";
+import axios from "axios";
 
 export default function VaccinePage() {
 	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
@@ -305,6 +306,13 @@ export default function VaccinePage() {
 	}, [])
 
 	const [alterTable, setAlterTable] = useState(true)
+	const [adsPosts, setAdsPosts] = useState([])
+
+	useEffect(() => {
+		axios.get(`${import.meta.env.VITE_URL}/getAllAds/all?filter=preview`)
+			.then(e => setAdsPosts(e.data.adsPreview))
+			.catch(err => console.log(err))
+	}, [])
 
 	return (
 		<main className="flex min-h-screen">
@@ -359,7 +367,7 @@ export default function VaccinePage() {
 									&& (
 										<section className="w-full flex flex-col items-center">
 											<div className="w-full flex justify-between gap-6 mb-4">
-												<input type="radio" className="hidden" name="typeTable" id="vacina" defaultChecked/>
+												<input type="radio" className="hidden" name="typeTable" id="vacina" defaultChecked />
 												<label
 													className="w-full border-b-2 text-center border-transparent font-lato text-lg font-semibold"
 													htmlFor="vacina"
@@ -380,7 +388,7 @@ export default function VaccinePage() {
 											{
 												alterTable ?
 													(
-														<table 
+														<table
 															className="w-full cursor-default border-0"
 														>
 															<thead>
@@ -547,13 +555,28 @@ export default function VaccinePage() {
 							Campanhas de vacinação próximas de você
 						</p>
 						<section className="lg:flex gap-5 w-full lg:overflow-auto py-3 grid grid-cols-2">
-
-							<CardClinic />
-							<CardClinic />
-							<CardClinic />
-							<CardClinic />
-							<CardClinic />
-
+							{
+								adsPosts.length != 0
+								? (
+									adsPosts.map(ad => {
+										return(
+											<CardClinic 
+												description={ad.description}
+												image={ad.urlImageClinic}
+												idClinic={ad.idClinic}
+												title={ad.title}
+												nameClinic={ad.nameClinic}
+											/>
+										)
+									})
+								) : (
+									<p
+										className="w-full text-center text-zinc-400 font-lato text-sm"
+									>
+										Não há nenhum anúncio
+									</p>
+								)
+							}
 						</section>
 
 					</section>

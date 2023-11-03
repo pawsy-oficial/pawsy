@@ -97,14 +97,21 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                                                 {
                                                     myPet[showPet].sexo == "macho" ? <GenderMale size={24} color="#8FB5FF" weight="bold" /> : <GenderFemale size={24} color="#FF8FCB" weight="bold" />
                                                 }
-                                                {
+                                                {/* {
                                                     pets[showPet].status && <Alert />
-                                                }
+                                                } */}
                                             </div>
                                             <ul className="flex flex-col gap-2">
                                                 <li>
                                                     <span className="font-bold text-xs sm:text-lg">Idade: </span>
-                                                    <span className="text-sm sm:text-base">{dayjs(myPet[showPet].dt_nascimento).format("DD/MM/YYYY")}</span>
+                                                    <span 
+                                                        className="text-sm sm:text-base"
+                                                    >
+                                                        {
+                                                            dayjs().diff(myPet[showPet].dt_nascimento, "year")
+                                                        }
+                                                        {" "} ano(s)
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <span className="font-bold text-xs sm:text-lg">Raça: </span>
@@ -112,7 +119,7 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                                                 </li>
                                                 <li>
                                                     <span className="font-bold text-xs sm:text-lg">Status: </span>
-                                                    <span className="text-sm sm:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span>
+                                                    {/* <span className="text-sm sm:text-base">{pets[showPet].status ? "Não saudável" : "Saudável"}</span> */}
                                                 </li>
                                             </ul>
                                         </div>

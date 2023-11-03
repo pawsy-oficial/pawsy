@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ArrowCounterClockwise } from "@phosphor-icons/react";
+import CardPostsAds from "../../components/cardsAndBoxes/cardPostAd";
 
 function waitForSpatialMath() {
 	return new Promise((resolve, reject) => {
@@ -237,7 +238,7 @@ export default function VetCloser() {
 
 				c.metadata = {
 					nameClinic: res.data.Nome,
-					address: res.data.Endereço,
+					address: res.data.Endereco,
 					image: res.data.Imagem,
 					id: idClinica
 				};
@@ -254,15 +255,15 @@ export default function VetCloser() {
 	function pushpinClicked(e) {
 		if (e.targetType == "pushpin") {
 			var pin = e.target;
-			console.log(pin.metadata);
-			var html =	`
+			// console.log(pin.metadata);
+			var html = `
 				<div class="p-3 bg-white rounded-lg flex flex-col w-60 shadow-lg">
 					<div class="flex gap-3 items-center">
-						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10">
+						<div class="bg-primary overflow-hidden rounded-full min-w-[40px] w-10 h-10 border-2 border-secundary">
 							<img src="${import.meta.env.VITE_URL}/files/${pin.metadata.image}" class="h-full w-full object-cover">
 						</div>
 						<div class="flex flex-col">
-							<h3 class="text-2xl font-lato font-bold">
+							<h3 class="text-2xl font-lato font-bold capitalize">
 								${pin.metadata.nameClinic}
 							</h3>
 							<span class="text-green-600 text-xs">aberto</span>
@@ -272,19 +273,7 @@ export default function VetCloser() {
 						<p class="text-zinc-400 text-xs my-2">
 							${pin.metadata.address}
 						</p>
-						<div class="flex justify-between w-full items-center">
-							<span class="text-base font-semibold">1.4KM</span>    
-							<div class="flex gap-4 items-center">
-								<span class="text-xs">4,8</span>    
-								<div class="flex gap-1">
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-									<div class="bg-yellow-500 w-2 h-2"></div>   
-								</div>    
-							</div>    
-						</div>
+						
 					</div>
 				</div>
 			`;
@@ -301,15 +290,25 @@ export default function VetCloser() {
 	}
 
 	const [clinicInfoPreview, setClinicInfoPreview] = useState([])
+	const [adsPreview, setAdsPreview] = useState([])
 	useEffect(() => {
 		clinicCloser.forEach(id => {
-			console.log("1");
 			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
 				.then(res => {
-					console.log("ddd");
+					// console.log(res.data);
 					setClinicInfoPreview(oldInfos => [...oldInfos, res.data])
 				})
 				.catch(err => console.log(err))
+			// console.log(id);
+			axios.get(`${import.meta.env.VITE_URL}/getAllAds/${id}?filter=preview`)
+				.then(e => {
+					if(e.data.adsPreview.length > 0){
+						console.log(e.data.adsPreview);
+						setAdsPreview(oldAds => [...oldAds, e.data.adsPreview])
+					}
+				})
+				.catch(err => console.log(err))
+			// criar uma rota para pegar todos os posts dessas clinicas
 		})
 	}, [clinicCloser])
 
@@ -319,7 +318,7 @@ export default function VetCloser() {
 			<section className="flex-1">
 				<Header userType="tutor" />
 
-				<main className="lg:max-w-5xl mx-auto px-5 my-8">
+				<main className="lg:max-w-5xl mx-auto px-5 my-8 mb-16">
 					<div className="flex justify-between items-center">
 						<h1 className="text-2xl">Veterinário mais próximo de você:</h1>
 						<button
@@ -340,13 +339,49 @@ export default function VetCloser() {
 						<div className="flex flex-row gap-4 overflow-x-auto pb-3 mt-6">
 							{
 								clinicInfoPreview.map(
-									clinicInfo => <CardsVetCloser nameClinic={clinicInfo.Nome} clinicOpenOrClose={"Aberto"} address={clinicInfo.Endereço} distanceFromTheClinic={"1.5 km"} img={clinicInfo.Imagem} assessment={"4,0"} id={clinicInfo.Id} />
+									clinicInfo => {
+										// console.log(clinicInfo);
+										return (
+											<CardsVetCloser
+												nameClinic={clinicInfo.Nome}
+												address={clinicInfo.Endereco}
+												img={clinicInfo.Imagem}
+												id={clinicInfo.Id}
+												clinicOpenOrClose={"Aberto"}
+											// distanceFromTheClinic={"1.5 km"} 
+											// assessment={"4,0"}
+											/>
+										)
+									}
 								)
 							}
 						</div>
 					</div>
-					{/* <h2 className="">Ver mais</h2> */}
-					{/* <p className="text-[#909090] text-xs">Encontre mais clínicas veterinárias fora da sua área</p> */}
+					<h2 className="mt-8">Promoções próximas de você</h2>
+
+					<section
+						className="w-full grid grid-cols-4 gap-5 mt-6"
+					>
+						{
+							adsPreview.map(ad => {
+								return( 
+									ad.map(a => {
+										return (
+											<CardPostsAds
+												title={a.title}
+												description={a.description}
+												idClinic={a.idClinic}
+												imageClinicURL={a.urlImageClinic}
+												imageURL={a.imgPost}
+												nameClinic={a.nameClinic}
+											/>
+										)
+									})
+								)
+							})
+						}
+					</section>
+
 				</main>
 			</section>
 		</main>

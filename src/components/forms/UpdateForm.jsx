@@ -1,15 +1,17 @@
-import { Camera, GenderFemale, GenderMale } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { Camera, GenderFemale, GenderMale, Pen } from "@phosphor-icons/react";
+import { memo, useEffect, useState } from "react";
 import { Alert } from "../tutor/Alert";
 import dayjs from "dayjs";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import InputMask from "react-input-mask"
+import ModalDialogEditAddress from "../cardsAndBoxes/modal";
 
 export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
     const [namePet, setNamePet] = useState(`${myPet[showPet].nm_pet}`)
-    const [birthDay,setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
+    const [birthDay, setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
     const [saveLoading, setSaveLoading] = useState(false)
 
     const { register, handleSubmit, formState, setValue, setError, control } = useForm({
@@ -46,12 +48,12 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
         setSaveLoading(true)
         axios.post(`${import.meta.env.VITE_URL}/update-pet`, dataForm)
             .then(res => {
-                selectImage 
-                ? uploadImage(nameFile, selectImage) 
-                : (
-                    setSaveLoading(false),
-                    setStateEdit(!stateEdit)
-                )
+                selectImage
+                    ? uploadImage(nameFile, selectImage)
+                    : (
+                        setSaveLoading(false),
+                        setStateEdit(!stateEdit)
+                    )
             })
             .catch(err => console.log(err))
     }
@@ -106,7 +108,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             />
                         )}
                     />
-                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32}/>
+                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32} />
                     {/* <input
                         type="file"
                         multiple={false}
@@ -165,8 +167,10 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                             type="date"
                             value={dayjs(birthDay).format("YYYY-MM-DD")}
                             {...register("birthday", {
-                                onChange: e=>setBirthday(e.target.value)
+                                onChange: e => setBirthday(e.target.value)
                             })}
+                            max={dayjs().format("YYYY-MM-DD")}
+                            min={dayjs().subtract(25, "years").format("YYYY-MM-DD")}
                         />
                     </li>
                     <li>
@@ -211,3 +215,200 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
         </form>
     )
 }
+
+function UpdateFormClinic({ infoClinic, actionStateEdit }) {
+    const [nameClinic, setNameClinic] = useState(infoClinic.storedNameClinica)
+    const [numberTell, setNumberTell] = useState(infoClinic.storedTellClinica)
+    const [saveLoading, setSaveLoading] = useState(false)
+    const [clickSave, setClickSave] = useState(false)
+
+    const [address, setAddress] = useState({
+        cep: infoClinic.CEP,
+        city: infoClinic.Cidade,
+        complement: infoClinic.Complemento,
+        neighborhood: infoClinic.Bairro,
+        numberHome: infoClinic.Numero,
+        state: infoClinic.Estado,
+        street: infoClinic.Rua,
+        uf: infoClinic.storedIdEstado,
+        latitude: infoClinic.Latitude,
+        longitude: infoClinic.Longitude
+    })
+
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    useEffect(() => {
+        if (selectImage) {
+            // console.log(selectImage);
+            if (selectImage.size > 5242880 || selectImage.type != "image/png" && selectImage.type != "image/jpg" && selectImage.type != "image/jpeg") {
+                console.log("A imagem não atende os requisitos ");
+            }
+            else {
+                setUrlImage(URL.createObjectURL(selectImage))
+            }
+        }
+    }, [selectImage])
+
+    const { register, handleSubmit, control } = useForm({
+        mode: "onSubmit"
+    })
+
+    const onSubmit = (data) => {
+        const currentTime = new Date().getTime()
+        let nameFile
+        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = infoClinic.storedImg
+
+        data.image = nameFile
+        data.numberTell = data.numberTell.replace(/[^\d]+/g, '')
+
+        // console.log(data.image);
+
+        const streetFormat = address.street.replace(/ /g, "%20")
+        const cityFormat = address.city.replace(/ /g, "%20")
+        const neighborhoodFormat = address.neighborhood.replace(/ /g, "%20")
+        const urlGeocode = `https://dev.virtualearth.net/REST/v1/Locations?query=${streetFormat}%20${data.numberHome}%20${neighborhoodFormat}%20${cityFormat}%20&key=${import.meta.env.VITE_KEY_TOKEN_MAP}`
+
+        setSaveLoading(true)
+        axios.get(urlGeocode)
+            .then((e) => {
+                const [latitude, longitude] = e.data.resourceSets[0].resources[0].point.coordinates
+
+                const x = { ...data, ...address, latitude: latitude, longitude: longitude, idClinic: infoClinic.storedIdClinica }
+
+                if (clickSave) {
+                    console.log(x);
+                    axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile`, x)
+                        .then(res => {
+                            selectImage
+                                ? uploadImage(nameFile, selectImage)
+                                : (
+                                    setSaveLoading(false),
+                                    actionStateEdit(false)
+                                )
+                        })
+                        .catch(err => {
+                            setSaveLoading(false)
+                            // console.log(err);
+                        })
+                }
+                else setSaveLoading(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+    function uploadImage() {
+        let form = new FormData();
+        form.append("name", nameFile);
+        form.append('file', selectImage, selectImage.name);
+
+        axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(() => {
+            setSaveLoading(false)
+            actionStateEdit(false)
+        }).catch(err => console.log(err))
+    }
+
+    return (
+        <form
+            className="flex justify-between relative"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex items-center">
+                <label className="min-w-[12rem] w-48 h-48 rounded-lg overflow-hidden relative group cursor-pointer">
+                    <img
+                        src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${infoClinic.storedImg}`}
+                        alt={infoClinic.storedNameClinica}
+                        className="h-full w-full object-cover group-hover:brightness-50 transition-all"
+                        draggable={false}
+                    />
+                    <Controller
+                        name="image"
+                        control={control}
+                        render={({ field }) => (
+                            <input
+                                type="file"
+                                multiple={false}
+                                className="hidden"
+                                onChange={event => {
+                                    field.onChange(event.target.files[0]);
+                                    setSelectImage(event.target.files[0]);
+                                }}
+                                accept="image/png, image/jpg, image/jpeg"
+                            />
+                        )}
+                    />
+                    <Camera className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-all" color="#ffffff" size={32} />
+                </label>
+                <div className="flex flex-col p-4 gap-2  text-left">
+                    <input
+                        className="text-[32px] font-bold uppercase flex gap-4 items-center"
+                        value={nameClinic}
+                        {...register("nameClinic", {
+                            onChange: e => setNameClinic(e.target.value)
+                        })}
+                    />
+                    <div
+                        className="flex gap-2 items-center"
+                    >
+                        <p>
+                            {
+                                address ? address.street : infoClinic.Rua
+                            },
+                            {
+                                address ? address.numberHome : infoClinic.Numero
+                            } -
+                            {
+                                address ? address.cep : infoClinic.CEP
+                            }
+                        </p>
+                        <ModalDialogEditAddress setAddress={setAddress} />
+                    </div>
+                    <InputMask
+                        mask={"(99) 99999 9999"}
+                        maskChar={null}
+                        placeholder={"(00) 00000 0000"}
+                        className={`border border-primary rounded-lg w-fit px-2`}
+                        {...register("numberTell")}
+                        value={numberTell}
+                        onChange={e => setNumberTell(e.target.value)}
+                    />
+                    <p>
+                        {infoClinic.storedEmailClinica}
+                    </p>
+                    <p>
+                        {/* {infos[0].funcionamento} */}
+                    </p>
+                </div>
+            </div>
+            <div className='flex gap-4 absolute bottom-0 right-0'>
+                <button
+                    className="px-4 py-2 bg-primary rounded text-white font-lato text-xs self-start hover:bg-primary/90"
+                    type="submit"
+                    onClick={() => setClickSave(true)}
+                >
+                    {
+                        saveLoading ? "..." : "Salvar alterações"
+                    }
+                </button>
+                <button
+                    className="px-4 py-2 bg-red-error rounded text-white font-lato text-xs self-start hover:bg-red-error/90"
+                    onClick={() => actionStateEdit(false)}
+                >
+                    Cancelar
+                </button>
+
+            </div>
+        </form>
+    )
+}
+
+/*function UpdateFormClinicAboutUs({}){}*/
+
+const memoUpdateFormClinic = memo(UpdateFormClinic)
+export { memoUpdateFormClinic as UpdateFormClinic }
+
+/*const memoUpdateFormClinicAboutUs = memo(UpdateFormClinicAboutUs)
+export {memoUpdateFormClinicAboutUs as UpdateFormClinicAboutUs}*/

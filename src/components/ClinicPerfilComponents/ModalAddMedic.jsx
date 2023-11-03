@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Camera, User } from "@phosphor-icons/react";
 
-export function ModalAddMedic(props) {
+function ModalAddMedic(props) {
 	const [medicDetails, setMedicDetails] = useState({
 		id: "",
 		crmv: ""
 	});
-	const [errorMessage, setErrorMessage] = useState("");
+	const [ errorMessage, setErrorMessage ] = useState("");
 	const [ nameMedic, setNameMedic ] = useState("")
 	const [ urlImagem, setUrlImagem ] = useState("")
+	const [ medicFind, setMedicFind ] = useState(false)
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -46,25 +47,30 @@ export function ModalAddMedic(props) {
 		}
 	};
 
+	// let x = true
+
 	useEffect(()=>{
 		const jwtTokenClinic = Cookies.get('jwtTokenClinic');
 		const url = `${import.meta.env.VITE_URL}/medico?id=${medicDetails.id}&crmv=${medicDetails.crmv}`
 
-		console.log(url);
-
+		setMedicFind(false)
 		axios.get(url, {
 			headers: {
 				Authorization: 'Bearer ' + jwtTokenClinic
 			}
 		}).then(
 			e => {
-				console.log(e)
+				setMedicFind(true)
+				setErrorMessage(null)
 				setNameMedic(e.data.result[0].nm_medico)
-				// console.log(`${import.meta.env.VITE_URL}/files/${e.data.result[0].url_imagem}`)
 				setUrlImagem(`${import.meta.env.VITE_URL}/files/${e.data.result[0].url_imagem}`)
 			}
 		).catch(
-			e => console.log(e)
+			e => {
+				console.log(e);
+				setUrlImagem(null)
+				setNameMedic(null)
+			}
 		)
 
 	},[medicDetails])
@@ -73,7 +79,7 @@ export function ModalAddMedic(props) {
 		return (
 			<div className="fixed inset-0 bg-[#111111]/60 z-50 flex justify-center items-center">
 				<form 
-					className="flex flex-col gap-10 fixed bg-white py-8 px-6 rounded-lg"
+					className="flex flex-col fixed bg-white py-8 px-6 rounded-lg"
 					onSubmit={e => e.preventDefault()}
 				>
 					<section
@@ -88,14 +94,16 @@ export function ModalAddMedic(props) {
 								}
 								
 							</div>
-							
-							<p className='text-base font-lato font-semibold'>{nameMedic}</p>
-							<span className="text-center rounded-lg text-xs bg-red-error/25 p-1">{errorMessage}</span>
 							{
+								nameMedic && <p className='text-base font-lato font-semibold'>{nameMedic}</p>
+							}
+							
+							{
+								errorMessage && <span className="text-center rounded-lg text-xs bg-red-error/25 p-1">{errorMessage}</span>
 							}
 						</div>
 						<div className="flex ga flex-col gap-1">
-							<label className="text-base font-normal flex flex-col gap-3">
+							{/* <label className="text-base font-normal flex flex-col gap-3">
 								<span
 									className='pl-4 font-lato font-semibold text-base'
 								>
@@ -110,7 +118,7 @@ export function ModalAddMedic(props) {
 									onChange={handleChange}
 								/>
 							</label>
-							<small className='text-zinc-500 pl-4 w-full text-center'>ou</small>
+							<small className='text-zinc-500 pl-4 w-full text-center'>ou</small> */}
 							<label className="text-base font-normal flex flex-col gap-3">
 								<span
 									className='pl-4 font-lato font-semibold text-base'
@@ -130,10 +138,19 @@ export function ModalAddMedic(props) {
 					</section>
 
 					<div className="w-full flex justify-end gap-6">
-						<button onClick={handleSubmit} type="" className="px-6 py-1 bg-[#04AD34] rounded-lg text-white">
+						<button 
+							onClick={handleSubmit} 
+							type="" 
+							className={`px-6 py-1 bg-[#04AD34] rounded-lg text-white cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed`}
+							disabled={!medicFind}
+						>
 							Adicionar
 						</button>
-						<button onClick={() => props.setOpen(!props.isOpen)} type="" className="px-6 py-1 bg-[#DC3545] rounded-lg text-white">
+						<button 
+							onClick={() => props.setOpen(!props.isOpen)} 
+							type=""
+							className="px-6 py-1 bg-[#DC3545] rounded-lg text-white"
+						>
 							Cancelar
 						</button>
 					</div>
@@ -142,3 +159,6 @@ export function ModalAddMedic(props) {
 		);
 	}
 }
+
+const memoModalAddMedic = memo(ModalAddMedic)
+export {memoModalAddMedic as ModalAddMedic}

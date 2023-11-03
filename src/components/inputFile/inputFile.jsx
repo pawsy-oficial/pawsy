@@ -1,71 +1,34 @@
-import { Camera, PaperPlaneTilt } from "@phosphor-icons/react";
-import { useState, memo } from "react";
+import { Camera } from "@phosphor-icons/react";
+import { memo } from "react";
 
-function InputFile() {
-
-    const [srcImage, setSrcImage] = useState('')
-
-    function previewImage() {
-        const fileInput = document.getElementById("inputFile");
-
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                setSrcImage(e.target.result);
-            };
-
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    }
-
+function InputFile({ Controller, control, setSelectImage, urlImage }) {
     return (
-        <form
-            action=""
-            className="relative flex flex-col text-center py-[0.4rem]"
+        <label
+            className="rounded-lg w-64 h-64  bg-gray-white border-2 self-center border-primary overflow-hidden flex flex-col items-center justify-center cursor-pointer"
+            title="Imagem do anúncio"
         >
-            <div className="bg-gray-white border border-primary rounded-lg w-[17.313rem] h-64">
-                <label
-                    className="justify-center flex items-center h-full cursor-pointer"
-                    htmlFor="inputFile"
-                >
-                    {
-                        srcImage
-                            ? (
-                                <img
-                                    id="imagePreview"
-                                    src={srcImage}
-                                    alt="Preview da imagem"
-                                    className="h-full w-full rounded-lg object-cover"
-                                />
-                            )
-                            : (
-                                <div
-                                    className="bg-[#22B77E33]/20 w-20 h-20 flex items-center justify-center rounded-full"
-                                >
-                                    <Camera size={64} color="#22B77E" />
-                                </div>
-                            )
-                    }
-                </label>
-                <div className="absolute right-0 py-[2rem]">
-                    <button
-                        className="bg-[#04AD34] hover:bg-[#12be18] h-10 w-28 rounded-lg text-white flex flex-row items-center justify-center gap-3"
-                        type="submit"
-                    >
-                        Publicar <PaperPlaneTilt />
-                    </button>
-                </div>
-                <input
-                    className="hidden"
-                    type="file"
-                    onChange={previewImage}
-                    accept="image/*"
-                    id="inputFile"
-                />
-            </div>
-            <p className="text-[#909090] text-xs ">800 x 800</p>
-        </form>
+            {
+                urlImage
+                    ? <img className="w-full h-full object-cover" src={urlImage} />
+                    : <Camera size={48} color="#22937E" />
+            }
+            <Controller
+                name="urlImage"
+                control={control}
+                render={({ field }) => (
+                    <input
+                        type="file"
+                        multiple={false}
+                        className="hidden"
+                        onChange={event => {
+                            field.onChange(event.target.files[0]);
+                            setSelectImage(event.target.files[0]);
+                        }}
+                        accept="image/png, image/jpg, image/jpeg"
+                    />
+                )}
+            />
+        </label>
     )
 }
 
