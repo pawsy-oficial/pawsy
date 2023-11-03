@@ -17,6 +17,8 @@ export default function ViewPatient() {
 	const location = useLocation()
 	const { pet, medic } = location.state
 
+	console.log(pet);
+
 	const [viewType, setViewType] = useState("none");
 
 	return (
@@ -38,7 +40,7 @@ export default function ViewPatient() {
 					<div className="flex gap-6 ">
 						<div className="flex flex-col items-center">
 							<img
-								src={`${import.meta.env.VITE_URL}/files/${pet.img}`}
+								src={`${import.meta.env.VITE_URL}/files/${pet.imagePet}`}
 								className="w-60 h-60 rounded-full border-4 border-[#1BA8C4]"
 							/>
 							<label className="mt-4 p-1 w-20 rounded-xl bg-[#1BA8C4] text-white text-center text-sm">
@@ -107,10 +109,10 @@ export default function ViewPatient() {
 					</div>
 					<div className="flex gap-4 items-center mt-5">
 						<img
-							src={`${import.meta.env.VITE_URL}/files/${pet.img}`}
+							src={`${import.meta.env.VITE_URL}/files/${pet.imagePet}`}
 							className="w-10 h-10 rounded-full border-2 border-primary"
 						/>
-						<h2 className="font-semibold text-base">{pet.namePet}</h2>
+						<h2 className="font-semibold text-base">{pet.petName}</h2>
 					</div>
 				</section>
 			</main>

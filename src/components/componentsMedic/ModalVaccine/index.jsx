@@ -1,8 +1,6 @@
-import style from "./ModalVaccine.module.css";
-import { FloppyDisk, X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 
@@ -12,11 +10,16 @@ export function ModalVaccine({
     idPet,
     idClinic,
 }) {
-    const [vacina, setVacina] = useState("");
-    const [retorno, setRetorno] = useState("");
-    const [infoMedic, setInfoMedic] = useState([]);
+    
+    const [ typeVaccine, setTypeVaccine ] = useState([])
 
-    const tokenMedic = Cookies.get("jwtTokenMedic");
+    useEffect(()=>{
+        axios.get(`${import.meta.env.VITE_URL}/get-all-type-vaccines?breedType=dog`)
+        .then(result => {
+            setTypeVaccine(result.data.result)
+        })
+        .catch(err => console.log(err))
+    },[])
 
     const location = useLocation();
 
@@ -30,12 +33,13 @@ export function ModalVaccine({
 
     const onSubmit = (data) => {
         const dataForm = {
-            vacina: data.typeVaccine,
+            vacina: parseInt(data.typeVaccine),
             id_pet: idPet,
             id_clinic: idClinic,
             dt_retorno: data.return,
             id_medic: location.state.medic,
         };
+
         axios
             .post(`${import.meta.env.VITE_URL}/vaccine`, dataForm)
             .then((e) => {
@@ -71,12 +75,17 @@ export function ModalVaccine({
                                     className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary focus-visible:outline-none hover:border-primary"
                                     {...register("typeVaccine")}
                                 >
-                                    <option value="Antirrábica">Antirrábica</option>
-                                    <option value="Viratec 10 CVL">Viratec 10 CVL</option>
-                                    <option value="Giárdia">Giárdia</option>
-                                    <option value="Leishmaniose">Leishmaniose</option>
-                                    <option value="Gripe canina">Gripe canina</option>
-                                    <option value="Polivalente">Polivalente</option>
+                                    {
+                                        typeVaccine.map(tp => {
+                                            return(
+                                                <option 
+                                                    value={tp.idVaccine}
+                                                >
+                                                    {tp.nameVaccine}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1">
@@ -92,7 +101,6 @@ export function ModalVaccine({
                                     type="submit"
                                     className="flex items-center bg-[#22937E] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
                                 >
-                                    <FloppyDisk size={24} />
                                     SALVAR
                                 </button>
                             </div>

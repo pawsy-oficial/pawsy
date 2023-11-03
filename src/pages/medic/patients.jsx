@@ -20,6 +20,7 @@ export default function PatientsForMedic() {
                 Authorization: `Bearer ${tokenMedic}`
             }
         }).then(res => {
+            console.log(res.data.results);
             setClinicsPet(res.data.results)
         })
     }, []);
@@ -57,15 +58,24 @@ export default function PatientsForMedic() {
                     <div className="flex flex-col">
                         {
                             clinicsPet.map(patients => {
+                                console.log(patients);
                                 return (
                                     <CardPatients 
-                                        img={patients.url_img}
-                                        namePet={patients.nm_pet}
-                                        nameDono={patients.nm_tutor}
-                                        idPet={patients.id_pet}
-                                        idade={dayjs(patients.dt_nascimento).format("DD/MM/YYYY")}
-                                        raca={patients.id_raca}
-                                        peso={patients.num_peso}
+                                        animalType={patients.AnimalType}
+                                        breed={patients.BreedName}
+                                        idPet={patients.PetID}
+                                        imagePet={patients.PetImage}
+                                        petName={patients.PetName}
+                                        nameTutor={patients.TutorName}
+                                        year={patients.BirthDate}
+
+                                        // img={patients.PetImage}
+                                        // namePet={patients.PetName}
+                                        // nameDono={patients.TutorName}
+                                        // idPet={patients.PetID}
+                                        // idade={dayjs(patients.BirthDate).format("DD/MM/YYYY")}
+                                        // raca={patients.BreedName}
+                                        // peso={patients.num_peso}
                                         idClinic={informacoes.idClinic}
                                         idMedic={informacoes.idMedic}
                                     />

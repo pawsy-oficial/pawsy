@@ -16,20 +16,19 @@ export default function Vaccine() {
 	const [tableVaccine, setTableVaccine] = useState([]);
 	const [tableVermifugo, setTableVermifugo] = useState([]);
 
-	const jwtTokenMedic = Cookies.get("jwtTokenMedic");
-
 	const tokenMedic = Cookies.get("jwtTokenMedic");
 
 	const location = useLocation();
-	const { idPet, idClinic } = location.state.pet;
+	const { idPet, idClinic, animalType  } = location.state.pet;
+
+	console.log(animalType);
 
 	useEffect(() => {
-		axios
-			.get(`${import.meta.env.VITE_URL}/add-new-vermifuge`, {
-				headers: {
-					Authorization: "Bearer " + jwtTokenMedic,
-				},
-			})
+		axios.get(`${import.meta.env.VITE_URL}/add-new-vermifuge`, {
+			headers: {
+				Authorization: "Bearer " + tokenMedic,
+			},
+		})
 			.then((e) => {
 				setTableVermifugo(e.data.results);
 			})
@@ -37,12 +36,11 @@ export default function Vaccine() {
 				console.log(error);
 			});
 
-		axios
-			.get(`${import.meta.env.VITE_URL}/get-vaccine/${idPet}`, {
-				headers: {
-					Authorization: "Bearer " + jwtTokenMedic,
-				},
-			})
+		axios.get(`${import.meta.env.VITE_URL}/get-vaccine/${idPet}`, {
+			headers: {
+				Authorization: "Bearer " + tokenMedic,
+			},
+		})
 			.then((e) => {
 				setTableVaccine(e.data.results);
 			})
@@ -50,15 +48,14 @@ export default function Vaccine() {
 				console.log(error);
 			});
 
-		axios
-			.get(`${import.meta.env.VITE_URL}/profileMedic`, {
-				headers: {
-					Authorization: `Bearer ${tokenMedic}`,
-				},
-			})
+		axios.get(`${import.meta.env.VITE_URL}/profileMedic`, {
+			headers: {
+				Authorization: `Bearer ${tokenMedic}`,
+			},
+		})
 			.then((res) => {
 				setInfoMedic(res.data);
-				});
+			});
 	}, [openVaccine, openVermifuge]);
 
 	return (
@@ -99,20 +96,34 @@ export default function Vaccine() {
 									</tr>
 								</thead>
 								<tbody className="second">
-									{tableVaccine.map((e, i) => {
-										return (
-											<tr key={i} className="border-b border-black">
-												<td className="py-1">{e.nm_vacina}</td>
-												<td className="py-1">
-													{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}
-												</td>
-												<td className="py-1">
-													{dayjs(e.dt_retorno).format("DD/MM/YYYY")}
-												</td>
-												<td className="py-1">{infoMedic.storedNameMedic}</td>
-											</tr>
-										);
-									})}
+									{
+										tableVaccine.map((e, i) => {
+											return (
+												<tr key={i} className="border-b border-black">
+													<td className="py-1 capitalize">
+														{
+															e.nameVaccine
+														}
+													</td>
+													<td className="py-1">
+														{
+															dayjs(e.dateAplication).format("DD/MM/YYYY")
+														}
+													</td>
+													<td className="py-1">
+														{
+															dayjs(e.dateReturn).format("DD/MM/YYYY")
+														}
+													</td>
+													<td className="py-1 capitalize ">
+														{
+															e.nameMedic
+														}
+													</td>
+												</tr>
+											);
+										})
+									}
 								</tbody>
 							</table>
 							<div className="flex justify-center">
@@ -147,14 +158,27 @@ export default function Vaccine() {
 									</tr>
 								</thead>
 								<tbody className="second">
-									{tableVermifugo.map((e, i) => {
-										return (
-											<tr key={i} className="border-b border-black">
-												<td>{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}</td>
-												<td>{e.nm_vermifugo}</td>
-											</tr>
-										);
-									})}
+									{
+										tableVermifugo.map((e, i) => {
+											return (
+												<tr 
+													key={i} 
+													className="border-b border-black"
+												>
+													<td>
+														{
+															dayjs(e.dt_aplicacao).format("DD/MM/YYYY")
+														}
+													</td>
+													<td>
+														{
+															e.nm_vermifugo
+														}
+													</td>
+												</tr>
+											);
+										})
+									}
 								</tbody>
 							</table>
 							<div className="flex justify-center">
