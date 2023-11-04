@@ -19,10 +19,10 @@ export default function Vaccine() {
 	const tokenMedic = Cookies.get("jwtTokenMedic");
 
 	const location = useLocation();
-	const { idPet, idClinic, animalType  } = location.state.pet;
-
+	const { idPet, idClinic, animalType, idTutor  } = location.state.pet;
+	
 	useEffect(() => {
-		axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idPet}`, {
+		axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idTutor}/${idPet}`, {
 			headers: {
 				Authorization: "Bearer " + tokenMedic,
 			},
