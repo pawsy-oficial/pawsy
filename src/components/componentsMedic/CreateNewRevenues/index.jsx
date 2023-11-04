@@ -19,18 +19,20 @@ export function CreateNewRevenues() {
       />
       <div className="flex py-6 px-8 w-[593px] h-[110px] bg-[#F5FFFE] text-xs font-bold flex-col justify-between">
         <div className="flex flex-row items-center gap-4">
-          <p>Tipo do receituário:</p>
+          <p>Tipo da receita:</p>
           <select
             name=""
             id=""
             className="w-[153px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
           >
-            <option value="">Simples</option>
-            <option value="">Controle especial</option>
-            <option value="">Azul</option>
-            <option value="">Amarela</option>
-            <option value="">Branca de talidomida</option>
-            <option value="">Branca para retinóides</option>
+            <option value="Simples">Simples</option>
+            <option value="Controle especial">Controle especial</option>
+            <option value="Azul">Azul</option>
+            <option value="Amarela">Amarela</option>
+            <option value="Branca de talidomida">Branca de talidomida</option>
+            <option value="Branca para retinóides">
+              Branca para retinóides
+            </option>
           </select>
         </div>
 
@@ -56,14 +58,14 @@ export function CreateNewRevenues() {
 
       <div className="flex justify-center flex-col items-center gap-6">
         {isComponentVisible ? (
-          <div>
+          <div className="flex justify-center flex-col items-center gap-6">
             <CreateNewMedicines />
             <button
               className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-red-500 gap-3"
               onClick={toggleComponent}
             >
               <XCircle size={20} />
-              Cancelar
+              cancelar
             </button>
           </div>
         ) : (
@@ -72,7 +74,7 @@ export function CreateNewRevenues() {
             onClick={toggleComponent}
           >
             <PlusCircle size={20} />
-            Adicionar
+            adicionar
           </button>
         )}
       </div>
