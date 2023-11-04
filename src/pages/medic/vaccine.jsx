@@ -78,42 +78,42 @@ export default function Vaccine() {
 							</h3>
 							<table className="w-full cursor-default">
 								<thead>
-									<tr className=" border-b border-black">
-										<th className=" bg-primary text-white text-sm w-40 p-2">
+									<tr className="border-b border-black border-none">
+										<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-l-full">
 											Vacina
 										</th>
-										<th className=" p-2 bg-primary text-white text-sm w-40">
+										<th className="py-1 bg-primary text-white text-sm w-40 border-none">
 											Data de aplicação
 										</th>
-										<th className=" p-2 bg-primary text-white text-sm w-40">
+										<th className="py-1 bg-primary text-white text-sm w-40 border-none">
 											Retorno
 										</th>
-										<th className=" p-2 bg-primary text-white text-sm w-40">
+										<th className="bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
 											Veterinário
 										</th>
 									</tr>
 								</thead>
-								<tbody className="second">
+								<tbody className="second line-colors">
 									{
 										tableVaccine.map((e, i) => {
 											return (
-												<tr key={i} className="border-b border-black">
-													<td className="py-1 capitalize">
+												<tr key={i} className="border-b border-black border-none">
+													<td className="border-none rounded-l-full capitalize">
 														{
 															e.nameVaccine
 														}
 													</td>
-													<td className="py-1">
+													<td className="border-none">
 														{
 															dayjs(e.dateAplication).format("DD/MM/YYYY")
 														}
 													</td>
-													<td className="py-1">
+													<td className="border-none">
 														{
 															dayjs(e.dateReturn).format("DD/MM/YYYY")
 														}
 													</td>
-													<td className="py-1 capitalize ">
+													<td className="border-none rounded-r-full capitalize">
 														{
 															e.nameMedic
 														}
@@ -147,29 +147,29 @@ export default function Vaccine() {
 							</h3>
 							<table className="cursor-default">
 								<thead>
-									<tr className=" border-b border-black">
-										<th className=" bg-primary text-white text-sm w-40 p-2">
+									<tr className=" border-b border-black border-none">
+										<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-l-full">
 											Data
 										</th>
-										<th className=" bg-primary text-white text-sm w-40 p-2">
+										<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
 											Nome
 										</th>
 									</tr>
 								</thead>
-								<tbody className="second">
+								<tbody className="second line-colors">
 									{
 										tableVermifugo.map((e, i) => {
 											return (
 												<tr 
 													key={i} 
-													className="border-b border-black"
+													className="border-b border-black border-none"
 												>
-													<td>
+													<td className="border-none rounded-l-full">
 														{
 															dayjs(e.dt_aplicacao).format("DD/MM/YYYY")
 														}
 													</td>
-													<td>
+													<td className="border-none rounded-r-full capitalize">
 														{
 															e.nm_vermifugo
 														}
