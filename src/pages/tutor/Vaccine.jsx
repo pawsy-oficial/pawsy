@@ -1,299 +1,23 @@
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
-import * as Select from "@radix-ui/react-select";
 import { useEffect, useState } from "react";
-import { WarningVaccine } from "../../components/tutor/Alert";
-import { CaretDown } from "@phosphor-icons/react";
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
-
 import dayjs from 'dayjs'
 import useCheckedPet from "../../hook/useCheckedPet";
+import useTopToScreen from "../../hook/useTopToScreen"
 import axios from "axios";
 import Cookies from "js-cookie";
 
 export default function VaccinePage() {
-	// const [namePet, setNamePet] = useState("");
-	// const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
-
-	useCheckedPet()
-
-	//Lista Vacinas
-	const table = [
-		[
-			//Caramelo (pets[0])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Oreo (pets[1])
-			[
-				{
-					vaccineName: "V8",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Flor (pets[2])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Pantera (pets[3])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-	];
-
-	//Lista Vermes
-
-	const tableVermifugo = [
-		[
-			//caramelo
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Oreo
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Flor
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Pantera
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-	];
-
+	const [alterTable, setAlterTable] = useState(true)
+	const [adsPosts, setAdsPosts] = useState([])
+	const [tableVaccine, setTableVaccine] = useState([])
+	const [tableVermifuge, setTableVermifuge] = useState([])
+	const [pets, setPets] = useState([])
+	const [idPetOption, setIdPetOption] = useState(null)
 	const [windowScreen, setWindowScreen] = useState({ width: null })
+	useCheckedPet()
+	useTopToScreen()
 
 	useEffect(() => {
 		function handleResize() {
@@ -301,21 +25,12 @@ export default function VaccinePage() {
 		}
 		window.addEventListener("resize", handleResize)
 		handleResize()
-
-		return () => window.removeEventListener("resize", handleResize)
-	}, [])
-
-	const [alterTable, setAlterTable] = useState(true)
-	const [adsPosts, setAdsPosts] = useState([])
-	const [tableVaccine, setTableVaccine] = useState([])
-	const [tableVermifuge, setTableVermifuge] = useState([])
-	const [pets, setPets] = useState([])
-	const [idPetOption, setIdPetOption] = useState(null)
-
-	useEffect(() => {
+		
 		axios.get(`${import.meta.env.VITE_URL}/getAllAds/all?filter=preview`)
 			.then(e => setAdsPosts(e.data.adsPreview))
 			.catch(err => console.log(err))
+
+		return () => window.removeEventListener("resize", handleResize)
 	}, [])
 
 	useEffect(() => {
