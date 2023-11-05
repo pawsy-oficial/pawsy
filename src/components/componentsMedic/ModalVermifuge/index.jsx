@@ -1,4 +1,4 @@
-import { FloppyDisk, X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -45,7 +45,10 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 	};
 	if (isOpenVermifuge) {
 		return (
-			<div className="fixed inset-0 bg-primary/40 flex justify-center items-center">
+			<section
+				onClick={e => e.target.tagName === "SECTION" && setOpenVermifuge(false)} 
+				className="fixed inset-0 bg-primary/40 flex justify-center items-center"
+			>
 				<form onSubmit={(e) => e.preventDefault()} className="flex flex-col fixed bg-white p-6 rounded-lg min-w-[22rem]">
 					<button
 						onClick={() => setOpenVermifuge(false)}
@@ -62,7 +65,7 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 							value={vermifuge}
 							onChange={(e) => setVermifuge(e.target.value)}
 							name="vermifuge"
-							className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
+							className="bg-gray-white rounded-lg px-4 py-1 w-full text-base border focus:border-primary"
 						/>
 					</div>
 					<div className="flex flex-row place-content-end pt-6">
@@ -70,12 +73,11 @@ export function ModalVermifuge({ isOpenVermifuge, setOpenVermifuge, id }) {
 							onClick={handleSubmit}
 							className="flex items-center bg-[#22937E] text-white w-[7.688rem] h-8 justify-center rounded-lg gap-[10px]"
 						>
-							<FloppyDisk size={24} />
 							SALVAR
 						</button>
 					</div>
 				</form>
-			</div>
+			</section>
 		);
 	}
 }

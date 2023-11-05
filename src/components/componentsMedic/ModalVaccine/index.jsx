@@ -56,8 +56,12 @@ export function ModalVaccine({
 
     return (
         <section>
-            {isOpenVaccine && (
-                <div className="fixed inset-0 bg-primary/40 flex justify-center items-center">
+            {
+                isOpenVaccine && (
+                <section 
+                    className="fixed inset-0 bg-primary/40 flex justify-center items-center"
+                    onClick={e => e.target.tagName === "SECTION" && setOpenVaccine(false)}
+                >
                     <div className="flex flex-col fixed bg-white p-6 rounded-lg min-w-[22rem]">
                         <button
                             onClick={() => setOpenVaccine(false)}
@@ -72,10 +76,10 @@ export function ModalVaccine({
                             onSubmit={handleSubmit(onSubmit)}
                         >
                             <div className="flex flex-col gap-1">
-                                <p className="text-xs">Proteção</p>
+                                <p className="text-sm">Proteção</p>
                                 <select
                                     onChange={(e) => { }}
-                                    className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary focus-visible:outline-none hover:border-primary"
+                                    className="bg-gray-white rounded-lg py-1 px-4 w-full text-base border focus:border-primary focus-visible:outline-none hover:border-primary"
                                     {...register("typeVaccine")}
                                 >
                                     {
@@ -92,12 +96,12 @@ export function ModalVaccine({
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <p className="text-xs">Data de Retorno</p>
+                                <p className="text-sm">Data de Retorno</p>
                                 <input
                                     {...register("return")}
                                     type="date"
                                     min={dayJs().add(1, "month").format("YYYY-MM-DD")}
-                                    className="bg-gray-white rounded-lg pl-2 pr-4 w-full h-8 text-xs text-[#909090] border focus:border-primary"
+                                    className="bg-gray-white rounded-lg py-1 px-4 w-full text-base border focus:border-primary"
                                 />
                             </div>
                             <div className="flex flex-row place-content-end">
@@ -110,7 +114,7 @@ export function ModalVaccine({
                             </div>
                         </form>
                     </div>
-                </div>
+                </section>
             )}
         </section>
     );
