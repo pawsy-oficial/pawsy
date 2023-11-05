@@ -1,16 +1,33 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useForm } from "react-hook-form"
+import * as Yup from "yup"
+
+const schema = Yup.object({
+    weight: Yup.number().typeError("Deve ser um número").required("Campo obrigatório").positive("Deve ser um valor positivo"),
+    height: Yup.number().typeError("Deve ser um número").required("Campo obrigatório").positive("Deve ser um valor positivo"),
+    drug: Yup.string().required("Campo obrigatório").min(2, "Minimo 3 caracteres"),
+    castrated: Yup.string().required("Campo obrigatório"),
+    behavior: Yup.string().required("Campo obrigatório").min(2, "Minimo 3 caracteres"),
+    treatment: Yup.string().required("Campo obrigatório").min(2, "Minimo 3 caracteres"),
+})
 
 export default function ModalEditObs(props) {
-    const { handleSubmit, register } = useForm({
-        mode: "onSubmit"
+    const { handleSubmit, register, formState } = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(schema)
     })
+
+    const { errors } = formState
 
     const onSubmit = (data)=>{
         console.log(data, props.idPet);
         data["idPet"] = props.idPet
         axios.post(`${import.meta.env.VITE_URL}/update-pet?note=true`, data)
-        .then(e => console.log(e))
+        .then(e => {
+            console.log(e)
+            props.setOpen(!props.isOpen)
+        })
         .catch(err => console.log(err))
     }
 
@@ -55,6 +72,9 @@ export default function ModalEditObs(props) {
                                                 className="border border-primary rounded-lg px-2 py-1"
                                                 {...register("weight")}
                                             />
+                                            {
+                                                errors.weight && <span className="text-sm text-red-error" >{errors.weight.message}</span>
+                                            }
                                         </label>
                                         <label 
                                             className="flex gap-2 flex-col flex-1"
@@ -66,6 +86,9 @@ export default function ModalEditObs(props) {
                                                 className="border border-primary rounded-lg px-2 py-1"
                                                 {...register("height")}
                                             />
+                                            {
+                                                errors.height && <span className="text-sm text-red-error" >{errors.height.message}</span>
+                                            }
                                         </label>
                                     </div>
                                 </div>
@@ -90,44 +113,72 @@ export default function ModalEditObs(props) {
                                             >
                                                 Alergia e medicamentos:
                                             </span>
-                                            <input 
-                                                type="text" 
-                                                className="w-1/2 border border-primary rounded-lg px-2 py-1"
-                                                {...register("drug")}
-                                            />
+                                            <div
+                                                className="flex flex-col"
+                                            >
+                                                <input 
+                                                    type="text" 
+                                                    className="border border-primary rounded-lg px-2 py-1"
+                                                    {...register("drug")}
+                                                />
+                                                {
+                                                    errors.drug && <span className="text-sm text-red-error" >{errors.drug.message}</span>
+                                                }
+                                            </div>
                                         </label>
                                         <label 
                                             className="flex items-center gap-2 justify-between"
                                         >
                                             <span>Castrado(a):</span>
-                                            <select 
-                                                type="text" 
-                                                className="w-1/2 border border-primary rounded-lg px-2 py-1"
-                                                {...register("castrated")}
+                                            <div
+                                                className="flex flex-col"
                                             >
-                                                <option value={1}>Sim</option>
-                                                <option value={0}>Não</option>
-                                            </select>
+                                                <select 
+                                                    type="text" 
+                                                    className="border border-primary rounded-lg px-2 py-1"
+                                                    {...register("castrated")}
+                                                >
+                                                    <option value={1}>Sim</option>
+                                                    <option value={0}>Não</option>
+                                                </select>
+                                                {
+                                                    errors.castrated && <span className="text-sm text-red-error" >{errors.castrated.message}</span>
+                                                }
+                                            </div>
                                         </label>
                                         <label 
                                             className="flex items-center gap-2 justify-between"
                                         >
                                             <span>Comportamento:</span>
-                                            <input 
-                                                type="text" 
-                                                className="w-1/2 border border-primary rounded-lg px-2 py-1"
-                                                {...register("behavior")}
-                                            />
+                                            <div
+                                                className="flex flex-col"
+                                            >
+                                                <input 
+                                                    type="text" 
+                                                    className="border border-primary rounded-lg px-2 py-1"
+                                                    {...register("behavior")}
+                                                />
+                                                {
+                                                    errors.behavior && <span className="text-sm text-red-error" >{errors.behavior.message}</span>
+                                                }
+                                            </div>
                                         </label>
                                         <label 
                                             className="flex items-center gap-2 justify-between"
                                         >
                                             <span>Tratemento:</span>
-                                            <input 
-                                                type="text" 
-                                                className="w-1/2 border border-primary rounded-lg px-2 py-1"
-                                                {...register("treatment")}
-                                            />
+                                            <div
+                                                className="flex flex-col"
+                                            >
+                                                <input 
+                                                    type="text" 
+                                                    className="border border-primary rounded-lg px-2 py-1"
+                                                    {...register("treatment")}
+                                                />
+                                                {
+                                                    errors.treatment && <span className="text-sm text-red-error" >{errors.treatment.message}</span>
+                                                }
+                                            </div>
                                         </label>
                                     </div>
                                 </div>

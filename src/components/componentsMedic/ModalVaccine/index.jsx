@@ -4,6 +4,14 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import dayJs from "dayjs"
+import * as Yup from "yup"
+import dayjs from "dayjs";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = Yup.object({
+    typeVaccine: Yup.string().required("Campo obrigatório"),
+    return: Yup.date().required("Campo obrigatório").min(dayjs().add(1, "month").format("YYYY-MM-DD"))
+})
 
 export function ModalVaccine({
     isOpenVaccine,
@@ -32,9 +40,12 @@ export function ModalVaccine({
 
     // section form
 
-    const { handleSubmit, register } = useForm({
+    const { handleSubmit, register, formState } = useForm({
         mode: "onSubmit",
+        resolver: yupResolver(schema)
     });
+
+    const { errors } = formState
 
     // end section form
 
@@ -106,6 +117,9 @@ export function ModalVaccine({
                                         })
                                     }
                                 </select>
+                                {
+                                    errors.typeVaccine && <span className="text-red-error text-sm" >{errors.typeVaccine.message}</span>
+                                }
                             </div>
                             <div className="flex flex-col gap-1">
                                 <p className="text-sm">Data de Retorno</p>
@@ -115,6 +129,9 @@ export function ModalVaccine({
                                     min={dayJs().add(1, "month").format("YYYY-MM-DD")}
                                     className="bg-gray-white rounded-lg py-1 px-4 w-full text-base border focus:border-primary"
                                 />
+                                {
+                                    errors.return && <span className="text-red-error text-sm" >{errors.return.message}</span>
+                                }
                             </div>
                             <div className="flex flex-row place-content-end">
                                 <button
