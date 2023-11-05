@@ -137,6 +137,8 @@ export default function Vaccine() {
 									idPet={idPet}
 									idClinic={idClinic}
 									animalType={animalType}
+									nameMedic={infoMedic.storedNameMedic}
+									lastName={infoMedic.storedLastName}
 								/>
 							</div>
 						</div>
@@ -191,6 +193,9 @@ export default function Vaccine() {
 									isOpenVermifuge={openVermifuge}
 									setOpenVermifuge={setOpenVermifuge}
 									id={idPet}
+									idClinic={idClinic}
+									nameMedic={infoMedic.storedNameMedic}
+									lastName={infoMedic.storedLastName}
 								/>
 							</div>
 						</div>

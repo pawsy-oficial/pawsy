@@ -32,12 +32,10 @@ export default function ViewPatient() {
 					name: e.data.results[0].nm_tutor
 				})
 				setPetsTutor(e.data.results)
-				console.log(e.data.results);
+				// console.log(e.data.results);
 			})
 			.catch(err => console.log(err))
 	}, [])
-
-	console.log(pet);
 
 	return (
 		<>

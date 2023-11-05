@@ -10,10 +10,13 @@ export function ModalVaccine({
     setOpenVaccine,
     idPet,
     idClinic,
-    animalType
+    animalType,
+    nameMedic,
+    lastName
 }) {
     
     const [ typeVaccine, setTypeVaccine ] = useState([])
+    const [ selectedOption, setSelectedOption ] = useState(0)
 
     animalType = animalType == "cachorro" ? "dog" : "cat"
 
@@ -36,18 +39,26 @@ export function ModalVaccine({
     // end section form
 
     const onSubmit = (data) => {
+        const nameVaccine = typeVaccine[selectedOption].nameVaccine;
+        
         const dataForm = {
             vacina: parseInt(data.typeVaccine),
             id_pet: idPet,
             id_clinic: idClinic,
             dt_retorno: data.return,
             id_medic: location.state.medic,
+            description: `Seu pet recebeu a vacina ${nameVaccine} de ${nameMedic} ${lastName}, garantindo que ele esteja protegido e saudável.`
         };
 
-        axios
-            .post(`${import.meta.env.VITE_URL}/vaccine`, dataForm)
+
+        axios.post(`${import.meta.env.VITE_URL}/vaccine`, dataForm)
             .then((e) => {
-                setOpenVaccine(false);
+                axios.post(`${import.meta.env.VITE_URL}/history`, dataForm)
+                .then(f => {
+                    console.log(f);
+                    setOpenVaccine(false);
+                })
+                .catch(err => console.log(err))
             })
             .catch((e) => {
                 console.log(e);
@@ -78,9 +89,10 @@ export function ModalVaccine({
                             <div className="flex flex-col gap-1">
                                 <p className="text-sm">Proteção</p>
                                 <select
-                                    onChange={(e) => { }}
                                     className="bg-gray-white rounded-lg py-1 px-4 w-full text-base border focus:border-primary focus-visible:outline-none hover:border-primary"
-                                    {...register("typeVaccine")}
+                                    {...register("typeVaccine", {
+                                        onChange: e => setSelectedOption(e.target.selectedIndex)
+                                    })}
                                 >
                                     {
                                         typeVaccine.map(tp => {
