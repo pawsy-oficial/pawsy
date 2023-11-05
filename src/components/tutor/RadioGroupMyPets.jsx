@@ -30,7 +30,7 @@ function RadioGroupMyPets({ showPet, edit }) {
     return (
         <>
             {
-                myPets.map((pet, index) => {
+                myPets.map((infoPet, index) => {
                     return (
                         <label
                             className="label_select flex gap-2 items-center cursor-pointer hover:bg-primary/5 transition-all duration-700 p-1 rounded"
@@ -40,15 +40,15 @@ function RadioGroupMyPets({ showPet, edit }) {
                             <input type="radio" name="myPets" id="" className="radio hidden" />
                             <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
                                 <img
-                                    src={`${import.meta.env.VITE_URL}/files/${pet.url_img}`}
-                                    alt={pet.nm_pet}
+                                    src={`${import.meta.env.VITE_URL}/files/${infoPet.pet.url_img}`}
+                                    alt={infoPet.pet.nm_pet}
                                     className="object-cover w-full h-full"
                                     draggable={false}
                                 />
                             </div>
-                            <span className="text-lg  capitalize">{pet.nm_pet}</span>
+                            <span className="text-lg  capitalize">{infoPet.pet.nm_pet}</span>
                             {
-                                pet.status && <WarningCircle className="fill-red-error" size={16} weight="bold" />
+                                infoPet.pet.status && <WarningCircle className="fill-red-error" size={16} weight="bold" />
                             }
                         </label>
                     )

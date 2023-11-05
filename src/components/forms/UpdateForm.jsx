@@ -10,8 +10,8 @@ import ModalDialogEditAddress from "../cardsAndBoxes/modal";
 export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const [selectImage, setSelectImage] = useState(null)
     const [urlImage, setUrlImage] = useState(null)
-    const [namePet, setNamePet] = useState(`${myPet[showPet].nm_pet}`)
-    const [birthDay, setBirthday] = useState(`${myPet[showPet].dt_nascimento}`)
+    const [namePet, setNamePet] = useState(`${myPet[showPet].pet.nm_pet}`)
+    const [birthDay, setBirthday] = useState(`${myPet[showPet].pet.dt_nascimento}`)
     const [saveLoading, setSaveLoading] = useState(false)
 
     const { register, handleSubmit, formState, setValue, setError, control } = useForm({
@@ -34,14 +34,14 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
     const onSubmit = (data) => {
         const currentTime = new Date().getTime()
         let nameFile
-        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = myPet[showPet].url_img
+        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = myPet[showPet].pet.url_img
 
         const dataForm = {
             url_imagem: nameFile,
             resumo: data.description,
             sexo: data.sexo,
             idade: data.birthday,
-            idPet: myPet[showPet].id_pawsy,
+            idPet: myPet[showPet].pet.id_pawsy,
             namePet: data.name_pet
         }
         // console.log(dataForm, selectImage);
@@ -87,7 +87,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     className={`w-[90px] h-[90px] relative sm:w-40 group sm:h-40 rounded-full border-4 border-secundary overflow-hidden bg-primary/20 cursor-pointer`}
                 >
                     <img
-                        src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${myPet[showPet].url_img}`}
+                        src={urlImage ? urlImage : `${import.meta.env.VITE_URL}/files/${myPet[showPet].pet.url_img}`}
                         alt={myPet.nm_pet}
                         className="h-full w-full object-cover group-hover:brightness-50 transition-all"
                         draggable={false}
@@ -121,7 +121,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                 <span
                     className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
                 >
-                    #{myPet[showPet].id_pawsy.toString().padStart(4, '0')}
+                    #{myPet[showPet].pet.id_pawsy.toString().padStart(4, '0')}
                 </span>
             </div>
             <div className="flex flex-col gap-4 w-2/5">
@@ -142,14 +142,14 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     >
                         <option
                             value={1}
-                            selected={myPet[showPet].sexo == "macho" ? true : false}
+                            selected={myPet[showPet].pet.sexo == "macho" ? true : false}
                             className="cursor-pointer"
                         >
                             Macho ♂
                         </option>
                         <option
                             value={2}
-                            selected={myPet[showPet].sexo == "fêmea" ? true : false}
+                            selected={myPet[showPet].pet.sexo == "fêmea" ? true : false}
                             className="cursor-pointer"
                         >
                             Fêmea ♀
@@ -175,7 +175,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     </li>
                     <li>
                         <span className="font-bold text-xs sm:text-lg">Raça: </span>
-                        <span className="text-sm sm:text-base">{myPet[showPet].nm_raca}</span>
+                        <span className="text-sm sm:text-base">{myPet[showPet].pet.nm_raca}</span>
                     </li>
                     <li>
                         <span className="font-bold text-xs sm:text-lg">Status: </span>
@@ -191,7 +191,7 @@ export function UpdateFormPet({ myPet, showPet, stateEdit, setStateEdit }) {
                     {...register("description")}
                 >
                     {
-                        myPet[showPet].resumo.length > 0 ? myPet[showPet].resumo : ""
+                        myPet[showPet].pet.resumo.length > 0 ? myPet[showPet].pet.resumo : ""
                     }
                 </textarea>
             </section>

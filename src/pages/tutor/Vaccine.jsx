@@ -90,10 +90,10 @@ export default function VaccinePage() {
 									return (
 										<option
 											key={index}
-											value={`${pet.id_pawsy}`}
+											value={`${pet.pet.id_pawsy}`}
 											className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl"
 										>
-											{pet.nm_pet}
+											{pet.pet.nm_pet}
 										</option>
 									);
 								})
