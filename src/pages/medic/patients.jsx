@@ -29,7 +29,7 @@ export default function PatientsForMedic() {
     const nameClinic = informacoes.nameClinic;
 
     return (
-        <>
+        <main className="min-h-screen">
             <HeaderMedic />
             <div className="max-w-3xl mx-auto my-4">
                 <button 
@@ -42,7 +42,7 @@ export default function PatientsForMedic() {
             </div>
 
             <main
-                className="max-w-3xl mx-auto bg-white rounded-lg p-6"
+                className="max-w-3xl mx-auto bg-white rounded-lg p-6 mb-16"
             >
                 <section>
                     <div className="flex justify-center">
@@ -50,10 +50,11 @@ export default function PatientsForMedic() {
                             src={`${import.meta.env.VITE_URL}/files/${imgClinic}`}
                             className="w-44 h-44 rounded-full border-4 border-[#22B77E]"
                             alt={`Logo ${nameClinic}`}
+                            draggable={false}
                         />
                     </div>
                     <h1
-                        className="text-center text-2xl font-semibold mt-4 uppercase"
+                        className="text-center text-2xl font-bold mt-4 uppercase"
                     >
                         {
                             nameClinic
@@ -107,6 +108,6 @@ export default function PatientsForMedic() {
                     </div>
                 </section>
             </main>
-        </>
+        </main>
     )
 }

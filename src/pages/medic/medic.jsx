@@ -31,39 +31,39 @@ export default function Medic() {
 	}, []);
 
 	return (
-		<>
-			<header>
-				<HeaderMedic />
-			</header>
-			<section className="max-w-7xl mx-auto mt-8 bg-[#F5F7FB]">
+		<main className="min-h-screen">
+			<HeaderMedic />
+			
+			
+			<section className="max-w-5xl px-8 mx-auto mt-8 bg-[#F5F7FB]">
 				<h1 className="text-3xl font-semibold capitalize">
 					Olá, {infoMedic.storedNameMedic}
 				</h1>
-				<h3 
+				<h3
 					className="mt-8 text-lg"
 				>
 					Clínicas onde você trabalha:
 				</h3>
-				<nav 
+				<nav
 					className="flex flex-wrap gap-3 mt-4"
 				>
 					{
 						clinicsMedic.length == 0
-						? <p>Você não está registrado em nenhuma clínica</p>
-						: clinicsMedic.map((clinic, i) => {
-							return (
-								<CardClinics
-									key={i}
-									img={clinic.url_imagem}
-									nameClinic={clinic.nm_clinica}
-									idClinic={clinic.id_clinica}
-									idMedic={idMedic}
-								/>
-							)
-						})
+							? <p>Você não está registrado em nenhuma clínica</p>
+							: clinicsMedic.map((clinic, i) => {
+								return (
+									<CardClinics
+										key={i}
+										img={clinic.url_imagem}
+										nameClinic={clinic.nm_clinica}
+										idClinic={clinic.id_clinica}
+										idMedic={idMedic}
+									/>
+								)
+							})
 					}
 				</nav>
 			</section>
-		</>
+		</main>
 	)
 }

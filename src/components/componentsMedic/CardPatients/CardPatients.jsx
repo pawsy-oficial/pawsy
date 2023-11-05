@@ -18,6 +18,7 @@ export default function CardPatients({ petName, nameTutor, idPet, year, breed, i
                     <img
                         src={`${import.meta.env.VITE_URL}/files/${imagePet}`}
                         className="w-full h-full object-cover"
+                        draggable={false}
                     />
                 </div>
 
