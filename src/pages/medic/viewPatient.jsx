@@ -164,13 +164,17 @@ export default function ViewPatient() {
 								>
 									Editar informações
 								</button>
-								<ModalEditObs isOpen={open} setOpen={setOpen} />
+								<ModalEditObs
+									isOpen={open}
+									setOpen={setOpen}
+									idPet={pet.idPet}
+								/>
 							</div>
 						</section>
 
 						<div className="flex flex-col">
 							<div className="flex flex-col gap-4">
-								<h3 
+								<h3
 									className="font-bold text-2xl"
 								>
 									Observações
