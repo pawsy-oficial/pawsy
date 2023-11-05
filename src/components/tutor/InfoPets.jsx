@@ -150,19 +150,23 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                                 <ul>
                                     <li>
                                         <span className="font-semibold mr-2">Alergia a medicamentos:</span>
-                                        <span>Não</span>
+                                        <span>{myPet[showPet].tx_alergia}</span>
                                     </li>
                                     <li>
                                         <span className="font-semibold mr-2">Castrado(a):</span>
-                                        <span>Não</span>
+                                        <span>
+                                            {
+                                                myPet[showPet].bl_castrado ? "Sim" : "Não"
+                                            }
+                                        </span>
                                     </li>
                                     <li>
                                         <span className="font-semibold mr-2">Comportamento:</span>
-                                        <span>Manso</span>
+                                        <span>{myPet[showPet].tx_comportamento}</span>
                                     </li>
                                     <li>
                                         <span className="font-semibold mr-2">Tratamento:</span>
-                                        <span>Não</span>
+                                        <span>{myPet[showPet].tx_tratamento}</span>
                                     </li>
                                 </ul>
                             </section>

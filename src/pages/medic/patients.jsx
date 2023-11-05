@@ -20,6 +20,7 @@ export default function PatientsForMedic() {
                 Authorization: `Bearer ${tokenMedic}`
             }
         }).then(res => {
+            console.log(res.data);
             setClinicsPet(res.data.results)
         })
     }, []);
@@ -67,13 +68,13 @@ export default function PatientsForMedic() {
                                         nameTutor={patients.TutorName}
                                         year={patients.BirthDate}
 
-                                        // img={patients.PetImage}
-                                        // namePet={patients.PetName}
-                                        // nameDono={patients.TutorName}
-                                        // idPet={patients.PetID}
-                                        // idade={dayjs(patients.BirthDate).format("DD/MM/YYYY")}
-                                        // raca={patients.BreedName}
-                                        // peso={patients.num_peso}
+                                        weight={patients.weight}
+                                        allergy={patients.allergy}
+                                        behavior={patients.behavior}
+                                        castrated={patients.castrated}
+                                        height={patients.height}
+                                        treatment={patients.treatment}
+
                                         idClinic={informacoes.idClinic}
                                         idMedic={informacoes.idMedic}
                                         idTutor={patients.TutorId}

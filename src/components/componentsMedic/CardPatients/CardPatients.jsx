@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
 
-export default function CardPatients({petName, nameTutor, idPet, year, breed, imagePet, animalType, idClinic, weight, idMedic, idTutor}){
+export default function CardPatients({petName, nameTutor, idPet, year, breed, imagePet, animalType, idClinic, weight, idMedic, idTutor, height, allergy, castrated, behavior, treatment}){
     const navigate = useNavigate()
-    const pet = { petName, nameTutor, idPet, year, breed, animalType, idClinic, weight, imagePet, idTutor}
+    const pet = { petName, nameTutor, idPet, year, breed, animalType, idClinic, weight, imagePet, idTutor, height, allergy, castrated, behavior, treatment}
     
     const medic = idMedic
     return(

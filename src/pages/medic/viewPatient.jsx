@@ -129,7 +129,7 @@ export default function ViewPatient() {
 										<span
 											className="font-medium font-lato pl-2"
 										>
-											20 kg
+											{pet.weight} kg
 										</span>
 									</strong>
 									<strong
@@ -139,7 +139,7 @@ export default function ViewPatient() {
 										<span
 											className="font-medium font-lato pl-2"
 										>
-											40cm
+											{pet.height} cm
 										</span>
 									</strong>
 								</div>
@@ -183,16 +183,16 @@ export default function ViewPatient() {
 									className="flex flex-col gap-1"
 								>
 									<li className="font-semibold text-base">
-										Alergia a medicamentos: {pet.alergia}
+										Alergia a medicamentos: {pet.allergy}
 									</li>
 									<li className="font-semibold text-base">
-										Castrado(a): {pet.castrado}
+										Castrado(a): {pet.castrated ? "Sim" : "Não"}
 									</li>
 									<li className="font-semibold text-base">
-										Comportamento: {pet.comportamento}
+										Comportamento: {pet.behavior}
 									</li>
 									<li className="font-semibold text-base">
-										Tratamento: {pet.tratamento}
+										Tratamento: {pet.treatment}
 									</li>
 								</ul>
 							</div>
