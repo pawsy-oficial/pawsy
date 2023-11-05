@@ -16,6 +16,8 @@ export default function VaccinePage() {
 	const [pets, setPets] = useState([])
 	const [idPetOption, setIdPetOption] = useState(null)
 	const [windowScreen, setWindowScreen] = useState({ width: null })
+	const [loading, setLoading] = useState(false)
+
 	useCheckedPet()
 	useTopToScreen()
 
@@ -25,7 +27,7 @@ export default function VaccinePage() {
 		}
 		window.addEventListener("resize", handleResize)
 		handleResize()
-		
+
 		axios.get(`${import.meta.env.VITE_URL}/getAllAds/all?filter=preview`)
 			.then(e => setAdsPosts(e.data.adsPreview))
 			.catch(err => console.log(err))
@@ -34,6 +36,7 @@ export default function VaccinePage() {
 	}, [])
 
 	useEffect(() => {
+		setLoading(true)
 		axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
 			headers: {
 				Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
@@ -55,7 +58,10 @@ export default function VaccinePage() {
 						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
 					}
 				})
-					.then(e => setTableVaccine(e.data.results))
+					.then(e => {
+						setTableVaccine(e.data.results)
+						setLoading(false)
+					})
 					.catch(err => console.log(err))
 
 				axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idTutor}/${idPetOption}`, {
@@ -147,7 +153,9 @@ export default function VaccinePage() {
 															</thead>
 															<tbody className="second line-colors border-0">
 																{
-																	tableVaccine.map((e, index) => {
+																	loading 
+																	? <p>Carregando...</p>
+																	: tableVaccine.map((e, index) => {
 																		return (
 																			<tr
 																				key={index}
@@ -179,7 +187,9 @@ export default function VaccinePage() {
 															</thead>
 															<tbody className="second line-colors">
 																{
-																	tableVermifuge.map((e) => {
+																	loading
+																	? <p>Carregando...</p>
+																	: tableVermifuge.map((e) => {
 																		return (
 																			<tr className="">
 																				<td className="border-none rounded-l-full">{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}</td>
@@ -195,7 +205,6 @@ export default function VaccinePage() {
 										</section>
 									)
 								}
-
 								<table className="w-full cursor-default hidden lg:block border-none rounded-lg rounded-r-2xl">
 									<thead className="border-none">
 										<tr className="border-b border-black border-none">
@@ -218,7 +227,9 @@ export default function VaccinePage() {
 									</thead>
 									<tbody className="second line-colors">
 										{
-											tableVaccine.map((e, index) => {
+											loading
+											? <p>Carregando...</p>
+											: tableVaccine.map((e, index) => {
 												return (
 													<tr
 														key={index}
@@ -252,7 +263,9 @@ export default function VaccinePage() {
 									</thead>
 									<tbody className="second line-colors">
 										{
-											tableVermifuge.map((e) => {
+											loading
+											? <p>Carregando...</p>
+											: tableVermifuge.map((e) => {
 												return (
 													<tr className="">
 														<td className="border-none rounded-l-full">{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}</td>
