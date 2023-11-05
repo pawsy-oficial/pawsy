@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import dono from "../../img/profilePerson.jpeg";
-import { ArrowUUpLeft, CaretLeft, GenderMale, X } from "@phosphor-icons/react";
+import { ArrowUUpLeft, CaretLeft, GenderFemale, GenderMale, X } from "@phosphor-icons/react";
 import ModalEditObs from "../../components/componentsMedic/ModalEditObs/ModalEditObs";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -78,7 +78,7 @@ export default function ViewPatient() {
 									</div>
 
 									<span
-										className="py-1 px-6 rounded-full bg-secundary text-white text-center text-sm"
+										className="bg-secundary rounded-full px-4 py-1 text-white text-xs font-bold"
 										role="contentinfo"
 									>
 										#{
@@ -88,7 +88,13 @@ export default function ViewPatient() {
 								</div>
 								<div className="flex flex-col gap-2">
 									<strong className="uppercase font-bold text-4xl flex items-center gap-2 mb-4">
-										{pet.petName} <GenderMale color="#1BA8C4" />
+										{
+											pet.petName
+										}
+										{
+											pet.gender === "macho" ? <GenderMale color="#1BA8C4" /> : <GenderFemale color="#ff8fcb" />
+										} 
+										
 									</strong>
 									<strong
 										className="font-semibold text-base"

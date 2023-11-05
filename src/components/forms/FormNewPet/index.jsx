@@ -11,6 +11,7 @@ import Cookies from "js-cookie"
 import NotifyBox from "../../cardsAndBoxes/notifyBox"
 import useTopToScreen from "../../../hook/useTopToScreen"
 import { useNavigate } from "react-router-dom"
+import dayjs from "dayjs"
 
 const schema = Yup.object({
     name: Yup.string().required("Campo obrigatório").min(2, "O nome deve ter no mínimo 2 caracteres"),
@@ -33,6 +34,15 @@ const schema = Yup.object({
 
 
 const FormNewPet = (props) => {
+    const [catsRace, setCatsRace] = useState([])
+    const [dogsRace, setDogsRace] = useState([])
+    const [idTutor, setIdTutor] = useState(null)
+    const [animal, setAnimal] = useState(""); // estado inicial vazio
+    const [selectImage, setSelectImage] = useState(null)
+    const [urlImage, setUrlImage] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [statusForm, setStatusForm] = useState(false)
+
     const navigate = useNavigate()
     const { register, handleSubmit, formState, control } = useForm({
         mode: "onSubmit",
@@ -41,10 +51,8 @@ const FormNewPet = (props) => {
 
     const { errors } = formState
 
-    const [catsRace, setCatsRace] = useState([])
-    const [dogsRace, setDogsRace] = useState([])
-    const [idTutor, setIdTutor] = useState(null)
-
+    
+    
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL}/raca?kind=cat`)
             .then(response => {
@@ -73,8 +81,7 @@ const FormNewPet = (props) => {
     }, [])
 
     const { isFirstAccess } = props
-    const [animal, setAnimal] = useState(""); // estado inicial vazio
-
+    
     const handleAnimalChange = (animalType) => {
         setAnimal(animalType);
     };
@@ -91,20 +98,13 @@ const FormNewPet = (props) => {
 
     // mock data, this should never go to production like this
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
     const coat = [
         "Curto",
         "Médio",
         "Grande",
     ];
 
-    const [selectImage, setSelectImage] = useState(null)
-    const [urlImage, setUrlImage] = useState(null)
+    
     useEffect(() => {
         if (selectImage) {
             console.log(selectImage);
@@ -117,19 +117,12 @@ const FormNewPet = (props) => {
         }
     }, [selectImage])
 
-    const [ loading, setLoading ] = useState(false)
-    const [ statusForm, setStatusForm ] = useState(false)
+    
 
     const onSubmit = dataForm => {
 
-        // console.log(dataForm)
         setLoading(true)
-
-        let date = new Date(dataForm.date);
-        let year = date.getFullYear();
-        let month = (date.getMonth() + 1).toString().padStart(2, '0');
-        let day = date.getDate().toString().padStart(2, '0');
-        let formattedDate = `${year}-${month}-${day}`;
+        let formattedDate = dayjs(dataForm.date).format("YYYY-MM-DD")
 
         const time = new Date().getTime()
         const urlImageProfile = `${time}_pawsy_${selectImage.name}`
@@ -146,35 +139,30 @@ const FormNewPet = (props) => {
             "race": dataForm.race
         }
 
-        console.log(data);
-
-
         axios.post(`${import.meta.env.VITE_URL}/pet-register`, data)
             .then(response => {
-                console.log(response);
                 let form = new FormData();
                 form.append("name", urlImageProfile);
                 form.append('file', selectImage, selectImage.name);
-        
+
                 axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
-                .then(()=>{
-                    setLoading(false)
-                    console.log(response)
-                    navigate("/tutor")
-                    window.location.reload()
-                    props.addPet(true)
-                })
-                .catch(
-                    err => {
-                        console.log(err)
+                    .then(() => {
                         setLoading(false)
-                        setStatusForm(true)
-                    }
-                )
+                        navigate("/tutor")
+                        window.location.reload()
+                        props.addPet(true)
+                    })
+                    .catch(
+                        err => {
+                            console.log(err)
+                            setLoading(false)
+                            setStatusForm(true)
+                        }
+                    )
             })
             .catch(err => {
                 setLoading(false)
@@ -183,7 +171,7 @@ const FormNewPet = (props) => {
 
                 useTopToScreen()
             })
-            .finally(()=>{
+            .finally(() => {
                 setLoading(false)
             })
     }
@@ -198,7 +186,7 @@ const FormNewPet = (props) => {
             <section className="flex flex-col gap-6 w-full">
                 {
                     statusForm &&
-                    <NotifyBox msg={"Ocorreu um erro ao fazer o cadastro do seu pet, tente novamente mais tarde"} status={false}/>
+                    <NotifyBox msg={"Ocorreu um erro ao fazer o cadastro do seu pet, tente novamente mais tarde"} status={false} />
                 }
                 <div className="w-32 mx-auto flex flex-col items-center gap-3" style={{ width: "164px" }}>
                     <input type="file" name="imagePet" id="imagePet" className="hidden" />
@@ -251,15 +239,12 @@ const FormNewPet = (props) => {
                                 name="pet"
                                 value="1"
                                 id="dog"
-                                // ref={register("pet")}
                                 className="hidden"
-                                // {...register("pet")}
                                 {
                                 ...register("pet", {
                                     onChange: (e) => handleAnimalChange(e.target.value)
                                 })
                                 }
-                            // onChange={(e) => handleAnimalChange(e.target.value)}
                             />
                             <label
                                 htmlFor="dog"
@@ -276,13 +261,9 @@ const FormNewPet = (props) => {
                                 value="2"
                                 id="cat"
                                 className="hidden"
-                                // ref={register("pet")}
-                                {
-                                ...register("pet", {
+                                {...register("pet", {
                                     onChange: (e) => handleAnimalChange(e.target.value)
-                                })
-                                }
-                            // onChange={(e) => handleAnimalChange(e.target.value)}
+                                })}
                             />
 
                             <label htmlFor="cat" className="flex flex-col items-center py-1 px-2 rounded-lg cursor-pointer border border-transparent">
@@ -409,7 +390,8 @@ const FormNewPet = (props) => {
                         type="date"
                         className="p-2 w-full rounded-lg border border-primary bg-[#F5FFFE] "
                         name="birthday"
-                        max={formattedDate}
+                        max={dayjs().format("YYYY-MM-DD")}
+                        min={dayjs().subtract(25, "years").format("YYYY-MM-DD")}
                         {...register("date")}
                     />
                     {
@@ -424,12 +406,6 @@ const FormNewPet = (props) => {
                         </small>
                     }
                 </div>
-
-                {/* <input 
-                    type="number" 
-                    className="p-2 w-full rounded-lg border border-primary bg-[#F5FFFE] " 
-                    placeholder="Peso"
-                /> */}
 
                 <div className="w-full">
                     <textarea
@@ -450,8 +426,6 @@ const FormNewPet = (props) => {
                         </small>
                     }
                 </div>
-
-
             </section>
 
             <div className="w-full flex justify-around">

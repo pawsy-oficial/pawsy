@@ -74,7 +74,8 @@ export default function PatientsForMedic() {
                                         castrated={patients.castrated}
                                         height={patients.height}
                                         treatment={patients.treatment}
-
+                                        gender={patients.Gender}
+                                        
                                         idClinic={informacoes.idClinic}
                                         idMedic={informacoes.idMedic}
                                         idTutor={patients.TutorId}
