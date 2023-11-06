@@ -1,37 +1,38 @@
-import { Pencil, PlusCircle } from '@phosphor-icons/react'
+import { Eye, Pencil, PlusCircle } from '@phosphor-icons/react'
 import React, { useEffect, useState } from 'react'
 import { SwitchClinic } from '../../inputsComponents'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-export function ContainerSchedule({ date, appointments, alterPage }) {
-    return (
-        <div 
-            className="flex flex-col gap-6 mt-6"
-            onClick={()=>{alterPage(3)}}
-        >
-            <span className="text-2xl">{date}</span>
-            <div className="flex gap-4 flex-col">
-                {
-                    appointments.map(appointment => {
-                        return(
-                            <div className={`bg-white w-full cursor-pointer hover:bg-secundary/10 transition-all duration-500 flex justify-between px-5 py-4 ${false && "line-through text-zinc-400"}`}>
-                                <div className="flex gap-10">
-                                    <p>{appointment.hours}</p>
-                                    <p>{appointment.tutorName}</p>
-                                </div>
-                                <p>Dr. {appointment.veterinaryName}</p>
-                            </div>
-                        )
-                    })
-                }
+export function ContainerSchedule({ dia, consultas, alterPage }) {
+  return (
+    <div className="flex flex-col gap-6 mt-6 w-[864px]">
+      <span className="text-2xl">{dia}</span>
+      <div className="flex gap-4 flex-col">
+        {consultas.map((consulta) => (
+          <div
+            key={consulta.id}
+            className={`bg-white w-full cursor-pointer hover:bg-secundary/10 transition-all duration-500 flex justify-between px-5 py-4 ${false && "line-through text-zinc-400"}`}
+          >
+            <div className="flex gap-10">
+              <p>{dia}</p>
+              <p>{consulta.horaConsulta}</p>
+              <p>{consulta.nomeTutor}</p>
             </div>
-        </div>
-    )
+            <p>Dr. {consulta.nomeMedico}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
+
 
 export function ContainerMonthSchedule({ idAgenda, idClinica, abertura, fechamento, nome, obs }) {
     const [handleSwitch, setHandleSwitch] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getStatus = async () => {
@@ -81,6 +82,14 @@ export function ContainerMonthSchedule({ idAgenda, idClinica, abertura, fechamen
               <div className="flex justify-between gap-4 w-full md:justify-start items-center">
                 <SwitchClinic state={handleSwitch} onChange={toggleSwitch} />
                 <label className="text-sm font-semibold" htmlFor="allDateSchedule">GERAR CONSULTAS</label>
+              </div>
+              <div className="pt-4">
+              <button className="flex items-center gap-3 p-1 px-2 bg-primary text-base font-medium text-white rounded-md"
+                    onClick={() => {
+                        console.log("Dados enviados:", idAgenda, nome, abertura, fechamento);
+                        navigate("/consultas-agenda", { state: { idAgenda, nome, abertura, fechamento } });
+                    }}
+                ><Eye /> Visualizar agenda</button>
               </div>
         </section>
     );

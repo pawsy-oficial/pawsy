@@ -75,7 +75,7 @@ function FormNewSchedule({ alterPage }) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl">
-            <div className="flex gap-2 items-center cursor-pointer" onClick={() => { alterPage(0) }}>
+            <div className="flex gap-2 items-center cursor-pointer" onClick={() => {location.reload()}}>
                 <CaretLeft />
                 <span>Voltar</span>
             </div>

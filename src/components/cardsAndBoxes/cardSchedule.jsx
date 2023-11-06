@@ -2,7 +2,7 @@ import { DotsThreeVertical } from "@phosphor-icons/react"
 import * as Popover from '@radix-ui/react-popover';
 import dayjs from "dayjs"
 
-export default function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName }) {
+export default function CardSchedule({ deleteButton, logoVet, clinicName, scheduleDate, scheduleHour, scheduleType, vetName, petName}) {
     return (
         <div className={`flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full ${!deleteButton && "cursor-pointer"} bg-[#f8fffc]`}>
             {
@@ -29,7 +29,7 @@ export default function CardSchedule({ deleteButton, logoVet, clinicName, schedu
                 )
             }
             <div className="w-16 h-16 rounded-full overflow-hidden">
-                <img src={logoVet} alt={`Logo ${clinicName}`} className="object-cover w-full h-full" />
+                <img src={`${import.meta.env.VITE_URL}/files/${logoVet}`} alt={`Logo ${clinicName}`} className="object-cover w-full h-full" />
             </div>
 
             <div className="flex flex-col gap-3">
@@ -42,43 +42,32 @@ export default function CardSchedule({ deleteButton, logoVet, clinicName, schedu
                     <span className="font-bold text-sm capitalize">{scheduleType}</span>
 
                     <p className="text-sm text-primary underline capitalize">{vetName}</p>
+                    <p className="text-sm text-zinc-500 font-light capitalize">{petName}</p>
                 </div>
             </div>
         </div>
     )
 }
 
-export function CardClinics({ pageControll }) {
+export function CardClinics({ clinica, onSelectClinic }) {
+    const { Id, Nome, Imagem, Endereco } = clinica;
+
     return (
         <button
-            className={`flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full bg-[#f8fffc]`}
-            onClick={() => pageControll({
-                newSchedule: true,
-                idClinic: 1
-            })}
+            className="flex relative gap-6 shadow-md rounded-lg p-3 sm:w-full bg-[#f8fffc]"
+            onClick={() => onSelectClinic(Id)}
         >
             <div
-                className="w-16 h-16 rounded-full overflow-hidden"
-            >
-                <img src="https://placehold.co/400" alt={`Logo`} className="object-cover w-full h-full" />
+                    className="min-w-[4rem] w-16 h-16 overflow-hidden rounded-full border border-primary"
+            >     
+                <img src={`${import.meta.env.VITE_URL}/files/${Imagem}`} alt={`Logo`} className="object-cover w-full h-full rounded-full" />
             </div>
-
             <div className="flex flex-col gap-3">
-                <strong
-                    className="text-base text-start"
-                >
-                    PET
-                </strong>
-                <div
-                    className="flex flex-col gap-2 items-start"
-                >
-                    <p
-                        className="text-sm"
-                    >
-                        Consultas disponíveis: <span className="text-primary" >80</span>
-                    </p>
+                <strong className="text-base text-start">{Nome}</strong>
+                <div className="flex flex-col gap-2 items-start">
+                    <p className="text-sm">{Endereco}</p>
                 </div>
             </div>
         </button>
-    )
+    );
 }
