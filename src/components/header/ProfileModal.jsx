@@ -194,6 +194,11 @@ const schemaNameUser = Yup.object({
     name: Yup.string().required("campo obrigatório").min(2, "minimo 2 caracteres").max(24, "limite atingido"),
     lastName: Yup.string().required("campo obrigatório").min(2, "minimo 2 caracteres").max(24, "limite atingido")
 })
+const schemaSecurity = Yup.object({
+    confirmNewPass: Yup.string().required("Campo obrigatório").oneOf([Yup.ref('newPass'), null], 'As senhas devem ser iguais').min(8, "Minimo 8 caracteres"),
+    newPass: Yup.string().required("Campo obrigatório").min(8, "Minimo 8 caracteres"),
+    currentPass: Yup.string().required("Campo obrigatório")
+})
 
 function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress, editAddress, token, edit, setEdit }) {
     const [select, setSelect] = useState("")
@@ -377,7 +382,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
             })
     }
     // end section image
-    
+
     return (
         <>
             <section
@@ -853,9 +858,12 @@ function InfoProfile({ info, userType, edit, setEdit, setShowModalAlert }) {
 }
 
 function SecurityProfile({ userType, setShowModalAlert }) {
-    const { register, handleSubmit } = useForm({
-        mode: "onSubmit"
+    const { register, handleSubmit, formState } = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(schemaSecurity)
     })
+
+    const { errors } = formState
 
     const onSubmit = (data) => {
         console.log(data);
@@ -889,6 +897,9 @@ function SecurityProfile({ userType, setShowModalAlert }) {
                                 className='border border-primary px-4 py-2 text-zinc-800 rounded'
                                 {...register("currentPass")}
                             />
+                            {
+                                errors.currentPass && <span className='text-red-error text-sm flex items-center gap-1'><XCircle size={18} />{errors.currentPass.message}</span>
+                            }
                         </label>
                     </li>
                     <li>
@@ -905,6 +916,10 @@ function SecurityProfile({ userType, setShowModalAlert }) {
                                 className='border border-primary px-4 py-2 text-zinc-800 rounded'
                                 {...register("newPass")}
                             />
+                            {
+                                errors.newPass && <span className='text-red-error text-sm flex items-center gap-1'><XCircle size={18} />{errors.newPass.message}</span>
+                            }
+
                         </label>
                     </li>
                     <li>
@@ -921,6 +936,9 @@ function SecurityProfile({ userType, setShowModalAlert }) {
                                 className='border border-primary px-4 py-2 text-zinc-800 rounded'
                                 {...register("confirmNewPass")}
                             />
+                            {
+                                errors.confirmNewPass && <span className='text-red-error text-sm flex items-center gap-1'><XCircle size={18} />{errors.confirmNewPass.message}</span>
+                            }
                         </label>
                     </li>
                 </ul>
