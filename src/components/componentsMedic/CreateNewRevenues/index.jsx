@@ -1,14 +1,37 @@
+import axios from "axios";
 import LogoWaterMark from "../../../img/waterMark.svg";
 import { CreateNewMedicines } from "../CreateNewMedicines";
 import { PlusCircle, XCircle } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup"
 
-export function CreateNewRevenues() {
+export function CreateNewRevenues({revenues, setRevenues}) {
   const [isComponentVisible, setComponentVisibility] = useState(false);
+  const [typeRevenue, setTypeRevenue] = useState([])
+  const [selectedOption, setSelectedOption] = useState("")
 
   const toggleComponent = () => {
     setComponentVisibility(!isComponentVisible);
   };
+
+  useEffect(()=>{
+    axios.get(`${import.meta.env.VITE_URL}/get-type-revenue`)
+    .then(result => {
+        console.log(result);
+        setTypeRevenue(result.data.results)
+    })
+    .catch(err => console.log(err))
+},[])
+
+  const schema = Yup.object({
+    selectedOption: Yup.string().required("Campo obrigatório")
+})
+  const { handleSubmit, register, formState } = useForm({
+    mode: "onSubmit",
+    resolver: yupResolver(schema)
+});
 
   return (
     <div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative">
@@ -21,19 +44,23 @@ export function CreateNewRevenues() {
         <div className="flex flex-row items-center gap-4">
           <p>Tipo da receita:</p>
           <select
-            name=""
-            id=""
-            className="w-[153px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
+              className="w-[200px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
+              {...register("selectedOption", {
+                  onChange: e => setSelectedOption(e.target.selectedIndex)
+              })}
           >
-            <option value="Simples">Simples</option>
-            <option value="Controle especial">Controle especial</option>
-            <option value="Azul">Azul</option>
-            <option value="Amarela">Amarela</option>
-            <option value="Branca de talidomida">Branca de talidomida</option>
-            <option value="Branca para retinóides">
-              Branca para retinóides
-            </option>
-          </select>
+              {
+                  typeRevenue.map(tp => {
+                      return(
+                          <option 
+                              value={tp.id_TipoReceita}
+                          >
+                              {tp.nm_TipoReceita}
+                          </option>
+                      )
+                  })
+              }
+            </select>
         </div>
 
         <div className="flex flex-row items-center gap-4 text-zinc-900">
@@ -67,6 +94,13 @@ export function CreateNewRevenues() {
               <XCircle size={20} />
               cancelar
             </button>
+            <button
+            className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
+            onClick={() => setRevenues([...revenues, <CreateNewRevenues revenues={revenues} setRevenues={setRevenues} />])}
+          >
+            <PlusCircle size={20} />
+            adicionar
+          </button>
           </div>
         ) : (
           <button
