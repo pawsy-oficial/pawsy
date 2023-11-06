@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import { Camera, CaretDown, CloudSlash, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
+import { Camera, CaretDown, CheckCircle, CloudSlash, Gear, Pen, SignOut, Trash, UserCircle, Warning, XCircle } from '@phosphor-icons/react';
 // import profilePerson from "../../img/profilePerson.jpeg"
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -228,6 +228,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
             case "security":
                 return <div>
                     <SecurityProfile
+                        info={info}
                         userType={userType}
                         setShowModalAlert={setShowModalAlert}
                     />
@@ -551,7 +552,7 @@ function ModalProfile({ info, userType, setShowModal, showModal, setEditAddress,
                         className='flex-1 py-8 pr-10 flex flex-col gap-10'
                     >
                         {
-                            userType == "clinica" ? <SecurityProfile userType={userType} setShowModalAlert={setShowModalAlert} /> : <SelectOption />
+                            userType == "clinica" ? <SecurityProfile info={info} userType={userType} setShowModalAlert={setShowModalAlert} /> : <SelectOption />
                         }
 
                     </article>
@@ -857,7 +858,10 @@ function InfoProfile({ info, userType, edit, setEdit, setShowModalAlert }) {
     )
 }
 
-function SecurityProfile({ userType, setShowModalAlert }) {
+function SecurityProfile({ info, userType, setShowModalAlert }) {
+    const [ msgError, setMsgError ] = useState("")
+    const [ showModalSuccess, setShowModalSuccess ] = useState(false)
+
     const { register, handleSubmit, formState } = useForm({
         mode: "onSubmit",
         resolver: yupResolver(schemaSecurity)
@@ -866,11 +870,49 @@ function SecurityProfile({ userType, setShowModalAlert }) {
     const { errors } = formState
 
     const onSubmit = (data) => {
+        data["id"] = info.idTutor
         console.log(data);
+        axios.put(`${import.meta.env.VITE_URL}/password?userType=${userType}`, data)
+        .then(res => {
+            setShowModalSuccess(true)
+        })
+        .catch(err => {
+            setMsgError(err.response.data.message)
+        
+        })
     }
 
     return (
         <>
+            {
+                showModalSuccess && ReactDOM.createPortal(
+                    <main
+                        className='fixed inset-0 bg-primary/40 backdrop-blur-sm flex justify-center items-center z-[900]'
+                    >
+                        <div
+                            className='bg-white rounded-md p-4 flex flex-col items-center max-w-lg gap-3'
+                        >
+                            <CheckCircle size={64} color='#22B77E' weight='bold' />
+                            <p
+                                className='text-zinc-600 leading-relaxed text-center'
+                            >
+                                Para confirmar a alteração da sua senha, precisamos encerrar a sua seção atual. Por favor, faça o login novamente com a sua nova senha.
+                            </p>
+
+                            <button 
+                                type="button"
+                                className='bg-red-error py-1 px-6 rounded-lg text-white font-bold'
+                                onClick={()=>{
+                                    Cookies.remove("jwtTokenClinic") ?? Cookies.remove("jwtTokenMedic") ?? Cookies.remove("jwtTokenTutor")
+                                    window.location.reload()
+                                }}
+                            >
+                                Sair
+                            </button>
+                        </div>
+                    </main>, document.body
+                )
+            }
             <form
                 onSubmit={handleSubmit(onSubmit)}
             >
@@ -879,7 +921,16 @@ function SecurityProfile({ userType, setShowModalAlert }) {
                 >
                     Trocar senha
                 </h3>
-
+                {
+                    msgError && (
+                        <span 
+                            className='text-red-error text-sm flex items-center gap-1'
+                        >
+                            <XCircle size={18} />
+                            {msgError}
+                        </span>
+                    )
+                }
                 <ul
                     className='flex flex-col gap-2'
                 >
