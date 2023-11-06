@@ -1,5 +1,5 @@
 import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 function ButtonSelect({ question = "", answare = "" }) {
 
@@ -8,7 +8,6 @@ function ButtonSelect({ question = "", answare = "" }) {
     return (
         <button
             onClick={()=>setActive(!active)}
-            onBlur={()=>setActive(false)}
             className="w-full border-b-2 py-6 flex flex-col gap-3"
         >
             <div
@@ -35,4 +34,4 @@ function ButtonSelect({ question = "", answare = "" }) {
     );
 }
 
-export default ButtonSelect;
+export default memo(ButtonSelect);
