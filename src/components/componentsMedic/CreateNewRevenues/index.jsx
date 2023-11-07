@@ -2,127 +2,167 @@ import axios from "axios";
 import LogoWaterMark from "../../../img/waterMark.svg";
 import { CreateNewMedicines } from "../CreateNewMedicines";
 import { PlusCircle, XCircle } from "@phosphor-icons/react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup"
+import dayjs from "dayjs";
 
-export function CreateNewRevenues({revenues, setRevenues}) {
-  const [isComponentVisible, setComponentVisibility] = useState(false);
-  const [typeRevenue, setTypeRevenue] = useState([])
-  const [selectedOption, setSelectedOption] = useState("")
+export function CreateNewRevenues() {
+	const [typeRevenue, setTypeRevenue] = useState([])
+	const [selectedOption, setSelectedOption] = useState("")
 
-  const toggleComponent = () => {
-    setComponentVisibility(!isComponentVisible);
-  };
+	useEffect(() => {
+		axios.get(`${import.meta.env.VITE_URL}/get-type-revenue`)
+			.then(result => {
+				console.log(result);
+				setTypeRevenue(result.data.results)
+			})
+			.catch(err => console.log(err))
+	}, [])
 
-  useEffect(()=>{
-    axios.get(`${import.meta.env.VITE_URL}/get-type-revenue`)
-    .then(result => {
-        console.log(result);
-        setTypeRevenue(result.data.results)
-    })
-    .catch(err => console.log(err))
-},[])
+	const schema = Yup.object().shape({
+		typeRevenues: Yup.string().oneOf(["1","2","3","4","5","6"]).required("Campo obrigatório"),
+		date: Yup.date().required("Campo obrigatório").typeError("Valor invalido"),
+		drug: Yup.array().of(
+			Yup.object().shape({
+				amount: Yup.number().required("Campo obrigatório").typeError("Deve ser um numero"),
+				concentration: Yup.number().required("Campo obrigatório").typeError("Deve ser um numero").positive("Deve ser maior que zero (0)"),
+				dosage: Yup.string().min(5, "Deve ter no minimo 5 caracteres").max(260, "Limite atingido (260 caracteres)").required("Campo obrigatório"),
+				drugName: Yup.string().min(3, "Deve ter no minimo 3 caracteres").required("Campo obrigatório"),
+				// route: Yup.string().required("Campo obrigatório"),
+				time: Yup.number().required("Campo obrigatório").positive("Deve ser maior que zero (0)")
+			})
+		)
+	})
 
-  const schema = Yup.object({
-    selectedOption: Yup.string().required("Campo obrigatório")
-})
-  const { handleSubmit, register, formState } = useForm({
-    mode: "onSubmit",
-    resolver: yupResolver(schema)
-});
+	const { handleSubmit, register, formState, control } = useForm({
+		mode: "onSubmit",
+		resolver: yupResolver(schema)
+	});
 
-  return (
-    <div className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative">
-      <img
-        src={LogoWaterMark}
-        alt="marca d'água PAWSY"
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      />
-      <div className="flex py-6 px-8 w-[593px] h-[110px] bg-[#F5FFFE] text-xs font-bold flex-col justify-between">
-        <div className="flex flex-row items-center gap-4">
-          <p>Tipo da receita:</p>
-          <select
-              className="w-[200px] flex items-center rounded-lg py-1 text-xs font-bold h-[25px] bg-white focus:outline-none"
-              {...register("selectedOption", {
-                  onChange: e => setSelectedOption(e.target.selectedIndex)
-              })}
-          >
-              {
-                  typeRevenue.map(tp => {
-                      return(
-                          <option 
-                              value={tp.id_TipoReceita}
-                          >
-                              {tp.nm_TipoReceita}
-                          </option>
-                      )
-                  })
-              }
-            </select>
-        </div>
+	const onSubmit = (data)=>{
+		console.log(data);
+	}
 
-        <div className="flex flex-row items-center gap-4 text-zinc-900">
-          <p>Data de validade:</p> <input type="date" placeholder="" />
-        </div>
-      </div>
+	const { errors } = formState
 
-      <section className="flex flex-col gap-6 py-8 z-10">
-        <CreateNewMedicines />
-      </section>
+	const { fields, append, remove } = useFieldArray({
+        control,
+        name: "drug",
+        shouldUnregister: true
+    });
 
-      {/* <div className="flex justify-center flex-col items-center gap-6">
-        {isComponentVisible && <CreateNewMedicines />}
-        <button
-          className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
-          onClick={toggleComponent}
-        >
-          <PlusCircle size={20} />
-          adicionar
-        </button>
-      </div> */}
+	return (
+		<form
+			onSubmit={handleSubmit(onSubmit)}	
+			className="w-[595px] mx-auto flex flex-col gap-8"
+		>
+			<main
+				className="min-h-[892px] flex flex-col max-h-fit bg-white border border-primary relative"
+			>
+			<img
+				src={LogoWaterMark}
+				alt="marca d'água PAWSY"
+				className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+				draggable={false}
+				style={{ userSelect: "none" }}
+			/>
+			<header
+				className="flex py-6 px-8 w-full bg-[#F5FFFE] text-xs font-bold flex-col gap-2"
+			>
+				<label
+					className="flex flex-row items-center gap-4"
+				>
+					<span>
+						Tipo da receita:
+					</span>
+					<select
+						className="w-fit border-secundary border-2 flex items-center rounded-lg py-1 px-3 text-sm bg-white focus:outline-none"
+						{
+							...register("typeRevenues", {
+								onChange: e => setSelectedOption(e.target.selectedIndex)
+							})
+						}
+					>
+						{
+							typeRevenue.map(tp => {
+								return (
+									<option
+										value={tp.id_TipoReceita}
+									>
+										{tp.nm_TipoReceita}
+									</option>
+								)
+							})
+						}
+					</select>
+				</label>
 
-      <div className="flex justify-center flex-col items-center gap-6">
-        {isComponentVisible ? (
-          <div className="flex justify-center flex-col items-center gap-6">
-            <CreateNewMedicines />
-            <button
-              className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-red-500 gap-3"
-              onClick={toggleComponent}
-            >
-              <XCircle size={20} />
-              cancelar
-            </button>
-            <button
-            className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
-            onClick={() => setRevenues([...revenues, <CreateNewRevenues revenues={revenues} setRevenues={setRevenues} />])}
-          >
-            <PlusCircle size={20} />
-            adicionar
-          </button>
-          </div>
-        ) : (
-          <button
-            className="flex z-10 w-fit items-center justify-center text-lg font-semibold cursor-pointer text-primary gap-3"
-            onClick={toggleComponent}
-          >
-            <PlusCircle size={20} />
-            adicionar
-          </button>
-        )}
-      </div>
+				<label 
+					className="flex flex-row items-center gap-4 text-zinc-900"
+				>
+					<span>Data de validade:</span> 
+					<input 
+						className="w-fit border-secundary border-2 flex items-center rounded-lg py-1 px-3 text-sm bg-white focus:outline-none"
+						type="date" 
+						min={dayjs().add(7, "day").format("YYYY-MM-DD")}
+						{...register("date")}
+					/>
+				</label>
+			</header>
 
-      <div className="w-44 h-[1px] my-20 mx-auto bg-black">
-        <div className="flex flex-col items-center">
-          <p className="text-xs">Drª Vanessa Santos</p>
-          <p className="text-[9px]">CRMV: 10.000</p>
-        </div>
-      </div>
+			<section 
+				className="flex flex-col gap-6 py-8 z-10"
+			>
+				{
+					fields.map((field, index ) => {
+						return(
+							<CreateNewMedicines
+								key={field.id}
+								remove={remove}
+								index={index}
+								register={register}
+							/>
+						)
+					})
+				}
+			</section>
 
-      <div className="w-[595px] h-8 bg-primary flex justify-center items-center absolute bottom-0">
-        <img src="src/img/logo.png" alt="" className="w-16" />
-      </div>
-    </div>
-  );
+			<button
+				type="button"
+				onClick={()=> append({ data: "" })}
+				className="flex gap-2 items-center w-fit mx-auto text-primary text-lg font-semibold font-lato z-50"
+			>
+				<PlusCircle size={24} />
+				<span>Adionar novo medicamento</span>
+			</button>
+
+			<div className="w-44 h-[1px] my-20 mx-auto bg-black">
+				<div className="flex flex-col items-center pt-3">
+					<span className="text-xs">Drª Vanessa Santos</span>
+					<span className="text-[9px]">CRMV: 10.000</span>
+				</div>
+			</div>
+
+			<footer
+				className="w-[595px] h-8 bg-primary flex justify-center items-center absolute bottom-0"
+			>
+				<img 
+					src="src/img/logo.png" 
+					alt="Logo da Pawsy" 
+					className="w-16" 
+				/>
+			</footer>
+			</main>
+
+			<button 
+				type="submit"
+				disabled={fields.length == 0 && true}
+				className={`bg-primary py-1 px-6 rounded-lg text-white font-bold font-lato ${fields.length == 0 && "disabled:opacity-25"}`}
+			>
+				Salvar
+			</button>
+		</form>
+	);
 }
