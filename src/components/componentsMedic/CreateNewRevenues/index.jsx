@@ -46,11 +46,19 @@ export function CreateNewRevenues({ idPet, idClinic, idMedic }) {
 	const onSubmit = (data)=>{
 		data["idPet"] = idPet
 		data["idClinic"] = idClinic
+		data["id_pet"] = idPet
+		data["id_clinic"] = idClinic
 		data["idMedic"] = idMedic
+		data["description"] = `Uma nova receita de medicamento foi adicionada ao plano de tratamento de seu pet, visando sua saúde e bem-estar.`
 		console.log(data);
 
 		axios.post(`${import.meta.env.VITE_URL}/revenues`, data)
-		.then(e => history.back())
+		.then(e => {
+			axios.post(`${import.meta.env.VITE_URL}/history`, data)
+			.then(f => {
+				history.back()
+			}).catch(err=>console.log(err))
+		})
 		.catch(err => console.log(err))
 
 
