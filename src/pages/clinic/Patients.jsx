@@ -12,7 +12,7 @@ export default function Patient() {
 	const [ patients, setPatients ] = useState([])
 	const [ namePatient, setNamePatient ] = useState("")
 	const [ gender, setGender ] = useState("")
-	const [see, setSee] = useState(false)
+	const [prev, setPrev] = useState(false)
 
 	let idClinic
 
@@ -37,7 +37,7 @@ export default function Patient() {
             .catch(err => {
                 console.log(err)
             })
-	},[open, see])
+	},[open, prev])
 
 	const filterPatientes = patients.filter(patient => (
 		(
@@ -119,8 +119,8 @@ export default function Patient() {
 											image={patient.imagePet} 
 											gender={patient.nm_sexo}
 											idClinic={idClinic}
-											see={see}
-											setSee={setSee}
+											setProv={setPrev}
+											prev={prev}
 										/>
 									)
 								})

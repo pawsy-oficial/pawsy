@@ -3,8 +3,15 @@ import { X } from '@phosphor-icons/react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { memo } from 'react';
+import { useEffect } from 'react';
 
-function PatientsCard({ pet, donosP, id, image, gender, idClinic, setSee, see }) {
+function PatientsCard({ pet, donosP, id, image, gender, idClinic, setProv, prev}) {
+	const [see, setSee] = useState(false)
+
+	useEffect(()=>{
+		setProv(!prev)
+	},[see])
+	
 	return (
 		<>
 			{
@@ -51,7 +58,6 @@ function PatientsCard({ pet, donosP, id, image, gender, idClinic, setSee, see })
 		</>
 	)
 }
-
 
 function ModalSeePatient({ See, setSee, donos, id, pet, image }) {
 	
