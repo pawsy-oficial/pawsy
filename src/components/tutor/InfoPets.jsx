@@ -30,22 +30,13 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                     }
                 })
                     .then(res => {
+                        console.log(res.data);
                         setLoading(false)
                         setMyPet(res.data.myPets)
                     })
                     .catch(err => console.log(err))
             }).catch(err => console.log(err))
     }, [stateEdit])
-
-    const [ historys, setHistorys ] = useState([])
-        // [
-        //     { nameClinic: "PetVet", description: "Consulta Veterinária - Acompanhamento de rotina", date: "2023-06-15" },
-        //     { nameClinic: "CliniCão", description: "Banho e Tosa - Serviço completo", date: "2023-06-20" },
-        //     { nameClinic: "VetSaúde", description: "Cirurgia - Castração de gatos", date: "2023-07-01" },
-        //     { nameClinic: "AnimalCare", description: "Consulta Veterinária - Atendimento emergencial", date: "2023-07-10" },
-        //     { nameClinic: "PetHappy", description: "Tratamento Odontológico - Limpeza de tártaro", date: "2023-07-20" }
-        // ]
-    // historys.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     useEffect(() => {
         setStateEdit(false)

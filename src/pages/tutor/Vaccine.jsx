@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 import useCheckedPet from "../../hook/useCheckedPet";
 import useTopToScreen from "../../hook/useTopToScreen"
 import { SelectPetsVaccine } from "../../components/inputsComponents/selects";
-import Cookies from "js-cookie";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -52,27 +51,21 @@ export default function VaccinePage() {
 						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
 					}
 				})
-					.then(e => setPets(e.data.myPets))
-					.catch(err => console.log(err))
-
-				axios.get(`${import.meta.env.VITE_URL}/get-vaccine/${idPetOption}`, {
-					headers: {
-						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
-					}
-				})
 					.then(e => {
-						setTableVaccine(e.data.results)
-						setLoading(false)
+						setPets(e.data.myPets)
+						axios.get(`${import.meta.env.VITE_URL}/get-vaccine/${idPetOption ?? e.data.myPets[0].pet.id_pawsy}`)
+							.then(e => {
+								setTableVaccine(e.data.results)
+								setLoading(false)
+							})
+							.catch(err => console.log(err))
+		
+						axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idTutor}/${idPetOption ?? e.data.myPets[0].pet.id_pawsy}`)
+							.then(e => setTableVermifuge(e.data.results))
+							.catch(err => console.log(err))
 					})
 					.catch(err => console.log(err))
 
-				axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idTutor}/${idPetOption}`, {
-					headers: {
-						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
-					}
-				})
-					.then(e => setTableVermifuge(e.data.results))
-					.catch(err => console.log(err))
 			}).catch(err => console.log(err))
 	}, [idPetOption])
 
