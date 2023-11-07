@@ -7,10 +7,12 @@ import { useState, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup"
 import dayjs from "dayjs";
+import { useNavigate } from "react-router";
 
 export function CreateNewRevenues({ idPet, idClinic, idMedic }) {
 	const [typeRevenue, setTypeRevenue] = useState([])
 	const [selectedOption, setSelectedOption] = useState("")
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		axios.get(`${import.meta.env.VITE_URL}/get-type-revenue`)
@@ -48,8 +50,10 @@ export function CreateNewRevenues({ idPet, idClinic, idMedic }) {
 		console.log(data);
 
 		axios.post(`${import.meta.env.VITE_URL}/revenues`, data)
-		.then(e => {console.log(e)})
+		.then(e => history.back())
 		.catch(err => console.log(err))
+
+
 	}
 
 	const { errors } = formState

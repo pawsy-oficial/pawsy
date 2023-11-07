@@ -4,12 +4,23 @@ import { CardRevenues } from "../../components/componentsMedic/CardRevenues";
 import { Revenues } from "../../components/componentsMedic/Revenues";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import dayjs from "dayjs";
 
 const RevenuesList = ({ state }) => {
 	const navigate = useNavigate();
 	const location = useLocation()
 
 	const { pet, clinic, medic } = location.state
+
+	const [ revenues, setRevenues ] = useState([])
+
+	useEffect(()=>{
+		axios.get(`${import.meta.env.VITE_URL}/get-all-revenues/${pet}`)
+		.then(e => setRevenues(e.data.result))
+		.catch(err => console.log(err))
+	},[])
 
 	return (
 		<>
@@ -30,41 +41,33 @@ const RevenuesList = ({ state }) => {
 			</div>
 
 			<div className="cursor-pointer">
-				<CardRevenues
-					emissao={"02/05/2023"}
-					validade={"02/10/2023"}
-					dr={"Vanessa Santos"}
-					state={state}
-				/>
-				<CardRevenues
-					emissao={"10/07/2023"}
-					validade={"02/10/2023"}
-					dr={"Vanessa Santos"}
-					state={state}
-				/>
-				<CardRevenues
-					emissao={"02/05/2023"}
-					validade={"02/10/2023"}
-					dr={"Vanessa Santos"}
-					state={state}
-				/>
-				<CardRevenues
-					emissao={"01/04/2023"}
-					validade={"02/04/2023"}
-					dr={"Vanessa Santos"}
-					state={state}
-				/>
+				{
+					revenues.length == 0
+					? <p className="text-zinc-500 font-lato text-sm mt-4">Pet não possui receitas</p>
+					: revenues.map(r => {
+						return(
+							<CardRevenues
+								emissao={dayjs(r.dt_emisao).format("DD/MM/YYYY")}
+								validade={dayjs(r.dt_validade).format("DD/MM/YYYY")}
+								dr={r.nm_medico}
+								state={state}
+								idRevenue={r.id_receita}
+							/>
+						)
+					})
+				}
+				
 			</div>
 		</>
 	);
 };
 
-const RevenueDetails = ({ revenueId }) => {
+const RevenueDetails = ({ revenueId, setState }) => {
 	return (
 		<div>
 			<a
 				onClick={() => {
-					revenueId(false);
+					setState(false);
 				}}
 				className="flex pl-28 items-center my-8 mx-auto text-sm cursor-pointer"
 			>
@@ -72,23 +75,32 @@ const RevenueDetails = ({ revenueId }) => {
 				Voltar
 			</a>
 
-			<Revenues />
+			<Revenues  idRevenue={revenueId} />
 		</div>
 	);
 };
 
 export default function MarketingRevenue() {
-	const [state, setState] = useState(false);
+	const [state, setState] = useState({
+		status: false,
+		id: null
+	});
 	return (
 		<>
 			<section className="flex-1">
 				<HeaderMedic />
 				<main className="max-w-5xl mx-auto">
-					{state ? (
-						<RevenueDetails revenueId={setState} />
-					) : (
-						<RevenuesList state={setState} />
-					)}
+					{
+						state.status
+						? (
+							<RevenueDetails 
+								revenueId={state.id} 
+								setState={setState}
+							/>
+						) : (
+							<RevenuesList state={setState} />
+						)
+					}
 				</main>
 			</section>
 		</>
