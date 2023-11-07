@@ -28,7 +28,7 @@ export function ModalPetExists(props) {
 					Authorization: `Bearer ${Cookies.get('jwtTokenClinic')}`
 				}
 			}).then(e => {
-				console.log(e.data.result);
+				// console.log(e.data.result);
 				setInfoPet(e.data.result)
 			})
 				.catch(err => console.log(err))

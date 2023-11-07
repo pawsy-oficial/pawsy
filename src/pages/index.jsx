@@ -87,7 +87,7 @@ export default function Home() {
 						<h2
 							className="font-baloo2 font-semibold text-6xl"
 						>
-							Gerencie a saúde do seu pet com a <span className="">pawsy</span>
+							Gerencie a saúde do seu pet com a <span className="font-baloo2 font-bold">pawsy</span>
 						</h2>
 						<sub
 							className="text-base font-lato"
@@ -147,7 +147,7 @@ export default function Home() {
 									Uma plataforma que conecta tutores e clínicas veterinárias em um só lugar
 								</h2>
 								<p
-									className="text-zinc-500 font-lato text-xs leading-relaxed"
+									className="text-zinc-500 font-lato text-sm leading-relaxed"
 								>
 									Com a Pawsy, monitorar o bem-estar dos seus pets e de seus clientes se torna uma experiência simples e ágil. Agende consultas, controle a carteira de vacinação, encontre clínicas próximas e ofereça um cuidado completo e dedicado aos pets.
 								</p>

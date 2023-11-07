@@ -4,14 +4,63 @@ import space from "../../img/element_space.svg"
 import Footer from "../../components/footer";
 import useTopToScreen from "../../hook/useTopToScreen";
 import romullo from "../../img/romullo.jpg"
+import pedro from "../../img/pedro.jpg"
+import nicole from "../../img/nicole.jpg"
+import luana from "../../img/luana.jpg"
+import fernando from "../../img/fernando.jpg"
 import BoxAbout from "../../components/cardsAndBoxes/boxAbout";
 
 const infoTeam = [
     {
+        name: "Fernando Fernandes",
+        role: "Desenvolvedor",
+        img: fernando,
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "hhttps://www.linkedin.com/in/fernando-fernandes-moraes-da-silva/",
+                github: "https://github.com/Fernando-Fernandes05"
+            }
+        ]
+    },
+    {
+        name: "Luana Alcantara",
+        role: "Documentação",
+        img: luana,
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "https://linkedin.com/in/romullomelo",
+            }
+        ]
+    },
+    {
+        name: "Nicole Nunes",
+        role: "Documentação",
+        img: nicole,
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "https://linkedin.com/in/romullomelo",
+            }
+        ]
+    },
+    {
+        name: "Pedro Daniel",
+        role: "Desenvolvedor & banco de dados",
+        img: pedro,
+        network: [
+            {
+                instagram: "https://www.instagram.com/pedrodanielbrunetto/",
+                linkedin: "https://www.linkedin.com/in/pedrodanielbrunetto/",
+                github: "https://github.com/pedroDanielBrunetto"
+            }
+        ]
+    },
+    {
         name: "Rômullo Melo",
         role: "Desenvolvedor & designer",
         img: romullo,
-        description: "Lorem ipsum odor amet, consectetuer adipiscing elit. Nulla metus aliquet. Eget proin arcu mi.",
         network: [
             {
                 instagram: "https://instagram.com/romu_013",
@@ -19,7 +68,7 @@ const infoTeam = [
                 github: "https://github.com/rom013"
             }
         ]
-    }
+    },
 ]
 
 export default function AboutUs() {
@@ -48,7 +97,7 @@ export default function AboutUs() {
             </div>
 
             <main
-                className="my-10 max-w-7xl mx-auto"
+                className="my-10 max-w-5xl mx-auto"
             >
                 <article
                     className="max-w-4xl flex flex-col gap-6 items-start"
@@ -91,13 +140,13 @@ export default function AboutUs() {
                     </div>
 
                     <section
-                        className="flex gap-5 justify-center flex-wrap mt-6"
+                        className="flex gap-16 max-w justify-center flex-wrap mt-6"
                     >
                         {
-                            infoTeam.map(i => {
+                            infoTeam.map((i, index) => {
                                 return (
                                     <BoxAbout
-                                        description={i.description}
+                                        key={index}
                                         name={i.name}
                                         image={i.img}
                                         network={i.network}

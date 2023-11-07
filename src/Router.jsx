@@ -60,6 +60,7 @@ import Features from "./pages/landinPage/features";
 import PageNotFound from "./pages/pageNotFound";
 import HomeSchedule from "./pages/clinic/HomeSchedule";
 import ProfileClinic from "./pages/profileClinic";
+import Terms from "./pages/landinPage/terms";
 
 export default function Router() {
 	return (
@@ -67,6 +68,7 @@ export default function Router() {
 			<Route path="/planos" element={<Plans />} />
 			<Route path="/sobre" element={<AboutUs />} />
 			<Route path="/recursos" element={<Features />} />
+			<Route path="/termos-privacidade" element={<Terms />} />
 
 			<Route
 				path="/tutor"

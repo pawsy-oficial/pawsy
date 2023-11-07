@@ -1,305 +1,27 @@
 import { NavbarTutor } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
-
 import { useEffect, useState } from "react";
-import { WarningVaccine } from "../../components/tutor/Alert";
-
 import { CardClinic } from "../../components/cardsAndBoxes/cardClinic";
-
 import dayjs from 'dayjs'
 import useCheckedPet from "../../hook/useCheckedPet";
+import useTopToScreen from "../../hook/useTopToScreen"
 import { SelectPetsVaccine } from "../../components/inputsComponents/selects";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function VaccinePage() {
-	const pets = ["Caramelo", "Oreo", "Flor", "Pantera"];
-	const [namePet, setNamePet] = useState("");
 	const [alterTable, setAlterTable] = useState(true)
-	const [myPets, setMyPets] = useState([])
-
-    const tokenTutor = Cookies.get('jwtTokenTutor')
-	const positioPet = pets.indexOf(namePet) == -1 ? 0 : pets.indexOf(namePet);
+	const [adsPosts, setAdsPosts] = useState([])
+	const [tableVaccine, setTableVaccine] = useState([])
+	const [tableVermifuge, setTableVermifuge] = useState([])
+	const [pets, setPets] = useState([])
+	const [idPetOption, setIdPetOption] = useState(null)
+	const [windowScreen, setWindowScreen] = useState({ width: null })
+	const [loading, setLoading] = useState(false)
 
 	useCheckedPet()
-
-	//Lista Vacinas
-	const table = [
-		[
-			//Caramelo (pets[0])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Oreo (pets[1])
-			[
-				{
-					vaccineName: "V8",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Flor (pets[2])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-		[
-			//Pantera (pets[3])
-			[
-				{
-					vaccineName: "Antirrábica",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2020-03-24",
-					returnVaccine: "2021-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2021-03-24",
-					returnVaccine: "2022-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-			[
-				{
-					vaccineName: "Viratec 10 CVL",
-					dateVaccine: "2022-03-24",
-					returnVaccine: "2023-03-24",
-					CRMV: "000-00",
-					vetAplication: "Vanessa Santos",
-				},
-			],
-		],
-	];
-
-	//Lista Vermes
-
-	const tableVermifugo = [
-		[
-			//caramelo
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Oreo
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Flor
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-		[
-			//Pantera
-			[
-				{
-					dateVermifugo: "2020-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2021-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2022-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-			[
-				{
-					dateVermifugo: "2023-02-12",
-					nameVermifugo: "Vermikill",
-				},
-			],
-		],
-	];
-
-	const [windowScreen, setWindowScreen] = useState({ width: null })
+	useTopToScreen()
 
 	useEffect(() => {
 		function handleResize() {
@@ -308,50 +30,80 @@ export default function VaccinePage() {
 		window.addEventListener("resize", handleResize)
 		handleResize()
 
-		return () => window.removeEventListener("resize", handleResize)
-	}, [])
-	
-	const [adsPosts, setAdsPosts] = useState([])
-	
-	useEffect(() => {
-        axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
-            headers: {
-                Authorization: `Bearer ${tokenTutor}`
-            }
-        }).then(res => {
-            axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`, {
-                headers: {
-                    Authorization: `Bearer ${tokenTutor}`
-                }
-            })
-                .then(res => {
-                    setMyPets(res.data.myPets);
-                    setNamePet(res.data.myPets[0].nm_pet)
-                })
-                .catch(err => console.log(err))
-        })
-            .catch(err => console.log(err))
-    }, [])
-
-	useEffect(() => {
 		axios.get(`${import.meta.env.VITE_URL}/getAllAds/all?filter=preview`)
 			.then(e => setAdsPosts(e.data.adsPreview))
 			.catch(err => console.log(err))
+
+		return () => window.removeEventListener("resize", handleResize)
 	}, [])
+
+	useEffect(() => {
+		setLoading(true)
+		axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
+			}
+		})
+			.then(result => {
+				let idTutor = result.data.storedIdTutor
+
+				axios.get(`${import.meta.env.VITE_URL}/get-all-pets/${idTutor}`, {
+					headers: {
+						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
+					}
+				})
+					.then(e => setPets(e.data.myPets))
+					.catch(err => console.log(err))
+
+				axios.get(`${import.meta.env.VITE_URL}/get-vaccine/${idPetOption}`, {
+					headers: {
+						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
+					}
+				})
+					.then(e => {
+						setTableVaccine(e.data.results)
+						setLoading(false)
+					})
+					.catch(err => console.log(err))
+
+				axios.get(`${import.meta.env.VITE_URL}/get-all-vermifuge/${idTutor}/${idPetOption}`, {
+					headers: {
+						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
+					}
+				})
+					.then(e => setTableVermifuge(e.data.results))
+					.catch(err => console.log(err))
+			}).catch(err => console.log(err))
+	}, [idPetOption])
 
 	return (
 		<main className="flex min-h-screen">
 			<NavbarTutor />
 			<section className="flex-1">
 				<Header userType="tutor" />
-				<main className="px-8 lg:pl-10 lg:pr-16 py-8 flex flex-col gap-5 w-screen md:w-[calc(100vw-256px-24px)] mx-auto">
+				<main className="px-2 sm:px-8 lg:pl-10 lg:pr-16 py-8 flex flex-col gap-5 w-screen md:w-[calc(100vw-256px-24px)] mx-auto">
 					<div className="flex gap-6 items-center">
-						<SelectPetsVaccine pets={myPets} setNamePet={setNamePet} name={namePet}/>
-
-						{positioPet == 1 && <WarningVaccine nameVaccine={"Viratec 10"} />}
+						<select
+							className="bg-[#F5FFFE] md:w-44 w-full capitalize cursor-pointer font-bold h-8 border border-primary rounded-lg px-3 outline-none focus:border-primary"
+							onChange={e => setIdPetOption(e.target.value)}
+						>
+							{
+								pets.map((pet, index) => {
+									return (
+										<option
+											key={index}
+											value={`${pet.pet.id_pawsy}`}
+											className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl"
+										>
+											{pet.pet.nm_pet}
+										</option>
+									);
+								})
+							}
+						</select>
 					</div>
 
-					<section className="flex flex-1 bg-white px-6 py-8 rounded-2xl">
+					<section className="flex flex-1 bg-white px-0 sm:px-6 py-8 rounded-2xl">
 						<div className="w-full flex justify-between gap-10">
 							<div className="md:flex-1 w-full max-w-3xl">
 								<h3 className="font-semibold text-2xl mb-3 text-center font-lato hidden md:block">Vacinas</h3>
@@ -403,23 +155,19 @@ export default function VaccinePage() {
 															</thead>
 															<tbody className="second line-colors border-0">
 																{
-																	table[positioPet].map((e, index) => {
+																	loading 
+																	? <p>Carregando...</p>
+																	: tableVaccine.map((e, index) => {
 																		return (
-																			<tr key={index} className="border-none">
-																				{
-																					e.map((f) => {
-
-																						return (
-																							<>
-																								<td className="border-none rounded-l-full">{f.vaccineName}</td>
-																								<td className="border-none">{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
-																								<td className="border-none">{f.returnVaccine}</td>
-																								<td className="border-none rounded-r-full">{f.vetAplication}</td>
-																								<td className="hidden">{f.CRMV}</td>
-																							</>
-																						);
-																					})
-																				}
+																			<tr
+																				key={index}
+																				className="border-none"
+																				id={`id_${e.idAplication}_application`}
+																			>
+																				<td className="border-none rounded-l-full capitalize text-sm">{e.nameVaccine}</td>
+																				<td className="border-none text-sm">{dayjs(e.dateAplication).format('DD/MM/YYYY')}</td>
+																				<td className="border-none text-sm">{dayjs(e.dateReturn).format('DD/MM/YYYY')}</td>
+																				<td className="border-none capitalize text-sm rounded-r-full">{e.nameMedic}</td>
 																			</tr>
 																		);
 																	})
@@ -430,31 +178,28 @@ export default function VaccinePage() {
 													: (
 														<table className="cursor-default">
 															<thead>
-																<tr className=" border-b border-black">
-																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																<tr className="">
+																	<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-l-full">
 																		Data
 																	</th>
-																	<th className=" bg-primary text-white text-sm w-40 p-2">
+																	<th className=" bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
 																		Nome
 																	</th>
 																</tr>
 															</thead>
-															<tbody className="second">
-																{tableVermifugo[positioPet].map((e) => {
-																	return (
-																		<tr className="border-b border-black">
-																			{e.map((f) => {
-
-																				return (
-																					<>
-																						<td>{dayjs(f.dateVermifugo).format('DD/MM/YYYY')}</td>
-																						<td>{f.nameVermifugo}</td>
-																					</>
-																				);
-																			})}
-																		</tr>
-																	);
-																})}
+															<tbody className="second line-colors">
+																{
+																	loading
+																	? <p>Carregando...</p>
+																	: tableVermifuge.map((e) => {
+																		return (
+																			<tr className="">
+																				<td className="border-none rounded-l-full">{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}</td>
+																				<td className="border-none rounded-r-full">{e.nm_vermifugo}</td>
+																			</tr>
+																		);
+																	})
+																}
 															</tbody>
 														</table>
 													)
@@ -462,7 +207,6 @@ export default function VaccinePage() {
 										</section>
 									)
 								}
-
 								<table className="w-full cursor-default hidden lg:block border-none rounded-lg rounded-r-2xl">
 									<thead className="border-none">
 										<tr className="border-b border-black border-none">
@@ -485,23 +229,20 @@ export default function VaccinePage() {
 									</thead>
 									<tbody className="second line-colors">
 										{
-											table[positioPet].map((e, index) => {
+											loading
+											? <p>Carregando...</p>
+											: tableVaccine.map((e, index) => {
 												return (
-													<tr key={index} className="border-none">
-														{
-															e.map((f) => {
-
-																return (
-																	<>
-																		<td className="border-none rounded-l-full">{f.vaccineName}</td>
-																		<td className="border-none">{dayjs(f.dateVaccine).format('DD/MM/YYYY')}</td>
-																		<td className="border-none">{dayjs(f.returnVaccine).format('DD/MM/YYYY')}</td>
-																		<td className="border-none">{f.vetAplication}</td>
-																		<td className="border-none rounded-r-full">{f.CRMV}</td>
-																	</>
-																);
-															})
-														}
+													<tr
+														key={index}
+														className="border-none"
+														id={`id_${e.idAplication}_application`}
+													>
+														<td className="border-none rounded-l-full capitalize">{e.nameVaccine}</td>
+														<td className="border-none">{dayjs(e.dateAplication).format('DD/MM/YYYY')}</td>
+														<td className="border-none">{dayjs(e.dateReturn).format('DD/MM/YYYY')}</td>
+														<td className="border-none capitalize">{e.nameMedic}</td>
+														<td className="border-none rounded-r-full">{e.crmv}</td>
 													</tr>
 												);
 											})
@@ -523,21 +264,18 @@ export default function VaccinePage() {
 										</tr>
 									</thead>
 									<tbody className="second line-colors">
-										{tableVermifugo[positioPet].map((e) => {
-											return (
-												<tr className="">
-													{e.map((f) => {
-
-														return (
-															<>
-																<td className="border-none rounded-l-full">{dayjs(f.dateVermifugo).format("DD/MM/YYYY")}</td>
-																<td className="border-none rounded-r-full">{f.nameVermifugo}</td>
-															</>
-														);
-													})}
-												</tr>
-											);
-										})}
+										{
+											loading
+											? <p>Carregando...</p>
+											: tableVermifuge.map((e) => {
+												return (
+													<tr className="">
+														<td className="border-none rounded-l-full">{dayjs(e.dt_aplicacao).format("DD/MM/YYYY")}</td>
+														<td className="border-none rounded-r-full">{e.nm_vermifugo}</td>
+													</tr>
+												);
+											})
+										}
 									</tbody>
 								</table>
 							</div>
@@ -551,25 +289,25 @@ export default function VaccinePage() {
 						<section className="lg:flex gap-5 w-full lg:overflow-auto py-3 grid grid-cols-2">
 							{
 								adsPosts.length != 0
-								? (
-									adsPosts.map(ad => {
-										return(
-											<CardClinic 
-												description={ad.description}
-												image={ad.urlImageClinic}
-												idClinic={ad.idClinic}
-												title={ad.title}
-												nameClinic={ad.nameClinic}
-											/>
-										)
-									})
-								) : (
-									<p
-										className="w-full text-center text-zinc-400 font-lato text-sm"
-									>
-										Não há nenhum anúncio
-									</p>
-								)
+									? (
+										adsPosts.map(ad => {
+											return (
+												<CardClinic
+													description={ad.description}
+													image={ad.urlImageClinic}
+													idClinic={ad.idClinic}
+													title={ad.title}
+													nameClinic={ad.nameClinic}
+												/>
+											)
+										})
+									) : (
+										<p
+											className="w-full text-center text-zinc-400 font-lato text-sm"
+										>
+											Não há nenhum anúncio
+										</p>
+									)
 							}
 						</section>
 
