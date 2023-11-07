@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup"
 import dayjs from "dayjs";
 
-export function CreateNewRevenues() {
+export function CreateNewRevenues({ idPet, idClinic, idMedic }) {
 	const [typeRevenue, setTypeRevenue] = useState([])
 	const [selectedOption, setSelectedOption] = useState("")
 
@@ -42,7 +42,14 @@ export function CreateNewRevenues() {
 	});
 
 	const onSubmit = (data)=>{
+		data["idPet"] = idPet
+		data["idClinic"] = idClinic
+		data["idMedic"] = idMedic
 		console.log(data);
+
+		axios.post(`${import.meta.env.VITE_URL}/revenues`, data)
+		.then(e => {console.log(e)})
+		.catch(err => console.log(err))
 	}
 
 	const { errors } = formState

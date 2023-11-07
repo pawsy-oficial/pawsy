@@ -1,11 +1,18 @@
 import { HeaderMedic } from "../../components/HeaderMedic";
 import { CaretLeft } from "@phosphor-icons/react";
 import { CreateNewRevenues } from "../../components/componentsMedic/CreateNewRevenues";
+import { useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useLocation } from "react-router";
 
 export default function NewRevenues() {
 	function warinngDontSavePage(){
 		confirm("Atenção: se você voltar para a página anterior, você pode perder todas as alterações que fez, pois elas não foram salvas. Tem certeza que deseja voltar? ") && history.back()
 	}
+
+	const location = useLocation()
+	const { pet, clinic, medic } = location.state
 
 	return (
 		<>
@@ -25,7 +32,11 @@ export default function NewRevenues() {
 			<main 
 				className="max-h-full mb-16"
 			>
-				<CreateNewRevenues/>
+				<CreateNewRevenues
+					idPet={pet}
+					idClinic={clinic}
+					idMedic={medic}
+				/>
 			</main>
 		</>
 	);

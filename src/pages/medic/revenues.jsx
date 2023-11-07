@@ -3,10 +3,14 @@ import { CaretLeft } from "@phosphor-icons/react";
 import { CardRevenues } from "../../components/componentsMedic/CardRevenues";
 import { Revenues } from "../../components/componentsMedic/Revenues";
 import { HeaderMedic } from "../../components/HeaderMedic";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const RevenuesList = ({ state }) => {
 	const navigate = useNavigate();
+	const location = useLocation()
+
+	const { pet, clinic, medic } = location.state
+
 	return (
 		<>
 			<div className="flex flex-col gap-7">
@@ -18,8 +22,8 @@ const RevenuesList = ({ state }) => {
 					Voltar
 				</a>
 				<button
-					onClick={() => navigate("/nova-receita")}
-					className="rounded-lg bg-[#22937E] text-white w-52 h-8 mb-3"
+					onClick={() => navigate("/nova-receita", { state: { pet, clinic, medic } })}
+					className="rounded-lg bg-[#22937E] text-white px-6 py-1 w-fit text-base"
 				>
 					Prescrever nova receita
 				</button>

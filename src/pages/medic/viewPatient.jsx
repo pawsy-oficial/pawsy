@@ -17,6 +17,7 @@ export default function ViewPatient() {
 	const location = useLocation()
 	const { pet, medic } = location.state
 
+	
 
 	const [infoTutor, setInfoTutor] = useState({
 		image: "",
@@ -151,7 +152,7 @@ export default function ViewPatient() {
 
 							<div className="flex flex-col items-end gap-4">
 								<button
-									onClick={() => navigate("/receitas-medicas")}
+									onClick={() => navigate("/receitas-medicas", { state: { pet: pet.idPet, clinic: pet.idClinic, medic } })}
 									className="rounded-md px-6 text-center text-white bg-[#22937E] p-1"
 								>
 									Receitas médicas
