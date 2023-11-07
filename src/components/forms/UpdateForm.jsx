@@ -256,12 +256,14 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
     const onSubmit = (data) => {
         const currentTime = new Date().getTime()
         let nameFile
-        (selectImage) ? nameFile = `${currentTime}_pawsy_${selectImage.name}` : nameFile = infoClinic.storedImg
+        (selectImage) 
+            ? nameFile = `${currentTime}_pawsy_${selectImage.name}` 
+            : nameFile = infoClinic.storedImg
 
         data.image = nameFile
         data.numberTell = data.numberTell.replace(/[^\d]+/g, '')
 
-        // console.log(data.image);
+        // console.log(data.image, nameFile);
 
         const streetFormat = address.street.replace(/ /g, "%20")
         const cityFormat = address.city.replace(/ /g, "%20")
@@ -275,20 +277,19 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
 
                 const x = { ...data, ...address, latitude: latitude, longitude: longitude, idClinic: infoClinic.storedIdClinica }
 
-                if (clickSave) {
-                    console.log(x);
+                if (clickSave) {                    
                     axios.post(`${import.meta.env.VITE_URL}/update-clinic-profile`, x)
                         .then(res => {
                             selectImage
-                                ? uploadImage(nameFile, selectImage)
+                                ? uploadImage(data.image, selectImage)
                                 : (
                                     setSaveLoading(false),
                                     actionStateEdit(false)
                                 )
                         })
                         .catch(err => {
+                            console.log(err);
                             setSaveLoading(false)
-                            // console.log(err);
                         })
                 }
                 else setSaveLoading(false)
@@ -296,7 +297,7 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
             .catch(err => console.log(err))
     }
 
-    function uploadImage() {
+    function uploadImage(nameFile, selectImage) {
         let form = new FormData();
         form.append("name", nameFile);
         form.append('file', selectImage, selectImage.name);
@@ -310,6 +311,7 @@ function UpdateFormClinic({ infoClinic, actionStateEdit }) {
             actionStateEdit(false)
         }).catch(err => console.log(err))
     }
+
 
     return (
         <form
