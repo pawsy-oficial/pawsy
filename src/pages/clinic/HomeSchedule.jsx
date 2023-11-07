@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ContainerSchedule } from "../../components/componentsClinic/containerSchedule/ContainerSchedule";
-import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { NavbarClinic } from "../../components/Navbar";
 import { Header } from "../../components/header/Header";
@@ -45,8 +44,8 @@ export default function HomeSchedule({ alterPage }) {
 
   useEffect(() => {
     const grouped = consultas.reduce((acc, consulta) => {
-      const dia = dayjs(consulta.dataConsulta).format("MM/DD/YYYY");
-
+      const dia = consulta.dataConsulta;
+      console.log(dia)
       if (!acc[dia]) {
         acc[dia] = [];
       }
@@ -64,7 +63,7 @@ export default function HomeSchedule({ alterPage }) {
         <NavbarClinic page={2} />
         <section className="flex-1">
           <Header userType={"clinica"} />
-          <main className="pl-10 pr-16 py-8 flex gap-5">
+          <main className="pl-10 pr-16 py-8 flex gap-5 justify-between">
             <section className="mb-6">
               <button
                 onClick={() => {

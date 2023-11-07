@@ -429,30 +429,24 @@ function CreateNewScheduleModal({ clinicId, scheduleDate, scheduleHour, schedule
                                       >
                                           Agendar para:
                                       </span>
-                                      {
-                                      pets.map((petItem) => (
-                                        <div key={petItem.id_pawsy} className="flex flex-col items-center">
-                                          <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-secundary">
+                                      {pets.map((infoPet, index) => (
+                                        <label
+                                          className="label_select flex gap-2 items-center cursor-pointer hover:bg-primary/5 transition-all duration-700 p-1 rounded"
+                                          key={index}
+                                          onClick={() => setSelectedPet(infoPet.pet.id_pawsy)}
+                                        >
+                                          <input type="radio" name="myPets" id="" className="radio hidden" />
+                                          <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
                                             <img
-                                              src={`${import.meta.env.VITE_URL}/files/${petItem.url_img}`}
-                                              alt=""
-                                              className="h-full w-full object-cover"
+                                              src={`${import.meta.env.VITE_URL}/files/${infoPet.pet.url_img}`}
+                                              alt={infoPet.pet.nm_pet}
+                                              className="object-cover w-full h-full"
                                               draggable={false}
                                             />
                                           </div>
-                                          <select
-                                      className="px-2 mt-2 md:px-6 border border-primary rounded bg-[#F5FFFE] focus:border-2 active:outline-none focus-visible:outline-none capitalize"
-                                      onChange={(e) => {
-                                        console.log('Selected Pet ID:', e.target.value);
-                                        setSelectedPet(e.target.value);
-                                      }}
-                                    >
-                                            <option value=""></option>
-                                            <option value={petItem.id_pawsy}>{petItem.nm_pet}</option>
-                                          </select>
-                                        </div>
-                                      ))
-                                    }                                      
+                                          <span className="text-lg  capitalize">{infoPet.pet.nm_pet}</span>
+                                        </label>
+                                      ))}                                      
                                   </div>
 
                                   {successMessage && <div className="text-green-500">{successMessage}</div>}
@@ -487,4 +481,5 @@ function CreateNewScheduleModal({ clinicId, scheduleDate, scheduleHour, schedule
           }
       </>
   )
-}
+};
+

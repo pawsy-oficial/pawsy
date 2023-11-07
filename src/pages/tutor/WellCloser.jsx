@@ -84,7 +84,7 @@ export default function WellBeing() {
       .then((res) => {
         axios
           .get(
-            `${import.meta.env.VITE_URL}/get-all-pets/${res.data.storedIdTutor}`,
+            `${import.meta.env.VITE_URL}/get-pets-tutor/${res.data.storedIdTutor}`,
             {
               headers: {
                 Authorization: `Bearer ${tokenTutor}`,
@@ -92,10 +92,10 @@ export default function WellBeing() {
             }
           )
           .then((res) => {
-            setMyPets(res.data.myPets);
-            if (res.data.myPets.length > 0) {
-              setNamePet(res.data.myPets[0].nm_pet);
-              getWellbeingLevel(res.data.myPets[0].id_pawsy);
+            setMyPets(res.data); 
+            if (res.data.length > 0) {
+              setNamePet(res.data[0].nmPet);
+              getWellbeingLevel(res.data[0].idPet);
             }
           })
           .catch((err) => console.log(err));
@@ -119,7 +119,10 @@ export default function WellBeing() {
             <div className="flex justify-center items-center pb-8">
               <div className="inline-block">
                 <div className="pie-wrapper">
-                  <div className="arc" style={{ rotate: `${statusValue.angle}deg` }}></div>
+                  <div
+                    className="arc"
+                    style={{ rotate: `${statusValue.angle}deg` }}
+                  ></div>
                   <span
                     className={`score text-zinc-800 font-bold text-4xl ${
                       statusValue.angle < 90 && "!text-red-500"
@@ -147,7 +150,12 @@ export default function WellBeing() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-center gap-5 my-8 mx-auto">
-              <Container title={"Vacina"} last={"antirrábica - 12/12/2022"} next={"V10 - 06/2023"} alert={false} />
+              <Container
+                title={"Vacina"}
+                last={"antirrábica - 12/12/2022"}
+                next={"V10 - 06/2023"}
+                alert={false}
+              />
               <Container title={"Consulta"} last={"12/12/2022"} next={"não agendada"} alert={true} />
               <Container title={"Vermifugação"} last={"08/01/2023"} next={"Vermifugação em atraso"} alert={true} />
             </div>
@@ -180,13 +188,13 @@ function Container({ title, last, next, alert }) {
 
 function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
   return (
-    <Select.Root 
+    <Select.Root
       value={name}
       onValueChange={(newValue) => {
         setNamePet(newValue);
-        const selectedPet = pets.find((pet) => pet.nm_pet === newValue);
+        const selectedPet = pets.find((pet) => pet.nmPet === newValue);
         if (selectedPet) {
-          getWellbeingLevel(selectedPet.id_pawsy);
+          getWellbeingLevel(selectedPet.idPet);
         }
       }}
     >
@@ -194,10 +202,7 @@ function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
         className="lg:min-w-[220px] w-80 flex items-center justify-between rounded px-6 py-2 text-2xl font-semibold leading-none h-8 gap-1 bg-white focus:outline-none"
         aria-label="pet"
       >
-        <Select.Value 
-          className="font-sora" 
-          aria-label={name}
-        >
+        <Select.Value className="font-sora" aria-label={name}>
           {name}
         </Select.Value>
         <CaretDown weight="fill" />
@@ -206,23 +211,15 @@ function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
         <Select.Content className="z-50 overflow-hidden bg-white rounded-md">
           <Select.Viewport className="px-3 py-8">
             <Select.Group>
-              <Select.Label className="text-xs text-gray-500 mb-6">
-                Meus pets
-              </Select.Label>
-              {
-                pets.map((pet, index) => {
-                  return (
-                    <Select.Item
-                      value={pet.nm_pet}
-                      className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl capitalize"
-                    >
-                      <Select.ItemText>
-                        {pet.nm_pet}
-                      </Select.ItemText>
-                    </Select.Item>
-                  );
-                })
-              }
+              <Select.Label className="text-xs text-gray-500 mb-6">Meus pets</Select.Label>
+              {pets.map((pet) => (
+                <Select.Item
+                  value={pet.nmPet}
+                  className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl capitalize"
+                >
+                  <Select.ItemText>{pet.nmPet}</Select.ItemText>
+                </Select.Item>
+              ))}
             </Select.Group>
           </Select.Viewport>
         </Select.Content>
