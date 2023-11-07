@@ -311,7 +311,6 @@ export default function VaccinePage() {
 		return () => window.removeEventListener("resize", handleResize)
 	}, [])
 	
-	const [alterTable, setAlterTable] = useState(true)
 	const [adsPosts, setAdsPosts] = useState([])
 	
 	useEffect(() => {

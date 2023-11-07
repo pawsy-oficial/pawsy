@@ -156,11 +156,9 @@ function ProfileModal({ userType }) {
                                 <span>Configurações</span>
                             </li> */}
                             <li
-                                className='flex gap-3 items-center px-3 py-1 cursor-pointer hover:bg-primary/10 transition-all'
-                                onClick={handleButtonClickSignOut}
+                                className='flex gap-3 items-center cursor-pointer hover:bg-primary/10 transition-all'
                             >
-                                <SignOut size={24} color="#22B77E" />
-                                <span>Sair</span>
+                                <ButtonSignOut/>
                             </li>
                         </ul>
                         <Popover.Arrow className='fill-white' />
