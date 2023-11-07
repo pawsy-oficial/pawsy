@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import FormsAddresProfile from '../forms/FormsAddres';
 import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
+import ButtonSignOut from '../buttons/ButtonSignOut';
 
 function ProfileModal({ userType }) {
     const [showModal, setShowModal] = useState({

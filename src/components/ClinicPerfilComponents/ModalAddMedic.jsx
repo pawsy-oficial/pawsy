@@ -103,22 +103,6 @@ function ModalAddMedic(props) {
 							}
 						</div>
 						<div className="flex ga flex-col gap-1">
-							{/* <label className="text-base font-normal flex flex-col gap-3">
-								<span
-									className='pl-4 font-lato font-semibold text-base'
-								>
-									Número de identidade Pawsy
-								</span>
-								<input
-									type="text"
-									name="id"
-									className="border-b-2 w-64 focus:border-b-primary transition-colors pl-4 text-sm"
-									placeholder="ex.: #0000"
-									value={medicDetails.id}
-									onChange={handleChange}
-								/>
-							</label>
-							<small className='text-zinc-500 pl-4 w-full text-center'>ou</small> */}
 							<label className="text-base font-normal flex flex-col gap-3">
 								<span
 									className='pl-4 font-lato font-semibold text-base'

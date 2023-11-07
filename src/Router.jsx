@@ -11,6 +11,7 @@ import Schedule from "./pages/clinic/Schedule";
 import Marketing from "./pages/clinic/Marketing";
 import Patient from "./pages/clinic/Patients";
 import { lazy, Suspense } from "react";
+import NewSchedule from "./pages/tutor/ListConsultations";
 
 // import Tutor from "./pages/tutor/Tutor"
 // import VaccinePage from "./pages/tutor/Vaccine"
@@ -57,6 +58,7 @@ import Plans from "./pages/landinPage/plans";
 import AboutUs from "./pages/landinPage/aboutUs";
 import Features from "./pages/landinPage/features";
 import PageNotFound from "./pages/pageNotFound";
+import HomeSchedule from "./pages/clinic/HomeSchedule";
 import ProfileClinic from "./pages/profileClinic";
 
 export default function Router() {
@@ -114,6 +116,14 @@ export default function Router() {
 					</PrivateRoute>
 				}
 			/>
+      <Route
+        path="/consultas-disponiveis"
+        element={
+          <PrivateRoute role="Tutor" element={<NewSchedule />}>
+            <NewSchedule />
+          </PrivateRoute>
+        }
+      />
 			<Route
 				path="/resultado-pesquisa"
 				element={
@@ -245,6 +255,14 @@ export default function Router() {
 					</PrivateRoute>
 				}
 			/>
+      <Route
+        path="/consultas-agenda"
+        element={
+          <PrivateRoute role="Clinica" element={<HomeSchedule />}>
+            <HomeSchedule />
+          </PrivateRoute>
+        }
+      />
 			<Route
 				path="/marketing"
 				element={

@@ -1,87 +1,98 @@
-import { Pencil, PlusCircle } from '@phosphor-icons/react'
+import { Eye, Pencil, PlusCircle } from '@phosphor-icons/react'
 import React, { useEffect, useState } from 'react'
+import { SwitchClinic } from '../../inputsComponents'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-export function ContainerSchedule({ date, appointments, alterPage }) {
-    return (
-        <div 
-            className="flex flex-col gap-6 mt-6"
-            onClick={()=>{alterPage(3)}}
-        >
-            <span className="text-2xl">{date}</span>
-            <div className="flex gap-4 flex-col">
-                {
-                    appointments.map(appointment => {
-                        return(
-                            <div className={`bg-white w-full cursor-pointer hover:bg-secundary/10 transition-all duration-500 flex justify-between px-5 py-4 ${false && "line-through text-zinc-400"}`}>
-                                <div className="flex gap-10">
-                                    <p>{appointment.hours}</p>
-                                    <p>{appointment.tutorName}</p>
-                                </div>
-                                <p>Dr. {appointment.veterinaryName}</p>
-                            </div>
-                        )
-                    })
-                }
+export function ContainerSchedule({ dia, consultas, alterPage }) {
+  return (
+    <div className="flex flex-col gap-6 mt-6 w-[864px]">
+      <span className="text-2xl">{dia}</span>
+      <div className="flex gap-4 flex-col">
+        {consultas.map((consulta) => (
+          <div
+            key={consulta.id}
+            className={`bg-white w-full cursor-pointer hover:bg-secundary/10 transition-all duration-500 flex justify-between px-5 py-4 ${false && "line-through text-zinc-400"}`}
+          >
+            <div className="flex gap-10">
+              <p>{dia}</p>
+              <p>{consulta.horaConsulta}</p>
+              <p>{consulta.nomeTutor}</p>
             </div>
-        </div>
-    )
+            <p>Dr. {consulta.nomeMedico}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export function ContainerMonthSchedule({month}) {
-    const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-    const date = new Date()
-    const currentMonth = date.getMonth()
-    const indexCurrentMonth = months.indexOf(month)
 
-    const [activeContainer, setActiveContainer] = useState(false)
-    const [activeEdit, setActiveEdit] = useState(false)
+export function ContainerMonthSchedule({ idAgenda, idClinica, abertura, fechamento, nome, obs }) {
+    const [handleSwitch, setHandleSwitch] = useState(false);
 
-    useEffect(()=>{
-        if(currentMonth == indexCurrentMonth){
-            setActiveContainer(true)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const getStatus = async () => {
+            const jwtTokenClinic = Cookies.get('jwtTokenClinic');
+            try {
+                axios.get(`${import.meta.env.VITE_URL}/status-schedule/${idAgenda}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtTokenClinic
+                    }
+                }).then((response) => {
+                    const isAgendaAtiva = response.data;
+                    if (isAgendaAtiva) {
+                        setHandleSwitch(true);
+                    }
+                }).catch(err => console.log(err));
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getStatus();
+    }, []);
+
+    const toggleSwitch = async () => {
+        if (!handleSwitch) {
+            setHandleSwitch(true);
+            const jwtTokenClinic = Cookies.get('jwtTokenClinic');
+            try {
+                await axios.post(`${import.meta.env.VITE_URL}/gerar-consultas`, { idAgenda }, {
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtTokenClinic
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         }
-        if(indexCurrentMonth > currentMonth){
-            setActiveEdit(true)
-        }
-    },[])
+    };
 
     return (
-        <button 
-            className={`relative p-6 rounded-lg border border-zinc-400 bg-white h-28 font-lato flex flex-col justify-between gap-2 cursor-pointer ${activeContainer ? "!border-primary border-2" : ""}`}
-        >
-            {
-                activeContainer && (<Pencil color='#000' className='absolute right-6 top-6'/>)
-            }
-
-            <h3 className="text-2xl">{month}</h3>
-            <div className="flex gap-4 items-center">
-                {
-                    activeEdit 
-                    ? (
-                        <div className='flex gap-2 items-center'>
-                            <PlusCircle color='#22B77E' size={20} weight='bold'/>
-                            <span className='text-primary'>Criar agenda</span>
-                        </div>
-                    ) 
-                    : (
-                        <>
-                            <p className="font-bold text-base">
-                                Período(s):
-                            </p>
-                            <div className="flex gap-2 font-medium text-sm text-zinc-500">
-                                <span>
-                                    16-24
-                                </span>
-                                <span>
-                                    26-30
-                                </span>
-                            </div>
-                        </>
-                    )
-                }
-            </div>
-        </button>
-    )
+        <section className="relative p-6 rounded-lg border border-zinc-400 bg-white font-lato flex flex-col justify-between gap-2">
+             <h1 className="font-bold text-zinc-500 text-2xl hover:text-primary">{nome}</h1>
+             <div className="flex gap-3">
+                  <p className="text-zinc-500">{abertura}  até  {fechamento}</p>
+              </div>
+              <p className="text-zinc-500 text-sm">{obs}</p>
+              <div className="flex justify-between gap-4 w-full md:justify-start items-center">
+                <SwitchClinic state={handleSwitch} onChange={toggleSwitch} />
+                <label className="text-sm font-semibold" htmlFor="allDateSchedule">GERAR CONSULTAS</label>
+              </div>
+              <div className="pt-4">
+              <button className="flex items-center gap-3 p-1 px-2 bg-primary text-base font-medium text-white rounded-md"
+                    onClick={() => {
+                        console.log("Dados enviados:", idAgenda, nome, abertura, fechamento);
+                        navigate("/consultas-agenda", { state: { idAgenda, nome, abertura, fechamento } });
+                    }}
+                ><Eye /> Visualizar agenda</button>
+              </div>
+        </section>
+    );
 }
 
 export function TimeLineSchendule({year, index}) {

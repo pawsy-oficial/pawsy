@@ -2,6 +2,7 @@ import { Question, SignOut } from "@phosphor-icons/react";
 import { useNavigate } from "react-router";
 import Logo from "../img/logoPawsy.svg";
 import Cookies from 'js-cookie';
+import ButtonSignOut from "./buttons/ButtonSignOut";
 
 export function NavBar({ page }, index) {
 	const isActive = (pathname) => {
@@ -79,11 +80,7 @@ export function NavbarTutor({ page, isFirstAccess=false }) {
 						</ul>
 					</nav>
 					<div className="flex justify-between text-white">
-						<button
-							onClick={handleButtonClickSignOut}
-						>
-							<SignOut size={24} color="#fff" />
-						</button>
+						<ButtonSignOut icon={true} />
 						<span>
 							<Question size={24} color="#fff" />
 						</span>
@@ -136,11 +133,7 @@ export function NavbarClinic() {
 				</ul>
 			</nav>
 			<div className="flex justify-between text-white">
-				<button
-					onClick={handleButtonClickSignOut}
-				>
-					<SignOut size={24} color="#fff" />
-				</button>
+				<ButtonSignOut icon={true} />
 				<span>
 					<Question size={24} color="#fff" />
 				</span>

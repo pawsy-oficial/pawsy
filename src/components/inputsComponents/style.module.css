@@ -1,0 +1,7 @@
+label.weekDay{
+    @apply rounded-lg border border-primary py-1 px-4 text-zinc-600 text-sm cursor-pointer
+}
+
+input[type="checkbox"]:checked + label.weekDay {
+    @apply bg-primary text-white
+}
