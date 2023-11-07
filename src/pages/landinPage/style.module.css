@@ -1,0 +1,6 @@
+.subTitle{
+    @apply text-lg font-lato font-bold
+}
+.p{
+    @apply text-zinc-800 leading-relaxed text-sm font-lato
+}

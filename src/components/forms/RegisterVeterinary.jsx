@@ -507,7 +507,7 @@ export default function RegisterFormVeterinary({ userType }) {
                             <strong
                                 className="text-base font-normal"
                             >
-                                Para prosseguir, é necessário concordar com todos os <a href="#" className="text-primary"> termos de privacidade</a>.
+                                Para prosseguir, é necessário concordar com todos os <a href="./termos-privacidade" target="_blank" className="text-primary"> termos de uso</a>.
                             </strong>
                         </label>
                     </div>
