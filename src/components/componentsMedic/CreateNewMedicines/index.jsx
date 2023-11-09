@@ -28,14 +28,15 @@ export function CreateNewMedicines({ remove, index, register }) {
 						<select
 							{...register(`drug.${index}.route`)}
 							className="w-28 h-5 border border-primary bg-[#F5FFFE] rounded"
+
 						>
-							<option value="">Via oral</option>
-							<option value="">Retal</option>
-							<option value="">Sublingual</option>
-							<option value="">Intravenoso</option>
-							<option value="">Dermatológica</option>
-							<option value="">Nasal </option>
-							<option value="">Oftálmica </option>
+							<option value="Via oral">Via oral</option>
+							<option value="Retal">Retal</option>
+							<option value="Sublingual">Sublingual</option>
+							<option value="Intravenoso">Intravenoso</option>
+							<option value="Dermatológica">Dermatológica</option>
+							<option value="Nasal">Nasal</option>
+							<option value="Oftálmica">Oftálmica</option>
 						</select>
 					</strong>
 					<strong className="font-bold">

@@ -44,7 +44,7 @@ const RevenuesList = ({ state }) => {
 				{
 					revenues.length == 0
 					? <p className="text-zinc-500 font-lato text-sm mt-4">Pet não possui receitas</p>
-					: revenues.map(r => {
+					: revenues.map((r, i) => {
 						return(
 							<CardRevenues
 								emissao={dayjs(r.dt_emisao).format("DD/MM/YYYY")}
@@ -52,9 +52,10 @@ const RevenuesList = ({ state }) => {
 								dr={r.nm_medico}
 								state={state}
 								idRevenue={r.id_receita}
+								key={i}
 							/>
 						)
-					})
+					}).sort((a, b) => b.key - a.key)
 				}
 				
 			</div>

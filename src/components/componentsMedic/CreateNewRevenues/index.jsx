@@ -32,7 +32,7 @@ export function CreateNewRevenues({ idPet, idClinic, idMedic }) {
 				concentration: Yup.number().required("Campo obrigatório").typeError("Deve ser um numero").positive("Deve ser maior que zero (0)"),
 				dosage: Yup.string().min(5, "Deve ter no minimo 5 caracteres").max(260, "Limite atingido (260 caracteres)").required("Campo obrigatório"),
 				drugName: Yup.string().min(3, "Deve ter no minimo 3 caracteres").required("Campo obrigatório"),
-				// route: Yup.string().required("Campo obrigatório"),
+				route: Yup.string().required("Campo obrigatório"),
 				time: Yup.number().required("Campo obrigatório").positive("Deve ser maior que zero (0)")
 			})
 		)
