@@ -112,8 +112,8 @@ export function Revenues({ idRevenue }) {
 
 			<div className="w-44 h-[1px] my-20 mx-auto bg-black">
 				<div className="flex flex-col items-center">
-					<p className="text-xs">Drª Vanessa Santos</p>
-					<p className="text-[9px]">CRMV: 10.000</p>
+					<p className="text-xs">Dr(a) {dataHeader.nm_medico}</p>
+					<p className="text-[9px]">CRMV: {dataHeader.cd_crmv}</p>
 				</div>
 			</div>
 

@@ -55,7 +55,8 @@ const RevenuesList = ({ state }) => {
 								key={i}
 							/>
 						)
-					}).sort((a, b) => b.key - a.key)
+					}).sort((a, b) => new Date(b.props.validade) - new Date(a.props.validade))
+					.reverse()
 				}
 				
 			</div>
