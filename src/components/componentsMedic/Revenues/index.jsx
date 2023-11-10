@@ -94,7 +94,7 @@ export function Revenues({ idRevenue }) {
 
 			<section className="flex flex-col gap-6 py-8 z-10">
 				{
-					dataDrug.map(dd => {
+					dataDrug.map((dd, i) => {
 
 						return(
 							<CardMedicines 
@@ -104,6 +104,7 @@ export function Revenues({ idRevenue }) {
 								nameDrug={dd.nm_medicamento}
 								route={dd.via_adm}
 								time={dd.tmp_duracao}
+								key={i}
 							/>
 						)
 					})

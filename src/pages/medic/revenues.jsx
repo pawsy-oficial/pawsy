@@ -45,7 +45,6 @@ const RevenuesList = ({ state }) => {
 					revenues.length == 0
 					? <p className="text-zinc-500 font-lato text-sm mt-4">Pet não possui receitas</p>
 					: revenues.sort((a, b) => {
-						console.log(b);
 						return new Date(b.dt_validade) - new Date(a.dt_validade)
 					}).map((r, i) => {
 						return(

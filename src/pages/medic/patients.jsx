@@ -22,19 +22,17 @@ export default function PatientsForMedic() {
             }
         }).then(res => {
             console.log(res.data);
-            setClinicsPet(res.data.results)
+            setClinicsPet(res.data.results);
         })
+        console.log(clinicsPet);
     }, []);
 
     const imgClinic = informacoes.img;
     const nameClinic = informacoes.nameClinic;
-    const filterPatientes = clinicsPet.filter(patient => (
-		(
-			gender.length === 0
-				? patient.namePet.startsWith(namePatient.toLowerCase()) 
-				: patient.nm_sexo == gender && patient.namePet.startsWith(namePatient.toLowerCase())
-		) 
-	) ?? [])
+    const filterPatientes = clinicsPet.filter(patient => {
+        console.log(patient);
+        return gender === "" ? patient === patient : patient.Gender === gender
+    })
 
     return (
         <main className="min-h-screen">
@@ -80,14 +78,14 @@ export default function PatientsForMedic() {
                     </h3>
                     <div className="flex gap-3">
                         <input type="radio" name="gender" id="mal" className="hidden" />
-                        <label id="male" htmlFor="mal" className="flex items-center gap-2 rounded-lg px-3 py-1">Macho <GenderMale color="#8FB5FF" size="24px" /></label>
+                        <label onClick={() => setGender("macho")} id="male" htmlFor="mal" className="flex items-center gap-2 rounded-lg px-3 py-1">Macho <GenderMale color="#8FB5FF" size="24px" /></label>
 
                         <input type="radio" id="fem" name="gender" className="hidden" />
-                        <label id="female" htmlFor="fem" className="flex items-center gap-2 rounded-lg px-3 py-1">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
+                        <label onClick={() => setGender("fêmea")} id="female" htmlFor="fem" className="flex items-center gap-2 rounded-lg px-3 py-1">Fêmea <GenderFemale color="#FF8FCB" size="24px" /></label>
                     </div>
                     <div className="flex flex-col gap-2">
                         {
-                            clinicsPet.map(patients => {
+                            filterPatientes.map(patients => {
                                 return (
                                     <CardPatients
                                         animalType={patients.AnimalType}
