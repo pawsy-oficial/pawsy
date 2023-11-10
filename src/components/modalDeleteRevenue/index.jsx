@@ -1,10 +1,24 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import Cookies from "js-cookie";
 import { Trash, Warning } from "@phosphor-icons/react";
 import axios from "axios";
 
-export default function ModalDeleteRevenues({ icon = false }) {
+export default function ModalDeleteRevenues() {
+  const jwtTokenMedic = Cookies.get("jwtTokenMedic");
+
   const handleExcluirReceita = () => {
-    console.log("Excluído!!");
+    axios
+      .delete(`${import.meta.env.VITE_URL}/delete-revenues/1`, {
+        headers: {
+          Authorization: `Bearer ${jwtTokenMedic}`,
+        },
+      })
+      .then(() => {
+        console.log("deleteado");
+      })
+      .catch(() => {
+        console.log("nao deltado");
+      });
   };
   return (
     <AlertDialog.Root>
