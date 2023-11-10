@@ -41,7 +41,7 @@ export default function Patient() {
 
 	const filterPatientes = patients.filter(patient => (
 		(
-			gender.length == 0
+			gender.length === 0
 				? patient.namePet.startsWith(namePatient.toLowerCase()) 
 				: patient.nm_sexo == gender && patient.namePet.startsWith(namePatient.toLowerCase())
 		) 

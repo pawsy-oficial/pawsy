@@ -27,7 +27,7 @@ const RevenuesList = ({ state }) => {
 			<div className="flex flex-col gap-7">
 				<a
 					onClick={() => history.back()}
-					className="flex items-center mt-10 text-sm cursor-pointer"
+					className="flex items-center mt-10 text-sm cursor-pointer w-fit"
 				>
 					<CaretLeft color="#22B77E" />
 					Voltar
@@ -44,7 +44,10 @@ const RevenuesList = ({ state }) => {
 				{
 					revenues.length == 0
 					? <p className="text-zinc-500 font-lato text-sm mt-4">Pet não possui receitas</p>
-					: revenues.map((r, i) => {
+					: revenues.sort((a, b) => {
+						console.log(b);
+						return new Date(b.dt_validade) - new Date(a.dt_validade)
+					}).map((r, i) => {
 						return(
 							<CardRevenues
 								emissao={dayjs(r.dt_emisao).format("DD/MM/YYYY")}
@@ -55,7 +58,7 @@ const RevenuesList = ({ state }) => {
 								key={i}
 							/>
 						)
-					}).sort((a, b) => new Date(b.props.validade) - new Date(a.props.validade))
+					})
 					.reverse()
 				}
 				

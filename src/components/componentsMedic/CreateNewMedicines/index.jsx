@@ -20,7 +20,7 @@ export function CreateNewMedicines({ remove, index, register }) {
 						<input
 							type="number"
 							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded"
-							{...register(`drug.${index}.concentration`)}
+							{...register(`drug.${index}.concentration`)} 
 						/>
 					</strong>
 					<strong className="font-bold">
