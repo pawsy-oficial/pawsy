@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 export default function PatientsForMedic() {
     const navigate = useNavigate()
     const location = useLocation()
+	const [ gender, setGender ] = useState("")
     const { informacoes } = location.state
     const [clinicsPet, setClinicsPet] = useState([]);
 
@@ -27,6 +28,13 @@ export default function PatientsForMedic() {
 
     const imgClinic = informacoes.img;
     const nameClinic = informacoes.nameClinic;
+    const filterPatientes = clinicsPet.filter(patient => (
+		(
+			gender.length === 0
+				? patient.namePet.startsWith(namePatient.toLowerCase()) 
+				: patient.nm_sexo == gender && patient.namePet.startsWith(namePatient.toLowerCase())
+		) 
+	) ?? [])
 
     return (
         <main className="min-h-screen">
