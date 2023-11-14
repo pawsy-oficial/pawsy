@@ -22,11 +22,12 @@ import dayjs from "dayjs";
 
 
 function RevenuesList({ state }) {
-	const [ myPets, setMyPets ] = useState([])
-	const [ revenues, setRevenues ] = useState([])
+	const [myPets, setMyPets] = useState([])
+	const [revenues, setRevenues] = useState([])
 	const [option, setOption] = useState(0)
+	const [idPet, setIdPet] = useState(0)
 
-	useEffect(() => { 
+	useEffect(() => {
 		axios.get(`${import.meta.env.VITE_URL}/profileTutor`, {
 			headers: {
 				Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
@@ -40,23 +41,20 @@ function RevenuesList({ state }) {
 						Authorization: `Bearer ${Cookies.get("jwtTokenTutor")}`
 					}
 				})
-				.then(e => {
-					setMyPets(e.data.myPets)
-				})
-				.catch(err => console.log(err))
+					.then(e => {
+						setMyPets(e.data.myPets)
+						setIdPet(e.data.myPets[option].pet.id_pawsy)
+					})
+					.catch(err => console.log(err))
 			})
-			.catch(err => console.log(err))	
-		}, [])
+			.catch(err => console.log(err))
+	}, [])
 
-		useEffect(()=>{
-			if(option){
-				const idPet = myPets[option].pet.id_pawsy ?? 0
-				axios.get(`${import.meta.env.VITE_URL}/get-all-revenues/${idPet}`)
-				.then(e => setRevenues(e.data.result))
-				.catch(err => console.log(err))
-			}
-		},[option])
-		
+	useEffect(() => {
+		axios.get(`${import.meta.env.VITE_URL}/get-all-revenues/${idPet}`)
+			.then(e => setRevenues(e.data.result))
+			.catch(err => console.log(err))
+	}, [idPet])
 
 	return (
 		<>
@@ -70,9 +68,9 @@ function RevenuesList({ state }) {
 					{
 						myPets.map((pet, i) => {
 							return (
-								<option 
-									key={i} 
-									value={i} 
+								<option
+									key={i}
+									value={i}
 								>
 									{pet.pet.nm_pet}
 								</option>
@@ -82,22 +80,51 @@ function RevenuesList({ state }) {
 				</select>
 			</div>
 
-			<div className="px-6">
-				{	
-					revenues.length == 0
-					? <p className="text-zinc-500 text-sm" >Não há receitas para esse pet</p>
-					: revenues.map((revenue) => {
-						return (
-							<CardReceitas 
-								emissao={revenue.dt_emisao} 
-								validade={revenue.dt_validade} 
-								dr={revenue.nm_medico} 
-								state={state} 
-								idRevenue={revenue.id_receita}
-							/>
-						)
-					})
-				}
+			<div className="px-6 pb-6">
+				<div
+					className="flex flex-col gap-2"
+				>
+					{
+						revenues.length == 0
+							? <p className="text-zinc-500 text-sm" >Não há receitas para esse pet</p>
+							: revenues.filter((revenue) => {
+								return dayjs(revenue.dt_validade).format("YYYY-MM-DD") > dayjs().format("YYYY-MM-DD")
+							}).map(revenue => {
+								return (
+									<CardReceitas
+										emissao={revenue.dt_emisao}
+										validade={revenue.dt_validade}
+										dr={revenue.nm_medico}
+										state={state}
+										idRevenue={revenue.id_receita}
+									/>
+								)
+							})
+					}
+				</div>
+			</div>
+			<div className="px-6 flex flex-col gap-4">
+				<p className="text-zinc-700 text-base">Fora da validade</p>
+				<div
+					className="flex flex-col gap-2"
+				>
+					{
+						revenues.filter((revenue) => {
+							return dayjs(revenue.dt_validade).format("YYYY-MM-DD") < dayjs().format("YYYY-MM-DD")
+						}).map(revenue => {
+							return (
+								<CardReceitas
+									emissao={revenue.dt_emisao}
+									validade={revenue.dt_validade}
+									dr={revenue.nm_medico}
+									state={state}
+									idRevenue={revenue.id_receita}
+									validadte={true}
+								/>
+							)
+						})
+					}
+				</div>
 			</div>
 		</>
 	);
@@ -204,8 +231,8 @@ const RevenueDetails = ({ revenueId, setState }) => {
 					{
 						dataDrug.map(dd => {
 							console.log(dd);
-							return(
-								<ContainerRevenues 
+							return (
+								<ContainerRevenues
 									amount={dd.qtd_medicamento}
 									concentracao={dd.concentracao}
 									nameDrug={dd.nm_medicamento}
@@ -242,14 +269,14 @@ export default function Revenues() {
 					{
 						state.status
 							? (
-								<RevenueDetails 
+								<RevenueDetails
 									revenueId={state.id}
-									setState={setState} 
+									setState={setState}
 								/>
 							)
 							: (
-								<RevenuesList 
-									state={setState} 
+								<RevenuesList
+									state={setState}
 								/>
 							)
 					}

@@ -1,9 +1,9 @@
 import dayjs from "dayjs" 
 
-export function CardReceitas({ emissao, validade, dr, state, idRevenue }) {
+export function CardReceitas({ emissao, validade, dr, state, idRevenue, validadte=false }) {
 	return (
 		<button
-			className="cursor-pointer flex flex-col gap-3 md:flex-row md:items-center my-6 md:mx-auto justify-between py-3 px-4 md:px-24 w-full min-h-[40px] bg-[#F5FFFE] border border-primary rounded-lg hover:bg-[#d2eee4]"
+			className={`cursor-pointer flex flex-col gap-3 md:flex-row md:items-center md:mx-auto justify-between py-3 px-4 md:px-24 w-full min-h-[40px]  border ${!validadte ? "border-primary bg-[#F5FFFE] hover:bg-[#d2eee4]" : "border-red-error bg-[#ffc4c4] hover:bg-[#ffa8a8]"} rounded-lg `}
 			onClick={()=>{state({status: true, id: idRevenue})}}
 		>
 			<p><strong>Emissão:</strong> {dayjs(emissao).format("DD/MM/YYYY")}</p>
