@@ -15,7 +15,7 @@ export function CardMedicines({ nameDrug, consentration, time, amount, route, do
 						<strong className="font-bold">
 							Concentração:{" "}
 							<span className="text-zinc-700">
-								{consentration}
+								{consentration} mg
 							</span>
 						</strong>
 						<strong className="font-bold">
@@ -35,7 +35,7 @@ export function CardMedicines({ nameDrug, consentration, time, amount, route, do
 						<strong className="font-bold">
 							Duração:{" "}
 							<span>
-								{time}
+								{time} dia(s)
 							</span>
 						</strong>
 					</div>

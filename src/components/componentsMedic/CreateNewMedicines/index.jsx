@@ -19,7 +19,7 @@ export function CreateNewMedicines({ remove, index, register }) {
 						Concentração:{" "}
 						<input
 							type="number"
-							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded"
+							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded [&::-webkit-inner-spin-button]:appearance-none"
 							{...register(`drug.${index}.concentration`)} 
 						/>
 					</strong>
@@ -44,7 +44,7 @@ export function CreateNewMedicines({ remove, index, register }) {
 						<input
 							{...register(`drug.${index}.amount`)}
 							type="number"
-							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded"
+							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded [&::-webkit-inner-spin-button]:appearance-none"
 						/>
 					</strong>
 				</div>
@@ -54,7 +54,7 @@ export function CreateNewMedicines({ remove, index, register }) {
 						<input
 							type="number"
 							{...register(`drug.${index}.time`)}
-							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded"
+							className="w-9 h-5 border pl-1 border-primary bg-[#F5FFFE] rounded [&::-webkit-inner-spin-button]:appearance-none "
 						/>
 					</strong>
 				</div>

@@ -8,16 +8,16 @@ export default function ModalDeleteRevenues() {
 
   const handleExcluirReceita = () => {
     axios
-      .delete(`${import.meta.env.VITE_URL}/delete-revenues/1`, {
+      .delete(`${import.meta.env.VITE_URL}/delete-revenues`, {
         headers: {
           Authorization: `Bearer ${jwtTokenMedic}`,
         },
       })
       .then(() => {
-        console.log("deleteado");
+        console.log("receita excluída com sucesso");
       })
       .catch(() => {
-        console.log("nao deltado");
+        console.log("receita não excluída");
       });
   };
   return (
