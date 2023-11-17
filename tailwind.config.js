@@ -8,7 +8,8 @@ export default {
         "primary": "#22B77E",
         "red-error": "#DC3545",
         "red-error-100": "#FFD0CB", 
-        "secundary": "#1BA8C4" 
+        "secundary": "#1BA8C4",
+        "green": "#22937E"
       },
       fontFamily:{
         lato: '"lato", sans-serif',
