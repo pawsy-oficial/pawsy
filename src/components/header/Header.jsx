@@ -2,6 +2,7 @@ import { List, MagnifyingGlass, X } from "@phosphor-icons/react";
 import ProfileModal from "./ProfileModal";
 import Notification from "./Notification";
 import { memo, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 
 import LogoGreen from "../../img/logoPawsyGreen.svg"
 import LogoWhite from "../../img/logoPawsy.svg"
@@ -88,12 +89,12 @@ export function Header({ userType }) {
 
 							{
 								windowScreen.width < 1020
-									&& (
-										<button onClick={() => setSearchState(!searchState)}>
-											<MagnifyingGlass size={24} />
-										</button>
-									)
-									// : <Notification />
+								&& (
+									<button onClick={() => setSearchState(!searchState)}>
+										<MagnifyingGlass size={24} />
+									</button>
+								)
+								// : <Notification />
 							}
 
 						</div>
@@ -165,14 +166,14 @@ function HeaderLogin({ style }) {
 }
 
 
-function HeaderLandingPage({type, style}) {
+function HeaderLandingPage({ type, style }) {
 
 	const navigate = useNavigate()
 
 	const isActive = (pathname) => {
 		return window?.location?.pathname === pathname
 	};
-	const [ limit, setLimit ] = useState(false)
+	const [limit, setLimit] = useState(false)
 
 	function handleScroll(e) {
 		let scroll = window.scrollY
@@ -192,10 +193,10 @@ function HeaderLandingPage({type, style}) {
 			pageName: "Sobre nós",
 			urlPage: "/sobre"
 		},
-		// {
-		// 	pageName: "Planos",
-		// 	urlPage: "/planos"
-		// },
+		{
+			pageName: "Planos",
+			urlPage: "/planos"
+		},
 		// {
 		// 	pageName: "Recursos",
 		// 	urlPage: "/recursos"
@@ -204,17 +205,23 @@ function HeaderLandingPage({type, style}) {
 
 	return (
 		<header
-			className={`flex w-full justify-between items-center px-16 py-5 fixed top-0 z-50 backdrop-blur-sm ${(limit || type == "light" ) && "bg-white"} transition-colors duration-700`}
+			className={`flex w-full justify-between items-center px-6 md:px-16 py-5 fixed top-0 z-50 backdrop-blur-sm ${(limit || type == "light") && "bg-white"} transition-colors duration-700`}
 			style={style}
 		>
 			<div
-				className="flex gap-20"
+				className="flex gap-6 md:gap-20"
 			>
-				<div>
-					<img src={LogoGreen} alt="Logo Pawsy" />
+				<div
+					className="w-36"
+				>
+					<img
+						src={LogoGreen}
+						alt="Logo Pawsy"
+						className="w-full h-full object-fill"
+					/>
 				</div>
 				<nav
-					className="flex gap-16"
+					className="hidden md:flex gap-16"
 				>
 					{
 						pages.map(page => {
@@ -244,15 +251,54 @@ function HeaderLandingPage({type, style}) {
 					}
 				</nav>
 			</div>
-			<div>
-				<button
-					className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg"
-					onClick={() => navigate("/acesso")}
-				>
-					Acessar
-				</button>
-			</div>
+			<button
+				className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hidden md:flex"
+				onClick={() => navigate("/acesso")}
+			>
+				Acessar
+			</button>
+
+			{/* <MenuDropDown navPages={pages} /> */}
+
 		</header>
+	)
+}
+
+function MenuDropDown({ navPages }) {
+	const [showMenu, setShowMenu] = useState(false)
+	return (
+		<>
+			<button
+				onClick={() => setShowMenu(!showMenu)}
+			>
+				<List size={32} weight="fill" />
+			</button>
+			{
+				showMenu && (
+					ReactDOM.createPortal(
+						<div
+							className="bg-white p-6 absolute inset-0 top-full h-fit"
+						>
+							<nav
+								className="flex flex-col gap-2"
+							>
+								{
+									navPages.map(page => {
+										return (
+											<a href="">
+												{
+													page.pageName
+												}
+											</a>
+										)
+									})
+								}
+							</nav>
+						</div>, document.body
+					)
+				)
+			}
+		</>
 	)
 }
 

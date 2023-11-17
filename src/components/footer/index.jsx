@@ -11,10 +11,10 @@ const pages = [
         pageName: "Sobre nós",
         urlPage: "/sobre"
     },
-    // {
-    //     pageName: "Planos",
-    //     urlPage: "/planos"
-    // },
+    {
+        pageName: "Planos",
+        urlPage: "/planos"
+    },
     // {
     //     pageName: "Recursos",
     //     urlPage: "/recursos"
@@ -27,19 +27,19 @@ function Footer() {
 
     return (
         <footer
-            className="py-20 bg-primary w-full"
+            className="py-20 bg-primary w-full px-6"
         >
             <section
                 className="max-w-5xl w-full mx-auto flex flex-col items-center gap-6"
             >
                 <div
-                    className="flex justify-between gap-6 items-center w-full  pb-4 border-b border-white/50"
+                    className="flex flex-col md:flex-row justify-between gap-6 items-center w-full  pb-4 border-b border-white/50"
                 >
                     <div>
                         <img src={LogoWhite} alt="Logo Pawsy" />
                     </div>
                     <nav
-                        className="flex gap-16 items-center"
+                        className="flex gap-4 md:gap-16 items-center"
                     >
                         {
                             pages.map(page => {

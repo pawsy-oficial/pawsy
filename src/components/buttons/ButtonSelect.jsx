@@ -11,7 +11,7 @@ function ButtonSelect({ question = "", answare = "" }) {
             className="w-full border-b-2 py-6 flex flex-col gap-3"
         >
             <div
-                className="flex justify-between w-full"
+                className="flex justify-between gap-4 items-center w-full"
             >
                 <strong
                     className="font-lato text-2xl text-start"
@@ -19,9 +19,13 @@ function ButtonSelect({ question = "", answare = "" }) {
                     {question}
                 </strong>
                 
-                {
-                    active ? <MinusCircle size={32} color="#22B77E" /> : <PlusCircle size={32} color="#22B77E" />
-                }
+                <div
+                    className="w-8 h-8"
+                >
+                    {
+                        active ? <MinusCircle size={32} color="#22B77E" /> : <PlusCircle size={32} color="#22B77E" />
+                    }
+                </div>
             </div>
             <p
                 className={`font-lato text-sm text-zinc-500 text-start ${!active && "hidden"} leading-relaxed`}

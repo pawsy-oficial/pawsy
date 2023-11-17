@@ -79,7 +79,7 @@ export default function Home() {
 				className="min-h-[800px] bg-[#E0FAFF] flex items-center relative overflow-hidden"
 			>
 				<section
-					className="max-w-5xl w-full mx-auto z-10"
+					className="lg:max-w-5xl max-w-2xl w-full mx-auto z-10 px-6 md:p-0"
 				>
 					<div
 						className="max-w-2xl flex flex-col gap-6"
@@ -96,7 +96,7 @@ export default function Home() {
 						</sub>
 					</div>
 					<div
-						className="w-full flex gap-16 mt-10"
+						className="w-full flex  justify-center md:justify-start gap-16 mt-10"
 					>
 						<button
 							className="bg-primary text-white font-baloo2 font-semibold text-base px-6 py-2 rounded-lg hover:bg-primary/80 transition-colors duration-500"
@@ -119,18 +119,18 @@ export default function Home() {
 				</section>
 				<BoxPets />
 				<div
-					className="bg-mockup w-[800px] h-[600px] left-full  -translate-x-3/4 bg-cover bg-no-repeat absolute"
+					className="bg-mockup hidden md:block w-1/2 lg:w-[800px] h-[600px] left-full  -translate-x-3/4 bg-cover bg-no-repeat absolute"
 				/>
 			</section>
 
 			<main
-				className="max-w-5xl w-full mx-auto mt-16"
+				className="lg:max-w-4xl xl:max-w-5xl w-full mx-auto mt-16"
 			>
 				<section
 					className="flex flex-col gap-8"
 				>
 					<article
-						className="max-w-lg flex"
+						className="px-6 lg:max-w-lg flex"
 					>
 						<div className="flex flex-col gap-8">
 							<div
@@ -178,10 +178,10 @@ export default function Home() {
 					</article>
 
 					<article
-						className="w-full flex flex-col gap-10"
+						className="px-6 w-full lg:max-w-none flex flex-col gap-10"
 					>
 						<div
-							className="flex flex-col gap-2 items-center"
+							className="flex flex-col gap-2 md:items-center"
 						>
 							<span
 								className="text-primary font-baloo2 text-base font-semibold"
@@ -189,13 +189,13 @@ export default function Home() {
 								Por que escolher a Pawsy?
 							</span>
 							<h2
-								className="font-semibold font-sora text-[2rem] max-w-sm text-center"
+								className="font-semibold font-sora text-[2rem] max-w-sm md:text-center"
 							>
 								Praticidade e Cuidado em um só lugar!
 							</h2>
 						</div>
 						<div
-							className="grid grid-cols-3 gap-5 items-center"
+							className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center"
 						>
 							{
 								infoFeatures.map(info => {
@@ -212,13 +212,13 @@ export default function Home() {
 					</article>
 
 					<article
-						className="w-full flex flex-col gap-10 mt-6"
+						className="w-full flex flex-col gap-10 mt-6 px-6"
 					>
 						<div
-							className="flex flex-col gap-2 items-center"
+							className="flex flex-col gap-2 md:items-center"
 						>
 							<h2
-								className="font-semibold font-sora text-[2rem] max-w-lg text-center"
+								className="font-semibold font-sora text-[2rem] max-w-lg md:text-center"
 							>
 								Quais vantagens a Pawsy oferece para tutores e clínicas?
 							</h2>
@@ -231,7 +231,7 @@ export default function Home() {
 								src={pawImage1} 
 								alt=""
 								draggable="false"	
-								className="-translate-x-20"
+								className="-translate-x-20 md:block hidden"
 							/>
 							<BoxFetureSections
 								title="Clínica veterinária"
@@ -251,13 +251,13 @@ export default function Home() {
 								src={pawImage2} 
 								alt=""
 								draggable="false"	
-								className="translate-x-20"
+								className="lg:translate-x-20 md:block hidden"
 							/>
 						</div>
 					</article>
 
 					<article
-						className="w-full flex flex-col gap-3 mt-6 items-center"
+						className="w-full flex flex-col gap-3 mt-6 items-center px-6"
 					>
 						<h2
 							className="w-full text-center flex flex-col font-sora text-[2rem] font-bold"
@@ -300,13 +300,13 @@ export default function Home() {
 			</main>
 
 			<section
-				className="bg-banner_footer w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top flex items-center"
+				className="bg-banner_footer px-6 md:p-0 w-full h-[500px] bg-no-repeat bg-cover mt-8 bg-top flex items-center"
 			>
 				<div
-					className="w-full max-w-5xl mx-auto flex flex-col gap-8"
+					className="w-full max-w-5xl mx-auto flex flex-col gap-8 md:px-8"
 				>
 					<p
-						className="font-baloo2 text-white text-5xl w-3/4"
+						className="font-baloo2 text-white text-5xl w-full md:w-3/4"
 					>
 						Veja agora mesmo como está a saúde do seu pet
 					</p>
