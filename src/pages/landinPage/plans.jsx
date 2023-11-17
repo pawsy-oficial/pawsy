@@ -21,7 +21,7 @@ const listBenefitsYear = [
     "LoremLoremLoremLoremLorem",
     "LoremLoremLoremLoremLorem",
     "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
+    "Lorem Lorem Lorem Lorem Loremo ",
     "LoremLoremLoremLoremLorem",
     "LoremLoremLoremLoremLorem",
 ]
@@ -75,6 +75,7 @@ export default function Plans() {
                         listBenefits={listBenefitsYear}
                         price={998.99}
                         month={false}
+                        recommended={true}
                     />
                 </article>
             </main>

@@ -1,11 +1,21 @@
 import { CheckCircle } from "@phosphor-icons/react"
 
-export default function BoxPrice({ price, listBenefits, month=false }){
+export default function BoxPrice({ price, listBenefits, month=false, recommended=false }){
     return(
         <section
-            className="p-6 rounded-lg max-w-xs flex flex-col gap-10 items-center justify-between"
+            className="p-6 rounded-lg max-w-xs flex flex-col gap-10 items-center justify-between relative"
             style={{boxShadow: "0px 0px 7.3px 0px rgba(64, 64, 64, 0.20)"}}
         >
+            {
+                recommended && (
+                    <div
+                        className="p-3 rounded-tl-2xl rounded-tr-lg rounded-bl-lg rounded-br-2xl bg-primary text-white absolute top-0 -right-1/4 -translate-y-1/2 z-10 shadow-md"
+                    >
+                        Recomendado
+                    </div>
+                )
+            }
+
             <div
                 className="flex flex-col gap-8"
             >
@@ -25,7 +35,9 @@ export default function BoxPrice({ price, listBenefits, month=false }){
                                     className="flex gap-4 items-center"
                                 >
                                     <CheckCircle size={24} color="#22B77E" />
-                                    <span>
+                                    <span
+                                        className="w-full"
+                                    >
                                         {lb}
                                     </span> 
                                 </li>
