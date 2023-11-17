@@ -3,10 +3,11 @@ import { GithubLogo, InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
 function BoxAbout({ name, image, role, network }) {
     return (
         <div
-            className="flex flex-col gap-4"
+            className="flex flex-col items-center gap-4"
         >
             <div
                 className="w-56 h-56 rounded-full overflow-hidden"
+                style={{ boxShadow: "3px -3px 0px 0px rgba(34, 183, 126, 0.25), -3px 3px 0px 0px rgba(31, 158, 171, 0.40), 3px 5px 5.8px 0px rgba(0, 0, 0, 0.50) inset" }}
             >
                 <img
                     src={image}
@@ -44,9 +45,13 @@ function BoxAbout({ name, image, role, network }) {
                                         <a
                                             href={n.linkedin}
                                             target="_blank"
-                                            className=""
+                                            title={`link para o LinkedIn de @${name}`}
                                         >
-                                            <LinkedinLogo size={24} color="#9CA3AF" />
+                                            <LinkedinLogo 
+                                                size={24} 
+                                                color="#9CA3AF"
+                                                className="hover:fill-primary"
+                                            />
                                         </a>
                                     )
                                 }
@@ -55,8 +60,13 @@ function BoxAbout({ name, image, role, network }) {
                                         <a
                                             href={n.instagram}
                                             target="_blank"
+                                            title={`link para o Instagram de @${name}`}
                                         >
-                                            <InstagramLogo size={24} color="#9CA3AF" />
+                                            <InstagramLogo 
+                                                size={24} 
+                                                color="#9CA3AF"
+                                                className="hover:fill-primary"
+                                            />
                                         </a>
                                     )
                                 }
@@ -65,8 +75,13 @@ function BoxAbout({ name, image, role, network }) {
                                         <a
                                             href={n.github}
                                             target="_blank"
+                                            title={`link para o Github de @${name}`}
                                         >
-                                            <GithubLogo size={24} color="#9CA3AF" />
+                                            <GithubLogo 
+                                                size={24} 
+                                                color="#9CA3AF"
+                                                className="hover:fill-primary"
+                                            />
                                         </a>
                                     )
                                 }
