@@ -39,7 +39,7 @@ export default function Plans() {
                 className="my-10 max-w-5xl mx-auto flex flex-col gap-8"
             >
                 <div
-                    className="max-w-4xl flex flex-col gap-2"
+                    className="max-w-4xl flex flex-col gap-2 px-6"
                 >
                     <strong
                         className="font-baloo2 text-base text-primary"
@@ -59,7 +59,7 @@ export default function Plans() {
                 </div>
 
                 <article
-                    className="flex justify-center gap-5"
+                    className="flex flex-col md:flex-row items-center md:items-stretch md:flex-wrap lg:flex-nowrap justify-center gap-5 px-6"
                 >
                     <BoxPrice
                         listBenefits={listBenefitsBasic}

@@ -3,13 +3,13 @@ import { CheckCircle } from "@phosphor-icons/react"
 export default function BoxPrice({ price, listBenefits, month=false, recommended=false }){
     return(
         <section
-            className="p-6 rounded-lg max-w-xs flex flex-col gap-10 items-center justify-between relative"
+            className={`p-6 rounded-lg max-w-xs w-full flex flex-col gap-10 items-center justify-between relative ${recommended && "border border-primary"}`}
             style={{boxShadow: "0px 0px 7.3px 0px rgba(64, 64, 64, 0.20)"}}
         >
             {
                 recommended && (
                     <div
-                        className="p-3 rounded-tl-2xl rounded-tr-lg rounded-bl-lg rounded-br-2xl bg-primary text-white absolute top-0 -right-1/4 -translate-y-1/2 z-10 shadow-md"
+                        className="xl:p-3 py-1 px-6 rounded-tl-2xl rounded-tr-lg rounded-bl-lg rounded-br-2xl bg-primary text-white absolute top-0 xl:-right-1/4 -translate-y-1/2 z-10 shadow-md"
                     >
                         Recomendado
                     </div>
