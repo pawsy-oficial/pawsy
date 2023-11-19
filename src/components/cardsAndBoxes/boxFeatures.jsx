@@ -4,7 +4,7 @@ import { memo } from "react"
 function BoxFeatures({title = "Title", icon=":(", description="description"}) {
     return (
         <div
-            className="sm:max-w-xs max-w-none w-full flex flex-col items-center md:items-start gap-6 group"
+            className="max-w-none w-full flex flex-col items-center md:items-start gap-6 group"
         >
             <div
                 className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary border border-transparent transition-all duration-5000 group-hover:scale-105 group-hover:shadow-[4px_4px_0_#22b77e] group-hover:-skew-x-12 group-hover:skew-y-6 group-hover:rotate-6"
