@@ -227,7 +227,7 @@ function HeaderLandingPage({ type, style }) {
 						pages.map(page => {
 							return (
 								<a
-									className="font-baloo2 font-semibold text-base flex flex-col items-center cursor-pointer gap-1 data-[status=active]:text-primary"
+									className="font-baloo2 justify-center font-semibold text-base flex flex-col items-center cursor-pointer gap-1 data-[status=active]:text-primary data-[status=active]:translate-y-2"
 									data-status={isActive(page.urlPage) ? "active" : "disabled"}
 									onClick={() => navigate(`${page.urlPage}`)}
 								>
