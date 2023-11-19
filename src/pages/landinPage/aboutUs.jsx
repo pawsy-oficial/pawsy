@@ -12,6 +12,17 @@ import BoxAbout from "../../components/cardsAndBoxes/boxAbout";
 
 const infoTeam = [
     {
+        name: "Luana Alcantara",
+        role: "Documentação",
+        img: luana,
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "https://linkedin.com/in/romullomelo",
+            }
+        ]
+    },
+    {
         name: "Fernando Fernandes",
         role: "Desenvolvedor",
         img: fernando,
@@ -20,17 +31,6 @@ const infoTeam = [
                 instagram: "https://instagram.com/romu_013",
                 linkedin: "hhttps://www.linkedin.com/in/fernando-fernandes-moraes-da-silva/",
                 github: "https://github.com/Fernando-Fernandes05"
-            }
-        ]
-    },
-    {
-        name: "Luana Alcantara",
-        role: "Documentação",
-        img: luana,
-        network: [
-            {
-                instagram: "https://instagram.com/romu_013",
-                linkedin: "https://linkedin.com/in/romullomelo",
             }
         ]
     },

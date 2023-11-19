@@ -52,7 +52,11 @@ export default function ButtonOptionsLogin({ title, description, imageName, slug
                 </span>
             </div>
 
-            <img src={type.imageName} alt="" />
+            <img 
+                src={type.imageName} 
+                alt={type.title} 
+                className="w-10 sm:w-fit"
+            />
 
         </button>
     )
