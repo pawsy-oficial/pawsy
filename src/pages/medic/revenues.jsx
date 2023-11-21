@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import ButtonDownloadPdf from "../../components/buttons/ButtonDownloadPdf";
 
 const RevenuesList = ({ state }) => {
 	const navigate = useNavigate();
@@ -69,15 +70,19 @@ const RevenuesList = ({ state }) => {
 const RevenueDetails = ({ revenueId, setState }) => {
 	return (
 		<div>
-			<a
-				onClick={() => {
-					setState(false);
-				}}
-				className="flex pl-28 items-center my-8 mx-auto text-sm cursor-pointer"
-			>
-				<CaretLeft color="#22B77E" />
-				Voltar
-			</a>
+			<div className="flex flex-row my-4 justify-between w-[595px] mx-auto">
+				<a
+					onClick={() => {
+						setState(false);
+					}}
+					className="flex items-center  text-sm cursor-pointer w-fit"
+				>
+					<CaretLeft color="#22B77E" />
+					Voltar
+				</a>
+
+				<ButtonDownloadPdf/>
+			</div>
 
 			<Revenues  idRevenue={revenueId} />
 		</div>

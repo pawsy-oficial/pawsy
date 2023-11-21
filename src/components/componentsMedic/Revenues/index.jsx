@@ -47,7 +47,7 @@ export function Revenues({ idRevenue }) {
 
 	return (
 		<main
-			className="w-[595px] h-[892px] my-8 mx-auto bg-white border border-primary relative"
+			className="w-[595px] h-[892px] mb-8 mx-auto bg-white border border-primary relative"
 		>
 			<img
 				src={LogoWaterMark}
