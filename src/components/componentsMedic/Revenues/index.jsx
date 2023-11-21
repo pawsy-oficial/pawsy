@@ -47,14 +47,14 @@ export function Revenues({ idRevenue }) {
 
 	return (
 		<main
-			className="w-[595px] h-[892px] mb-8 mx-auto bg-white border border-primary relative"
+			className="w-[21cm] h-[calc(29cm+25px)] mb-8 mx-auto bg-white border border-primary relative"
 		>
 			<img
 				src={LogoWaterMark}
 				alt="marca d'água PAWSY"
 				className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
 			/>
-			<div className="flex py-6 px-8 w-[593px] h-[132px] bg-[#F5FFFE] text-xs font-bold flex-col justify-between">
+			<div className="flex py-6 px-8 w-full h-[132px] bg-[#F5FFFE] text-xs font-bold flex-col justify-between">
 				<div className="flex justify-between">
 					<div>Receituário {dataHeader.nm_TipoReceita}</div>
 					<div>Emitido em: {dataHeader.dt_emisao}</div>
@@ -118,7 +118,7 @@ export function Revenues({ idRevenue }) {
 				</div>
 			</div>
 
-			<div className="w-[595px] h-8 bg-primary flex justify-center items-center absolute bottom-0">
+			<div className="w-full h-8 bg-primary flex justify-center items-center absolute bottom-0">
 				<img src="src/img/logo.png" alt="" className="w-16" />
 			</div>
 		</main>

@@ -1,32 +1,16 @@
 import { DownloadSimple } from "@phosphor-icons/react";
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-
-const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    }
-  });
-
-  const Revenues = () => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Section #1</Text>
-        </View>
-      </Page>
-    </Document>
-  );
+import { usePDF } from 'react-to-pdf';
+import { Revenues } from "../../components/componentsMedic/Revenues";
+import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 export default function ButtonDownloadPdf() {
+    const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
     return (
-        <button className="flex cursor-pointer">
-			      <DownloadSimple size={24}/>
+        <button onClick={() => toPDF()} className="flex cursor-pointer">
+          <DownloadSimple size={24}/>
+          <div ref={targetRef}>
+            <Revenues />
+         </div>
 		    </button>
     )
 }
