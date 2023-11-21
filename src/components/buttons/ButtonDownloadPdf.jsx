@@ -13,10 +13,20 @@ const styles = StyleSheet.create({
     }
   });
 
+  const Revenues = () => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Text>Section #1</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+
 export default function ButtonDownloadPdf() {
     return (
         <button className="flex cursor-pointer">
-			<DownloadSimple size={24}/>
-		</button>
+			      <DownloadSimple size={24}/>
+		    </button>
     )
 }
