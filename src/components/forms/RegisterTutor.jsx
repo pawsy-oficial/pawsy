@@ -1,4 +1,4 @@
-import { Camera, XCircle } from "@phosphor-icons/react";
+import { Camera, Eye, EyeSlash, XCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import ProgressPass from "../progress/progressPass";
 import { Controller, useForm } from "react-hook-form";
@@ -86,6 +86,8 @@ function calculateDigits(digits, count, repeat) {
 
 
 export default function RegisterFormTutor({ userType }) {
+    const [toggleViewPassword, setToggleViewPassword] = useState(false)
+    const [toggleViewConfirmPassword, setToggleViewConfirmPassword] = useState(false)
 
     const [valueInput, setValueInput] = useState('')
     const [cpf, setCpf] = useState('')
@@ -246,24 +248,24 @@ export default function RegisterFormTutor({ userType }) {
                     longitude: longitude
                 }
                 console.log(dataForm);
-                
+
                 axios.post(`${import.meta.env.VITE_URL}/tutor-register`, dataForm)
                     .then(response => {
                         console.log(response);
                         let form = new FormData();
                         form.append("name", urlImageProfile);
                         form.append('file', selectImage, selectImage.name);
-                
+
                         axios.post(`${import.meta.env.VITE_URL}/upload-files`, form, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
                         })
-                        .then(()=>{
-                            setLoading(false)
-                            console.log(response)
-                            navigate("/login", { state: { slug: "tutor" } })
-                        }).catch(err=> console.log(err))
+                            .then(() => {
+                                setLoading(false)
+                                console.log(response)
+                                navigate("/login", { state: { slug: "tutor" } })
+                            }).catch(err => console.log(err))
                     })
                     .catch(err => {
                         setLoading(false)
@@ -271,13 +273,13 @@ export default function RegisterFormTutor({ userType }) {
                         setStatusForm(true)
                         setMsg(err.response.data.Message)
                         setSucess(false)
-        
+
                         useTopToScreen()
                     })
-                    .finally(()=>{
+                    .finally(() => {
                         setLoading(false)
                     })
-                    // setLoading(false)
+                // setLoading(false)
             })
             .catch((e) => {
                 console.log(e)
@@ -484,27 +486,65 @@ export default function RegisterFormTutor({ userType }) {
                         </div>
 
                         <div>
-                            <input
-                                type="password"
-                                placeholder={"Senha"}
-                                className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            <label className="relative">
+                                <input
+                                    type={`${toggleViewPassword ? "text" : "password"}`}
+                                    placeholder={"Senha"}
+                                    className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
 
-                                value={valueInput}
-                                {...register("password", {
-                                    onChange: e => {
-                                        setValueInput(e.target.value)
+                                    value={valueInput}
+                                    {...register("password", {
+                                        onChange: e => {
+                                            setValueInput(e.target.value)
+                                        }
+                                    })}
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                                    onClick={() => setToggleViewPassword(!toggleViewPassword)}
+                                >
+                                    {
+                                        toggleViewPassword
+                                            ? <Eye
+                                                size={20}
+                                            />
+                                            : <EyeSlash
+                                                size={20}
+                                            />
                                     }
-                                })}
-                            />
+
+                                </button>
+                            </label>
                             <ProgressPass password={valueInput} />
                         </div>
                         <div>
-                            <input
-                                type="password"
-                                placeholder={"Confirmar senha"}
-                                className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                                {...register("confirm_password")}
-                            />
+                            <label
+                                className="relative"
+                            >
+                                <input
+                                    type={`${toggleViewConfirmPassword ? "text" : "password"}`}
+                                    placeholder={"Confirmar senha"}
+                                    className="h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                                    {...register("confirm_password")}
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                                    onClick={() => setToggleViewConfirmPassword(!toggleViewConfirmPassword)}
+                                >
+                                    {
+                                        toggleViewConfirmPassword
+                                            ? <Eye
+                                                size={20}
+                                            />
+                                            : <EyeSlash
+                                                size={20}
+                                            />
+                                    }
+
+                                </button>
+                            </label>
                             {
                                 errors.confirm_password &&
                                 <small
@@ -583,21 +623,22 @@ export default function RegisterFormTutor({ userType }) {
                                 placeholder={"Estado"}
                                 className={`h-fit border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${errors.uf && "!border-red-500 focus:!border-red-500 bg-red-100 ]"}`}
                                 disabled={loadingCep}
-                                {...register("uf", { 
-                                    onChange: (e)=> {
+                                {...register("uf", {
+                                    onChange: (e) => {
                                         const i = e.target.options.selectedIndex
                                         console.log(i);
                                         setSelectUf(i);
-                                    }})
+                                    }
+                                })
                                 }
                             >
                                 <option disabled>Estado</option>
                                 {
-                                    uf.map(uf => 
-                                        <option 
-                                            value={uf.id_uf} 
+                                    uf.map(uf =>
+                                        <option
+                                            value={uf.id_uf}
                                             selected={uf.nm_estado == state}
-                                            onChangeCapture={()=>console.log("ok")}
+                                            onChangeCapture={() => console.log("ok")}
                                         >
                                             {uf.nm_estado}
                                         </option>
