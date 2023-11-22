@@ -108,7 +108,7 @@ const RevenueDetails = ({ revenueId, setState }) => {
 	 };
 	return (
 		<div className="">
-			<div className="flex flex-row my-4 justify-between w-[595px] mx-auto">
+			<div className="flex flex-row my-4 justify-between mx-auto">
 				<a
 					onClick={() => {
 						setState(false);
@@ -128,7 +128,7 @@ const RevenueDetails = ({ revenueId, setState }) => {
 				</button>
 			</div>
 			<div 
-				className="w-fit"
+				className=""
 				ref={targetRef} 
 			>
 				<Revenues 

@@ -6,35 +6,35 @@ export function CardMedicines({ nameDrug, consentration, time, amount, route, do
 			>
 				<div className="flex flex-col gap-2">
 					<div className="flex gap-8 text-xs items-center">
-						<p>Medicamento:</p>
-						<span className="text-zinc-700 font-bold">
+						<p className="font-bold">Medicamento:</p>
+						<span className="text-zinc-700">
 							{nameDrug}
 						</span>
 					</div>
 					<div className="flex gap-2 text-xs ">
 						<strong className="font-bold">
 							Concentração:{" "}
+						</strong>
 							<span className="text-zinc-700">
 								{consentration} mg
 							</span>
-						</strong>
 						<strong className="font-bold">
 							Via Administração:{" "}
+						</strong>
 							<span>
 								{route}
 							</span>
-						</strong>
 						<strong className="font-bold">
 							Quantidade:{" "}
+						</strong>
 							<span>
 								{amount}
 							</span>
-						</strong>
 					</div>
 					<div className="flex justify-between gap-3 text-xs">
-						<strong className="font-bold">
+						<strong>
 							Duração:{" "}
-							<span>
+							<span className="">
 								{time} dia(s)
 							</span>
 						</strong>

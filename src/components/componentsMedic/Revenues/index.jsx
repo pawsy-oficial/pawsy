@@ -69,7 +69,7 @@ export function Revenues({ idRevenue }) {
 						<span className="text-zinc-600 font-normal capitalize">{dataHeader.nm_medico}</span>
 					</div>
 					<div className="text-zinc-900">
-						CRMV:<span className="text-zinc-600 font-normal">{dataHeader.cd_crmv}</span>
+						CRMV:<span className="text-zinc-600 font-normal"> {dataHeader.cd_crmv}</span>
 					</div>
 				</div>
 
