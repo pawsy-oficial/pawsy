@@ -16,8 +16,7 @@ export function CardRevenues({ emissao, validade, dr, state, idRevenue }) {
         <p>Emissão: {emissao}</p>
         <p>Validade: {validade}</p>
         <p className="capitalize">Dr(a) {dr}</p>
-        
-          <ModalDeleteRevenues />
+          <ModalDeleteRevenues idRevenue={idRevenue} />
       </a>
     </>
   );

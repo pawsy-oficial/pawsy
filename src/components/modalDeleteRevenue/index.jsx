@@ -3,18 +3,19 @@ import Cookies from "js-cookie";
 import { Trash, Warning } from "@phosphor-icons/react";
 import axios from "axios";
 
-export default function ModalDeleteRevenues() {
+export default function ModalDeleteRevenues({idRevenue}) {
   const jwtTokenMedic = Cookies.get("jwtTokenMedic");
 
   const handleExcluirReceita = () => {
     axios
-      .delete(`${import.meta.env.VITE_URL}/delete-revenues`, {
+      .delete(`${import.meta.env.VITE_URL}/delete-revenues/${idRevenue}`, {
         headers: {
           Authorization: `Bearer ${jwtTokenMedic}`,
         },
       })
       .then(() => {
         console.log("receita excluída com sucesso");
+        location.reload()
       })
       .catch(() => {
         console.log("receita não excluída");
@@ -45,7 +46,11 @@ export default function ModalDeleteRevenues() {
             asChild
             className="text-mauve11 mt-4 mb-5 leading-normal"
           >
-            <main className="flex flex-col gap-4">
+            <main
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+             className="flex flex-col gap-4">
               <div className="flex items-center gap-2 justify-center flex-col">
                 <Warning color="#dc3454" size={40} weight="fill" />
                 <h3 className="text-2xl font-bold font-sora text-center">
