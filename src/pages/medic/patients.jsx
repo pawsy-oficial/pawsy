@@ -13,17 +13,27 @@ export default function PatientsForMedic() {
 	const [ gender, setGender ] = useState("")
     const { informacoes } = location.state
     const [clinicsPet, setClinicsPet] = useState([]);
+    const [idClinic, setIdClinic] = useState("")
 
     useEffect(() => {
         const tokenMedic = Cookies.get("jwtTokenMedic")
-        axios.get(`${import.meta.env.VITE_URL}/clinicsPet`, {
-            headers: {
-                Authorization: `Bearer ${tokenMedic}`
-            }
-        }).then(res => {
-            console.log(res.data);
-            setClinicsPet(res.data.results);
-        })
+
+        axios.get(`${import.meta.env.VITE_URL}/clinicsMedic`, {
+			headers: {
+				Authorization: `Bearer ${tokenMedic}`
+			}
+		}).then(res => {
+            axios.get(`${import.meta.env.VITE_URL}/clinicsPet/${res.data.results[0].id_clinica}`, {   
+                headers: {
+                    Authorization: `Bearer ${tokenMedic}`
+                }
+            }).then(res => {
+                console.log(res.data);
+                setClinicsPet(res.data.results);
+            })
+		})
+
+        
         console.log(clinicsPet);
     }, []);
 

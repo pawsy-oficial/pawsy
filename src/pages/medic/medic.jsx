@@ -8,7 +8,6 @@ export default function Medic() {
 	const [infoMedic, setInfoMedic] = useState([]);
 	const [idMedic, setIdMedic] = useState(null)
 	const [clinicsMedic, setClinicsMedic] = useState([]);
-
 	const tokenMedic = Cookies.get("jwtTokenMedic")
 
 	useEffect(() => {
