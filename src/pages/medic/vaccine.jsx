@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { HeaderMedic } from "../../components/HeaderMedic";
 import { useLocation } from "react-router-dom";
-import { CaretLeft } from "@phosphor-icons/react";
+import { CaretLeft, Trash } from "@phosphor-icons/react";
 import { PlusCircle } from "@phosphor-icons/react";
 import { ModalVermifuge } from "../../components/componentsMedic/ModalVermifuge";
 import { ModalVaccine } from "../../components/componentsMedic/ModalVaccine";
 import axios from "axios";
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
+import ModalDeleteRevenues from "../../components/modalDeleteRevenue";
+import ModalDeleteVaccine from "../../components/modalDeleteVaccine";
 
 export default function Vaccine() {
 	const [openVermifuge, setOpenVermifuge] = useState(false);
@@ -117,6 +119,10 @@ export default function Vaccine() {
 														{
 															e.nameMedic
 														}
+													</td>
+													<td >
+
+													<ModalDeleteVaccine />
 													</td>
 												</tr>
 											);
