@@ -18,6 +18,8 @@ export default function Vaccine() {
 	const [tableVaccine, setTableVaccine] = useState([]);
 	const [tableVermifugo, setTableVermifugo] = useState([]);
 
+	const [confirmDelete, setConfirmDelete] = useState(false)
+
 	const tokenMedic = Cookies.get("jwtTokenMedic");
 
 	const location = useLocation();
@@ -56,7 +58,7 @@ export default function Vaccine() {
 			.then((res) => {
 				setInfoMedic(res.data);
 			});
-	}, [openVaccine, openVermifuge]);
+	}, [openVaccine, openVermifuge, confirmDelete]);
 
 	return (
 		<div>
@@ -90,9 +92,13 @@ export default function Vaccine() {
 										<th className="py-1 bg-primary text-white text-sm w-40 border-none">
 											Retorno
 										</th>
-										<th className="bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
+										<th className="bg-primary text-white text-sm w-40 py-1 border-none">
 											Veterinário
 										</th>
+										<th className="bg-primary text-white text-sm w-40 py-1 border-none rounded-r-full">
+											
+										</th>
+										
 									</tr>
 								</thead>
 								<tbody className="second line-colors">
@@ -115,14 +121,13 @@ export default function Vaccine() {
 															dayjs(e.dateReturn).format("DD/MM/YYYY")
 														}
 													</td>
-													<td className="border-none rounded-r-full capitalize">
+													<td className="border-none capitalize">
 														{
 															e.nameMedic
 														}
 													</td>
-													<td >
-
-													<ModalDeleteVaccine />
+													<td className="border-none relative rounded-r-full">
+														<ModalDeleteVaccine setConfirmDelete={setConfirmDelete} confirmDelete={confirmDelete} idVaccine={e.idAplication} />
 													</td>
 												</tr>
 											);
@@ -182,7 +187,7 @@ export default function Vaccine() {
 															e.nm_vermifugo
 														}
 													</td>
-													<ModalDeleteVermifuge idVermifugo={e.id_aplicacao} />
+													<ModalDeleteVermifuge setConfirmDelete={setConfirmDelete} confirmDelete={confirmDelete} idVermifugo={e.id_aplicacao} />
 												</tr>
 											);
 										})
@@ -191,7 +196,7 @@ export default function Vaccine() {
 							</table>
 							<div className="flex justify-center">
 								<button
-									onClick={() => setOpenVermifuge(!openVermifuge)}
+									onClick={() => {setOpenVermifuge(!openVermifuge)}}
 									className="flex flex-row pt-3 items-center text-primary text-lg font-semibold gap-4"
 								>
 									<PlusCircle size={24} /> adicionar

@@ -3,19 +3,20 @@ import Cookies from "js-cookie";
 import { Trash, Warning } from "@phosphor-icons/react";
 import axios from "axios";
 
-export default function ModalDeleteVermifuge({idVermifugo}) {
+export default function ModalDeleteVermifuge({idVermifugo, setConfirmDelete, confirmDelete}) {
   const jwtTokenMedic = Cookies.get("jwtTokenMedic");
 
   const handleExcluirVermifugo = () => {
     axios
-      .delete(`${import.meta.env.VITE_URL}/delete-vermifugo/1`, {
+      .delete(`${import.meta.env.VITE_URL}/delete-vermifugo/${idVermifugo}`, {
         headers: {
           Authorization: `Bearer ${jwtTokenMedic}`,
         },
       })
       .then(() => {
         console.log("vermifugo excluída com sucesso");
-        location.reload()
+        setConfirmDelete(!confirmDelete)
+        // location.reload()
       })
       .catch(() => {
         console.log("vermifugo não excluída");
