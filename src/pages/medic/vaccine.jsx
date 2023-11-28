@@ -8,8 +8,8 @@ import { ModalVaccine } from "../../components/componentsMedic/ModalVaccine";
 import axios from "axios";
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
-import ModalDeleteRevenues from "../../components/modalDeleteRevenue";
 import ModalDeleteVaccine from "../../components/modalDeleteVaccine";
+import ModalDeleteVermifuge from "../../components/modalDeleteVermifuge";
 
 export default function Vaccine() {
 	const [openVermifuge, setOpenVermifuge] = useState(false);
@@ -182,6 +182,7 @@ export default function Vaccine() {
 															e.nm_vermifugo
 														}
 													</td>
+													<ModalDeleteVermifuge idVermifugo={e.id_aplicacao} />
 												</tr>
 											);
 										})

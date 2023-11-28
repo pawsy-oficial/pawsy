@@ -3,22 +3,22 @@ import Cookies from "js-cookie";
 import { Trash, Warning } from "@phosphor-icons/react";
 import axios from "axios";
 
-export default function ModalDeleteVaccine() {
+export default function ModalDeleteVermifuge({idVermifugo}) {
   const jwtTokenMedic = Cookies.get("jwtTokenMedic");
 
-  const handleExcluirVacina = () => {
+  const handleExcluirVermifugo = () => {
     axios
-      .delete(`${import.meta.env.VITE_URL}/delete-vacina`, {
+      .delete(`${import.meta.env.VITE_URL}/delete-vermifugo/1`, {
         headers: {
           Authorization: `Bearer ${jwtTokenMedic}`,
         },
       })
       .then(() => {
-        console.log("vacina excluída com sucesso");
+        console.log("vermifugo excluída com sucesso");
         location.reload()
       })
       .catch(() => {
-        console.log("vacina não excluída");
+        console.log("vermifugo não excluída");
       });
   };
   return (
@@ -54,12 +54,12 @@ export default function ModalDeleteVaccine() {
               <div className="flex items-center gap-2 justify-center flex-col">
                 <Warning color="#dc3454" size={40} weight="fill" />
                 <h3 className="text-2xl font-bold font-sora text-center">
-                  Você tem certeza que deseja excluir esta vacina?
+                  Você tem certeza que deseja excluir este vermifugo?
                 </h3>
               </div>
 
               <p className="text-center">
-                Você está prestes a excluir esta vacina. Você quer continuar?
+                Você está prestes a excluir este vermifugo. Você quer continuar?
               </p>
             </main>
           </AlertDialog.Description>
@@ -78,7 +78,7 @@ export default function ModalDeleteVaccine() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleExcluirVacina();
+                  handleExcluirVermifugo();
                 }}
                 className="hover:bg-red-error w-full hover:text-white transition-all rounded py-1 px-4 text-red-error border border-red-error "
               >
