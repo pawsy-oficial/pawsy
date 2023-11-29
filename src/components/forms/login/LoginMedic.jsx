@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useState } from "react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 const schema = Yup.object().shape({
     email: Yup.string().email("Digite um endereço de e-mail válido").required("Campo obrigatório"),
@@ -12,6 +13,7 @@ const schema = Yup.object().shape({
 });
 
 export default function LoginFormMedic() {
+    const [toggleViewPassword, setToggleViewPassword] = useState(false)
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
@@ -89,12 +91,32 @@ export default function LoginFormMedic() {
                 </div>
 
                 <div>
-                    <input
-                        type="password"
-                        placeholder="Senha"
-                        className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
-                        {...register("password")}
-                    />
+                    <label
+                        className="relative"
+                    >
+                        <input
+                            type={`${toggleViewPassword ? "text" : "password"}`}
+                            placeholder="Senha"
+                            className="border border-zinc-400 w-full rounded-lg py-2 px-6 focus:border-zinc-600 transition-all"
+                            {...register("password")}
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-4 top-1/2 -translate-y-1/2"
+                            onClick={() => setToggleViewPassword(!toggleViewPassword)}
+                        >
+                            {
+                                toggleViewPassword
+                                    ? <Eye
+                                        size={20}
+                                    />
+                                    : <EyeSlash 
+                                        size={20}
+                                    />
+                            }
+
+                        </button>
+                    </label>
                     {errors.password &&
                         <small className="text-red-error flex items-center gap-2 mt-1">
                             {errors.password.message}

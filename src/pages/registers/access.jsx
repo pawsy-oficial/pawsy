@@ -29,9 +29,9 @@ export default function Access() {
             <main className={`h-screen`}>
                 <HeaderLogin style={style}/>
                 <div
-                    className="px-8 lg:px-0 max-w-7xl mx-auto h-full flex items-center"
+                    className="px-8 xl:px-0 max-w-7xl mx-auto h-full flex items-center"
                 >
-                    <ButtonOptions />
+                    <SectionButtonsOptions />
                 </div>
             </main>
             <div className="h-screen w-full md:w-1/2 bg-banner bg-cover absolute right-0 top-0 -z-10" />
@@ -40,7 +40,7 @@ export default function Access() {
 }
 
 
-function ButtonOptions({  }) {
+function SectionButtonsOptions({  }) {
 
     const [ animate, setAnimate ] = useState(false)
 
@@ -54,9 +54,27 @@ function ButtonOptions({  }) {
                 Crie ou acesse sua conta como:
             </p>
             <div className="flex flex-col gap-6">
-                <ButtonOptionsLogin click={setAnimate} description={"Acesso para tutores de animais de estimação"} title={"Tutor"} imageName={paw} slug={"tutor"} />
-                <ButtonOptionsLogin click={setAnimate} description={"Acesso para clínicas veterinárias"} title={"Clínica"} imageName={clinic} slug={"clinica"} />
-                <ButtonOptionsLogin click={setAnimate} description={"Acesso para profissionais da área veterinária"} title={"Veterinário"} imageName={vet} slug={"veterinario"} />
+                <ButtonOptionsLogin 
+                    click={setAnimate} 
+                    description={"Acesso para tutores de animais de estimação"} 
+                    title={"Tutor"} 
+                    imageName={paw} 
+                    slug={"tutor"} 
+                />
+                <ButtonOptionsLogin 
+                    click={setAnimate} 
+                    description={"Acesso para clínicas veterinárias"} 
+                    title={"Clínica"} 
+                    imageName={clinic} 
+                    slug={"clinica"} 
+                />
+                <ButtonOptionsLogin 
+                    click={setAnimate} 
+                    description={"Acesso para profissionais da área veterinária"} 
+                    title={"Veterinário"} 
+                    imageName={vet} 
+                    slug={"veterinario"} 
+                />
             </div>
         </section>
     )

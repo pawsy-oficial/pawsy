@@ -12,6 +12,17 @@ import BoxAbout from "../../components/cardsAndBoxes/boxAbout";
 
 const infoTeam = [
     {
+        name: "Luana Alcantara",
+        role: "Documentação",
+        img: luana,
+        network: [
+            {
+                instagram: "https://instagram.com/romu_013",
+                linkedin: "https://linkedin.com/in/romullomelo",
+            }
+        ]
+    },
+    {
         name: "Fernando Fernandes",
         role: "Desenvolvedor",
         img: fernando,
@@ -20,17 +31,6 @@ const infoTeam = [
                 instagram: "https://instagram.com/romu_013",
                 linkedin: "hhttps://www.linkedin.com/in/fernando-fernandes-moraes-da-silva/",
                 github: "https://github.com/Fernando-Fernandes05"
-            }
-        ]
-    },
-    {
-        name: "Luana Alcantara",
-        role: "Documentação",
-        img: luana,
-        network: [
-            {
-                instagram: "https://instagram.com/romu_013",
-                linkedin: "https://linkedin.com/in/romullomelo",
             }
         ]
     },
@@ -82,14 +82,15 @@ export default function AboutUs() {
             >
                 <img
                     src={pet}
-                    className="absolute bottom-0 translate-y-9 left-8 drop-shadow-md"
+                    className="absolute bottom-0 lg:translate-y-9 md:translate-y-6 translate-y-4 left-8 drop-shadow-md w-60 sm:w-1/2 lg:w-fit"
                     draggable="false"
+                    alt="Cachorro filhote olhando para a frente da tela, enquanto esta com as duas patas "
                 />
                 <div
-                    className="max-w-xl mx-auto w-full"
+                    className="max-w-xl mx-auto w-full px-6"
                 >
                     <h1
-                        className="text-6xl text-white font-baloo2 font-bold"
+                        className="text-6xl text-white font-baloo2 font-bold text-center md:text-end"
                     >
                         Sobre nós
                     </h1>
@@ -100,7 +101,7 @@ export default function AboutUs() {
                 className="my-10 max-w-5xl mx-auto"
             >
                 <article
-                    className="max-w-4xl flex flex-col gap-6 items-start"
+                    className="max-w-4xl flex flex-col gap-6 items-start px-6 md:px-10"
                 >
                     <img src={space} className="h-5"/>
 
