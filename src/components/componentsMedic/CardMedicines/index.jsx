@@ -2,7 +2,7 @@ export function CardMedicines({ nameDrug, consentration, time, amount, route, do
 	return (
 		<>
 			<article
-				className="relative group flex flex-col mx-auto pb-8 pt-4 px-6 gap-3 w-[531px] border border-[#1BA8C4] rounded-lg z-10"
+				className="relative group flex flex-col pb-8 pt-4 px-6 gap-3 border border-[#1BA8C4] rounded-lg z-10"
 			>
 				<div className="flex flex-col gap-2">
 					<div className="flex gap-8 text-xs items-center">

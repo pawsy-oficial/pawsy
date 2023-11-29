@@ -47,7 +47,7 @@ export function Revenues({ idRevenue }) {
 
 	return (
 		<main
-			className="w-[21cm] h-[calc(29cm+25px)] mb-8 mx-auto bg-white border border-primary relative"
+			className="w-full h-full mb-8 mx-auto bg-white border border-primary relative"
 		>
 			<img
 				src={LogoWaterMark}
@@ -92,7 +92,7 @@ export function Revenues({ idRevenue }) {
 				</div>
 			</div>
 
-			<section className="flex flex-col gap-6 py-8 z-10">
+			<section className="flex flex-col gap-6 py-8 z-10 px-8">
 				{
 					dataDrug.map((dd, i) => {
 
