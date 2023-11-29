@@ -1,6 +1,7 @@
 import BoxPrice from "../../components/cardsAndBoxes/boxPrice";
 import Footer from "../../components/footer";
 import { HeaderLandingPage } from "../../components/header/Header";
+import useTopToScreen from "../../hook/useTopToScreen";
 
 const listBenefitsBasic = [
     "LoremLoremLoremLoremLorem",
@@ -30,11 +31,12 @@ export default function Plans() {
     const style = {
         position: "relative"    
     }
+
+    useTopToScreen()
     
     return (
         <>
             <HeaderLandingPage style={style} />
-
             <main
                 className="my-10 max-w-5xl mx-auto flex flex-col gap-8"
             >

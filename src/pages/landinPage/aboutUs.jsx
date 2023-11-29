@@ -28,7 +28,7 @@ const infoTeam = [
         img: fernando,
         network: [
             {
-                instagram: "https://instagram.com/romu_013",
+                instagram: "https://instagram.com/fer.fernandes05",
                 linkedin: "hhttps://www.linkedin.com/in/fernando-fernandes-moraes-da-silva/",
                 github: "https://github.com/Fernando-Fernandes05"
             }
