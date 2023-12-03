@@ -9,7 +9,7 @@ export default {
         "red-error": "#DC3545",
         "red-error-100": "#FFD0CB", 
         "secundary": "#1BA8C4",
-        "green": "#22937E"
+        "green-pawsy": "#22937E"
       },
       fontFamily:{
         lato: '"lato", sans-serif',

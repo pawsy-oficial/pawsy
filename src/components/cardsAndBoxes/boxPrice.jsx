@@ -49,7 +49,7 @@ export default function BoxPrice({ price, listBenefits, month=false, recommended
 
             <button 
                 type="button"
-                className="py-3 rounded-lg bg-green w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
+                className="py-3 rounded-lg green-pawsy w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
             >
                 {price == 0 ? "Padrão" : "Teste grátis"}
             </button>

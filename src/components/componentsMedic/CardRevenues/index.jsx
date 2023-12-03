@@ -1,7 +1,7 @@
 import { Trash } from "@phosphor-icons/react";
 import ModalDeleteRevenues from "../../modalDeleteRevenue";
 
-export function CardRevenues({ emissao, validade, dr, state, idRevenue }) {
+export function CardRevenues({ emissao, validade, dr, state, idRevenue, pet, clinic, medic }) {
   return (
     <>
       <a
@@ -16,7 +16,7 @@ export function CardRevenues({ emissao, validade, dr, state, idRevenue }) {
         <p>Emissão: {emissao}</p>
         <p>Validade: {validade}</p>
         <p className="capitalize">Dr(a) {dr}</p>
-          <ModalDeleteRevenues idRevenue={idRevenue} />
+          <ModalDeleteRevenues idRevenue={idRevenue} pet={pet} clinic={clinic} medic={medic}/>
       </a>
     </>
   );

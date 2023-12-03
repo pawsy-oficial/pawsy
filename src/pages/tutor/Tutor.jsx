@@ -55,7 +55,11 @@ export default function Tutor() {
                         addPet
                             ? (
                                 <>
-                                    <InfoPets showPet={showPet} stateEdit={stateEdit} setStateEdit={setStateEdit}/>
+                                    <InfoPets 
+                                        showPet={showPet} 
+                                        stateEdit={stateEdit} 
+                                        setStateEdit={setStateEdit}
+                                    />
                                     <section className="lg:w-64 w-full bg-white px-4 py-2 lg:py-8 rounded-2xl flex flex-col gap-5 h-max">
                                         <SelectMyPet 
                                             action={setShowPet} 

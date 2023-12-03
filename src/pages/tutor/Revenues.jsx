@@ -83,12 +83,12 @@ function RevenuesList({ state }) {
 			<div className="px-6 pb-6">
 				<div
 					className="flex flex-col gap-2"
-				>
+					>
 					{
 						revenues.length == 0
 							? <p className="text-zinc-500 text-sm" >Não há receitas para esse pet</p>
 							: revenues.filter((revenue) => {
-								return dayjs(revenue.dt_validade).format("YYYY-MM-DD") > dayjs().format("YYYY-MM-DD")
+								return dayjs(revenue.dt_validade).format("YYYY-MM-DD") > dayjs().format("YYYY-MM-DD") && revenue.id_pet == myPets[option].pet.id_pawsy
 							}).map(revenue => {
 								return (
 									<CardReceitas

@@ -16,7 +16,7 @@ const RevenuesList = ({ state }) => {
 	const location = useLocation()
 
 	const { pet, clinic, medic } = location.state
-
+	
 	const [ revenues, setRevenues ] = useState([])
 
 	useEffect(()=>{
@@ -58,6 +58,10 @@ const RevenuesList = ({ state }) => {
 								state={state}
 								idRevenue={r.id_receita}
 								key={i}
+
+								pet={pet} 
+								clinic={clinic}
+								medic={medic}
 							/>
 						)
 					})

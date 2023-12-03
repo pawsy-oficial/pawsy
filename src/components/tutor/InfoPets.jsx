@@ -163,7 +163,7 @@ function ProfileTutor({ showPet, setStateEdit, stateEdit }) {
                                     {
                                         myPet[showPet].history.length == 0 
                                         ? <p className='w-full text-zinc-500 text-center text-sm'>Seu pet merece o melhor cuidado, e um histórico médico bem preenchido é um passo importante.</p>
-                                        : myPet[showPet].history.map((history, index) => {
+                                        : myPet[showPet].history.sort((a,b)=> b.id - a.id).map((history, index) => {
                                             return (
                                                 <div
                                                     className="w-full bg-[#F5FFFE] rounded py-3 px-6 flex gap-4 justify-between items-center"
