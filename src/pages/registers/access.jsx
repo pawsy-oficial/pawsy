@@ -7,14 +7,17 @@ import vet from "../../img/vet.png"
 import clinic from "../../img/clinic.png"
 
 import "../../style/animate.css"
+import useAuthUser from "../../hook/useAuthUser"
+import { useNavigate } from "react-router"
 
 export default function Access() {
+    useAuthUser()
 
     const style = {
         position: "absolute"
     }
-    
 
+    
     useEffect(() => {
         document.body.classList.add("bg-primary")
         
