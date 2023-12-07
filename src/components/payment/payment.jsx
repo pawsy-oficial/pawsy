@@ -1,50 +1,38 @@
 import { CaretLeft, Check, CreditCard, PaypalLogo } from "@phosphor-icons/react"
 import Logo from "../../img/logoPawsy.svg"
+import PixIcon from "../../img/pix_icon.png"
 import ButtonFormPayment from "../buttons/ButtonFormPayment"
 import { HeaderLandingPage } from "../header/Header"
 import InputMask from "react-input-mask"
 import { useState } from "react"
+
+const PLANS_DB = [
+    {
+        price: 1.00,
+        name: "Pawsy Basic",
+        qntInstallments: 12,
+        installments: 1.00
+    },
+    {
+        price: 2.00,
+        name: "Pawsy +",
+        qntInstallments: 12,
+        installments: 2.00
+    },
+    {
+        price: 3.00,
+        name: "Pawsy Ultra",
+        qntInstallments: 2,
+        installments: 3.00
+    }
+]
+
 
 export default function Payment({ idPayment, planScreen }) {
     const style = {
         position: "stick",
         top: 0,
         background: "#fff"
-    }
-
-    const [ typePayment, setTypePayment ] = useState(1)
-
-    function OptionPayment(){
-        switch (typePayment) {
-            case "Cartão":
-                return <DataCreditCard />
-            case "PayPal":
-                return (
-                    <div
-                        className="flex gap-3 items-center"
-                    >
-                        <div
-                            className="w-10 h-10 rounded-full bg-pawsy-green/20 flex items-center justify-center"
-                        >
-                            <Check color="#22937E" size={32} weight="bold" />
-                        </div>
-                        <p>Você será redirecionado após a <strong>confirmação de pagamento</strong>.</p>
-                    </div>
-                )
-            case "PIX":
-                return (
-                    <div
-                        className="flex gap-3 items-center"
-                    >
-                        <div
-                            className="w-10 h-10 rounded-full bg-pawsy-green/20 flex items-center justify-center"
-                        >
-                            <Check color="#22937E" size={32} weight="bold" />
-                        </div>
-                        <p>A chave Pix será gerada após a <strong>confirmação do pagamento</strong>.</p>
-                    </div>
-                )
-        }
     }
 
     return (
@@ -70,7 +58,9 @@ export default function Payment({ idPayment, planScreen }) {
                     <h2
                         className="text-[2rem] font-baloo2 font-semibold"
                     >
-                        Pawsy +
+                        {
+                            PLANS_DB[idPayment].name
+                        }
                     </h2>
 
                     <div
@@ -79,12 +69,18 @@ export default function Payment({ idPayment, planScreen }) {
                         <strong
                             className="text-lg"
                         >
-                            até 12x de R$9,00
+                            até {
+                                PLANS_DB[idPayment].qntInstallments
+                            }x de R${
+                                PLANS_DB[idPayment].installments
+                            }
                         </strong>
                         <span
                             className="text-base"
                         >
-                            à vista R$ 100,00
+                            à vista R$ {
+                                PLANS_DB[idPayment].price
+                            }
                         </span>
                     </div>
                 </div>
@@ -116,53 +112,7 @@ export default function Payment({ idPayment, planScreen }) {
                     </div>
                 </section>
 
-                <section
-                    className="flex flex-col gap-6"
-                >
-                    <strong
-                        className="text-2xl font-semibold"
-                    >
-                        Forma de pagamento
-                    </strong>
-
-                    <div
-                        className="flex gap-10 justify-between"
-                    >
-                        <ButtonFormPayment
-                            icon={<CreditCard size={32} color="#22B77E" weight="duotone" />}
-                            typeForm="Cartão"
-                            typePayment={setTypePayment}
-                        />
-                        <ButtonFormPayment
-                            icon={<PaypalLogo size={32} color="#22B77E" weight="duotone" />}
-                            typeForm="PayPal"
-                            typePayment={setTypePayment}
-                        />
-                        <ButtonFormPayment
-                            // icon={<CreditCard size={32} color="#22B77E" weight="duotone" />}
-                            typePayment={setTypePayment}
-                            typeForm="PIX"
-                        />
-                    </div>
-                </section>
-                <section
-                    className="flex flex-col gap-6"
-                >
-                    <strong
-                        className="text-2xl font-semibold"
-                    >
-                        Digite seu CPF
-                    </strong>
-
-                    <InputMask
-                        mask={"999.999.999-99"}
-                        maskChar={null}
-                        placeholder={"CEP"}
-                        className="rounded-lg border-2 border-pawsy-green py-1 p-2 text-base w-fit"
-                    />
-                </section>
-
-                <OptionPayment/>
+                <SectionPaymentOption />
 
                 <button
                     type="submit"
@@ -182,6 +132,8 @@ export default function Payment({ idPayment, planScreen }) {
         </main>
     )
 }
+
+
 
 function DataCreditCard() {
     return (
@@ -271,5 +223,94 @@ function DataCreditCard() {
 
             </div>
         </section>
+    )
+}
+
+
+function SectionPaymentOption({ idPayment }) {
+    const [typePayment, setTypePayment] = useState(1)
+
+    function OptionPayment() {
+        switch (typePayment) {
+            case "Cartão":
+                return <DataCreditCard />
+            case "PayPal":
+                return (
+                    <div
+                        className="flex gap-3 items-center"
+                    >
+                        <div
+                            className="w-10 h-10 rounded-full bg-pawsy-green/20 flex items-center justify-center"
+                        >
+                            <Check color="#22937E" size={32} weight="bold" />
+                        </div>
+                        <p>Você será redirecionado após a <strong>confirmação de pagamento</strong>.</p>
+                    </div>
+                )
+            case "PIX":
+                return (
+                    <div
+                        className="flex gap-3 items-center"
+                    >
+                        <div
+                            className="w-10 h-10 rounded-full bg-pawsy-green/20 flex items-center justify-center"
+                        >
+                            <Check color="#22937E" size={32} weight="bold" />
+                        </div>
+                        <p>A chave Pix será gerada após a <strong>confirmação do pagamento</strong>.</p>
+                    </div>
+                )
+        }
+    }
+    return (
+        <>
+            <section
+                className="flex flex-col gap-6"
+            >
+                <strong
+                    className="text-2xl font-semibold"
+                >
+                    Forma de pagamento
+                </strong>
+
+                <div
+                    className="flex gap-10 justify-between"
+                >
+                    <ButtonFormPayment
+                        icon={<CreditCard size={32} color="#22B77E" weight="fill" />}
+                        typeForm="Cartão"
+                        typePayment={setTypePayment}
+                    />
+                    <ButtonFormPayment
+                        icon={<PaypalLogo size={32} color="#22B77E" weight="fill" />}
+                        typeForm="PayPal"
+                        typePayment={setTypePayment}
+                    />
+                    <ButtonFormPayment
+                        icon={<img src={PixIcon} />}
+                        typePayment={setTypePayment}
+                        typeForm="PIX"
+                    />
+                </div>
+            </section>
+            <section
+                className="flex flex-col gap-6"
+            >
+                <strong
+                    className="text-2xl font-semibold"
+                >
+                    Digite seu CPF
+                </strong>
+
+                <InputMask
+                    mask={"999.999.999-99"}
+                    maskChar={null}
+                    placeholder={"CEP"}
+                    className="rounded-lg border-2 border-pawsy-green py-1 p-2 text-base w-fit"
+                />
+            </section>
+
+            <OptionPayment />
+        </>
     )
 }
