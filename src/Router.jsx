@@ -54,18 +54,18 @@ import Vaccine from "./pages/medic/vaccine";
 import MarketingRevenue from "./pages/medic/revenues";
 import NewRevenues from "./pages/medic/newRevenues";
 import { LoadingPagesPlaceholder } from "./components/loadings/Loading";
-import Plans from "./pages/landinPage/plans";
 import AboutUs from "./pages/landinPage/aboutUs";
 import Features from "./pages/landinPage/features";
 import PageNotFound from "./pages/pageNotFound";
 import HomeSchedule from "./pages/clinic/HomeSchedule";
 import ProfileClinic from "./pages/profileClinic";
 import Terms from "./pages/landinPage/terms";
+import PlansPage from "./pages/landinPage/plans";
 
 export default function Router() {
 	return (
 		<Routes>
-			<Route path="/planos" element={<Plans />} />
+			<Route path="/planos" element={<PlansPage />} />
 			<Route path="/sobre" element={<AboutUs />} />
 			<Route path="/recursos" element={<Features />} />
 			<Route path="/termos-privacidade" element={<Terms />} />

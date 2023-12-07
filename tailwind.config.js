@@ -9,7 +9,7 @@ export default {
         "red-error": "#DC3545",
         "red-error-100": "#FFD0CB", 
         "secundary": "#1BA8C4",
-        "green-pawsy": "#22937E"
+        "pawsy-green": "#22937E"
       },
       fontFamily:{
         lato: '"lato", sans-serif',
@@ -20,7 +20,8 @@ export default {
         "banner": "url(../bannerLogin.jpg)",
         "mockup": "url(../mockup.png)",
         "banner_footer": "url(../banner_footer.jpg)",
-        "paws": "url(../bg_paws.png)"
+        "paws": "url(../bg_paws.png)",
+        "banner_payment": "url(../bg_payment.png)"
       }
     },
   },

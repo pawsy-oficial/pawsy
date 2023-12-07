@@ -1,9 +1,11 @@
 import { CheckCircle } from "@phosphor-icons/react"
+import { useNavigate } from "react-router-dom"
 
-export default function BoxPrice({ price, listBenefits, month=false, recommended=false }){
+export default function BoxPrice({ price, listBenefits, month=false, recommended=false, idPlain, planScreen, isPlan }){
+    const navigate = useNavigate()
     return(
         <section
-            className={`p-6 rounded-lg max-w-xs w-full flex flex-col gap-10 items-center justify-between relative ${recommended && "border border-primary"}`}
+            className={`p-6 rounded-lg bg-white max-w-xs w-full flex flex-col gap-10 items-center justify-between relative ${recommended && "border border-primary"}`}
             style={{boxShadow: "0px 0px 7.3px 0px rgba(64, 64, 64, 0.20)"}}
         >
             {
@@ -49,7 +51,11 @@ export default function BoxPrice({ price, listBenefits, month=false, recommended
 
             <button 
                 type="button"
-                className="py-3 rounded-lg green-pawsy w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
+                className="py-3 rounded-lg bg-pawsy-green w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
+                onClick={()=>{
+                    planScreen(true)
+                    isPlan(idPlain)
+                }}
             >
                 {price == 0 ? "Padrão" : "Teste grátis"}
             </button>

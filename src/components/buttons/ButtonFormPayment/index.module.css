@@ -1,0 +1,7 @@
+input[type="radio"]:checked + label.box {
+    background: #e2f5fa;
+}
+
+input[type="radio"]:checked + label.box > svg {
+    @apply fill-zinc-800
+}
