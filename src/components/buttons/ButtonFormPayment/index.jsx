@@ -1,7 +1,7 @@
 import { SmileyXEyes } from "@phosphor-icons/react";
 import styles from "./index.module.css"
 
-export default function ButtonFormPayment({ icon = <SmileyXEyes size={32} />, typeForm = "not found" }) {
+export default function ButtonFormPayment({ icon = <SmileyXEyes size={32} />, typeForm = "not found", typePayment }) {
     const dateTime = Math.random()*new Date().getTime()
     return (
         <>
@@ -14,6 +14,7 @@ export default function ButtonFormPayment({ icon = <SmileyXEyes size={32} />, ty
             <label
                 className={`flex gap-3 cursor-pointer items-center p-6 border-2 transition-all duration-500 border-pawsy-green rounded-lg w-full ${styles.box} ${styles.light}`}
                 htmlFor={dateTime}
+                onClick={()=>typePayment(typeForm)}
             >
                 {
                     icon
