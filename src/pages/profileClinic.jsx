@@ -13,15 +13,16 @@ import { UpdateFormClinic } from "../components/forms/UpdateForm";
 import GoBack from "../components/buttons/GoBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import CommentsClinic from "../components/commentsClinic";
+import { SwitchClinic } from "../components/inputsComponents";
 
 
 export default function ProfileClinic() {
-
+    
     const location = useLocation()
     const navigate = useNavigate()
-
+    
     const isOwner = (Cookies.get().jwtTokenClinic) && true
-
+    
     const [see, setSee] = useState(false)
     const [infoClinic, setInfoClinic] = useState([])
     const [stateEdit, setStateEdit] = useState(false)
@@ -33,6 +34,8 @@ export default function ProfileClinic() {
         message: null,
         messageError: false
     })
+    const [statusClinica, setStatusClinica] = useState(false); // "Aberta" ou "Fechada"
+    console.log(statusClinica)
 
     let token
 
@@ -48,6 +51,11 @@ export default function ProfileClinic() {
                     .then(e => {
                         setInfoClinic(e.data);
                         setTextAboutUs(e.data.storedDescriptionClinica)
+                        axios.get(
+                            `${import.meta.env.VITE_URL}/getStatus-clinica/${e.data.storedIdClinica}`
+                            ).then((e => {
+                                setStatusClinica(e.data);
+                            }))
                     })
                     .catch(err => {
                         console.log(err)
@@ -131,7 +139,36 @@ export default function ProfileClinic() {
             )
     }, [])
 
-    return (
+
+    // useEffect(() => {
+    //     const buscarStatusClinica = async (idClinica) => {
+    //         try {
+    //             const resposta = await axios.get(
+    //         `${import.meta.env.VITE_URL}/getStatus-clinica/${idClinica}`
+    //         );
+    //         setStatusClinica(resposta.data);
+    //         console.log(statusClinica)
+    //         } catch (erro) {
+    //             console.error("Erro ao buscar o status da clínica:", erro);
+    //         }
+    //     };
+    //     buscarStatusClinica(infoClinic.storedIdClinica)
+    //     console.log(infoClinic.storedIdClinica)
+    // }, [])
+
+    const alternarStatusClinica = async (idClinica) => {
+        try {
+            const resposta = await axios.post(
+            `${import.meta.env.VITE_URL}/openClose-clinica/${idClinica}`
+             );
+            setStatusClinica(resposta.data === 0 ? true : false);
+            window.location.reload();
+        } catch (erro) {
+            console.error("Erro ao alternar o status da clínica:", erro);
+        }
+    };
+    
+return (
         <main className="flex min-h-screen">
             {
                 isOwner ? <NavbarClinic page={3} /> : <NavbarTutor page={3} />
@@ -239,8 +276,10 @@ export default function ProfileClinic() {
                                 {
                                     isOwner && (
                                         <div
-                                            className="flex gap-3"
+                                            className="flex gap-3 items-center"
                                         >
+                                            <label className="text-sm text-gray-600">Abrir a loja:</label>
+                                            <SwitchClinic state={statusClinica} onChange={() => alternarStatusClinica(infoClinic.storedIdClinica)} />
                                             <button
                                                 className="px-4 py-2 bg-primary rounded text-white font-lato text-xs hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-25 disabled:transition-all"
                                                 disabled={stateEdit}

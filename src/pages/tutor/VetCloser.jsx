@@ -291,6 +291,8 @@ export default function VetCloser() {
 
 	const [clinicInfoPreview, setClinicInfoPreview] = useState([])
 	const [adsPreview, setAdsPreview] = useState([])
+	const [statusClinic, setStatusClinic] = useState(false)
+
 	useEffect(() => {
 		clinicCloser.forEach(id => {
 			axios.get(`${import.meta.env.VITE_URL}/ClinicPreviews?id=${id}`)
@@ -347,7 +349,7 @@ export default function VetCloser() {
 												address={clinicInfo.Endereco}
 												img={clinicInfo.Imagem}
 												id={clinicInfo.Id}
-												clinicOpenOrClose={"Aberto"}
+												clinicOpenOrClose={clinicInfo.Status}
 											// distanceFromTheClinic={"1.5 km"} 
 											// assessment={"4,0"}
 											/>
