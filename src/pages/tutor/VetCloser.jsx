@@ -266,7 +266,6 @@ export default function VetCloser() {
 							<h3 class="text-2xl font-lato font-bold capitalize">
 								${pin.metadata.nameClinic}
 							</h3>
-							<span class="text-green-600 text-xs">aberto</span>
 						</div>
 					</div>
 					<div class="flex flex-col">
