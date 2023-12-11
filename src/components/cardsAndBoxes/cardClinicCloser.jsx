@@ -24,7 +24,9 @@ function CardsVetCloser({ nameClinic, clinicOpenOrClose, address, id, img }) {
                 </div>
                 <div className="flex flex-col items-start text-start">
                     <h1 className="text-2xl">{nameClinic}</h1>
-                    <p className="text-xs text-[#409E44]">{clinicOpenOrClose}</p>
+                    <p className={`text-xs ${clinicOpenOrClose === 'Fechado' ? "text-[#ff0000]" : "text-[#409E44]"}`}>
+                        {clinicOpenOrClose}
+                    </p>
                 </div>
             </div>
             <a 

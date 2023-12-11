@@ -19,6 +19,17 @@ export default function WellBeing() {
   const tokenTutor = Cookies.get("jwtTokenTutor");
   const [namePet, setNamePet] = useState("");
   const [myPets, setMyPets] = useState([]);
+  const [idPet, setIdPet] = useState(null);
+  const [infoBem, setInfoBem] = useState({
+    peso: "S/D",
+    altura: "S/D",
+    passeio: "S/D",
+    vacina: "S/D",
+    dataAplicacaoVacina: "S/D",
+    ultimaConsultaFeita: "S/D",
+    consulta: "S/D",
+    dataAplicacaoVerificador: "S/D",
+  });
 
   const getWellbeingLevel = (petId) => {
     axios
@@ -74,6 +85,19 @@ export default function WellBeing() {
     }
   };
 
+  const getPetWellbeingInfo = (petId) => {
+    axios
+      .get(`${import.meta.env.VITE_URL}/get-bem-estar/${petId}`, {
+        headers: {
+          Authorization: `Bearer ${tokenTutor}`,
+        },
+      })
+      .then((res) => {
+        setInfoBem(res.data);
+      })
+      .catch((err) => console.error('Erro ao buscar informações de bem-estar do pet:', err));
+  };
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_URL}/profileTutor`, {
@@ -92,16 +116,33 @@ export default function WellBeing() {
             }
           )
           .then((res) => {
-            setMyPets(res.data); 
+            setMyPets(res.data);
             if (res.data.length > 0) {
               setNamePet(res.data[0].nmPet);
-              getWellbeingLevel(res.data[0].idPet);
+              setIdPet(res.data[0].idPet);
             }
           })
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }, [tokenTutor]);
+
+  useEffect(() => {
+    if (idPet) {
+      getWellbeingLevel(idPet);
+      getPetWellbeingInfo(idPet);
+    }
+  }, [idPet, tokenTutor]);
+
+  const PasseioSucess = async (idPet) => {
+    await axios.post(`${import.meta.env.VITE_URL}/passeio/${idPet}`, {
+      headers: {
+        Authorization: `Bearer ${tokenTutor}`,
+      },
+    }).then(
+        window.location.reload()
+    )
+  }
 
   return (
     <main className="flex min-h-screen">
@@ -112,6 +153,7 @@ export default function WellBeing() {
           <div className="w-[calc(100%-32px)] lg:max-w-5xl lg:w-full my-8 mx-auto bg-white rounded-lg shadow-md p-6">
             <SelectPets
               pets={myPets}
+              idPets={idPet}
               setNamePet={setNamePet}
               name={namePet}
               getWellbeingLevel={getWellbeingLevel}
@@ -138,27 +180,46 @@ export default function WellBeing() {
               </div>
             </div>
 
-            <div className="flex justify-between md:justify-center gap-6 sm:gap-28">
-              <div className="rounded py-1 px-2 border border-primary flex gap-4 items-center">
-                <Scales size={32} weight="bold" />
-                <span>20,3 kg</span>
-              </div>
-              <div className="rounded py-1 px-2 border border-primary flex gap-4 items-center">
-                <Ruler size={32} weight="bold" />
-                <span>0,40 m</span>
-              </div>
+          <div className="flex justify-between items-center md:justify-center gap-6 sm:gap-28">
+            <div className="rounded py-1 px-2 border border-primary flex gap-4 items-center">
+              <Scales size={32} weight="bold" />
+              <span>{infoBem && infoBem[0] && infoBem[0].peso || "S/D"} kg</span>
             </div>
+            <div className="rounded py-1 px-2 border border-primary flex gap-4 items-center">
+              <Ruler size={32} weight="bold" />
+              <span>{infoBem && infoBem[0] && infoBem[0].altura || "S/D"} m</span>
+            </div>
+            <div className="flex gap-2 items-center">
+              <button
+                type="submit"
+                onClick={() => PasseioSucess(idPet)}
+                className="font-bold text-white bg-primary rounded py-1 px-2 border-2 border-secundary flex gap-4 items-center"
+              >PASSEIO</button>
+              <span className="text-xs font-semibold">Último passeio: {infoBem && infoBem[0] && infoBem[0].passeio || "S/D"}</span>
+            </div>
+          </div>
 
-            <div className="flex flex-col md:flex-row justify-center gap-5 my-8 mx-auto">
-              <Container
-                title={"Vacina"}
-                last={"antirrábica - 12/12/2022"}
-                next={"V10 - 06/2023"}
-                alert={false}
-              />
-              <Container title={"Consulta"} last={"12/12/2022"} next={"não agendada"} alert={true} />
-              <Container title={"Vermifugação"} last={"08/01/2023"} next={"Vermifugação em atraso"} alert={true} />
-            </div>
+          <div className="flex flex-col md:flex-row justify-center gap-5 my-8 mx-auto">
+            <Container
+              title={"Vacina"}
+              last={`${infoBem && infoBem[0] && infoBem[0].vacina || "S/D"} - ${infoBem && infoBem[0] && infoBem[0].dataAplicacaoVacina || "S/D"}`}
+              next={"V10 - 01/2024"}
+              alert={false}
+            />
+            <Container 
+              title={"Consulta"} 
+              last={infoBem && infoBem[0] && infoBem[0].ultimaConsultaFeita || "S/D"}
+              next={infoBem && infoBem[0] && infoBem[0].consulta || "S/D"}
+              alert={false} 
+            />
+            <Container 
+              title={"Vermifugação"} 
+              last={infoBem && infoBem[0] && infoBem[0].dataAplicacaoVerificador || "S/D"} 
+              next={"Vermifugação em atraso"} 
+              alert={true} 
+            />
+          </div>
+
           </div>
         </main>
       </section>
@@ -186,7 +247,7 @@ function Container({ title, last, next, alert }) {
   );
 }
 
-function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
+function SelectPets({ idPets, pets, setNamePet, name, getWellbeingLevel }) {
   return (
     <Select.Root
       value={name}
@@ -194,6 +255,7 @@ function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
         setNamePet(newValue);
         const selectedPet = pets.find((pet) => pet.nmPet === newValue);
         if (selectedPet) {
+          setIdPet(selectedPet.idPet);
           getWellbeingLevel(selectedPet.idPet);
         }
       }}
@@ -216,6 +278,7 @@ function SelectPets({ pets, setNamePet, name, getWellbeingLevel }) {
                 <Select.Item
                   value={pet.nmPet}
                   className="text-gray-800 cursor-pointer hover:outline-none hover:text-gray-950 text-xl capitalize"
+                  key={pet.idPet}
                 >
                   <Select.ItemText>{pet.nmPet}</Select.ItemText>
                 </Select.Item>
