@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import SectionVeterinary from "./schedule/SectionVeterinary";
 import Restriction from "./schedule/Restriction";
+import dayjs from "dayjs";
 
 function FormNewSchedule({ alterPage }) {
     const [veterinaryName, setVeterinaryName] = useState([]);
@@ -112,6 +113,7 @@ function FormNewSchedule({ alterPage }) {
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                             placeholder="__/__/____"
                             {...register("open-date", { required: true })}
+                            min={dayjs().format("YYYY-MM-DD")}
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -121,6 +123,7 @@ function FormNewSchedule({ alterPage }) {
                             className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                             placeholder="__/__/____"
                             {...register("close-date", { required: true })}
+                            min={dayjs().format("YYYY-MM-DD")}
                         />
                     </div>
                 </div>

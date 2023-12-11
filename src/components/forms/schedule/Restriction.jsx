@@ -1,4 +1,5 @@
 import { Trash } from "@phosphor-icons/react"
+import dayjs from "dayjs"
 import { memo } from "react"
 
 function AddNewRestriction({ index, register, removeRestriction }) {
@@ -11,6 +12,7 @@ function AddNewRestriction({ index, register, removeRestriction }) {
                         className="py-1 px-6 rounded-lg border border-zinc-300 focus:border-primary min-w-[256px]"
                         placeholder="__/__/____"
                         {...register(`restriction.${index}.data`)}
+                        min={dayjs().format("YYYY-MM-DD")}
                     />
                     <button
                         type="button"
