@@ -14,16 +14,16 @@ const PLANS_DB = [
         installments: 1.00
     },
     {
-        price: 2.00,
+        price: 1399.90,
         name: "Pawsy +",
         qntInstallments: 12,
-        installments: 2.00
+        installments: 109.90
     },
     {
-        price: 3.00,
+        price: 1999.90,
         name: "Pawsy Ultra",
-        qntInstallments: 2,
-        installments: 3.00
+        qntInstallments: 12,
+        installments: 158.90
     }
 ]
 
@@ -43,7 +43,7 @@ export default function Payment({ idPayment, planScreen }) {
 
             <form
                 className="max-w-4xl w-full py-24 px-8 flex flex-col gap-8 mx-auto"
-                onSubmit={e => preventDefault(e)}
+                onSubmit={e => e.preventDefault()}
             >
                 <button
                     onClick={() => planScreen(false)}
@@ -72,14 +72,14 @@ export default function Payment({ idPayment, planScreen }) {
                             até {
                                 PLANS_DB[idPayment].qntInstallments
                             }x de R${
-                                PLANS_DB[idPayment].installments
+                                PLANS_DB[idPayment].installments.toFixed(2)
                             }
                         </strong>
                         <span
                             className="text-base"
                         >
-                            à vista R$ {
-                                PLANS_DB[idPayment].price
+                            à vista R${
+                                PLANS_DB[idPayment].price.toFixed(2)
                             }
                         </span>
                     </div>

@@ -3,27 +3,26 @@ import { HeaderLandingPage } from "../header/Header"
 import Footer from "../footer"
 
 const listBenefitsBasic = [
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
+    "Acesso à plataforma",
+    "Limite de médicos integrados (máximo 1)",
+    "Informações dos pacientes",
 ]
 const listBenefitsMonth = [
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
+    "Suporte 24h",
+    "Criar agendas de consultas (1 por mês)",
+    "Criar anúncios",
+    "Acesso à plataforma",
+    "Informações dos pacientes",
+    "Limite de médicos integrados (máximo 3)",
 ]
 const listBenefitsYear = [
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
-    "Lorem Lorem Lorem Lorem Loremo ",
-    "LoremLoremLoremLoremLorem",
-    "LoremLoremLoremLoremLorem",
+    "Ter maior destaque nas consultas dos tutores",
+    "Suporte 24h",
+    "Criar agendas de consultas (ilimitado)",
+    "Criar anúncios",
+    "Acesso à plataforma",
+    "Informações dos pacientes",
+    "Limite de médicos integrados (máximo 10)",
 ]
 
 export default function Plans({ planScreen, isPlan }) {
@@ -63,25 +62,27 @@ export default function Plans({ planScreen, isPlan }) {
                     <BoxPrice
                         listBenefits={listBenefitsBasic}
                         price={0}
-                        month={true}
                         idPlain={0}
+                        
                         planScreen={planScreen}
                         isPlan={isPlan}
                     />
                     <BoxPrice
                         listBenefits={listBenefitsMonth}
-                        price={99.99}
-                        month={true}
+                        price={109.90}
                         idPlain={1}
+                        grossPrice={1399.90}
+                        
                         planScreen={planScreen}
                         isPlan={isPlan}
                     />
                     <BoxPrice
                         listBenefits={listBenefitsYear}
-                        price={998.99}
-                        month={false}
+                        price={158.90}
                         recommended={true}
                         idPlain={2}
+                        grossPrice={1999.90}
+                        
                         planScreen={planScreen}
                         isPlan={isPlan}
                     />

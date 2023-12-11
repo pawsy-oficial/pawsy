@@ -1,7 +1,7 @@
 import { CheckCircle } from "@phosphor-icons/react"
 import { useNavigate } from "react-router-dom"
 
-export default function BoxPrice({ price, listBenefits, month=false, recommended=false, idPlain, planScreen, isPlan }){
+export default function BoxPrice({ price, listBenefits, recommended=false, idPlain, planScreen, isPlan, grossPrice }){
     const navigate = useNavigate()
     return(
         <section
@@ -21,12 +21,21 @@ export default function BoxPrice({ price, listBenefits, month=false, recommended
             <div
                 className="flex flex-col gap-8"
             >
-                <strong
-                    className="text-[2rem] font-sora font-bold text-center w-full inline-block"
+                <div
+                    className="flex flex-col items-center"
                 >
-                    R$ {price} 
-                    <span className="text-base">/{month ? "mês" : "ano"}</span>
-                </strong>
+                    <strong
+                        className="text-[2rem] font-sora font-bold text-center w-full inline-block"
+                    >
+                        {
+                            price != 0 ? <><span className="text-base">12x {" "}</span>R$ {price.toFixed(2)}</> : "GRÁTIS"
+                        }
+                    </strong>
+                    {
+                        price != 0 && <span>à vista R${grossPrice.toFixed(2)}</span>
+                    }
+                    
+                </div>
                 <ul
                     className="flex flex-col gap-2"
                 >
@@ -51,13 +60,16 @@ export default function BoxPrice({ price, listBenefits, month=false, recommended
 
             <button 
                 type="button"
-                className="py-3 rounded-lg bg-pawsy-green w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
+                className="py-3 disabled:opacity-80 disabled:hover:bg-pawsy-green rounded-lg bg-pawsy-green w-full font-lato font-semibold text-white text-lg hover:bg-teal-700 transition-colors duration-300"
                 onClick={()=>{
-                    planScreen(true)
-                    isPlan(idPlain)
+                    price != 0 ? (
+                        planScreen(true),
+                        isPlan(idPlain)    
+                    ) : null
                 }}
+                disabled={!price != 0}
             >
-                {price == 0 ? "Padrão" : "Teste grátis"}
+                {price == 0 ? "Já adquirido" : "Teste grátis"}
             </button>
         </section>
     )
