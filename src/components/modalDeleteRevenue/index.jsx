@@ -28,9 +28,10 @@ export default function ModalDeleteRevenues({ idRevenue, pet, clinic, medic }) {
 					.catch((err) => console.log(err));
 
 			})
-			.catch(() => {
-				console.log("receita não excluída");
-			});
+			// .catch(() => {
+			// 	console.log("receita não excluída");
+			// });
+			window.location.reload()
 	};
 	return (
 		<AlertDialog.Root>

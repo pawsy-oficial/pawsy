@@ -200,10 +200,10 @@ export default function WellBeing() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-center gap-5 my-8 mx-auto">
-            <Container
+            <ContainerVacinas
               title={"Vacina"}
               last={`${infoBem && infoBem[0] && infoBem[0].vacina || "S/D"} - ${infoBem && infoBem[0] && infoBem[0].dataAplicacaoVacina || "S/D"}`}
-              next={"V10 - 01/2024"}
+              next={"S/D"}
               alert={false}
             />
             <Container 
@@ -212,7 +212,7 @@ export default function WellBeing() {
               next={infoBem && infoBem[0] && infoBem[0].consulta || "S/D"}
               alert={false} 
             />
-            <Container 
+            <ContainerVermes
               title={"Vermifugação"} 
               last={infoBem && infoBem[0] && infoBem[0].dataAplicacaoVerificador || "S/D"} 
               next={"Vermifugação em atraso"} 
@@ -242,6 +242,28 @@ function Container({ title, last, next, alert }) {
           {next}
           {alert && <Info weight="bold" size={16} />}
         </span>
+      </div>
+    </div>
+  );
+}
+function ContainerVacinas({ title, last, next, alert }) {
+  return (
+    <div className="flex p-6 bg-white border border-primary rounded-lg relative min-w-[256px] flex-col gap-6">
+      <strong className="bg-white px-3 py-1 absolute -top-4">{title}</strong>
+      <div className="flex flex-col justify-center">
+        <span className="text-sm">Última: </span>
+        <span className="font-bold">{last}</span>
+      </div>
+    </div>
+  );
+}
+function ContainerVermes({ title, last, next, alert }) {
+  return (
+    <div className="flex p-6 bg-white border border-primary rounded-lg relative min-w-[256px] flex-col gap-6">
+      <strong className="bg-white px-3 py-1 absolute -top-4">{title}</strong>
+      <div className="flex flex-col gap-1">
+        <span className="text-sm">Última: </span>
+        <span className="font-bold">{last}</span>
       </div>
     </div>
   );

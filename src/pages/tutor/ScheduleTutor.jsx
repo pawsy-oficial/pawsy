@@ -160,7 +160,7 @@ export function ListSchedulesClinic({ pageControll, idClinic }) {
     };
   
     return (
-      <div>
+      <div className="flex gap-6">
         {agendas.length === 0 ? (
           <p className="text-zinc-500">Não há agendas disponíveis para esta clínica.</p>
         ) : (

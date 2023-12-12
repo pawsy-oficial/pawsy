@@ -33,7 +33,7 @@ function ClientsPerfil({ idClinc }) {
 }
 
 export function VaccinePets() {
-    const clients = ['69', '20'];
+    const clients = ['1', '1'];
     return (
         <div className="w-full max-w-[24rem] bg-white border-l-4 border-[#1F9EAB] rounded-r-lg">
             <h4 className="p-3 text-lg font-medium">

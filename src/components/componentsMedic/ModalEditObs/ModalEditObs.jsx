@@ -166,7 +166,7 @@ export default function ModalEditObs(props) {
                                         <label 
                                             className="flex items-center gap-2 justify-between"
                                         >
-                                            <span>Tratemento:</span>
+                                            <span>Tratamento:</span>
                                             <div
                                                 className="flex flex-col"
                                             >
